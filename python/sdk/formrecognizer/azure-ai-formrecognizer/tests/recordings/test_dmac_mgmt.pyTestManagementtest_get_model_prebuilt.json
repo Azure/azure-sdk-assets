@@ -1,24 +1,25 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakeendpoint.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-invoice?api-version=2022-08-31",
+      "RequestUri": "https://fakeendpoint.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-invoice?api-version=2023-02-28-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip, deflate",
         "Connection": "keep-alive",
-        "User-Agent": "azsdk-python-ai-formrecognizer/3.2.0b7 Python/3.8.5 (Windows-10-10.0.19041-SP0)"
+        "User-Agent": "azsdk-python-ai-formrecognizer/3.3.0b1 Python/3.10.0 (Windows-10-10.0.22621-SP0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "00828352-c43c-4fe2-9f0c-abe4ba14e72a",
+        "apim-request-id": "97cf5a5d-dd92-43fb-b5d9-0776c4b07e2a",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 18 Aug 2022 21:42:20 GMT",
+        "Date": "Tue, 21 Mar 2023 23:20:34 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "4"
+        "x-envoy-upstream-service-time": "1",
+        "x-ms-region": "West US 2"
       },
       "ResponseBody": {
         "docTypes": {
@@ -104,6 +105,11 @@
                 "description": "Subtotal field identified on this invoice",
                 "example": "$100.00"
               },
+              "TotalDiscount": {
+                "type": "currency",
+                "description": "Total discount field identified on this invoice",
+                "example": "$5.00"
+              },
               "TotalTax": {
                 "type": "currency",
                 "description": "Total tax field identified on this invoice",
@@ -135,12 +141,12 @@
                 "example": "Contoso Billing"
               },
               "ServiceAddress": {
-                "type": "string",
+                "type": "address",
                 "description": "Explicit service address or property address for the customer",
                 "example": "123 Service St, Redmond WA, 98052"
               },
               "ServiceAddressRecipient": {
-                "type": "address",
+                "type": "string",
                 "description": "Name associated with the ServiceAddress",
                 "example": "Microsoft Services"
               },
@@ -168,6 +174,46 @@
                 "type": "string",
                 "description": "The terms under which the payment is meant to be paid",
                 "example": "Net90"
+              },
+              "PaymentDetails": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "IBAN": {
+                      "type": "string",
+                      "description": "International bank account number",
+                      "example": "DE 94 700 700 100 029 49 00 00"
+                    },
+                    "SWIFT": {
+                      "type": "string",
+                      "description": "ISO9362, an international standard for Business Identifier Codes (BIC)",
+                      "example": "DEUTDEMMXXX"
+                    }
+                  },
+                  "description": "A single payment detail"
+                },
+                "description": "List of payment details"
+              },
+              "TaxDetails": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "Amount": {
+                      "type": "currency",
+                      "description": "The amount of the tax detail",
+                      "example": "29,520.00"
+                    },
+                    "Rate": {
+                      "type": "string",
+                      "description": "The rate of the tax detail",
+                      "example": "18 %"
+                    }
+                  },
+                  "description": "A single tax detail"
+                },
+                "description": "List of tax details"
               },
               "Items": {
                 "type": "array",
@@ -204,6 +250,11 @@
                       "description": "Tax associated with each line item. Possible values include tax amount, tax %, and tax Y/N",
                       "example": "$6.00"
                     },
+                    "TaxRate": {
+                      "type": "string",
+                      "description": "Tax rate associated with each line item",
+                      "example": "18 %"
+                    },
                     "Unit": {
                       "type": "string",
                       "description": "The unit of the line item, e.g, kg, lb etc.",
@@ -225,8 +276,8 @@
           }
         },
         "modelId": "prebuilt-invoice",
-        "createdDateTime": "2022-08-31T00:00:00Z",
-        "apiVersion": "2022-08-31",
+        "createdDateTime": "2023-02-28T00:00:00Z",
+        "apiVersion": "2023-02-28-preview",
         "description": "Extract key information from invoices."
       }
     }
