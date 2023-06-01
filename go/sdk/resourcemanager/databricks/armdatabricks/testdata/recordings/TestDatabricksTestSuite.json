@@ -1,0 +1,3099 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armresources/v1.1.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "westus"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "225",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:35:10 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1199",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033511Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg",
+        "name": "go-sdk-test-rg",
+        "type": "Microsoft.Resources/resourceGroups",
+        "location": "westus",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_VirtualNetwork?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "1897",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armresources/v1.1.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "properties": {
+          "mode": "Incremental",
+          "template": {
+            "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "outputs": {
+              "virtaulNetworkId": {
+                "type": "string",
+                "value": "[resourceId(\u0027Microsoft.Network/virtualNetworks\u0027, parameters(\u0027virtualNetworksName\u0027))]"
+              }
+            },
+            "parameters": {
+              "location": {
+                "defaultValue": "westus",
+                "type": "string"
+              },
+              "networkSecurityGroupName": {
+                "defaultValue": "databricks-nsg",
+                "type": "string"
+              },
+              "virtualNetworksName": {
+                "defaultValue": "databricksvnet2",
+                "type": "string"
+              }
+            },
+            "resources": [
+              {
+                "apiVersion": "2022-11-01",
+                "location": "[parameters(\u0027location\u0027)]",
+                "name": "[parameters(\u0027networkSecurityGroupName\u0027)]",
+                "type": "Microsoft.Network/networkSecurityGroups"
+              },
+              {
+                "apiVersion": "2021-05-01",
+                "dependsOn": [
+                  "[resourceId(\u0027Microsoft.Network/networkSecurityGroups\u0027, parameters(\u0027networkSecurityGroupName\u0027))]"
+                ],
+                "location": "[parameters(\u0027location\u0027)]",
+                "name": "[parameters(\u0027virtualNetworksName\u0027)]",
+                "properties": {
+                  "addressSpace": {
+                    "addressPrefixes": [
+                      "10.0.0.0/16"
+                    ]
+                  },
+                  "subnets": [
+                    {
+                      "name": "default",
+                      "properties": {
+                        "addressPrefix": "10.0.0.0/24"
+                      }
+                    },
+                    {
+                      "name": "myPublicSubnet",
+                      "properties": {
+                        "addressPrefix": "10.0.1.0/24",
+                        "delegations": [
+                          {
+                            "name": "Microsoft.Databricks.workspaces",
+                            "properties": {
+                              "serviceName": "Microsoft.Databricks/workspaces"
+                            },
+                            "type": "Microsoft.Network/virtualNetworks/subnets/delegations"
+                          }
+                        ],
+                        "networkSecurityGroup": {
+                          "id": "[resourceId(\u0027Microsoft.Network/networkSecurityGroups\u0027, parameters(\u0027networkSecurityGroupName\u0027))]"
+                        }
+                      }
+                    },
+                    {
+                      "name": "myPrivateSubnet",
+                      "properties": {
+                        "addressPrefix": "10.0.2.0/24",
+                        "delegations": [
+                          {
+                            "name": "Microsoft.Databricks.workspaces",
+                            "properties": {
+                              "serviceName": "Microsoft.Databricks/workspaces"
+                            },
+                            "type": "Microsoft.Network/virtualNetworks/subnets/delegations"
+                          }
+                        ],
+                        "networkSecurityGroup": {
+                          "id": "[resourceId(\u0027Microsoft.Network/networkSecurityGroups\u0027, parameters(\u0027networkSecurityGroupName\u0027))]"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "tags": {},
+                "type": "Microsoft.Network/virtualNetworks"
+              }
+            ]
+          }
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_VirtualNetwork/operationStatuses/08585160163715860836?api-version=2021-04-01",
+        "Cache-Control": "no-cache",
+        "Content-Length": "1350",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:35:17 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1198",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033518Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_VirtualNetwork",
+        "name": "Create_VirtualNetwork",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "1780037846902579355",
+          "parameters": {
+            "location": {
+              "type": "String",
+              "value": "westus"
+            },
+            "networkSecurityGroupName": {
+              "type": "String",
+              "value": "databricks-nsg"
+            },
+            "virtualNetworksName": {
+              "type": "String",
+              "value": "databricksvnet2"
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Accepted",
+          "timestamp": "2023-06-01T03:35:16.5910695Z",
+          "duration": "PT0.0006523S",
+          "correlationId": "00000000-0000-0000-0000-000000000000",
+          "providers": [
+            {
+              "namespace": "Microsoft.Network",
+              "resourceTypes": [
+                {
+                  "resourceType": "networkSecurityGroups",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "virtualNetworks",
+                  "locations": [
+                    "westus"
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/networkSecurityGroups/databricks-nsg",
+                  "resourceType": "Microsoft.Network/networkSecurityGroups",
+                  "resourceName": "databricks-nsg"
+                }
+              ],
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/databricksvnet2",
+              "resourceType": "Microsoft.Network/virtualNetworks",
+              "resourceName": "databricksvnet2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_VirtualNetwork/operationStatuses/08585160163715860836?api-version=2021-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v1.1.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Length": "20",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:35:17 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11999",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033518Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_VirtualNetwork/operationStatuses/08585160163715860836?api-version=2021-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v1.1.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Length": "22",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:35:48 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11998",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033549Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Succeeded"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_VirtualNetwork?api-version=2021-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v1.1.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Length": "1880",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:35:49 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11997",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033549Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_VirtualNetwork",
+        "name": "Create_VirtualNetwork",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "1780037846902579355",
+          "parameters": {
+            "location": {
+              "type": "String",
+              "value": "westus"
+            },
+            "networkSecurityGroupName": {
+              "type": "String",
+              "value": "databricks-nsg"
+            },
+            "virtualNetworksName": {
+              "type": "String",
+              "value": "databricksvnet2"
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Succeeded",
+          "timestamp": "2023-06-01T03:35:38.9284771Z",
+          "duration": "PT22.3380599S",
+          "correlationId": "00000000-0000-0000-0000-000000000000",
+          "providers": [
+            {
+              "namespace": "Microsoft.Network",
+              "resourceTypes": [
+                {
+                  "resourceType": "networkSecurityGroups",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "virtualNetworks",
+                  "locations": [
+                    "westus"
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/networkSecurityGroups/databricks-nsg",
+                  "resourceType": "Microsoft.Network/networkSecurityGroups",
+                  "resourceName": "databricks-nsg"
+                }
+              ],
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/databricksvnet2",
+              "resourceType": "Microsoft.Network/virtualNetworks",
+              "resourceName": "databricksvnet2"
+            }
+          ],
+          "outputs": {
+            "virtaulNetworkId": {
+              "type": "String",
+              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/databricksvnet2"
+            }
+          },
+          "outputResources": [
+            {
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/networkSecurityGroups/databricks-nsg"
+            },
+            {
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/databricksvnet2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3?api-version=2021-04-01-preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "471",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "westus",
+        "properties": {
+          "managedResourceGroupId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/managedrggKMCom",
+          "parameters": {
+            "customPrivateSubnetName": {
+              "value": "myPrivateSubnet"
+            },
+            "customPublicSubnetName": {
+              "value": "myPublicSubnet"
+            },
+            "customVirtualNetworkId": {
+              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/databricksvnet2"
+            }
+          }
+        },
+        "sku": {
+          "name": "premium"
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+        "Cache-Control": "no-cache",
+        "Content-Length": "1003",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:35:57 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-resource-requests": "149",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033558Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "properties": {
+          "managedResourceGroupId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/managedrggKMCom",
+          "provisioningState": "Accepted",
+          "authorizations": [
+            {
+              "principalId": "00000000-0000-0000-0000-000000000000",
+              "roleDefinitionId": "00000000-0000-0000-0000-000000000000"
+            }
+          ],
+          "createdBy": {
+            "oid": "00000000-0000-0000-0000-000000000000",
+            "applicationId": "00000000-0000-0000-0000-000000000000"
+          },
+          "updatedBy": {
+            "oid": "00000000-0000-0000-0000-000000000000",
+            "applicationId": "00000000-0000-0000-0000-000000000000"
+          },
+          "createdDateTime": "2023-06-01T03:35:55.4471832Z"
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3",
+        "name": "workspacJQmwC3",
+        "type": "Microsoft.Databricks/workspaces",
+        "sku": {
+          "name": "premium"
+        },
+        "location": "westus"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:36:13 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11996",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033613Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:36:28 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11995",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033629Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:36:43 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11994",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033644Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:36:58 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11993",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033659Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:37:15 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11992",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033715Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:37:30 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11991",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033731Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:37:46 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11990",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033746Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:38:01 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11989",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033801Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:38:16 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11988",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033816Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:38:32 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11987",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033832Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:38:46 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11986",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033847Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlUHJvdmlzaW9uaW5nSm9iOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzMifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:39:01 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11985",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033902Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Succeeded"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:39:02 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-resource-requests": "1799",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033903Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "properties": {
+          "managedResourceGroupId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/managedrggKMCom",
+          "parameters": {
+            "customPrivateSubnetName": {
+              "type": "String",
+              "value": "myPrivateSubnet"
+            },
+            "customPublicSubnetName": {
+              "type": "String",
+              "value": "myPublicSubnet"
+            },
+            "customVirtualNetworkId": {
+              "type": "String",
+              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/databricksvnet2"
+            },
+            "enableFedRampCertification": {
+              "type": "Bool",
+              "value": false
+            },
+            "enableNoPublicIp": {
+              "type": "Bool",
+              "value": false
+            },
+            "natGatewayName": {
+              "type": "String",
+              "value": "nat-gateway"
+            },
+            "prepareEncryption": {
+              "type": "Bool",
+              "value": false
+            },
+            "publicIpName": {
+              "type": "String",
+              "value": "nat-gw-public-ip"
+            },
+            "requireInfrastructureEncryption": {
+              "type": "Bool",
+              "value": false
+            },
+            "resourceTags": {
+              "type": "Object",
+              "value": {
+                "application": "databricks",
+                "databricks-environment": "true"
+              }
+            },
+            "storageAccountName": {
+              "type": "String",
+              "value": "dbstorageqhbq7etsdupjm"
+            },
+            "storageAccountSkuName": {
+              "type": "String",
+              "value": "Standard_GRS"
+            },
+            "vnetAddressPrefix": {
+              "type": "String",
+              "value": "10.139"
+            }
+          },
+          "provisioningState": "Succeeded",
+          "authorizations": [
+            {
+              "principalId": "00000000-0000-0000-0000-000000000000",
+              "roleDefinitionId": "00000000-0000-0000-0000-000000000000"
+            }
+          ],
+          "createdBy": {
+            "oid": "00000000-0000-0000-0000-000000000000",
+            "applicationId": "00000000-0000-0000-0000-000000000000"
+          },
+          "updatedBy": {
+            "oid": "00000000-0000-0000-0000-000000000000",
+            "applicationId": "00000000-0000-0000-0000-000000000000"
+          },
+          "workspaceId": "1841064764647264",
+          "workspaceUrl": "adb-1841064764647264.4.azuredatabricks.net",
+          "createdDateTime": "2023-06-01T03:35:55.4471832Z"
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3",
+        "name": "workspacJQmwC3",
+        "type": "Microsoft.Databricks/workspaces",
+        "sku": {
+          "name": "premium"
+        },
+        "location": "westus"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_PrivateEndpoint?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "2974",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armresources/v1.1.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "properties": {
+          "mode": "Incremental",
+          "template": {
+            "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {
+              "location": {
+                "defaultValue": "westus",
+                "type": "string"
+              },
+              "networkInterfaceName": {
+                "defaultValue": "endpointdatabricks-nic",
+                "type": "string"
+              },
+              "privateEndpointName": {
+                "defaultValue": "endpointdatabricks",
+                "type": "string"
+              },
+              "virtualNetworksName": {
+                "defaultValue": "endpointvnet",
+                "type": "string"
+              },
+              "workspaceId": {
+                "defaultValue": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3",
+                "type": "string"
+              }
+            },
+            "resources": [
+              {
+                "apiVersion": "2020-11-01",
+                "location": "[parameters(\u0027location\u0027)]",
+                "name": "[parameters(\u0027virtualNetworksName\u0027)]",
+                "properties": {
+                  "addressSpace": {
+                    "addressPrefixes": [
+                      "10.0.0.0/16"
+                    ]
+                  },
+                  "enableDdosProtection": false,
+                  "subnets": [
+                    {
+                      "name": "pesubnet",
+                      "properties": {
+                        "addressPrefix": "10.0.3.0/24",
+                        "delegations": [],
+                        "privateEndpointNetworkPolicies": "Disabled",
+                        "privateLinkServiceNetworkPolicies": "Enabled"
+                      }
+                    }
+                  ],
+                  "virtualNetworkPeerings": []
+                },
+                "type": "Microsoft.Network/virtualNetworks"
+              },
+              {
+                "apiVersion": "2020-11-01",
+                "dependsOn": [
+                  "[resourceId(\u0027Microsoft.Network/virtualNetworks/subnets\u0027, parameters(\u0027virtualNetworksName\u0027), \u0027pesubnet\u0027)]"
+                ],
+                "location": "[parameters(\u0027location\u0027)]",
+                "name": "[parameters(\u0027networkInterfaceName\u0027)]",
+                "properties": {
+                  "dnsSettings": {
+                    "dnsServers": []
+                  },
+                  "enableIPForwarding": false,
+                  "ipConfigurations": [
+                    {
+                      "name": "privateEndpointIpConfig",
+                      "properties": {
+                        "primary": true,
+                        "privateIPAddress": "10.0.0.4",
+                        "privateIPAddressVersion": "IPv4",
+                        "privateIPAllocationMethod": "Dynamic",
+                        "subnet": {
+                          "id": "[resourceId(\u0027Microsoft.Network/virtualNetworks/subnets\u0027, parameters(\u0027virtualNetworksName\u0027), \u0027pesubnet\u0027)]"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "type": "Microsoft.Network/networkInterfaces"
+              },
+              {
+                "apiVersion": "2020-11-01",
+                "dependsOn": [
+                  "[resourceId(\u0027Microsoft.Network/virtualNetworks/subnets\u0027, parameters(\u0027virtualNetworksName\u0027), \u0027pesubnet\u0027)]"
+                ],
+                "location": "[parameters(\u0027location\u0027)]",
+                "name": "[parameters(\u0027privateEndpointName\u0027)]",
+                "properties": {
+                  "customDnsConfigs": [],
+                  "manualPrivateLinkServiceConnections": [],
+                  "privateLinkServiceConnections": [
+                    {
+                      "name": "[parameters(\u0027privateEndpointName\u0027)]",
+                      "properties": {
+                        "groupIds": [
+                          "databricks_ui_api"
+                        ],
+                        "privateLinkServiceConnectionState": {
+                          "actionsRequired": "None",
+                          "description": "Auto-Approved",
+                          "status": "Approved"
+                        },
+                        "privateLinkServiceId": "[parameters(\u0027workspaceId\u0027)]"
+                      }
+                    }
+                  ],
+                  "subnet": {
+                    "id": "[resourceId(\u0027Microsoft.Network/virtualNetworks/subnets\u0027, parameters(\u0027virtualNetworksName\u0027), \u0027pesubnet\u0027)]"
+                  }
+                },
+                "type": "Microsoft.Network/privateEndpoints"
+              },
+              {
+                "apiVersion": "2020-11-01",
+                "dependsOn": [
+                  "[resourceId(\u0027Microsoft.Network/virtualNetworks\u0027, parameters(\u0027virtualNetworksName\u0027))]"
+                ],
+                "name": "[concat(parameters(\u0027virtualNetworksName\u0027), \u0027/pesubnet\u0027)]",
+                "properties": {
+                  "addressPrefix": "10.0.3.0/24",
+                  "delegations": [],
+                  "privateEndpointNetworkPolicies": "Disabled",
+                  "privateLinkServiceNetworkPolicies": "Enabled"
+                },
+                "type": "Microsoft.Network/virtualNetworks/subnets"
+              }
+            ],
+            "variables": {}
+          }
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_PrivateEndpoint/operationStatuses/08585160161413056651?api-version=2021-04-01",
+        "Cache-Control": "no-cache",
+        "Content-Length": "2782",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:39:07 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1197",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033908Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_PrivateEndpoint",
+        "name": "Create_PrivateEndpoint",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "6946966976059184757",
+          "parameters": {
+            "location": {
+              "type": "String",
+              "value": "westus"
+            },
+            "networkInterfaceName": {
+              "type": "String",
+              "value": "endpointdatabricks-nic"
+            },
+            "privateEndpointName": {
+              "type": "String",
+              "value": "endpointdatabricks"
+            },
+            "virtualNetworksName": {
+              "type": "String",
+              "value": "endpointvnet"
+            },
+            "workspaceId": {
+              "type": "String",
+              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3"
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Accepted",
+          "timestamp": "2023-06-01T03:39:06.7954302Z",
+          "duration": "PT0.0001207S",
+          "correlationId": "00000000-0000-0000-0000-000000000000",
+          "providers": [
+            {
+              "namespace": "Microsoft.Network",
+              "resourceTypes": [
+                {
+                  "resourceType": "virtualNetworks",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "networkInterfaces",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "privateEndpoints",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "virtualNetworks/subnets",
+                  "locations": [
+                    null
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/endpointvnet/subnets/pesubnet",
+                  "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+                  "resourceName": "endpointvnet/pesubnet"
+                }
+              ],
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/networkInterfaces/endpointdatabricks-nic",
+              "resourceType": "Microsoft.Network/networkInterfaces",
+              "resourceName": "endpointdatabricks-nic"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/endpointvnet/subnets/pesubnet",
+                  "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+                  "resourceName": "endpointvnet/pesubnet"
+                }
+              ],
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/endpointdatabricks",
+              "resourceType": "Microsoft.Network/privateEndpoints",
+              "resourceName": "endpointdatabricks"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/endpointvnet",
+                  "resourceType": "Microsoft.Network/virtualNetworks",
+                  "resourceName": "endpointvnet"
+                }
+              ],
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/endpointvnet/subnets/pesubnet",
+              "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+              "resourceName": "endpointvnet/pesubnet"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_PrivateEndpoint/operationStatuses/08585160161413056651?api-version=2021-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v1.1.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Length": "21",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:39:07 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11984",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033908Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_PrivateEndpoint/operationStatuses/08585160161413056651?api-version=2021-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v1.1.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Length": "20",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:39:38 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11983",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T033939Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_PrivateEndpoint/operationStatuses/08585160161413056651?api-version=2021-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v1.1.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Length": "20",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:40:09 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11982",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034009Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_PrivateEndpoint/operationStatuses/08585160161413056651?api-version=2021-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v1.1.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Length": "22",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:40:39 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11981",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034040Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Succeeded"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_PrivateEndpoint?api-version=2021-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v1.1.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Length": "3433",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:40:39 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11980",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034040Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/Create_PrivateEndpoint",
+        "name": "Create_PrivateEndpoint",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "6946966976059184757",
+          "parameters": {
+            "location": {
+              "type": "String",
+              "value": "westus"
+            },
+            "networkInterfaceName": {
+              "type": "String",
+              "value": "endpointdatabricks-nic"
+            },
+            "privateEndpointName": {
+              "type": "String",
+              "value": "endpointdatabricks"
+            },
+            "virtualNetworksName": {
+              "type": "String",
+              "value": "endpointvnet"
+            },
+            "workspaceId": {
+              "type": "String",
+              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3"
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Succeeded",
+          "timestamp": "2023-06-01T03:40:27.5549975Z",
+          "duration": "PT1M20.759688S",
+          "correlationId": "00000000-0000-0000-0000-000000000000",
+          "providers": [
+            {
+              "namespace": "Microsoft.Network",
+              "resourceTypes": [
+                {
+                  "resourceType": "virtualNetworks",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "networkInterfaces",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "privateEndpoints",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "virtualNetworks/subnets",
+                  "locations": [
+                    null
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/endpointvnet/subnets/pesubnet",
+                  "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+                  "resourceName": "endpointvnet/pesubnet"
+                }
+              ],
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/networkInterfaces/endpointdatabricks-nic",
+              "resourceType": "Microsoft.Network/networkInterfaces",
+              "resourceName": "endpointdatabricks-nic"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/endpointvnet/subnets/pesubnet",
+                  "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+                  "resourceName": "endpointvnet/pesubnet"
+                }
+              ],
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/endpointdatabricks",
+              "resourceType": "Microsoft.Network/privateEndpoints",
+              "resourceName": "endpointdatabricks"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/endpointvnet",
+                  "resourceType": "Microsoft.Network/virtualNetworks",
+                  "resourceName": "endpointvnet"
+                }
+              ],
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/endpointvnet/subnets/pesubnet",
+              "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+              "resourceName": "endpointvnet/pesubnet"
+            }
+          ],
+          "outputResources": [
+            {
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/networkInterfaces/endpointdatabricks-nic"
+            },
+            {
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/endpointdatabricks"
+            },
+            {
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/endpointvnet"
+            },
+            {
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/endpointvnet/subnets/pesubnet"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/outboundNetworkDependenciesEndpoints?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:40:40 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11979",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034041Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": [
+        "[\r\n",
+        "  {\r\n",
+        "    \u0022category\u0022: \u0022Webapp\u0022,\r\n",
+        "    \u0022endpoints\u0022: [\r\n",
+        "      {\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022ipAddress\u0022: \u002240.118.174.12/32\u0022,\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          },\r\n",
+        "          {\r\n",
+        "            \u0022ipAddress\u0022: \u002220.42.129.160/32\u0022,\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      }\r\n",
+        "    ]\r\n",
+        "  },\r\n",
+        "  {\r\n",
+        "    \u0022category\u0022: \u0022Control Plane NAT\u0022,\r\n",
+        "    \u0022endpoints\u0022: [\r\n",
+        "      {\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022ipAddress\u0022: \u002240.83.178.242/32\u0022,\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          },\r\n",
+        "          {\r\n",
+        "            \u0022ipAddress\u0022: \u002220.42.129.161/32\u0022,\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      }\r\n",
+        "    ]\r\n",
+        "  },\r\n",
+        "  {\r\n",
+        "    \u0022category\u0022: \u0022Extended infrastructure\u0022,\r\n",
+        "    \u0022endpoints\u0022: [\r\n",
+        "      {\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022ipAddress\u0022: \u002213.91.84.96/28\u0022,\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      }\r\n",
+        "    ]\r\n",
+        "  },\r\n",
+        "  {\r\n",
+        "    \u0022category\u0022: \u0022Azure Storage\u0022,\r\n",
+        "    \u0022endpoints\u0022: [\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022dbartifactsprodwestus.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa1.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa2.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa3.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa4.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa5.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa6.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa7.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa8.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa9.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa10.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa11.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa12.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa13.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa14.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022arprodwestusa15.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022dbartifactsprodwestus2.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022dblogprodwestus.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022dbstorageqhbq7etsdupjm.blob.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022dbstorageqhbq7etsdupjm.dfs.core.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 443\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      }\r\n",
+        "    ]\r\n",
+        "  },\r\n",
+        "  {\r\n",
+        "    \u0022category\u0022: \u0022Azure My SQL\u0022,\r\n",
+        "    \u0022endpoints\u0022: [\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022consolidated-westus-prod-metastore.mysql.database.azure.com\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 3306\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022consolidated-westus-prod-metastore-addl-1.mysql.database.azure.com\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 3306\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022consolidated-westus-prod-metastore-addl-2.mysql.database.azure.com\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 3306\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022consolidated-westus-prod-metastore-addl-3.mysql.database.azure.com\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 3306\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022consolidated-westus2c2-prod-metastore-addl-1.mysql.database.azure.com\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 3306\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      }\r\n",
+        "    ]\r\n",
+        "  },\r\n",
+        "  {\r\n",
+        "    \u0022category\u0022: \u0022Azure Servicebus\u0022,\r\n",
+        "    \u0022endpoints\u0022: [\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022prod-westus-observabilityEventHubs.servicebus.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 9093\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      },\r\n",
+        "      {\r\n",
+        "        \u0022domainName\u0022: \u0022prod-westus2c2-observabilityeventhubs.servicebus.windows.net\u0022,\r\n",
+        "        \u0022endpointDetails\u0022: [\r\n",
+        "          {\r\n",
+        "            \u0022port\u0022: 9093\r\n",
+        "          }\r\n",
+        "        ]\r\n",
+        "      }\r\n",
+        "    ]\r\n",
+        "  }\r\n",
+        "]"
+      ]
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateEndpointConnections?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:40:41 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11978",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034042Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateEndpointConnections/endpointdatabricks",
+            "name": "endpointdatabricks",
+            "type": "Microsoft.Databricks/workspaces/privateEndpointConnections",
+            "properties": {
+              "privateEndpoint": {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/endpointdatabricks"
+              },
+              "groupIds": [
+                "databricks_ui_api"
+              ],
+              "privateLinkServiceConnectionState": {
+                "status": "Approved",
+                "description": "Auto-approved",
+                "actionsRequired": "None"
+              },
+              "provisioningState": "Succeeded"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateEndpointConnections/endpointdatabricks?api-version=2021-04-01-preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "130",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "properties": {
+          "privateLinkServiceConnectionState": {
+            "description": "Approved by databricksadmin@contoso.com",
+            "status": "Rejected"
+          }
+        }
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+        "Cache-Control": "no-cache",
+        "Content-Length": "770",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:40:42 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1196",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034042Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateEndpointConnections/endpointdatabricks",
+        "name": "endpointdatabricks",
+        "type": "Microsoft.Databricks/workspaces/privateEndpointConnections",
+        "properties": {
+          "privateEndpoint": {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/endpointdatabricks"
+          },
+          "groupIds": [
+            "databricks_ui_api"
+          ],
+          "privateLinkServiceConnectionState": {
+            "status": "Approved",
+            "description": "Auto-approved",
+            "actionsRequired": "None"
+          },
+          "provisioningState": "Updating"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:40:57 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11977",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034058Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:41:13 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11976",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034113Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:41:27 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11975",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034128Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:41:44 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11974",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034144Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Succeeded"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateEndpointConnections/endpointdatabricks?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:41:44 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11973",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034144Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateEndpointConnections/endpointdatabricks",
+        "name": "endpointdatabricks",
+        "type": "Microsoft.Databricks/workspaces/privateEndpointConnections",
+        "properties": {
+          "privateEndpoint": {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/endpointdatabricks"
+          },
+          "groupIds": [
+            "databricks_ui_api"
+          ],
+          "privateLinkServiceConnectionState": {
+            "status": "Rejected",
+            "description": "Approved by databricksadmin@contoso.com",
+            "actionsRequired": "None"
+          },
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateEndpointConnections/endpointdatabricks?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:41:44 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11972",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034145Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateEndpointConnections/endpointdatabricks",
+        "name": "endpointdatabricks",
+        "type": "Microsoft.Databricks/workspaces/privateEndpointConnections",
+        "properties": {
+          "privateEndpoint": {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/endpointdatabricks"
+          },
+          "groupIds": [
+            "databricks_ui_api"
+          ],
+          "privateLinkServiceConnectionState": {
+            "status": "Rejected",
+            "description": "Approved by databricksadmin@contoso.com",
+            "actionsRequired": "None"
+          },
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateLinkResources?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:41:46 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11971",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034147Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateLinkResources/databricks_ui_api",
+            "name": "databricks_ui_api",
+            "type": "Microsoft.Databricks/workspaces/privateLinkResources",
+            "properties": {
+              "groupId": "databricks_ui_api",
+              "displayName": "databricks_ui_api",
+              "requiredMembers": [
+                "databricks_ui_api"
+              ],
+              "requiredZoneNames": [
+                "privatelink.azuredatabricks.net"
+              ]
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateLinkResources/browser_authentication",
+            "name": "browser_authentication",
+            "type": "Microsoft.Databricks/workspaces/privateLinkResources",
+            "properties": {
+              "groupId": "browser_authentication",
+              "displayName": "browser_authentication",
+              "requiredMembers": [
+                "westus",
+                "westus-c2"
+              ],
+              "requiredZoneNames": [
+                "privatelink.azuredatabricks.net"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateLinkResources/databricks_ui_api?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:41:48 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11970",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034148Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateLinkResources/databricks_ui_api",
+        "name": "databricks_ui_api",
+        "type": "Microsoft.Databricks/workspaces/privateLinkResources",
+        "properties": {
+          "groupId": "databricks_ui_api",
+          "displayName": "databricks_ui_api",
+          "requiredMembers": [
+            "databricks_ui_api"
+          ],
+          "requiredZoneNames": [
+            "privatelink.azuredatabricks.net"
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateEndpointConnections/endpointdatabricks?api-version=2021-04-01-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+        "Cache-Control": "no-cache",
+        "Content-Length": "796",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:41:51 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14999",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034152Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3/privateEndpointConnections/endpointdatabricks",
+        "name": "endpointdatabricks",
+        "type": "Microsoft.Databricks/workspaces/privateEndpointConnections",
+        "properties": {
+          "privateEndpoint": {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/endpointdatabricks"
+          },
+          "groupIds": [
+            "databricks_ui_api"
+          ],
+          "privateLinkServiceConnectionState": {
+            "status": "Rejected",
+            "description": "Approved by databricksadmin@contoso.com",
+            "actionsRequired": "None"
+          },
+          "provisioningState": "Deleting"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:42:06 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11969",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034207Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:42:22 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11968",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034222Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:42:37 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11967",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034238Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiUHJpdmF0ZUVuZHBvaW50Q29ubmVjdGlvbkpvYk1ldGFkYXRhOjJEUkdBOjJER086M0EyRFNESzozQTJEVEVTVDozQTJEODQzOjJEV09SS1NQQUNKUU1XQzNFTkRQT0lOVERBVEFCUklDS1MifQ?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:42:52 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11966",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034253Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Succeeded"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:42:53 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-resource-requests": "1798",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034253Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "properties": {
+              "privateEndpointConnections": [],
+              "managedResourceGroupId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/managedrggKMCom",
+              "parameters": {
+                "customPrivateSubnetName": {
+                  "type": "String",
+                  "value": "myPrivateSubnet"
+                },
+                "customPublicSubnetName": {
+                  "type": "String",
+                  "value": "myPublicSubnet"
+                },
+                "customVirtualNetworkId": {
+                  "type": "String",
+                  "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/databricksvnet2"
+                },
+                "enableFedRampCertification": {
+                  "type": "Bool",
+                  "value": false
+                },
+                "enableNoPublicIp": {
+                  "type": "Bool",
+                  "value": false
+                },
+                "natGatewayName": {
+                  "type": "String",
+                  "value": "nat-gateway"
+                },
+                "prepareEncryption": {
+                  "type": "Bool",
+                  "value": false
+                },
+                "publicIpName": {
+                  "type": "String",
+                  "value": "nat-gw-public-ip"
+                },
+                "requireInfrastructureEncryption": {
+                  "type": "Bool",
+                  "value": false
+                },
+                "resourceTags": {
+                  "type": "Object",
+                  "value": {
+                    "application": "databricks",
+                    "databricks-environment": "true"
+                  }
+                },
+                "storageAccountName": {
+                  "type": "String",
+                  "value": "dbstorageqhbq7etsdupjm"
+                },
+                "storageAccountSkuName": {
+                  "type": "String",
+                  "value": "Standard_GRS"
+                },
+                "vnetAddressPrefix": {
+                  "type": "String",
+                  "value": "10.139"
+                }
+              },
+              "provisioningState": "Succeeded",
+              "authorizations": [
+                {
+                  "principalId": "00000000-0000-0000-0000-000000000000",
+                  "roleDefinitionId": "00000000-0000-0000-0000-000000000000"
+                }
+              ],
+              "createdBy": {
+                "oid": "00000000-0000-0000-0000-000000000000",
+                "applicationId": "00000000-0000-0000-0000-000000000000"
+              },
+              "updatedBy": {
+                "oid": "00000000-0000-0000-0000-000000000000",
+                "applicationId": "00000000-0000-0000-0000-000000000000"
+              },
+              "workspaceId": "1841064764647264",
+              "workspaceUrl": "adb-1841064764647264.4.azuredatabricks.net",
+              "createdDateTime": "2023-06-01T03:35:55.4471832Z"
+            },
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3",
+            "name": "workspacJQmwC3",
+            "type": "Microsoft.Databricks/workspaces",
+            "sku": {
+              "name": "premium"
+            },
+            "location": "westus"
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:42:53 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-resource-requests": "1797",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034254Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "properties": {
+          "privateEndpointConnections": [],
+          "managedResourceGroupId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/managedrggKMCom",
+          "parameters": {
+            "customPrivateSubnetName": {
+              "type": "String",
+              "value": "myPrivateSubnet"
+            },
+            "customPublicSubnetName": {
+              "type": "String",
+              "value": "myPublicSubnet"
+            },
+            "customVirtualNetworkId": {
+              "type": "String",
+              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/databricksvnet2"
+            },
+            "enableFedRampCertification": {
+              "type": "Bool",
+              "value": false
+            },
+            "enableNoPublicIp": {
+              "type": "Bool",
+              "value": false
+            },
+            "natGatewayName": {
+              "type": "String",
+              "value": "nat-gateway"
+            },
+            "prepareEncryption": {
+              "type": "Bool",
+              "value": false
+            },
+            "publicIpName": {
+              "type": "String",
+              "value": "nat-gw-public-ip"
+            },
+            "requireInfrastructureEncryption": {
+              "type": "Bool",
+              "value": false
+            },
+            "resourceTags": {
+              "type": "Object",
+              "value": {
+                "application": "databricks",
+                "databricks-environment": "true"
+              }
+            },
+            "storageAccountName": {
+              "type": "String",
+              "value": "dbstorageqhbq7etsdupjm"
+            },
+            "storageAccountSkuName": {
+              "type": "String",
+              "value": "Standard_GRS"
+            },
+            "vnetAddressPrefix": {
+              "type": "String",
+              "value": "10.139"
+            }
+          },
+          "provisioningState": "Succeeded",
+          "authorizations": [
+            {
+              "principalId": "00000000-0000-0000-0000-000000000000",
+              "roleDefinitionId": "00000000-0000-0000-0000-000000000000"
+            }
+          ],
+          "createdBy": {
+            "oid": "00000000-0000-0000-0000-000000000000",
+            "applicationId": "00000000-0000-0000-0000-000000000000"
+          },
+          "updatedBy": {
+            "oid": "00000000-0000-0000-0000-000000000000",
+            "applicationId": "00000000-0000-0000-0000-000000000000"
+          },
+          "workspaceId": "1841064764647264",
+          "workspaceUrl": "adb-1841064764647264.4.azuredatabricks.net",
+          "createdDateTime": "2023-06-01T03:35:55.4471832Z"
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3",
+        "name": "workspacJQmwC3",
+        "type": "Microsoft.Databricks/workspaces",
+        "sku": {
+          "name": "premium"
+        },
+        "location": "westus"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3?api-version=2021-04-01-preview",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "30",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "tags": {
+          "mytag1": "myvalue1"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:42:59 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-resource-requests": "148",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034300Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "properties": {
+          "privateEndpointConnections": [],
+          "managedResourceGroupId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/managedrggKMCom",
+          "parameters": {
+            "customPrivateSubnetName": {
+              "type": "String",
+              "value": "myPrivateSubnet"
+            },
+            "customPublicSubnetName": {
+              "type": "String",
+              "value": "myPublicSubnet"
+            },
+            "customVirtualNetworkId": {
+              "type": "String",
+              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/databricksvnet2"
+            },
+            "enableFedRampCertification": {
+              "type": "Bool",
+              "value": false
+            },
+            "enableNoPublicIp": {
+              "type": "Bool",
+              "value": false
+            },
+            "natGatewayName": {
+              "type": "String",
+              "value": "nat-gateway"
+            },
+            "prepareEncryption": {
+              "type": "Bool",
+              "value": false
+            },
+            "publicIpName": {
+              "type": "String",
+              "value": "nat-gw-public-ip"
+            },
+            "requireInfrastructureEncryption": {
+              "type": "Bool",
+              "value": false
+            },
+            "resourceTags": {
+              "type": "Object",
+              "value": {
+                "application": "databricks",
+                "databricks-environment": "true"
+              }
+            },
+            "storageAccountName": {
+              "type": "String",
+              "value": "dbstorageqhbq7etsdupjm"
+            },
+            "storageAccountSkuName": {
+              "type": "String",
+              "value": "Standard_GRS"
+            },
+            "vnetAddressPrefix": {
+              "type": "String",
+              "value": "10.139"
+            }
+          },
+          "provisioningState": "Succeeded",
+          "authorizations": [
+            {
+              "principalId": "00000000-0000-0000-0000-000000000000",
+              "roleDefinitionId": "00000000-0000-0000-0000-000000000000"
+            }
+          ],
+          "createdBy": {
+            "oid": "00000000-0000-0000-0000-000000000000",
+            "applicationId": "00000000-0000-0000-0000-000000000000"
+          },
+          "updatedBy": {
+            "oid": "00000000-0000-0000-0000-000000000000",
+            "applicationId": "00000000-0000-0000-0000-000000000000"
+          },
+          "workspaceId": "1841064764647264",
+          "workspaceUrl": "adb-1841064764647264.4.azuredatabricks.net",
+          "createdDateTime": "2023-06-01T03:35:55.4471832Z"
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3",
+        "name": "workspacJQmwC3",
+        "type": "Microsoft.Databricks/workspaces",
+        "sku": {
+          "name": "premium"
+        },
+        "location": "westus",
+        "tags": {
+          "mytag1": "myvalue1"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/workspaces/workspacJQmwC3?api-version=2021-04-01-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Thu, 01 Jun 2023 03:43:01 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14998",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034301Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:43:16 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11965",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034317Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:43:31 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11964",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034332Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:43:46 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11963",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034347Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:44:02 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11962",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034403Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:44:18 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11961",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034418Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:44:33 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11960",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034433Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:44:49 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11959",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034449Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:45:04 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11958",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034504Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:45:18 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11957",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034519Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Accepted"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Databricks/locations/westus/operationStatuses/eyJmdWxseVF1YWxpZmllZEFwcGxpYW5jZUlkIjoiL3N1YnNjcmlwdGlvbnMvOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQxL3Jlc291cmNlR3JvdXBzL2dvLXNkay10ZXN0LTg0My9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFicmlja3Mvd29ya3NwYWNlcy93b3Jrc3BhY0pRbXdDMyIsImpvYklkIjoiQXBwbGlhbmNlRGVwcm92aXNpb25pbmdKb2I6MkRSR0E6MkRHTzozQTJEU0RLOjNBMkRURVNUOjNBMkQ4NDM6MkRXT1JLU1BBQ0pRTVdDMyJ9?api-version=2021-04-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armdatabricks/v0.7.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 01 Jun 2023 03:45:34 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11956",
+        "x-ms-request-id": "westus:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034534Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Succeeded"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg?api-version=2021-04-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v1.1.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Thu, 01 Jun 2023 03:45:37 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQ4NDMtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2021-04-01",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14997",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230601T034537Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "randSeed": "1685590507",
+    "recordingRandomSeed": "0"
+  }
+}
