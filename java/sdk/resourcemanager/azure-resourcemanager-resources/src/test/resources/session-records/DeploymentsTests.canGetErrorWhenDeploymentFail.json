@@ -1,0 +1,588 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg5525284?api-version=2022-09-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "29",
+        "Content-Type": "application/json",
+        "Date": "Tue, 04 Jul 2023 02:28:02 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.26.0-beta.1 (17.0.4.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "10e9b083-f3fc-4445-8105-4fecab8f4678",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "location": "southcentralus"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "223",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 04 Jul 2023 02:28:06 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "b7e029c4-b7b5-43ee-9246-da29bb909000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1198",
+        "x-ms-request-id": "b7e029c4-b7b5-43ee-9246-da29bb909000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230704T022806Z:b7e029c4-b7b5-43ee-9246-da29bb909000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284",
+        "name": "rg5525284",
+        "type": "Microsoft.Resources/resourceGroups",
+        "location": "southcentralus",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg5525284/providers/Microsoft.Resources/deployments/dpG5525284?api-version=2022-09-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "1884",
+        "Content-Type": "application/json",
+        "Date": "Tue, 04 Jul 2023 02:28:06 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.26.0-beta.1 (17.0.4.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "3368ee65-702a-4264-bc26-1c1e77325cf5",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "properties": {
+          "template": {
+            "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {
+              "vnetName": {
+                "type": "string",
+                "defaultValue": "VNet1",
+                "metadata": {
+                  "description": "VNet name"
+                }
+              },
+              "vnetAddressPrefix": {
+                "type": "string",
+                "defaultValue": "10.0.0.0/16",
+                "metadata": {
+                  "description": "Address prefix"
+                }
+              },
+              "subnet1Prefix": {
+                "type": "string",
+                "defaultValue": "10.0.0.0/24",
+                "metadata": {
+                  "description": "Subnet 1 Prefix"
+                }
+              },
+              "subnet1Name": {
+                "type": "string",
+                "defaultValue": "Subnet1",
+                "metadata": {
+                  "description": "Subnet 1 Name"
+                }
+              },
+              "subnet2Prefix": {
+                "type": "string",
+                "defaultValue": "10.1.0.0/24",
+                "metadata": {
+                  "description": "Subnet 2 Prefix"
+                }
+              },
+              "subnet2Name": {
+                "type": "string",
+                "defaultValue": "Subnet2",
+                "metadata": {
+                  "description": "Subnet 2 Name"
+                }
+              },
+              "location": {
+                "type": "string",
+                "defaultValue": "[resourceGroup().location]",
+                "metadata": {
+                  "description": "Location for all resources."
+                }
+              }
+            },
+            "variables": {},
+            "resources": [
+              {
+                "type": "Microsoft.Network/virtualNetworks",
+                "apiVersion": "2020-05-01",
+                "name": "[parameters(\u0027vnetName\u0027)]",
+                "location": "[parameters(\u0027location\u0027)]",
+                "properties": {
+                  "addressSpace": {
+                    "addressPrefixes": [
+                      "[parameters(\u0027vnetAddressPrefix\u0027)]"
+                    ]
+                  }
+                },
+                "resources": [
+                  {
+                    "type": "subnets",
+                    "apiVersion": "2020-05-01",
+                    "location": "[parameters(\u0027location\u0027)]",
+                    "name": "[parameters(\u0027subnet1Name\u0027)]",
+                    "dependsOn": [
+                      "[parameters(\u0027vnetName\u0027)]"
+                    ],
+                    "properties": {
+                      "addressPrefix": "[parameters(\u0027subnet1Prefix\u0027)]"
+                    }
+                  },
+                  {
+                    "type": "subnets",
+                    "apiVersion": "2020-05-01",
+                    "location": "[parameters(\u0027location\u0027)]",
+                    "name": "[parameters(\u0027subnet2Name\u0027)]",
+                    "dependsOn": [
+                      "[parameters(\u0027vnetName\u0027)]",
+                      "[parameters(\u0027subnet1Name\u0027)]"
+                    ],
+                    "properties": {
+                      "addressPrefix": "[parameters(\u0027subnet2Prefix\u0027)]"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "parametersLink": {
+            "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json",
+            "contentVersion": "1.0.0.0"
+          },
+          "mode": "Complete"
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourcegroups/rg5525284/providers/Microsoft.Resources/deployments/dpG5525284/operationStatuses/08585131691959985737?api-version=2022-09-01",
+        "Cache-Control": "no-cache",
+        "Content-Length": "2410",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 04 Jul 2023 02:28:14 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "1b508add-2bd1-4019-b3c6-1d8d870a29a3",
+        "x-ms-ratelimit-remaining-subscription-writes": "1195",
+        "x-ms-request-id": "1b508add-2bd1-4019-b3c6-1d8d870a29a3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230704T022814Z:1b508add-2bd1-4019-b3c6-1d8d870a29a3"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Resources/deployments/dpG5525284",
+        "name": "dpG5525284",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "8532929606626690926",
+          "parametersLink": {
+            "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "vnetName": {
+              "type": "String",
+              "value": "VNet1"
+            },
+            "vnetAddressPrefix": {
+              "type": "String",
+              "value": "10.0.0.0/16"
+            },
+            "subnet1Prefix": {
+              "type": "String",
+              "value": "10.0.0.0/24"
+            },
+            "subnet1Name": {
+              "type": "String",
+              "value": "Subnet1"
+            },
+            "subnet2Prefix": {
+              "type": "String",
+              "value": "10.1.0.0/24"
+            },
+            "subnet2Name": {
+              "type": "String",
+              "value": "Subnet2"
+            },
+            "location": {
+              "type": "String",
+              "value": "southcentralus"
+            }
+          },
+          "mode": "Complete",
+          "provisioningState": "Accepted",
+          "timestamp": "2023-07-04T02:28:13.0339864Z",
+          "duration": "PT0.0004067S",
+          "correlationId": "1b508add-2bd1-4019-b3c6-1d8d870a29a3",
+          "providers": [
+            {
+              "namespace": "Microsoft.Network",
+              "resourceTypes": [
+                {
+                  "resourceType": "virtualNetworks",
+                  "locations": [
+                    "southcentralus"
+                  ]
+                },
+                {
+                  "resourceType": "virtualNetworks/subnets",
+                  "locations": [
+                    "southcentralus"
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Network/virtualNetworks/VNet1",
+                  "resourceType": "Microsoft.Network/virtualNetworks",
+                  "resourceName": "VNet1"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1",
+              "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+              "resourceName": "VNet1/Subnet1"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Network/virtualNetworks/VNet1",
+                  "resourceType": "Microsoft.Network/virtualNetworks",
+                  "resourceName": "VNet1"
+                },
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1",
+                  "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+                  "resourceName": "VNet1/Subnet1"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet2",
+              "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+              "resourceName": "VNet1/Subnet2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg5525284/providers/Microsoft.Resources/deployments/dpG5525284/operationStatuses/08585131691959985737?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Tue, 04 Jul 2023 02:28:44 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.26.0-beta.1 (17.0.4.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b5ad82d7-e0e7-429a-b6f2-af755aa5650c",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "503",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 04 Jul 2023 02:28:44 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "5282718b-a7dc-4efe-97d7-b1a080828754",
+        "x-ms-ratelimit-remaining-subscription-reads": "11998",
+        "x-ms-request-id": "5282718b-a7dc-4efe-97d7-b1a080828754",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230704T022845Z:5282718b-a7dc-4efe-97d7-b1a080828754"
+      },
+      "ResponseBody": {
+        "status": "Failed",
+        "error": {
+          "code": "DeploymentFailed",
+          "target": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Resources/deployments/dpG5525284",
+          "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/arm-deployment-operations for usage details.",
+          "details": [
+            {
+              "code": "NetcfgInvalidSubnet",
+              "message": "Subnet \u0027Subnet2\u0027 is not valid in virtual network \u0027VNet1\u0027.",
+              "details": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg5525284/providers/Microsoft.Resources/deployments/dpG5525284?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Tue, 04 Jul 2023 02:28:44 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.26.0-beta.1 (17.0.4.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "c2168fac-9871-4a9e-8d19-729d1eff8942",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "2880",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 04 Jul 2023 02:28:45 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "62ae9063-c74a-404e-a66e-c53e2fab3eac",
+        "x-ms-ratelimit-remaining-subscription-reads": "11997",
+        "x-ms-request-id": "62ae9063-c74a-404e-a66e-c53e2fab3eac",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230704T022845Z:62ae9063-c74a-404e-a66e-c53e2fab3eac"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Resources/deployments/dpG5525284",
+        "name": "dpG5525284",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "8532929606626690926",
+          "parametersLink": {
+            "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "vnetName": {
+              "type": "String",
+              "value": "VNet1"
+            },
+            "vnetAddressPrefix": {
+              "type": "String",
+              "value": "10.0.0.0/16"
+            },
+            "subnet1Prefix": {
+              "type": "String",
+              "value": "10.0.0.0/24"
+            },
+            "subnet1Name": {
+              "type": "String",
+              "value": "Subnet1"
+            },
+            "subnet2Prefix": {
+              "type": "String",
+              "value": "10.1.0.0/24"
+            },
+            "subnet2Name": {
+              "type": "String",
+              "value": "Subnet2"
+            },
+            "location": {
+              "type": "String",
+              "value": "southcentralus"
+            }
+          },
+          "mode": "Complete",
+          "provisioningState": "Failed",
+          "timestamp": "2023-07-04T02:28:27.7153878Z",
+          "duration": "PT14.6818081S",
+          "correlationId": "1b508add-2bd1-4019-b3c6-1d8d870a29a3",
+          "providers": [
+            {
+              "namespace": "Microsoft.Network",
+              "resourceTypes": [
+                {
+                  "resourceType": "virtualNetworks",
+                  "locations": [
+                    "southcentralus"
+                  ]
+                },
+                {
+                  "resourceType": "virtualNetworks/subnets",
+                  "locations": [
+                    "southcentralus"
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Network/virtualNetworks/VNet1",
+                  "resourceType": "Microsoft.Network/virtualNetworks",
+                  "resourceName": "VNet1"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1",
+              "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+              "resourceName": "VNet1/Subnet1"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Network/virtualNetworks/VNet1",
+                  "resourceType": "Microsoft.Network/virtualNetworks",
+                  "resourceName": "VNet1"
+                },
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1",
+                  "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+                  "resourceName": "VNet1/Subnet1"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet2",
+              "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+              "resourceName": "VNet1/Subnet2"
+            }
+          ],
+          "error": {
+            "code": "DeploymentFailed",
+            "target": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Resources/deployments/dpG5525284",
+            "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/arm-deployment-operations for usage details.",
+            "details": [
+              {
+                "code": "NetcfgInvalidSubnet",
+                "message": "Subnet \u0027Subnet2\u0027 is not valid in virtual network \u0027VNet1\u0027."
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg5525284/deployments/dpG5525284/operations?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Tue, 04 Jul 2023 02:28:45 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.26.0-beta.1 (17.0.4.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "c8f0c46c-f644-4169-844e-83e9a58e5443",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "2177",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 04 Jul 2023 02:28:46 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "68e43c2b-36bb-48d6-b45e-617a2abf0d65",
+        "x-ms-ratelimit-remaining-subscription-reads": "11996",
+        "x-ms-request-id": "68e43c2b-36bb-48d6-b45e-617a2abf0d65",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230704T022846Z:68e43c2b-36bb-48d6-b45e-617a2abf0d65"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Resources/deployments/dpG5525284/operations/E025A0E339905885",
+            "operationId": "E025A0E339905885",
+            "properties": {
+              "provisioningOperation": "Create",
+              "provisioningState": "Failed",
+              "timestamp": "2023-07-04T02:28:27.5769006Z",
+              "duration": "PT12.936748S",
+              "trackingId": "1fff1605-cea7-405f-a2e3-bf1232f0ad24",
+              "statusCode": "BadRequest",
+              "statusMessage": {
+                "status": "Failed",
+                "error": {
+                  "code": "NetcfgInvalidSubnet",
+                  "message": "Subnet \u0027Subnet2\u0027 is not valid in virtual network \u0027VNet1\u0027.",
+                  "details": []
+                }
+              },
+              "targetResource": {
+                "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet2",
+                "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+                "resourceName": "VNet1/Subnet2"
+              }
+            }
+          },
+          {
+            "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Resources/deployments/dpG5525284/operations/3B6666030E82B98B",
+            "operationId": "3B6666030E82B98B",
+            "properties": {
+              "provisioningOperation": "Create",
+              "provisioningState": "Succeeded",
+              "timestamp": "2023-07-04T02:28:27.1692447Z",
+              "duration": "PT12.5290921S",
+              "trackingId": "70993b59-d84e-4c1c-98bf-ad5c89534c9a",
+              "statusCode": "OK",
+              "targetResource": {
+                "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1",
+                "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+                "resourceName": "VNet1/Subnet1"
+              }
+            }
+          },
+          {
+            "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Resources/deployments/dpG5525284/operations/CBC83435FA6481EA",
+            "operationId": "CBC83435FA6481EA",
+            "properties": {
+              "provisioningOperation": "Create",
+              "provisioningState": "Succeeded",
+              "timestamp": "2023-07-04T02:28:23.6180501Z",
+              "duration": "PT8.9778975S",
+              "trackingId": "eb599ab4-2d72-498d-9ba4-a8f1e3315014",
+              "statusCode": "OK",
+              "targetResource": {
+                "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg5525284/providers/Microsoft.Network/virtualNetworks/VNet1",
+                "resourceType": "Microsoft.Network/virtualNetworks",
+                "resourceName": "VNet1"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg5525284?api-version=2022-09-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Tue, 04 Jul 2023 02:28:46 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.26.0-beta.1 (17.0.4.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "206b701c-b7b0-4c8c-81ff-3586b817e83c",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Tue, 04 Jul 2023 02:28:47 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzU1MjUyODQtU09VVEhDRU5UUkFMVVMiLCJqb2JMb2NhdGlvbiI6InNvdXRoY2VudHJhbHVzIn0?api-version=2022-09-01",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "ffafb1b2-ad8f-46bf-b1b2-cae051f724ce",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14999",
+        "x-ms-request-id": "ffafb1b2-ad8f-46bf-b1b2-cae051f724ce",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230704T022847Z:ffafb1b2-ad8f-46bf-b1b2-cae051f724ce"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "5525284"
+  }
+}
