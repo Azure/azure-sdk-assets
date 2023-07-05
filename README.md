@@ -37,5 +37,3 @@ For detailed reading on _why_ the azure-sdk team is storing their assets in an e
 This repository has tags created automatically by the [`test-proxy` tool](https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy/documentation/asset-sync#asset-sync-retrieve-external-test-recordings) as part of the `push` mechanism. As this repository will only ever contain resources for external usage, normal contribution from MS employees or OSS devs is unlikely.
 
 In the case an enterprising user has suggestions, please file an issue under the label `question`.
-
-
