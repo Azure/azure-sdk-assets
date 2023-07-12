@@ -1,0 +1,76 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/openai/deployments/gpt-4/chat/completions?api-version=2023-07-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "api-key": "REDACTED",
+        "Content-Length": "363",
+        "Content-Type": "application/json",
+        "Date": "Wed, 12 Jul 2023 17:08:54 GMT",
+        "User-Agent": "azsdk-java-azure-ai-openai/1.0.0-beta.3 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "cf25fd49-5258-46f6-ad69-53ae6baa4371"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "What\u0027s the weather like in San Francisco in Celsius?"
+          }
+        ],
+        "functions": [
+          {
+            "name": "MyFunction",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city and state, e.g. San Francisco, CA"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "CELSIUS",
+                    "FAHRENHEIT"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "function_call": {
+          "name": "NotMyFunction"
+        }
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "apim-request-id": "0216ccee-0698-4c40-9c14-37cb3d039c25",
+        "azureml-model-group": "online",
+        "azureml-model-session": "gpt-07072023-1",
+        "Content-Length": "236",
+        "Content-Type": "application/json",
+        "Date": "Wed, 12 Jul 2023 17:08:53 GMT",
+        "ms-azureml-model-error-reason": "model_error",
+        "ms-azureml-model-error-statuscode": "400",
+        "openai-processing-ms": "43.9334",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "cf25fd49-5258-46f6-ad69-53ae6baa4371",
+        "x-ms-region": "North Central US",
+        "X-Request-ID": "4dc601cc-3535-4425-84d0-8474792bd0c3"
+      },
+      "ResponseBody": {
+        "error": {
+          "message": "Invalid value for \u0027function_call\u0027: no function named \u0027NotMyFunction\u0027 was specified in the \u0027functions\u0027 parameter.",
+          "type": "invalid_request_error",
+          "param": "function_call",
+          "code": null
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

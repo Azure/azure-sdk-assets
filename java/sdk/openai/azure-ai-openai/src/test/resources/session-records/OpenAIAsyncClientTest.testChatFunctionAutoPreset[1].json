@@ -1,0 +1,115 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/openai/deployments/gpt-4/chat/completions?api-version=2023-07-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "api-key": "REDACTED",
+        "Content-Length": "345",
+        "Content-Type": "application/json",
+        "Date": "Wed, 12 Jul 2023 17:08:06 GMT",
+        "User-Agent": "azsdk-java-azure-ai-openai/1.0.0-beta.3 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "8a4b60d9-d648-4adc-a645-b4477517f199"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "What\u0027s the weather like in San Francisco in Celsius?"
+          }
+        ],
+        "functions": [
+          {
+            "name": "MyFunction",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city and state, e.g. San Francisco, CA"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "CELSIUS",
+                    "FAHRENHEIT"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "function_call": "auto"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "apim-request-id": "b52551cd-1fc1-41bb-885f-e01e213b6bf7",
+        "azureml-model-group": "online",
+        "azureml-model-session": "gpt-07072023-1",
+        "Cache-Control": "must-revalidate, no-cache",
+        "Content-Length": "676",
+        "Content-Type": "application/json",
+        "Date": "Wed, 12 Jul 2023 17:08:07 GMT",
+        "openai-model": "gpt-4",
+        "openai-processing-ms": "980.708",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-accel-buffering": "no",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "8a4b60d9-d648-4adc-a645-b4477517f199",
+        "x-ms-region": "North Central US",
+        "X-Request-ID": "bb17a922-28c3-4dec-b2d5-78c04e6d5bd2"
+      },
+      "ResponseBody": {
+        "id": "chatcmpl-7bXbqM5WjYEVsX04RmodLFML6lrS1",
+        "object": "chat.completion",
+        "created": 1689181686,
+        "model": "gpt-4",
+        "prompt_annotations": [
+          {
+            "prompt_index": 0,
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
+          }
+        ],
+        "choices": [
+          {
+            "index": 0,
+            "finish_reason": "function_call",
+            "message": {
+              "role": "assistant",
+              "function_call": {
+                "name": "MyFunction",
+                "arguments": "{\n  \u0022location\u0022: \u0022San Francisco, CA\u0022,\n  \u0022unit\u0022: \u0022CELSIUS\u0022\n}"
+              }
+            },
+            "content_filter_results": {}
+          }
+        ],
+        "usage": {
+          "completion_tokens": 28,
+          "prompt_tokens": 79,
+          "total_tokens": 107
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}
