@@ -6,45 +6,70 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "Content-Length": "195",
+        "Api-Key": "redacted",
+        "Content-Length": "473",
         "Content-Type": "application/json",
         "User-Agent": "fake-user-agentfake-user-agent"
       },
       "RequestBody": {
-        "max_tokens": 1024,
+        "function_call": "auto",
+        "functions": [
+          {
+            "description": "Get the current weather in a given location",
+            "name": "get_current_weather",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city and state, e.g. San Francisco, CA"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "celsius",
+                    "fahrenheit"
+                  ]
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        ],
         "messages": [
           {
-            "content": "Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ...",
+            "content": "What\u0027s the weather like in Boston, MA, in celsius?",
             "role": "user"
           }
         ],
-        "model": "gpt-4",
+        "model": "gpt-4-0613",
         "temperature": 0
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
-        "apim-request-id": "03205ffb-d957-41dd-8204-b5a76bb65cd1",
+        "apim-request-id": "af270336-a97e-4493-87a3-1fbc33308773",
         "azureml-model-group": "online",
         "azureml-model-session": "dep-1",
         "Cache-Control": "must-revalidate, no-cache",
-        "Content-Length": "773",
+        "Content-Length": "678",
         "Content-Type": "application/json",
-        "Date": "Tue, 18 Jul 2023 20:03:48 GMT",
+        "Date": "Tue, 18 Jul 2023 20:04:00 GMT",
         "openai-model": "gpt-4",
-        "openai-processing-ms": "3138.8528",
+        "openai-processing-ms": "995.1905",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "Not-Set",
+        "x-ms-client-request-id": "af270336-a97e-4493-87a3-1fbc33308773",
         "x-ms-region": "East US",
-        "X-Request-ID": "05a5c95f-63d5-4c0f-b708-92ec385925c8"
+        "X-Request-ID": "aefa8d0c-70f4-4d2f-bb41-cc8345019b3e"
       },
       "ResponseBody": {
-        "id": "chatcmpl-7dlD8if4wqjLbjFkiCNyd5QQk3RvP",
+        "id": "chatcmpl-7dlDLZAwGScrpVzf0IVAlTRXJcEQ2",
         "object": "chat.completion",
-        "created": 1689710626,
+        "created": 1689710639,
         "model": "gpt-4",
         "prompt_annotations": [
           {
@@ -72,35 +97,21 @@
         "choices": [
           {
             "index": 0,
-            "finish_reason": "stop",
+            "finish_reason": "function_call",
             "message": {
               "role": "assistant",
-              "content": "1, 2, 3, 4, 5, 6, 7, 8, 9, 10."
-            },
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
+              "function_call": {
+                "name": "get_current_weather",
+                "arguments": "{\n  \u0022location\u0022: \u0022Boston, MA\u0022,\n  \u0022unit\u0022: \u0022celsius\u0022\n}"
               }
-            }
+            },
+            "content_filter_results": {}
           }
         ],
         "usage": {
-          "completion_tokens": 29,
-          "prompt_tokens": 42,
-          "total_tokens": 71
+          "completion_tokens": 26,
+          "prompt_tokens": 88,
+          "total_tokens": 114
         }
       }
     }
