@@ -1,0 +1,202 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/workflow/workflowruns/dc66f68a-aab6-4677-951c-425607756cf1?api-version=2022-05-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Jul 2023 19:33:03 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-purview-workflow/1.0.0-beta.2 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "1c63f670-cd01-4bea-8ee3-d8a0373a9325"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "3144",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Jul 2023 19:33:04 GMT",
+        "Server": "MicrosoftPurview",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-ms-client-request-id": "1c63f670-cd01-4bea-8ee3-d8a0373a9325",
+        "x-ms-correlation-request-id": "58bd5edb-9541-4993-b012-b949beadda1b",
+        "x-ms-purview-workflow-version": "1.0.0238210-workflow_official-58f675ab",
+        "x-ms-request-id": "acfc9845-2acb-41c8-861d-f0d17165d90c"
+      },
+      "ResponseBody": {
+        "id": "dc66f68a-aab6-4677-951c-425607756cf1",
+        "workflowId": "4afb5752-e47f-43a1-8ba7-c696bf8d2745",
+        "startTime": "2023-07-20T19:15:50.104809019Z",
+        "requestor": "00000000-0000-0000-0000-000000000000",
+        "runPayload": {
+          "type": "CreateTerm",
+          "targetValue": "term",
+          "payload": {
+            "glossaryTerm": {
+              "name": "term",
+              "anchor": {
+                "glossaryGuid": "20031e20-b4df-4a66-a61d-1b0716f3fa48"
+              },
+              "nickName": "term",
+              "status": "Approved"
+            }
+          }
+        },
+        "status": "Failed",
+        "endTime": "2023-07-20T19:15:51.543077914Z",
+        "actionDag": {
+          "actions": {
+            "Startandwaitforanapproval": {
+              "type": "Approval",
+              "inputs": {
+                "parameters": {
+                  "approvalType": "PendingOnAll",
+                  "title": "ApprovalRequestforCreateGlossaryTerm",
+                  "assignedTo": [
+                    "eece94d9-0619-4669-bb8a-d6ecec5220bc"
+                  ]
+                }
+              },
+              "runAfter": {},
+              "runtimeConfiguration": {
+                "aggregateEmails": false
+              }
+            },
+            "Condition": {
+              "type": "If",
+              "expression": {
+                "and": [
+                  {
+                    "equals": [
+                      "@{outputs(\u0027Startandwaitforanapproval\u0027)[\u0027outcome\u0027]}",
+                      "Approved"
+                    ]
+                  }
+                ]
+              },
+              "actions": {
+                "Createglossaryterm": {
+                  "type": "CreateTerm",
+                  "runAfter": {}
+                },
+                "Sendemailnotification": {
+                  "type": "EmailNotification",
+                  "inputs": {
+                    "parameters": {
+                      "emailSubject": "GlossaryTermCreate-APPROVED",
+                      "emailMessage": "YourrequestforGlossaryTerm@{runInput()[\u0027term\u0027][\u0027name\u0027]}isapproved.",
+                      "emailRecipients": [
+                        "@{runInput()[\u0027requestor\u0027]}"
+                      ]
+                    }
+                  },
+                  "runAfter": {
+                    "Createglossaryterm": [
+                      "Succeeded"
+                    ]
+                  },
+                  "runtimeConfiguration": {
+                    "secureInput": false,
+                    "secureOutput": false,
+                    "aggregateEmails": false
+                  }
+                }
+              },
+              "else": {
+                "actions": {
+                  "Sendrejectemailnotification": {
+                    "type": "EmailNotification",
+                    "inputs": {
+                      "parameters": {
+                        "emailSubject": "GlossaryTermCreate-REJECTED",
+                        "emailMessage": "YourrequestforGlossaryTerm@{runInput()[\u0027term\u0027][\u0027name\u0027]}isrejected.",
+                        "emailRecipients": [
+                          "@{runInput()[\u0027requestor\u0027]}"
+                        ]
+                      }
+                    },
+                    "runAfter": {},
+                    "runtimeConfiguration": {
+                      "secureInput": false,
+                      "secureOutput": false,
+                      "aggregateEmails": false
+                    }
+                  }
+                }
+              },
+              "runAfter": {
+                "Startandwaitforanapproval": [
+                  "Succeeded"
+                ]
+              }
+            }
+          }
+        },
+        "detail": {
+          "trigger": {
+            "type": "when_term_creation_is_requested",
+            "underGlossaryHierarchy": "/glossaries/20031e20-b4df-4a66-a61d-1b0716f3fa48"
+          },
+          "runInput": {
+            "requestor": "00000000-0000-0000-0000-000000000000",
+            "term": {
+              "name": "term",
+              "formalName": "term",
+              "definition": null,
+              "experts": [],
+              "stewards": [],
+              "parent": null
+            }
+          },
+          "actions": {
+            "Startandwaitforanapproval": {
+              "startTime": "2023-07-20T19:15:50.427511700Z",
+              "endTime": "2023-07-20T19:15:50.667355300Z",
+              "status": "Failed",
+              "output": {
+                "type": "inlined",
+                "error": {
+                  "requestId": "9d8f0b10-026e-43b0-aaa1-5ddbf952ab9f",
+                  "code": "Workflow.UserDataClient.CanNotFindEmailForUsers",
+                  "message": "Users not found: [eece94d9-0619-4669-bb8a-d6ecec5220bc]"
+                }
+              },
+              "input": {
+                "type": "inlined",
+                "parameters": {
+                  "approvalType": "PendingOnAll",
+                  "title": "ApprovalRequestforCreateGlossaryTerm",
+                  "assignedTo": [
+                    "eece94d9-0619-4669-bb8a-d6ecec5220bc"
+                  ]
+                }
+              }
+            },
+            "Condition": {
+              "startTime": "2023-07-20T19:15:51.405451Z",
+              "endTime": "2023-07-20T19:15:51.405955400Z",
+              "status": "Skipped"
+            },
+            "Sendrejectemailnotification": {
+              "startTime": "2023-07-20T19:15:51.376733500Z",
+              "endTime": "2023-07-20T19:15:51.378736900Z",
+              "status": "Skipped"
+            },
+            "Createglossaryterm": {
+              "startTime": "2023-07-20T19:15:51.263860200Z",
+              "endTime": "2023-07-20T19:15:51.264609900Z",
+              "status": "Skipped"
+            },
+            "Sendemailnotification": {
+              "startTime": "2023-07-20T19:15:51.338232300Z",
+              "endTime": "2023-07-20T19:15:51.343609400Z",
+              "status": "Skipped"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

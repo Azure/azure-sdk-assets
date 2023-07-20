@@ -1,0 +1,135 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/workflow/workflows/4afb5752-e47f-43a1-8ba7-c696bf8d2745?api-version=2022-05-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Jul 2023 19:29:16 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-purview-workflow/1.0.0-beta.2 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "5f357f3a-ebf8-4f2e-b276-ed23d37c87cd"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "1797",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Jul 2023 19:29:16 GMT",
+        "Server": "MicrosoftPurview",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-ms-client-request-id": "5f357f3a-ebf8-4f2e-b276-ed23d37c87cd",
+        "x-ms-correlation-request-id": "b74c03c5-d263-432f-8e06-d9355af7b3e7",
+        "x-ms-purview-workflow-version": "1.0.0238210-workflow_official-58f675ab",
+        "x-ms-request-id": "158658ab-7a68-4583-8789-e01e5a63efe3"
+      },
+      "ResponseBody": {
+        "id": "4afb5752-e47f-43a1-8ba7-c696bf8d2745",
+        "type": "UserManaged",
+        "triggers": [
+          {
+            "type": "when_term_creation_is_requested",
+            "underGlossaryHierarchy": "/glossaries/20031e20-b4df-4a66-a61d-1b0716f3fa48"
+          }
+        ],
+        "createdTime": "2023-07-20T16:52:33.939358553Z",
+        "createdBy": "00000000-0000-0000-0000-000000000000",
+        "lastUpdateTime": "2023-07-20T19:16:33.903898433Z",
+        "updatedBy": "00000000-0000-0000-0000-000000000000",
+        "name": "Create glossary term workflow",
+        "isEnabled": true,
+        "description": "",
+        "actionDag": {
+          "actions": {
+            "Startandwaitforanapproval": {
+              "type": "Approval",
+              "inputs": {
+                "parameters": {
+                  "approvalType": "PendingOnAll",
+                  "title": "ApprovalRequestforCreateGlossaryTerm",
+                  "assignedTo": [
+                    "eece94d9-0619-4669-bb8a-d6ecec5220bc"
+                  ]
+                }
+              },
+              "runAfter": {},
+              "runtimeConfiguration": {
+                "aggregateEmails": false
+              }
+            },
+            "Condition": {
+              "type": "If",
+              "expression": {
+                "and": [
+                  {
+                    "equals": [
+                      "@{outputs(\u0027Startandwaitforanapproval\u0027)[\u0027outcome\u0027]}",
+                      "Approved"
+                    ]
+                  }
+                ]
+              },
+              "actions": {
+                "Createglossaryterm": {
+                  "type": "CreateTerm",
+                  "runAfter": {}
+                },
+                "Sendemailnotification": {
+                  "type": "EmailNotification",
+                  "inputs": {
+                    "parameters": {
+                      "emailSubject": "GlossaryTermCreate-APPROVED",
+                      "emailMessage": "YourrequestforGlossaryTerm@{runInput()[\u0027term\u0027][\u0027name\u0027]}isapproved.",
+                      "emailRecipients": [
+                        "@{runInput()[\u0027requestor\u0027]}"
+                      ]
+                    }
+                  },
+                  "runAfter": {
+                    "Createglossaryterm": [
+                      "Succeeded"
+                    ]
+                  },
+                  "runtimeConfiguration": {
+                    "secureInput": false,
+                    "secureOutput": false,
+                    "aggregateEmails": false
+                  }
+                }
+              },
+              "else": {
+                "actions": {
+                  "Sendrejectemailnotification": {
+                    "type": "EmailNotification",
+                    "inputs": {
+                      "parameters": {
+                        "emailSubject": "GlossaryTermCreate-REJECTED",
+                        "emailMessage": "YourrequestforGlossaryTerm@{runInput()[\u0027term\u0027][\u0027name\u0027]}isrejected.",
+                        "emailRecipients": [
+                          "@{runInput()[\u0027requestor\u0027]}"
+                        ]
+                      }
+                    },
+                    "runAfter": {},
+                    "runtimeConfiguration": {
+                      "secureInput": false,
+                      "secureOutput": false,
+                      "aggregateEmails": false
+                    }
+                  }
+                }
+              },
+              "runAfter": {
+                "Startandwaitforanapproval": [
+                  "Succeeded"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}
