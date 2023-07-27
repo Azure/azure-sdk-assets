@@ -1,0 +1,926 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat11797b85a10?api-version=2022-09-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Jul 2023 01:55:40 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "b71d5fd9-c2c8-4536-8dfb-050be95fd8bb",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "location": "westus"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "231",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:55:44 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "f7a25ef0-f0d7-4819-a530-e3c8414b1478",
+        "x-ms-ratelimit-remaining-subscription-writes": "1191",
+        "x-ms-request-id": "f7a25ef0-f0d7-4819-a530-e3c8414b1478",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015544Z:f7a25ef0-f0d7-4819-a530-e3c8414b1478"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10",
+        "name": "rgrsat11797b85a10",
+        "type": "Microsoft.Resources/resourceGroups",
+        "location": "westus",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat11797b85a10/providers/Microsoft.Resources/deployments/dprsat83108454894?api-version=2022-09-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "4513",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Jul 2023 01:55:43 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "ff088d09-2169-4657-ba07-c1f7f6c32ad3",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "properties": {
+          "template": {
+            "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {
+              "adminUsername": {
+                "type": "string",
+                "defaultValue": "tirekicker"
+              },
+              "adminPassword": {
+                "type": "string",
+                "defaultValue": "pa5$866549"
+              },
+              "windowsOSVersion": {
+                "defaultValue": "2012-R2-Datacenter",
+                "allowedValues": [
+                  "R2",
+                  "2008-R2-SP1",
+                  "2012-Datacenter",
+                  "2012-R2-Datacenter"
+                ],
+                "type": "String",
+                "metadata": {
+                  "description": "The Windows version for the VM. This will pick a fully patched image of this given Windows version. Allowed values: 2008-R2-SP1, 2012-Datacenter, 2012-R2-Datacenter."
+                }
+              },
+              "osDiskName": {
+                "type": "string",
+                "defaultValue": "osdisk-319986c36af"
+              }
+            },
+            "variables": {
+              "location": "[resourceGroup().location]",
+              "imagePublisher": "MicrosoftWindowsServer",
+              "imageOffer": "WindowsServer",
+              "OSDiskName": "osdiskforwindowssimple",
+              "nicName": "mynic",
+              "addressPrefix": "10.0.0.0/8",
+              "subnetName": "Subnet11",
+              "subnetPrefix": "10.0.0.0/16",
+              "storageAccountType": "Standard_LRS",
+              "publicIPAddressName": "myip",
+              "publicIPAddressType": "Dynamic",
+              "vmStorageAccountContainerName": "vhds",
+              "vmName": "myVMDataDisk",
+              "vmSize": "Standard_A1",
+              "virtualNetworkName": "myvnet",
+              "vnetID": "[resourceId(\u0027Microsoft.Network/virtualNetworks\u0027,variables(\u0027virtualNetworkName\u0027))]",
+              "subnetRef": "[concat(variables(\u0027vnetID\u0027),\u0027/subnets/\u0027,variables(\u0027subnetName\u0027))]",
+              "apiVersion": "2015-06-15",
+              "computeResouresApiVersion": "2016-04-30-preview",
+              "dnsLabelPrefix": "[toLower(resourceGroup().name)]"
+            },
+            "resources": [
+              {
+                "type": "Microsoft.Network/publicIPAddresses",
+                "name": "[variables(\u0027publicIPAddressName\u0027)]",
+                "apiVersion": "[variables(\u0027apiVersion\u0027)]",
+                "location": "[variables(\u0027location\u0027)]",
+                "properties": {
+                  "publicIPAllocationMethod": "[variables(\u0027publicIPAddressType\u0027)]",
+                  "dnsSettings": {
+                    "domainNameLabel": "[variables(\u0027dnsLabelPrefix\u0027)]"
+                  }
+                }
+              },
+              {
+                "type": "Microsoft.Network/virtualNetworks",
+                "name": "[variables(\u0027virtualNetworkName\u0027)]",
+                "apiVersion": "[variables(\u0027apiVersion\u0027)]",
+                "location": "[variables(\u0027location\u0027)]",
+                "properties": {
+                  "addressSpace": {
+                    "addressPrefixes": [
+                      "[variables(\u0027addressPrefix\u0027)]"
+                    ]
+                  },
+                  "subnets": [
+                    {
+                      "name": "[variables(\u0027subnetName\u0027)]",
+                      "properties": {
+                        "addressPrefix": "[variables(\u0027subnetPrefix\u0027)]"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Microsoft.Network/networkInterfaces",
+                "name": "[variables(\u0027nicName\u0027)]",
+                "apiVersion": "[variables(\u0027apiVersion\u0027)]",
+                "location": "[variables(\u0027location\u0027)]",
+                "properties": {
+                  "ipConfigurations": [
+                    {
+                      "name": "ipconfig1",
+                      "properties": {
+                        "privateIPAllocationMethod": "Dynamic",
+                        "publicIPAddress": {
+                          "id": "[resourceId(\u0027Microsoft.Network/publicIPAddresses\u0027,variables(\u0027publicIPAddressName\u0027))]"
+                        },
+                        "subnet": {
+                          "id": "[variables(\u0027subnetRef\u0027)]"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "dependsOn": [
+                  "[concat(\u0027Microsoft.Network/publicIPAddresses/\u0027, variables(\u0027publicIPAddressName\u0027))]",
+                  "[concat(\u0027Microsoft.Network/virtualNetworks/\u0027, variables(\u0027virtualNetworkName\u0027))]"
+                ]
+              },
+              {
+                "type": "Microsoft.Compute/disks",
+                "name": "myManagedDataDisk",
+                "apiVersion": "[variables(\u0027computeResouresApiVersion\u0027)]",
+                "location": "[variables(\u0027location\u0027)]",
+                "properties": {
+                  "creationData": {
+                    "createOption": "Empty"
+                  },
+                  "accountType": "[variables(\u0027storageAccountType\u0027)]",
+                  "diskSizeGB": 64
+                }
+              },
+              {
+                "type": "Microsoft.Compute/disks",
+                "name": "myManagedDataDisk1",
+                "apiVersion": "[variables(\u0027computeResouresApiVersion\u0027)]",
+                "location": "[variables(\u0027location\u0027)]",
+                "properties": {
+                  "creationData": {
+                    "createOption": "Empty"
+                  },
+                  "accountType": "[variables(\u0027storageAccountType\u0027)]",
+                  "diskSizeGB": 128
+                }
+              },
+              {
+                "type": "Microsoft.Compute/virtualMachines",
+                "name": "[variables(\u0027vmName\u0027)]",
+                "apiVersion": "[variables(\u0027computeResouresApiVersion\u0027)]",
+                "location": "[variables(\u0027location\u0027)]",
+                "properties": {
+                  "hardwareProfile": {
+                    "vmSize": "[variables(\u0027vmSize\u0027)]"
+                  },
+                  "osProfile": {
+                    "computerName": "[variables(\u0027vmName\u0027)]",
+                    "adminUsername": "[parameters(\u0027adminUsername\u0027)]",
+                    "adminPassword": "REDACTED"
+                  },
+                  "storageProfile": {
+                    "imageReference": {
+                      "publisher": "[variables(\u0027imagePublisher\u0027)]",
+                      "offer": "[variables(\u0027imageOffer\u0027)]",
+                      "sku": "[parameters(\u0027windowsOSVersion\u0027)]",
+                      "version": "latest"
+                    },
+                    "osDisk": {
+                      "name": "myOSDisk",
+                      "createOption": "fromImage"
+                    },
+                    "dataDisks": [
+                      {
+                        "lun": 2,
+                        "name": "myManagedDataDisk",
+                        "createOption": "attach",
+                        "managedDisk": {
+                          "id": "[resourceId(\u0027Microsoft.Compute/disks\u0027, \u0027myManagedDataDisk\u0027)]"
+                        }
+                      },
+                      {
+                        "lun": 3,
+                        "name": "myManagedDataDisk1",
+                        "createOption": "attach",
+                        "managedDisk": {
+                          "id": "[resourceId(\u0027Microsoft.Compute/disks\u0027, \u0027myManagedDataDisk1\u0027)]"
+                        }
+                      }
+                    ]
+                  },
+                  "networkProfile": {
+                    "networkInterfaces": [
+                      {
+                        "id": "[resourceId(\u0027Microsoft.Network/networkInterfaces\u0027,variables(\u0027nicName\u0027))]"
+                      }
+                    ]
+                  }
+                },
+                "dependsOn": [
+                  "[concat(\u0027Microsoft.Network/networkInterfaces/\u0027, variables(\u0027nicName\u0027))]",
+                  "Microsoft.Compute/disks/myManagedDataDisk"
+                ]
+              }
+            ]
+          },
+          "parameters": {},
+          "mode": "Incremental"
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourcegroups/rgrsat11797b85a10/providers/Microsoft.Resources/deployments/dprsat83108454894/operationStatuses/08585111839391613710?api-version=2022-09-01",
+        "Cache-Control": "no-cache",
+        "Content-Length": "2486",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:55:49 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "a8a8d63f-6420-4b5c-8b7a-dc6aa73d8ca3",
+        "x-ms-ratelimit-remaining-subscription-writes": "1190",
+        "x-ms-request-id": "a8a8d63f-6420-4b5c-8b7a-dc6aa73d8ca3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015549Z:a8a8d63f-6420-4b5c-8b7a-dc6aa73d8ca3"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Resources/deployments/dprsat83108454894",
+        "name": "dprsat83108454894",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "15239558746724258184",
+          "parameters": {
+            "adminUsername": {
+              "type": "String",
+              "value": "tirekicker"
+            },
+            "adminPassword": {
+              "type": "String",
+              "value": "pa5$866549"
+            },
+            "windowsOSVersion": {
+              "type": "String",
+              "value": "2012-R2-Datacenter"
+            },
+            "osDiskName": {
+              "type": "String",
+              "value": "osdisk-319986c36af"
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Accepted",
+          "timestamp": "2023-07-27T01:55:49.0514442Z",
+          "duration": "PT0.0006954S",
+          "correlationId": "a8a8d63f-6420-4b5c-8b7a-dc6aa73d8ca3",
+          "providers": [
+            {
+              "namespace": "Microsoft.Network",
+              "resourceTypes": [
+                {
+                  "resourceType": "publicIPAddresses",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "virtualNetworks",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "networkInterfaces",
+                  "locations": [
+                    "westus"
+                  ]
+                }
+              ]
+            },
+            {
+              "namespace": "Microsoft.Compute",
+              "resourceTypes": [
+                {
+                  "resourceType": "disks",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "virtualMachines",
+                  "locations": [
+                    "westus"
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/publicIPAddresses/myip",
+                  "resourceType": "Microsoft.Network/publicIPAddresses",
+                  "resourceName": "myip"
+                },
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/virtualNetworks/myvnet",
+                  "resourceType": "Microsoft.Network/virtualNetworks",
+                  "resourceName": "myvnet"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/networkInterfaces/mynic",
+              "resourceType": "Microsoft.Network/networkInterfaces",
+              "resourceName": "mynic"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/networkInterfaces/mynic",
+                  "resourceType": "Microsoft.Network/networkInterfaces",
+                  "resourceName": "mynic"
+                },
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Compute/disks/myManagedDataDisk",
+                  "resourceType": "Microsoft.Compute/disks",
+                  "resourceName": "myManagedDataDisk"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Compute/virtualMachines/myVMDataDisk",
+              "resourceType": "Microsoft.Compute/virtualMachines",
+              "resourceName": "myVMDataDisk"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat11797b85a10/providers/Microsoft.Resources/deployments/dprsat83108454894/operationStatuses/08585111839391613710?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Thu, 27 Jul 2023 01:56:19 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "6afc3104-80c5-40fb-9635-56aac7a141ec",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "20",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:56:19 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "ca30a369-9b3b-4179-8e7c-23fd8a24b8bc",
+        "x-ms-ratelimit-remaining-subscription-reads": "11963",
+        "x-ms-request-id": "ca30a369-9b3b-4179-8e7c-23fd8a24b8bc",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015620Z:ca30a369-9b3b-4179-8e7c-23fd8a24b8bc"
+      },
+      "ResponseBody": {
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat11797b85a10/providers/Microsoft.Resources/deployments/dprsat83108454894/operationStatuses/08585111839391613710?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Thu, 27 Jul 2023 01:56:49 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "acbd1800-999d-4367-972a-8ba9963c4ecd",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "20",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:56:50 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "8b42d888-0177-426c-9d1b-d78a6da2bbc6",
+        "x-ms-ratelimit-remaining-subscription-reads": "11996",
+        "x-ms-request-id": "8b42d888-0177-426c-9d1b-d78a6da2bbc6",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015651Z:8b42d888-0177-426c-9d1b-d78a6da2bbc6"
+      },
+      "ResponseBody": {
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat11797b85a10/providers/Microsoft.Resources/deployments/dprsat83108454894/operationStatuses/08585111839391613710?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Thu, 27 Jul 2023 01:57:20 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "0b2e158e-98fd-4f0a-bec0-958ceaac87fc",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "20",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:57:21 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "a7229ddb-7cb8-438c-a2d3-8f751277e50e",
+        "x-ms-ratelimit-remaining-subscription-reads": "11925",
+        "x-ms-request-id": "a7229ddb-7cb8-438c-a2d3-8f751277e50e",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015721Z:a7229ddb-7cb8-438c-a2d3-8f751277e50e"
+      },
+      "ResponseBody": {
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat11797b85a10/providers/Microsoft.Resources/deployments/dprsat83108454894/operationStatuses/08585111839391613710?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Thu, 27 Jul 2023 01:57:51 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "77493ab5-22ff-46b6-bc3b-24729bd0f9c5",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "20",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:57:52 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "7e1d980c-dd51-4e30-8ab5-da411d922c5f",
+        "x-ms-ratelimit-remaining-subscription-reads": "11966",
+        "x-ms-request-id": "7e1d980c-dd51-4e30-8ab5-da411d922c5f",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015752Z:7e1d980c-dd51-4e30-8ab5-da411d922c5f"
+      },
+      "ResponseBody": {
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat11797b85a10/providers/Microsoft.Resources/deployments/dprsat83108454894/operationStatuses/08585111839391613710?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Thu, 27 Jul 2023 01:58:21 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "ca7da79f-4f32-47fb-8b92-2b281f3b6d51",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "20",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:58:21 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "29afe8e6-9334-439d-bb32-0471a3d65f4f",
+        "x-ms-ratelimit-remaining-subscription-reads": "11954",
+        "x-ms-request-id": "29afe8e6-9334-439d-bb32-0471a3d65f4f",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015822Z:29afe8e6-9334-439d-bb32-0471a3d65f4f"
+      },
+      "ResponseBody": {
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat11797b85a10/providers/Microsoft.Resources/deployments/dprsat83108454894/operationStatuses/08585111839391613710?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Thu, 27 Jul 2023 01:58:51 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "a6ea6fee-d834-416c-829b-15dcafca1ea9",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "22",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:58:52 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "bb4439cf-dea4-4593-9b0b-2a6b42fe71dd",
+        "x-ms-ratelimit-remaining-subscription-reads": "11926",
+        "x-ms-request-id": "bb4439cf-dea4-4593-9b0b-2a6b42fe71dd",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015853Z:bb4439cf-dea4-4593-9b0b-2a6b42fe71dd"
+      },
+      "ResponseBody": {
+        "status": "Succeeded"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat11797b85a10/providers/Microsoft.Resources/deployments/dprsat83108454894?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Thu, 27 Jul 2023 01:58:52 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "1ee44e35-1227-4435-8094-7d9a12505b7a",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "3390",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:58:52 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "31c56332-b357-444c-ae7c-ccfd279f760d",
+        "x-ms-ratelimit-remaining-subscription-reads": "11925",
+        "x-ms-request-id": "31c56332-b357-444c-ae7c-ccfd279f760d",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015853Z:31c56332-b357-444c-ae7c-ccfd279f760d"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Resources/deployments/dprsat83108454894",
+        "name": "dprsat83108454894",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "15239558746724258184",
+          "parameters": {
+            "adminUsername": {
+              "type": "String",
+              "value": "tirekicker"
+            },
+            "adminPassword": {
+              "type": "String",
+              "value": "pa5$866549"
+            },
+            "windowsOSVersion": {
+              "type": "String",
+              "value": "2012-R2-Datacenter"
+            },
+            "osDiskName": {
+              "type": "String",
+              "value": "osdisk-319986c36af"
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Succeeded",
+          "timestamp": "2023-07-27T01:58:39.5304196Z",
+          "duration": "PT2M50.4796708S",
+          "correlationId": "a8a8d63f-6420-4b5c-8b7a-dc6aa73d8ca3",
+          "providers": [
+            {
+              "namespace": "Microsoft.Network",
+              "resourceTypes": [
+                {
+                  "resourceType": "publicIPAddresses",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "virtualNetworks",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "networkInterfaces",
+                  "locations": [
+                    "westus"
+                  ]
+                }
+              ]
+            },
+            {
+              "namespace": "Microsoft.Compute",
+              "resourceTypes": [
+                {
+                  "resourceType": "disks",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "virtualMachines",
+                  "locations": [
+                    "westus"
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/publicIPAddresses/myip",
+                  "resourceType": "Microsoft.Network/publicIPAddresses",
+                  "resourceName": "myip"
+                },
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/virtualNetworks/myvnet",
+                  "resourceType": "Microsoft.Network/virtualNetworks",
+                  "resourceName": "myvnet"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/networkInterfaces/mynic",
+              "resourceType": "Microsoft.Network/networkInterfaces",
+              "resourceName": "mynic"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/networkInterfaces/mynic",
+                  "resourceType": "Microsoft.Network/networkInterfaces",
+                  "resourceName": "mynic"
+                },
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Compute/disks/myManagedDataDisk",
+                  "resourceType": "Microsoft.Compute/disks",
+                  "resourceName": "myManagedDataDisk"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Compute/virtualMachines/myVMDataDisk",
+              "resourceType": "Microsoft.Compute/virtualMachines",
+              "resourceName": "myVMDataDisk"
+            }
+          ],
+          "outputResources": [
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Compute/disks/myManagedDataDisk"
+            },
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Compute/disks/myManagedDataDisk1"
+            },
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Compute/virtualMachines/myVMDataDisk"
+            },
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/networkInterfaces/mynic"
+            },
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/publicIPAddresses/myip"
+            },
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/virtualNetworks/myvnet"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat11797b85a10/providers/Microsoft.Resources/deployments/dprsat83108454894?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Jul 2023 01:58:52 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "963c0188-1777-4a3e-bc5c-8cb027320aaa",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "3390",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:58:53 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "649626ef-e32c-4c8a-aa6d-ee4d25310372",
+        "x-ms-ratelimit-remaining-subscription-reads": "11924",
+        "x-ms-request-id": "649626ef-e32c-4c8a-aa6d-ee4d25310372",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015853Z:649626ef-e32c-4c8a-aa6d-ee4d25310372"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Resources/deployments/dprsat83108454894",
+        "name": "dprsat83108454894",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "15239558746724258184",
+          "parameters": {
+            "adminUsername": {
+              "type": "String",
+              "value": "tirekicker"
+            },
+            "adminPassword": {
+              "type": "String",
+              "value": "pa5$866549"
+            },
+            "windowsOSVersion": {
+              "type": "String",
+              "value": "2012-R2-Datacenter"
+            },
+            "osDiskName": {
+              "type": "String",
+              "value": "osdisk-319986c36af"
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Succeeded",
+          "timestamp": "2023-07-27T01:58:39.5304196Z",
+          "duration": "PT2M50.4796708S",
+          "correlationId": "a8a8d63f-6420-4b5c-8b7a-dc6aa73d8ca3",
+          "providers": [
+            {
+              "namespace": "Microsoft.Network",
+              "resourceTypes": [
+                {
+                  "resourceType": "publicIPAddresses",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "virtualNetworks",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "networkInterfaces",
+                  "locations": [
+                    "westus"
+                  ]
+                }
+              ]
+            },
+            {
+              "namespace": "Microsoft.Compute",
+              "resourceTypes": [
+                {
+                  "resourceType": "disks",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "virtualMachines",
+                  "locations": [
+                    "westus"
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/publicIPAddresses/myip",
+                  "resourceType": "Microsoft.Network/publicIPAddresses",
+                  "resourceName": "myip"
+                },
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/virtualNetworks/myvnet",
+                  "resourceType": "Microsoft.Network/virtualNetworks",
+                  "resourceName": "myvnet"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/networkInterfaces/mynic",
+              "resourceType": "Microsoft.Network/networkInterfaces",
+              "resourceName": "mynic"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/networkInterfaces/mynic",
+                  "resourceType": "Microsoft.Network/networkInterfaces",
+                  "resourceName": "mynic"
+                },
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Compute/disks/myManagedDataDisk",
+                  "resourceType": "Microsoft.Compute/disks",
+                  "resourceName": "myManagedDataDisk"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Compute/virtualMachines/myVMDataDisk",
+              "resourceType": "Microsoft.Compute/virtualMachines",
+              "resourceName": "myVMDataDisk"
+            }
+          ],
+          "outputResources": [
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Compute/disks/myManagedDataDisk"
+            },
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Compute/disks/myManagedDataDisk1"
+            },
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Compute/virtualMachines/myVMDataDisk"
+            },
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/networkInterfaces/mynic"
+            },
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/publicIPAddresses/myip"
+            },
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsat11797b85a10/providers/Microsoft.Network/virtualNetworks/myvnet"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat11797b85a10?api-version=2022-09-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Jul 2023 01:58:53 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "7658cfa1-899f-41a0-8812-f59b8042cd6d",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Thu, 27 Jul 2023 01:58:55 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR1JTQVQxMTc5N0I4NUExMC1XRVNUVVMiLCJqb2JMb2NhdGlvbiI6Indlc3R1cyJ9?api-version=2022-09-01",
+        "Pragma": "no-cache",
+        "Retry-After": "0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "327a2c0a-93b1-4bc1-af72-6da1df6d8931",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14995",
+        "x-ms-request-id": "327a2c0a-93b1-4bc1-af72-6da1df6d8931",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015856Z:327a2c0a-93b1-4bc1-af72-6da1df6d8931"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "rgrsat11797b85a10",
+    "1": "dprsat83108454894",
+    "2": "osdisk-319986c36af"
+  }
+}

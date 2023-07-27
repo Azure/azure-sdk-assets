@@ -1,0 +1,848 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsap099906eae99?api-version=2022-09-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Jul 2023 01:53:00 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "dc10cb54-9ae9-479c-be47-239c6b2ffd66",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "location": "westus"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "231",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:53:04 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "ab8bd3b6-91d7-4bae-b480-b2ecf73e6d7f",
+        "x-ms-ratelimit-remaining-subscription-writes": "1193",
+        "x-ms-request-id": "ab8bd3b6-91d7-4bae-b480-b2ecf73e6d7f",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015305Z:ab8bd3b6-91d7-4bae-b480-b2ecf73e6d7f"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99",
+        "name": "rgrsap099906eae99",
+        "type": "Microsoft.Resources/resourceGroups",
+        "location": "westus",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsap099906eae99/providers/Microsoft.Resources/deployments/dprsap25480851eae?api-version=2022-09-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "1528",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Jul 2023 01:53:04 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "0d264dd2-a457-4b11-8e08-5a22e8a99b62",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "properties": {
+          "template": {
+            "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {
+              "hostingPlanName": {
+                "type": "string",
+                "defaultValue": "hprsat46017f341eb"
+              },
+              "webSiteName": {
+                "type": "string",
+                "defaultValue": "wnrsat57939d78bbe"
+              },
+              "skuName": {
+                "type": "string",
+                "defaultValue": "F1"
+              },
+              "skuCapacity": {
+                "type": "int",
+                "defaultValue": 1
+              }
+            },
+            "resources": [
+              {
+                "apiVersion": "2015-08-01",
+                "name": "[parameters(\u0027hostingPlanName\u0027)]",
+                "type": "Microsoft.Web/serverfarms",
+                "location": "[resourceGroup().location]",
+                "tags": {
+                  "displayName": "HostingPlan"
+                },
+                "sku": {
+                  "name": "[parameters(\u0027skuName\u0027)]",
+                  "capacity": "[parameters(\u0027skuCapacity\u0027)]"
+                },
+                "properties": {
+                  "name": "[parameters(\u0027hostingPlanName\u0027)]"
+                }
+              },
+              {
+                "apiVersion": "2015-08-01",
+                "name": "[parameters(\u0027webSiteName\u0027)]",
+                "type": "Microsoft.Web/sites",
+                "location": "[resourceGroup().location]",
+                "tags": {
+                  "[concat(\u0027hidden-related:\u0027, resourceGroup().id, \u0027/providers/Microsoft.Web/serverfarms/\u0027, parameters(\u0027hostingPlanName\u0027))]": "Resource",
+                  "displayName": "Website"
+                },
+                "dependsOn": [
+                  "[concat(\u0027Microsoft.Web/serverfarms/\u0027, parameters(\u0027hostingPlanName\u0027))]"
+                ],
+                "properties": {
+                  "name": "[parameters(\u0027webSiteName\u0027)]",
+                  "serverFarmId": "[resourceId(\u0027Microsoft.Web/serverfarms\u0027, parameters(\u0027hostingPlanName\u0027))]"
+                },
+                "resources": [
+                  {
+                    "apiVersion": "2015-08-01",
+                    "name": "web",
+                    "type": "config",
+                    "dependsOn": [
+                      "[concat(\u0027Microsoft.Web/sites/\u0027, parameters(\u0027webSiteName\u0027))]"
+                    ],
+                    "properties": {
+                      "javaVersion": "1.8",
+                      "javaContainer": "TOMCAT",
+                      "javaContainerVersion": "8.0"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "parameters": {},
+          "mode": "Incremental"
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourcegroups/rgrsap099906eae99/providers/Microsoft.Resources/deployments/dprsap25480851eae/operationStatuses/08585111840987639107?api-version=2022-09-01",
+        "Cache-Control": "no-cache",
+        "Content-Length": "1819",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:53:11 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "f426fd76-ed9b-4114-8126-76ae9f11c69f",
+        "x-ms-ratelimit-remaining-subscription-writes": "1192",
+        "x-ms-request-id": "f426fd76-ed9b-4114-8126-76ae9f11c69f",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015311Z:f426fd76-ed9b-4114-8126-76ae9f11c69f"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Resources/deployments/dprsap25480851eae",
+        "name": "dprsap25480851eae",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "13711120476382520499",
+          "parameters": {
+            "hostingPlanName": {
+              "type": "String",
+              "value": "hprsat46017f341eb"
+            },
+            "webSiteName": {
+              "type": "String",
+              "value": "wnrsat57939d78bbe"
+            },
+            "skuName": {
+              "type": "String",
+              "value": "F1"
+            },
+            "skuCapacity": {
+              "type": "Int",
+              "value": 1
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Accepted",
+          "timestamp": "2023-07-27T01:53:10.1446064Z",
+          "duration": "PT0.0002913S",
+          "correlationId": "f426fd76-ed9b-4114-8126-76ae9f11c69f",
+          "providers": [
+            {
+              "namespace": "Microsoft.Web",
+              "resourceTypes": [
+                {
+                  "resourceType": "serverfarms",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "sites",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "sites/config",
+                  "locations": [
+                    null
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/serverfarms/hprsat46017f341eb",
+                  "resourceType": "Microsoft.Web/serverfarms",
+                  "resourceName": "hprsat46017f341eb"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe",
+              "resourceType": "Microsoft.Web/sites",
+              "resourceName": "wnrsat57939d78bbe"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe",
+                  "resourceType": "Microsoft.Web/sites",
+                  "resourceName": "wnrsat57939d78bbe"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe/config/web",
+              "resourceType": "Microsoft.Web/sites/config",
+              "resourceName": "wnrsat57939d78bbe/web"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsap099906eae99/providers/Microsoft.Resources/deployments/dprsap25480851eae?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Jul 2023 01:53:10 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "65d855cb-3dad-4c44-b98d-25c33d1a6182",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1818",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:53:11 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Retry-After": "0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "662ca2c0-f7fd-409a-9cdd-8f9c8f1d52db",
+        "x-ms-ratelimit-remaining-subscription-reads": "11992",
+        "x-ms-request-id": "662ca2c0-f7fd-409a-9cdd-8f9c8f1d52db",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015312Z:662ca2c0-f7fd-409a-9cdd-8f9c8f1d52db"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Resources/deployments/dprsap25480851eae",
+        "name": "dprsap25480851eae",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "13711120476382520499",
+          "parameters": {
+            "hostingPlanName": {
+              "type": "String",
+              "value": "hprsat46017f341eb"
+            },
+            "webSiteName": {
+              "type": "String",
+              "value": "wnrsat57939d78bbe"
+            },
+            "skuName": {
+              "type": "String",
+              "value": "F1"
+            },
+            "skuCapacity": {
+              "type": "Int",
+              "value": 1
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Running",
+          "timestamp": "2023-07-27T01:53:11.5763689Z",
+          "duration": "PT1.4320538S",
+          "correlationId": "f426fd76-ed9b-4114-8126-76ae9f11c69f",
+          "providers": [
+            {
+              "namespace": "Microsoft.Web",
+              "resourceTypes": [
+                {
+                  "resourceType": "serverfarms",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "sites",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "sites/config",
+                  "locations": [
+                    null
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/serverfarms/hprsat46017f341eb",
+                  "resourceType": "Microsoft.Web/serverfarms",
+                  "resourceName": "hprsat46017f341eb"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe",
+              "resourceType": "Microsoft.Web/sites",
+              "resourceName": "wnrsat57939d78bbe"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe",
+                  "resourceType": "Microsoft.Web/sites",
+                  "resourceName": "wnrsat57939d78bbe"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe/config/web",
+              "resourceType": "Microsoft.Web/sites/config",
+              "resourceName": "wnrsat57939d78bbe/web"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsap099906eae99/providers/Microsoft.Resources/deployments/dprsap25480851eae?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Jul 2023 01:53:21 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "85d70d58-5622-403f-b1fb-0d26c56688b7",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1818",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:53:21 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Retry-After": "0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "f7b6543a-c304-4243-b623-81e33f1b0892",
+        "x-ms-ratelimit-remaining-subscription-reads": "11989",
+        "x-ms-request-id": "f7b6543a-c304-4243-b623-81e33f1b0892",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015322Z:f7b6543a-c304-4243-b623-81e33f1b0892"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Resources/deployments/dprsap25480851eae",
+        "name": "dprsap25480851eae",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "13711120476382520499",
+          "parameters": {
+            "hostingPlanName": {
+              "type": "String",
+              "value": "hprsat46017f341eb"
+            },
+            "webSiteName": {
+              "type": "String",
+              "value": "wnrsat57939d78bbe"
+            },
+            "skuName": {
+              "type": "String",
+              "value": "F1"
+            },
+            "skuCapacity": {
+              "type": "Int",
+              "value": 1
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Running",
+          "timestamp": "2023-07-27T01:53:11.5763689Z",
+          "duration": "PT1.4320538S",
+          "correlationId": "f426fd76-ed9b-4114-8126-76ae9f11c69f",
+          "providers": [
+            {
+              "namespace": "Microsoft.Web",
+              "resourceTypes": [
+                {
+                  "resourceType": "serverfarms",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "sites",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "sites/config",
+                  "locations": [
+                    null
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/serverfarms/hprsat46017f341eb",
+                  "resourceType": "Microsoft.Web/serverfarms",
+                  "resourceName": "hprsat46017f341eb"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe",
+              "resourceType": "Microsoft.Web/sites",
+              "resourceName": "wnrsat57939d78bbe"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe",
+                  "resourceType": "Microsoft.Web/sites",
+                  "resourceName": "wnrsat57939d78bbe"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe/config/web",
+              "resourceType": "Microsoft.Web/sites/config",
+              "resourceName": "wnrsat57939d78bbe/web"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsap099906eae99/providers/Microsoft.Resources/deployments/dprsap25480851eae?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Jul 2023 01:53:31 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "db4e8aab-f5e3-4b08-8f92-46b5f6dead38",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1818",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:53:32 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Retry-After": "0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "aea2f1b6-09fe-499e-bc35-b40b188785b8",
+        "x-ms-ratelimit-remaining-subscription-reads": "11985",
+        "x-ms-request-id": "aea2f1b6-09fe-499e-bc35-b40b188785b8",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015332Z:aea2f1b6-09fe-499e-bc35-b40b188785b8"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Resources/deployments/dprsap25480851eae",
+        "name": "dprsap25480851eae",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "13711120476382520499",
+          "parameters": {
+            "hostingPlanName": {
+              "type": "String",
+              "value": "hprsat46017f341eb"
+            },
+            "webSiteName": {
+              "type": "String",
+              "value": "wnrsat57939d78bbe"
+            },
+            "skuName": {
+              "type": "String",
+              "value": "F1"
+            },
+            "skuCapacity": {
+              "type": "Int",
+              "value": 1
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Running",
+          "timestamp": "2023-07-27T01:53:11.5763689Z",
+          "duration": "PT1.4320538S",
+          "correlationId": "f426fd76-ed9b-4114-8126-76ae9f11c69f",
+          "providers": [
+            {
+              "namespace": "Microsoft.Web",
+              "resourceTypes": [
+                {
+                  "resourceType": "serverfarms",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "sites",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "sites/config",
+                  "locations": [
+                    null
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/serverfarms/hprsat46017f341eb",
+                  "resourceType": "Microsoft.Web/serverfarms",
+                  "resourceName": "hprsat46017f341eb"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe",
+              "resourceType": "Microsoft.Web/sites",
+              "resourceName": "wnrsat57939d78bbe"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe",
+                  "resourceType": "Microsoft.Web/sites",
+                  "resourceName": "wnrsat57939d78bbe"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe/config/web",
+              "resourceType": "Microsoft.Web/sites/config",
+              "resourceName": "wnrsat57939d78bbe/web"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsap099906eae99/providers/Microsoft.Resources/deployments/dprsap25480851eae?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Jul 2023 01:53:42 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "b86be1ad-caa8-41f6-a620-164e01340074",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1818",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:53:42 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Retry-After": "0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "ee409ae5-faeb-480f-b614-1cf826f84b4c",
+        "x-ms-ratelimit-remaining-subscription-reads": "11980",
+        "x-ms-request-id": "ee409ae5-faeb-480f-b614-1cf826f84b4c",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015343Z:ee409ae5-faeb-480f-b614-1cf826f84b4c"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Resources/deployments/dprsap25480851eae",
+        "name": "dprsap25480851eae",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "13711120476382520499",
+          "parameters": {
+            "hostingPlanName": {
+              "type": "String",
+              "value": "hprsat46017f341eb"
+            },
+            "webSiteName": {
+              "type": "String",
+              "value": "wnrsat57939d78bbe"
+            },
+            "skuName": {
+              "type": "String",
+              "value": "F1"
+            },
+            "skuCapacity": {
+              "type": "Int",
+              "value": 1
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Running",
+          "timestamp": "2023-07-27T01:53:11.5763689Z",
+          "duration": "PT1.4320538S",
+          "correlationId": "f426fd76-ed9b-4114-8126-76ae9f11c69f",
+          "providers": [
+            {
+              "namespace": "Microsoft.Web",
+              "resourceTypes": [
+                {
+                  "resourceType": "serverfarms",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "sites",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "sites/config",
+                  "locations": [
+                    null
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/serverfarms/hprsat46017f341eb",
+                  "resourceType": "Microsoft.Web/serverfarms",
+                  "resourceName": "hprsat46017f341eb"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe",
+              "resourceType": "Microsoft.Web/sites",
+              "resourceName": "wnrsat57939d78bbe"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe",
+                  "resourceType": "Microsoft.Web/sites",
+                  "resourceName": "wnrsat57939d78bbe"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe/config/web",
+              "resourceType": "Microsoft.Web/sites/config",
+              "resourceName": "wnrsat57939d78bbe/web"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsap099906eae99/providers/Microsoft.Resources/deployments/dprsap25480851eae?api-version=2022-09-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Jul 2023 01:53:52 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "c6346c25-395a-414d-8c76-970bdc79595e",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "2284",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 01:53:53 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "d2b67ffb-b1ac-4b48-9844-f567140981a9",
+        "x-ms-ratelimit-remaining-subscription-reads": "11980",
+        "x-ms-request-id": "d2b67ffb-b1ac-4b48-9844-f567140981a9",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015354Z:d2b67ffb-b1ac-4b48-9844-f567140981a9"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Resources/deployments/dprsap25480851eae",
+        "name": "dprsap25480851eae",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "13711120476382520499",
+          "parameters": {
+            "hostingPlanName": {
+              "type": "String",
+              "value": "hprsat46017f341eb"
+            },
+            "webSiteName": {
+              "type": "String",
+              "value": "wnrsat57939d78bbe"
+            },
+            "skuName": {
+              "type": "String",
+              "value": "F1"
+            },
+            "skuCapacity": {
+              "type": "Int",
+              "value": 1
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Succeeded",
+          "timestamp": "2023-07-27T01:53:53.4668625Z",
+          "duration": "PT43.3225474S",
+          "correlationId": "f426fd76-ed9b-4114-8126-76ae9f11c69f",
+          "providers": [
+            {
+              "namespace": "Microsoft.Web",
+              "resourceTypes": [
+                {
+                  "resourceType": "serverfarms",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "sites",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "sites/config",
+                  "locations": [
+                    null
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/serverfarms/hprsat46017f341eb",
+                  "resourceType": "Microsoft.Web/serverfarms",
+                  "resourceName": "hprsat46017f341eb"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe",
+              "resourceType": "Microsoft.Web/sites",
+              "resourceName": "wnrsat57939d78bbe"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe",
+                  "resourceType": "Microsoft.Web/sites",
+                  "resourceName": "wnrsat57939d78bbe"
+                }
+              ],
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe/config/web",
+              "resourceType": "Microsoft.Web/sites/config",
+              "resourceName": "wnrsat57939d78bbe/web"
+            }
+          ],
+          "outputResources": [
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/serverfarms/hprsat46017f341eb"
+            },
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe"
+            },
+            {
+              "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rgrsap099906eae99/providers/Microsoft.Web/sites/wnrsat57939d78bbe/config/web"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsap099906eae99?api-version=2022-09-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Jul 2023 01:53:53 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
+        "x-ms-client-request-id": "26571ea0-6ace-4e4b-80e6-04cd054fa42e",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Thu, 27 Jul 2023 01:53:55 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR1JTQVAwOTk5MDZFQUU5OS1XRVNUVVMiLCJqb2JMb2NhdGlvbiI6Indlc3R1cyJ9?api-version=2022-09-01",
+        "Pragma": "no-cache",
+        "Retry-After": "0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "905a7c21-650b-4cfa-a0a3-ad7cc030c0f6",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14995",
+        "x-ms-request-id": "905a7c21-650b-4cfa-a0a3-ad7cc030c0f6",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230727T015356Z:905a7c21-650b-4cfa-a0a3-ad7cc030c0f6"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "rgrsap099906eae99",
+    "1": "dprsap25480851eae",
+    "2": "hprsat46017f341eb",
+    "3": "wnrsat57939d78bbe"
+  }
+}
