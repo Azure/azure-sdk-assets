@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://endpoint/workflow/workflows/e3467b48-a9d8-11ed-afa1-0242ac120002?api-version=2022-05-01-preview",
+      "RequestUri": "https://endpoint/workflow/workflows/e3467b48-a9d8-11ed-afa1-0242ac120002?api-version=2023-10-01-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -17,33 +17,34 @@
         "Sec-Fetch-Mode": "cors",
         "Sec-Fetch-Site": "same-site",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/110.0.5478.0 Safari/537.36",
-        "x-ms-client-request-id": "9a2738e9-240d-47ab-a8fc-a64167874021",
-        "x-ms-useragent": "azsdk-js-purview-workflow-rest/1.0.0-beta.1 core-rest-pipeline/1.10.1 OS/Win32"
+        "x-ms-client-request-id": "be14d5ef-bda7-4837-85f5-ba245f910e29",
+        "x-ms-useragent": "azsdk-js-purview-workflow-rest/1.0.0-beta.2 core-rest-pipeline/1.10.1 OS/Win32"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Content-Length": "1789",
+        "Content-Length": "1848",
         "Content-Type": "application/json",
-        "Date": "Sat, 11 Feb 2023 07:20:30 GMT",
+        "Date": "Wed, 01 Nov 2023 08:02:25 GMT",
         "Server": "MicrosoftPurview",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "x-ms-client-request-id": "9a2738e9-240d-47ab-a8fc-a64167874021",
-        "x-ms-correlation-request-id": "f7e29824-a29a-4284-8f7f-bd419a89c597",
-        "x-ms-request-id": "3b32b171-e5bd-411f-a13a-8edc0df6575d"
+        "x-ms-client-request-id": "be14d5ef-bda7-4837-85f5-ba245f910e29",
+        "x-ms-correlation-request-id": "48f3f21a-75aa-4fab-8767-322362b60ecf",
+        "x-ms-request-id": "c1f2a4cb-30b5-4204-b82c-a4509b4d57c3"
       },
       "ResponseBody": {
         "id": "e3467b48-a9d8-11ed-afa1-0242ac120002",
+        "type": "UserManaged",
         "triggers": [
           {
             "type": "when_term_creation_is_requested",
             "underGlossaryHierarchy": "/glossaries/5dae5e5b-5aa6-48f1-9e46-26fe7328de71"
           }
         ],
-        "createdTime": "2023-02-11T07:20:17.195754387Z",
-        "createdBy": "83ffc40f-f670-49b0-a17e-30c7f74f209a",
-        "lastUpdateTime": "2023-02-11T07:20:29.536619531Z",
-        "updatedBy": "83ffc40f-f670-49b0-a17e-30c7f74f209a",
+        "createdTime": "2023-11-01T08:02:17.292422833Z",
+        "createdBy": "ef0c362c-ba72-46ca-ab32-ad9fc36f7df0",
+        "lastUpdateTime": "2023-11-01T08:02:17.292422833Z",
+        "updatedBy": "ef0c362c-ba72-46ca-ab32-ad9fc36f7df0",
         "name": "Create glossary term workflow",
         "isEnabled": true,
         "description": "",
@@ -55,7 +56,7 @@
                 "and": [
                   {
                     "equals": [
-                      "@outputs(\u0027Start and wait for an approval\u0027)[\u0027body/outcome\u0027]",
+                      "@{outputs(\u0027Start and wait for an approval\u0027)[\u0027outcome\u0027]}",
                       "Approved"
                     ]
                   }
@@ -71,9 +72,9 @@
                   "inputs": {
                     "parameters": {
                       "emailSubject": "Glossary Term Create - APPROVED",
-                      "emailMessage": "Your request for Glossary Term @{triggerBody()[\u0027request\u0027][\u0027term\u0027][\u0027name\u0027]} is approved.",
+                      "emailMessage": "Your request for Glossary Term @{runInput()[\u0027term\u0027][\u0027name\u0027]} is approved.",
                       "emailRecipients": [
-                        "@{triggerBody()[\u0027request\u0027][\u0027requestor\u0027]}"
+                        "@{runInput()[\u0027requestor\u0027]}"
                       ]
                     }
                   },
@@ -84,7 +85,8 @@
                   },
                   "runtimeConfiguration": {
                     "secureInput": false,
-                    "secureOutput": false
+                    "secureOutput": false,
+                    "aggregateEmails": false
                   }
                 }
               },
@@ -95,16 +97,17 @@
                     "inputs": {
                       "parameters": {
                         "emailSubject": "Glossary Term Create - REJECTED",
-                        "emailMessage": "Your request for Glossary Term @{triggerBody()[\u0027request\u0027][\u0027term\u0027][\u0027name\u0027]} is rejected.",
+                        "emailMessage": "Your request for Glossary Term @{runInput()[\u0027term\u0027][\u0027name\u0027]} is rejected.",
                         "emailRecipients": [
-                          "@{triggerBody()[\u0027request\u0027][\u0027requestor\u0027]}"
+                          "@{runInput()[\u0027requestor\u0027]}"
                         ]
                       }
                     },
                     "runAfter": {},
                     "runtimeConfiguration": {
                       "secureInput": false,
-                      "secureOutput": false
+                      "secureOutput": false,
+                      "aggregateEmails": false
                     }
                   }
                 }
@@ -126,7 +129,10 @@
                   ]
                 }
               },
-              "runAfter": {}
+              "runAfter": {},
+              "runtimeConfiguration": {
+                "aggregateEmails": false
+              }
             }
           }
         }
