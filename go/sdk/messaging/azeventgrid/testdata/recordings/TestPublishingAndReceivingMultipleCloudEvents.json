@@ -7,21 +7,21 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "421",
+        "Content-Length": "586",
         "Content-Type": "application/cloudevents-batch\u002Bjson; charset=utf-8",
         "User-Agent": "azsdk-go-azeventgrid/v0.3.1 (go1.21.4; linux)"
       },
-      "RequestBody": "[{\u0022data_base64\u0022:\u0022ZXZlbnQgb25l\u0022,\u0022datacontenttype\u0022:\u0022application/octet-stream\u0022,\u0022id\u0022:\u002200000000-0000-0000-0000-000000000000\u0022,\u0022source\u0022:\u0022hello-source\u0022,\u0022specversion\u0022:\u00221.0\u0022,\u0022time\u0022: \u00222023-06-17T00:33:32Z\u0022,\u0022type\u0022:\u0022world\u0022},{\u0022data_base64\u0022:\u0022ZXZlbnQgdHdv\u0022,\u0022datacontenttype\u0022:\u0022application/octet-stream\u0022,\u0022id\u0022:\u002200000000-0000-0000-0000-000000000000\u0022,\u0022source\u0022:\u0022hello-source\u0022,\u0022specversion\u0022:\u00221.0\u0022,\u0022time\u0022: \u00222023-06-17T00:33:32Z\u0022,\u0022type\u0022:\u0022world\u0022}]",
+      "RequestBody": "[{\u0022data_base64\u0022:\u0022VGVzdFB1Ymxpc2hpbmdBbmRSZWNlaXZpbmdNdWx0aXBsZUNsb3VkRXZlbnRzIDE=\u0022,\u0022datacontenttype\u0022:\u0022application/octet-stream\u0022,\u0022id\u0022:\u002200000000-0000-0000-0000-000000000000\u0022,\u0022source\u0022:\u0022hello-source\u0022,\u0022specversion\u0022:\u00221.0\u0022,\u0022time\u0022: \u00222023-06-17T00:33:32Z\u0022,\u0022type\u0022:\u0022eventType\u0022},{\u0022data\u0022:\u0022TestPublishingAndReceivingMultipleCloudEvents 2\u0022,\u0022datacontenttype\u0022:\u0022application/json\u0022,\u0022dataschema\u0022:\u0022https://dataschema\u0022,\u0022extension1\u0022:\u0022extension1value\u0022,\u0022id\u0022:\u002200000000-0000-0000-0000-000000000000\u0022,\u0022source\u0022:\u0022hello-source\u0022,\u0022specversion\u0022:\u00221.0\u0022,\u0022subject\u0022:\u0022subject\u0022,\u0022time\u0022: \u00222023-06-17T00:33:32Z\u0022,\u0022type\u0022:\u0022eventType\u0022}]",
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Length": "2",
         "Content-Type": "application/json",
-        "Date": "Fri, 17 Nov 2023 00:23:56 GMT"
+        "Date": "Fri, 17 Nov 2023 00:24:08 GMT"
       },
       "ResponseBody": {}
     },
     {
-      "RequestUri": "https://fake.eastus-1.eventgrid.azure.net/topics/topic/eventsubscriptions/subscription:receive?api-version=2023-10-01-preview\u0026maxEvents=2",
+      "RequestUri": "https://fake.eastus-1.eventgrid.azure.net/topics/topic/eventsubscriptions/subscription:receive?api-version=2023-10-01-preview\u0026maxEvents=2\u0026maxWaitTime=60",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -33,9 +33,9 @@
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Content-Length": "589",
+        "Content-Length": "754",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 17 Nov 2023 00:23:56 GMT"
+        "Date": "Fri, 17 Nov 2023 00:24:08 GMT"
       },
       "ResponseBody": {
         "value": [
@@ -50,8 +50,8 @@
               "time": "2023-06-17T00:33:32Z",
               "id": "00000000-0000-0000-0000-000000000000",
               "datacontenttype": "application/octet-stream",
-              "type": "world",
-              "data_base64": "ZXZlbnQgb25l"
+              "type": "eventType",
+              "data_base64": "VGVzdFB1Ymxpc2hpbmdBbmRSZWNlaXZpbmdNdWx0aXBsZUNsb3VkRXZlbnRzIDE="
             }
           },
           {
@@ -60,13 +60,16 @@
               "deliveryCount": 1
             },
             "event": {
-              "specversion": "1.0",
-              "source": "hello-source",
-              "time": "2023-06-17T00:33:32Z",
               "id": "00000000-0000-0000-0000-000000000000",
-              "datacontenttype": "application/octet-stream",
-              "type": "world",
-              "data_base64": "ZXZlbnQgdHdv"
+              "datacontenttype": "application/json",
+              "specversion": "1.0",
+              "dataschema": "https://dataschema",
+              "extension1": "extension1value",
+              "source": "hello-source",
+              "subject": "subject",
+              "time": "2023-06-17T00:33:32Z",
+              "type": "eventType",
+              "data": "TestPublishingAndReceivingMultipleCloudEvents 2"
             }
           }
         ]
@@ -92,7 +95,7 @@
       "ResponseHeaders": {
         "Content-Length": "66",
         "Content-Type": "application/json",
-        "Date": "Fri, 17 Nov 2023 00:23:56 GMT"
+        "Date": "Fri, 17 Nov 2023 00:24:09 GMT"
       },
       "ResponseBody": {
         "succeededLockTokens": [
@@ -108,35 +111,26 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "54",
+        "Content-Length": "35",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-go-azeventgrid/v0.3.1 (go1.21.4; linux)"
       },
       "RequestBody": {
         "lockTokens": [
-          "fake-lock-token",
           "fake-lock-token"
         ]
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Content-Length": "157",
+        "Content-Length": "66",
         "Content-Type": "application/json",
-        "Date": "Fri, 17 Nov 2023 00:23:57 GMT"
+        "Date": "Fri, 17 Nov 2023 00:24:09 GMT"
       },
       "ResponseBody": {
         "succeededLockTokens": [
           "fake-lock-token"
         ],
-        "failedLockTokens": [
-          {
-            "lockToken": "fake-lock-token",
-            "error": {
-              "code": "TokenLost",
-              "message": "Token has expired."
-            }
-          }
-        ]
+        "failedLockTokens": []
       }
     }
   ],
