@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://management.azure.com/subscriptions/88888888-8888-8888-8888-888888888888/resourceGroups/myjstest/providers/Microsoft.ContainerService/managedClusters/myreourcexyz?api-version=2023-09-01",
+      "RequestUri": "https://management.azure.com/subscriptions/88888888-8888-8888-8888-888888888888/resourceGroups/myjstest/providers/Microsoft.ContainerService/managedClusters/myreourcexyz?api-version=2023-10-02-preview",
       "RequestMethod": "PATCH",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -10,8 +10,8 @@
         "Connection": "keep-alive",
         "Content-Length": "39",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-js-arm-containerservice/19.5.0 core-rest-pipeline/1.12.3 Node/v21.1.0 OS/(x64-Windows_NT-10.0.22621)",
-        "x-ms-client-request-id": "8ef09e13-8654-45ec-8618-58e1211ad14a"
+        "User-Agent": "azsdk-js-arm-containerservice/19.6.0-beta.1 core-rest-pipeline/1.12.3 Node/v21.1.0 OS/(x64-Windows_NT-10.0.22621)",
+        "x-ms-client-request-id": "ab878adf-a63a-46fe-beb6-9f41236abf22"
       },
       "RequestBody": {
         "tags": {
@@ -22,19 +22,19 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2725",
+        "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Wed, 22 Nov 2023 09:36:02 GMT",
+        "Date": "Thu, 30 Nov 2023 09:06:48 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "X-Cache": "CONFIG_NOCACHE",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "0187e442-825f-4015-9e22-4e7e30327d09",
+        "x-ms-correlation-request-id": "23ced5b5-48c0-4d8f-af5c-902202b19075",
         "x-ms-ratelimit-remaining-subscription-writes": "1199",
-        "x-ms-request-id": "c27c1dbf-f605-491e-9823-73387cd0ca84",
-        "x-ms-routing-request-id": "JAPANEAST:20231122T093603Z:0187e442-825f-4015-9e22-4e7e30327d09",
-        "X-MSEdge-Ref": "Ref A: EBF4C6DE9DC344BDA4D35DBDADE3162B Ref B: TYO201100113051 Ref C: 2023-11-22T09:35:57Z"
+        "x-ms-request-id": "e84e7f83-4bfa-47c2-91cf-1b59c3b50163",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20231130T090648Z:23ced5b5-48c0-4d8f-af5c-902202b19075"
       },
       "ResponseBody": {
         "id": "/subscriptions/88888888-8888-8888-8888-888888888888/resourcegroups/myjstest/providers/Microsoft.ContainerService/managedClusters/myreourcexyz",
@@ -53,8 +53,8 @@
           "kubernetesVersion": "1.27",
           "currentKubernetesVersion": "1.27.7",
           "dnsPrefix": "aksjssdk",
-          "fqdn": "aksjssdk-140b6tp8.hcp.eastus.azmk8s.io",
-          "azurePortalFQDN": "aksjssdk-140b6tp8.portal.hcp.eastus.azmk8s.io",
+          "fqdn": "aksjssdk-j491rxmg.hcp.eastus.azmk8s.io",
+          "azurePortalFQDN": "aksjssdk-j491rxmg.portal.hcp.eastus.azmk8s.io",
           "agentPoolProfiles": [
             {
               "name": "aksagent",
@@ -77,8 +77,11 @@
               "mode": "System",
               "osType": "Linux",
               "osSKU": "Ubuntu",
-              "nodeImageVersion": "AKSUbuntu-2204gen2containerd-202310.31.0",
-              "enableFIPS": false
+              "nodeImageVersion": "AKSUbuntu-2204gen2containerd-202311.07.0",
+              "enableFIPS": false,
+              "securityProfile": {
+                "sshAccess": "LocalUser"
+              }
             }
           ],
           "servicePrincipalProfile": {
@@ -89,6 +92,7 @@
           "supportPlan": "KubernetesOfficial",
           "networkProfile": {
             "networkPlugin": "kubenet",
+            "networkPolicy": "none",
             "loadBalancerSku": "Standard",
             "loadBalancerProfile": {
               "managedOutboundIPs": {
@@ -96,9 +100,10 @@
               },
               "effectiveOutboundIPs": [
                 {
-                  "id": "/subscriptions/88888888-8888-8888-8888-888888888888/resourceGroups/MC_myjstest_myreourcexyz_eastus/providers/Microsoft.Network/publicIPAddresses/f9b834c8-0284-4b92-8a04-ef9065af0763"
+                  "id": "/subscriptions/88888888-8888-8888-8888-888888888888/resourceGroups/MC_myjstest_myreourcexyz_eastus/providers/Microsoft.Network/publicIPAddresses/8d4b61c9-2b81-438f-a95d-275ab67980c2"
                 }
-              ]
+              ],
+              "backendPoolType": "nodeIPConfiguration"
             },
             "podCidr": "10.244.0.0/16",
             "serviceCidr": "10.0.0.0/16",
@@ -121,7 +126,8 @@
           "securityProfile": {},
           "storageProfile": {
             "diskCSIDriver": {
-              "enabled": true
+              "enabled": true,
+              "version": "v1"
             },
             "fileCSIDriver": {
               "enabled": true
@@ -134,7 +140,20 @@
             "enabled": false
           },
           "workloadAutoScalerProfile": {},
-          "resourceUID": "655dca1dc1b77700013e90bc"
+          "metricsProfile": {
+            "costAnalysis": {
+              "enabled": false
+            }
+          },
+          "resourceUID": "65684f7256fbc60001490186",
+          "controlPlanePluginProfiles": {
+            "karpenter": {
+              "enableV2": true
+            }
+          },
+          "nodeProvisioningProfile": {
+            "mode": "Manual"
+          }
         },
         "sku": {
           "name": "Base",
