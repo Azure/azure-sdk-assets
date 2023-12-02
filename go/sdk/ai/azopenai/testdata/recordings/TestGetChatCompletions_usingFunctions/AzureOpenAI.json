@@ -1,76 +1,76 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fake-recorded-host.microsoft.com/openai/deployments/gpt-4-0613/chat/completions?api-version=2023-09-01-preview",
+      "RequestUri": "https://fake-recorded-host.microsoft.com/openai/deployments/gpt-35-turbo-0613/chat/completions?api-version=2023-12-01-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Api-Key": "redacted",
-        "Content-Length": "473",
+        "Content-Length": "489",
         "Content-Type": "application/json",
-        "User-Agent": "fake-user-agentfake-user-agent"
+        "User-Agent": "fake-user-agent"
       },
       "RequestBody": {
-        "function_call": "auto",
-        "functions": [
-          {
-            "description": "Get the current weather in a given location",
-            "name": "get_current_weather",
-            "parameters": {
-              "type": "object",
-              "properties": {
-                "location": {
-                  "type": "string",
-                  "description": "The city and state, e.g. San Francisco, CA"
-                },
-                "unit": {
-                  "type": "string",
-                  "enum": [
-                    "celsius",
-                    "fahrenheit"
-                  ]
-                }
-              },
-              "required": [
-                "location"
-              ]
-            }
-          }
-        ],
         "messages": [
           {
             "content": "What\u0027s the weather like in Boston, MA, in celsius?",
-            "role": "user"
+            "role": "assistant"
           }
         ],
-        "model": "gpt-4-0613",
-        "temperature": 0
+        "model": "gpt-35-turbo-0613",
+        "temperature": 0,
+        "tools": [
+          {
+            "function": {
+              "description": "Get the current weather in a given location",
+              "name": "get_current_weather",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string",
+                    "description": "The city and state, e.g. San Francisco, CA"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "location"
+                ]
+              }
+            },
+            "type": "function"
+          }
+        ]
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
-        "apim-request-id": "b36886c7-f803-4f9e-a77f-cf780acfbe0b",
-        "azureml-model-group": "online",
-        "azureml-model-session": "gpt4-004309132023-2",
+        "apim-request-id": "30e658cf-b254-4467-90de-ece9cd9e689f",
         "Cache-Control": "must-revalidate, no-cache",
-        "Content-Length": "681",
+        "Content-Length": "752",
         "Content-Type": "application/json",
-        "Date": "Wed, 20 Sep 2023 23:15:21 GMT",
-        "openai-model": "gpt-4",
-        "openai-processing-ms": "887.1273",
+        "Date": "Sat, 02 Dec 2023 01:55:13 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "b36886c7-f803-4f9e-a77f-cf780acfbe0b",
+        "x-ms-client-request-id": "30e658cf-b254-4467-90de-ece9cd9e689f",
         "x-ms-region": "East US",
-        "X-Request-ID": "e0e408cd-d035-44fb-8e7b-a4c7635d4b6c"
+        "x-ratelimit-remaining-requests": "48",
+        "x-ratelimit-remaining-tokens": "48960",
+        "X-Request-ID": "17fa0851-e0f1-4951-9046-2b3dae7a7ee6"
       },
       "ResponseBody": {
-        "id": "chatcmpl-810hccY40jT7OWgp0lBM1Kis5r7ER",
+        "id": "chatcmpl-8R9VpjibQDDLzqDbJJWMQoKGFOn7C",
         "object": "chat.completion",
-        "created": 1695251720,
-        "model": "gpt-4",
+        "created": 1701482113,
+        "model": "gpt-35-turbo",
         "prompt_filter_results": [
           {
             "prompt_index": 0,
@@ -97,20 +97,26 @@
         "choices": [
           {
             "index": 0,
-            "finish_reason": "function_call",
+            "finish_reason": "tool_calls",
             "message": {
               "role": "assistant",
-              "function_call": {
-                "name": "get_current_weather",
-                "arguments": "{\n  \u0022location\u0022: \u0022Boston, MA\u0022,\n  \u0022unit\u0022: \u0022celsius\u0022\n}"
-              }
+              "tool_calls": [
+                {
+                  "id": "call_8QGGwXjxEpbmmy2WwxCe6rP7",
+                  "type": "function",
+                  "function": {
+                    "name": "get_current_weather",
+                    "arguments": "{\n  \u0022location\u0022: \u0022Boston, MA\u0022,\n  \u0022unit\u0022: \u0022celsius\u0022\n}"
+                  }
+                }
+              ]
             },
             "content_filter_results": {}
           }
         ],
         "usage": {
-          "completion_tokens": 26,
           "prompt_tokens": 88,
+          "completion_tokens": 26,
           "total_tokens": 114
         }
       }
