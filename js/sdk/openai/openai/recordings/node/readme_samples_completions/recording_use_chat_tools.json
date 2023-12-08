@@ -1,0 +1,246 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://endpoint/openai/deployments/gpt-35-turbo-0613-plugins/chat/completions?api-version=2023-12-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "api-key": "azure_api_key",
+        "Connection": "keep-alive",
+        "Content-Length": "425",
+        "Content-Type": "application/json; charset=UTF-8",
+        "User-Agent": "azsdk-js-openai-rest/1.0.0-beta.8 core-rest-pipeline/1.12.3 Node/v19.9.0 OS/(x64-Linux-6.2.0-1016-azure)",
+        "x-ms-client-request-id": "2d478c79-ba25-4ae7-b5f0-75d4a2e6935e"
+      },
+      "RequestBody": {
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_current_weather",
+              "description": "Get the current weather in a given location",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string",
+                    "description": "The city and state, e.g. San Francisco, CA"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "location"
+                ]
+              }
+            }
+          }
+        ],
+        "messages": [
+          {
+            "role": "user",
+            "content": "What is the weather like in Boston?"
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "apim-request-id": "c1d05c31-3ce5-4de6-9471-c2af782a9e1f",
+        "Cache-Control": "must-revalidate, no-cache",
+        "Content-Length": "726",
+        "Content-Type": "application/json",
+        "Date": "Fri, 08 Dec 2023 02:26:07 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-accel-buffering": "no",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "2d478c79-ba25-4ae7-b5f0-75d4a2e6935e",
+        "x-ms-region": "East US",
+        "x-ratelimit-remaining-requests": "14",
+        "x-ratelimit-remaining-tokens": "14984",
+        "X-Request-ID": "24e5edae-5e5f-4224-9904-101b4bb38e9a"
+      },
+      "ResponseBody": {
+        "id": "chatcmpl-8TKr1sArtjuVS5EE8xbin09WbdT1N",
+        "object": "chat.completion",
+        "created": 1702002367,
+        "model": "gpt-35-turbo",
+        "prompt_filter_results": [
+          {
+            "prompt_index": 0,
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
+          }
+        ],
+        "choices": [
+          {
+            "index": 0,
+            "finish_reason": "tool_calls",
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "id": "call_jl7UU2EVGm39pu8cNDstpBq4",
+                  "type": "function",
+                  "function": {
+                    "name": "get_current_weather",
+                    "arguments": "{\n  \u0022location\u0022: \u0022Boston, MA\u0022\n}"
+                  }
+                }
+              ]
+            },
+            "content_filter_results": {}
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 82,
+          "completion_tokens": 18,
+          "total_tokens": 100
+        }
+      }
+    },
+    {
+      "RequestUri": "https://endpoint/openai/deployments/gpt-35-turbo-0613-plugins/chat/completions?api-version=2023-12-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "api-key": "azure_api_key",
+        "Connection": "keep-alive",
+        "Content-Length": "415",
+        "Content-Type": "application/json; charset=UTF-8",
+        "User-Agent": "azsdk-js-openai-rest/1.0.0-beta.8 core-rest-pipeline/1.12.3 Node/v19.9.0 OS/(x64-Linux-6.2.0-1016-azure)",
+        "x-ms-client-request-id": "e6f513cd-3fe5-496e-a5e5-9b0de7307708"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "What is the weather like in Boston?"
+          },
+          {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+              {
+                "id": "call_jl7UU2EVGm39pu8cNDstpBq4",
+                "type": "function",
+                "function": {
+                  "name": "get_current_weather",
+                  "arguments": "{\n  \u0022location\u0022: \u0022Boston, MA\u0022\n}"
+                }
+              }
+            ]
+          },
+          {
+            "role": "tool",
+            "content": "The weather in Boston, MA is 72 degrees undefined and sunny.",
+            "tool_call_id": "call_jl7UU2EVGm39pu8cNDstpBq4"
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "apim-request-id": "5f723335-8f7c-4800-ac5a-284ac37d55ca",
+        "Cache-Control": "must-revalidate, no-cache",
+        "Content-Length": "822",
+        "Content-Type": "application/json",
+        "Date": "Fri, 08 Dec 2023 02:26:08 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-accel-buffering": "no",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "e6f513cd-3fe5-496e-a5e5-9b0de7307708",
+        "x-ms-region": "East US",
+        "x-ratelimit-remaining-requests": "13",
+        "x-ratelimit-remaining-tokens": "14968",
+        "X-Request-ID": "06900384-9eb7-4c8d-8326-979fb1fbc9b9"
+      },
+      "ResponseBody": {
+        "id": "chatcmpl-8TKr2Xvjwwn5LrqjwThuW14xNyqIK",
+        "object": "chat.completion",
+        "created": 1702002368,
+        "model": "gpt-35-turbo",
+        "prompt_filter_results": [
+          {
+            "prompt_index": 0,
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
+          }
+        ],
+        "choices": [
+          {
+            "index": 0,
+            "finish_reason": "stop",
+            "message": {
+              "role": "assistant",
+              "content": "The current weather in Boston, MA is 72 degrees Fahrenheit and sunny."
+            },
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 56,
+          "completion_tokens": 15,
+          "total_tokens": 71
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}
