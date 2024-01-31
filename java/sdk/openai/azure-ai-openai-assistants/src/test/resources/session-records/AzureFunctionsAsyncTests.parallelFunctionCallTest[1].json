@@ -1,0 +1,100 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/openai/assistants?api-version=2024-01-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "api-key": "REDACTED",
+        "Content-Length": "1135",
+        "Content-Type": "application/json",
+        "Date": "Wed, 31 Jan 2024 16:05:08 GMT",
+        "OpenAI-Beta": "assistants=v1",
+        "User-Agent": "azsdk-java-azure-ai-openai-assistants/1.0.0-beta.1 (21.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b904c16a-f841-45fe-a4fc-6734ecb22710"
+      },
+      "RequestBody": {
+        "model": "gpt-4-1106-preview",
+        "name": "Java SDK Function Tool Call Test",
+        "instructions": "You are a helpful assistant that can help fetch data from files you know about.",
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "getAirlinePriceToDestinationForSeason",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "destination": {
+                    "type": "string",
+                    "description": "A travel destination location."
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "An approximate time of year at which travel is planned."
+                  },
+                  "airline": {
+                    "type": "string",
+                    "description": "The name of an airline that flights can be booked on."
+                  }
+                }
+              },
+              "description": "Given a desired location, airline, and approximate time of year, retrieves estimated prices."
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "getFavoriteVacationDestination",
+              "description": "Retrieves the user\u0027s unambiguously preferred location for vacations."
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "getPreferredAirlineForSeason",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "season": {
+                    "type": "string",
+                    "enum": [
+                      "winter",
+                      "spring",
+                      "summer",
+                      "fall"
+                    ]
+                  }
+                }
+              },
+              "description": "Given a season like winter or spring, retrieves the user\u0027s preferred airline carrier."
+            }
+          }
+        ]
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "78338071-be3c-4383-bbcd-598ec283b921",
+        "Content-Length": "648",
+        "Content-Type": "application/json",
+        "Date": "Wed, 31 Jan 2024 16:05:12 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "b904c16a-f841-45fe-a4fc-6734ecb22710",
+        "x-ms-region": "West US 2",
+        "x-ratelimit-remaining-requests": "17",
+        "x-ratelimit-remaining-tokens": "17360",
+        "X-Request-ID": "f5f1bd4c-a49d-4da8-998e-22e053d5580b"
+      },
+      "ResponseBody": {
+        "error": {
+          "message": "3 validation errors for Request\nbody -\u003E tools -\u003E 1 -\u003E type\n  unexpected value; permitted: \u003CToolTypeParam.CODE_INTERPRETER: \u0027code_interpreter\u0027\u003E (type=value_error.const; given=function; permitted=(\u003CToolTypeParam.CODE_INTERPRETER: \u0027code_interpreter\u0027\u003E,))\nbody -\u003E tools -\u003E 1 -\u003E type\n  unexpected value; permitted: \u003CToolTypeParam.RETRIEVAL: \u0027retrieval\u0027\u003E (type=value_error.const; given=function; permitted=(\u003CToolTypeParam.RETRIEVAL: \u0027retrieval\u0027\u003E,))\nbody -\u003E tools -\u003E 1 -\u003E function -\u003E parameters\n  field required (type=value_error.missing)",
+          "type": "invalid_request_error",
+          "param": null,
+          "code": null
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}
