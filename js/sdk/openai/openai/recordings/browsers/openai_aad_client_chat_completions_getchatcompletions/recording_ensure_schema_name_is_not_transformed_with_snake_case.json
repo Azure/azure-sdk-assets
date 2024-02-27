@@ -8,7 +8,7 @@
         "Accept-Encoding": "gzip, deflate, br",
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
-        "Content-Length": "445",
+        "Content-Length": "357",
         "Content-Type": "application/json; charset=UTF-8",
         "Referer": "http://localhost:9876/",
         "sec-ch-ua": "\u0022Chromium\u0022;v=\u0022122\u0022, \u0022Not(A:Brand\u0022;v=\u002224\u0022, \u0022HeadlessChrome\u0022;v=\u0022122\u0022",
@@ -18,34 +18,26 @@
         "Sec-Fetch-Mode": "cors",
         "Sec-Fetch-Site": "same-site",
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/122.0.6261.69 Safari/537.36",
-        "x-ms-client-request-id": "3ad8fae0-a569-494d-98d9-fad83cafa76e",
+        "x-ms-client-request-id": "d2515c86-1eb1-43f9-9671-1cea7f359788",
         "x-ms-useragent": "azsdk-js-openai-rest/1.0.0-beta.11 core-rest-pipeline/1.14.1 OS/Linux"
       },
       "RequestBody": {
-        "tool_choice": "none",
         "tools": [
           {
             "type": "function",
             "function": {
-              "name": "get_current_weather",
-              "description": "Get the current weather in a given location",
+              "name": "getAssetInfo",
+              "description": "Returns information about an asset",
               "parameters": {
                 "type": "object",
                 "properties": {
-                  "location": {
+                  "assetName": {
                     "type": "string",
-                    "description": "The city and state, e.g. San Francisco, CA"
-                  },
-                  "unit": {
-                    "type": "string",
-                    "enum": [
-                      "celsius",
-                      "fahrenheit"
-                    ]
+                    "description": "The asset name. This is a required parameter."
                   }
                 },
                 "required": [
-                  "location"
+                  "assetName"
                 ]
               }
             }
@@ -54,32 +46,32 @@
         "messages": [
           {
             "role": "user",
-            "content": "What\u0027s the weather like in Boston?"
+            "content": "Give me information about Asset No1"
           }
         ]
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
-        "apim-request-id": "2cca8ad0-40df-43a5-a6d2-c551c40e4bf4",
-        "azureml-model-session": "turbo-0613-77e94ac9",
+        "apim-request-id": "43073498-c0cc-43c6-953c-79855fc5b684",
+        "azureml-model-session": "turbo-0613-b99b5b1f",
         "Cache-Control": "must-revalidate, no-cache",
-        "Content-Length": "999",
+        "Content-Length": "746",
         "Content-Type": "application/json",
-        "Date": "Tue, 27 Feb 2024 23:02:30 GMT",
+        "Date": "Tue, 27 Feb 2024 23:02:35 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "3ad8fae0-a569-494d-98d9-fad83cafa76e",
+        "x-ms-client-request-id": "d2515c86-1eb1-43f9-9671-1cea7f359788",
         "x-ms-region": "East US",
-        "x-ratelimit-remaining-requests": "45",
-        "x-ratelimit-remaining-tokens": "45936",
-        "X-Request-ID": "75268adb-5889-4919-b352-3a31dac2435e"
+        "x-ratelimit-remaining-requests": "44",
+        "x-ratelimit-remaining-tokens": "45920",
+        "X-Request-ID": "fa87bfe6-d8c8-4471-bca4-7853808040f2"
       },
       "ResponseBody": {
-        "id": "chatcmpl-8x0kvUztYsLjK0jeTqIP8Vw45jW4T",
+        "id": "chatcmpl-8x0l1x12GJgD3Tgd6M30tw645BNkR",
         "object": "chat.completion",
-        "created": 1709074949,
+        "created": 1709074955,
         "model": "gpt-35-turbo",
         "prompt_filter_results": [
           {
@@ -106,37 +98,30 @@
         ],
         "choices": [
           {
-            "finish_reason": "stop",
+            "finish_reason": "tool_calls",
             "index": 0,
             "message": {
               "role": "assistant",
-              "content": "I\u0027m sorry, I don\u0027t have the capability to provide real-time weather information. However, you can easily check the weather in Boston by using a weather website or app, or by searching for \u0022weather in Boston\u0022 on a search engine."
+              "content": null,
+              "tool_calls": [
+                {
+                  "id": "call_g4DphPCVslBzFb3l5E1nXCqq",
+                  "type": "function",
+                  "function": {
+                    "name": "getAssetInfo",
+                    "arguments": "{\n  \u0022assetName\u0022: \u0022Asset1\u0022\n}"
+                  }
+                }
+              ]
             },
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            },
+            "content_filter_results": {},
             "logprobs": null
           }
         ],
         "usage": {
-          "prompt_tokens": 83,
-          "completion_tokens": 49,
-          "total_tokens": 132
+          "prompt_tokens": 65,
+          "completion_tokens": 18,
+          "total_tokens": 83
         }
       }
     },
@@ -148,7 +133,7 @@
         "Accept-Encoding": "gzip, deflate, br",
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
-        "Content-Length": "445",
+        "Content-Length": "357",
         "Content-Type": "application/json; charset=UTF-8",
         "Referer": "http://localhost:9876/",
         "sec-ch-ua": "\u0022Chromium\u0022;v=\u0022122\u0022, \u0022Not(A:Brand\u0022;v=\u002224\u0022, \u0022HeadlessChrome\u0022;v=\u0022122\u0022",
@@ -158,34 +143,26 @@
         "Sec-Fetch-Mode": "cors",
         "Sec-Fetch-Site": "same-site",
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/122.0.6261.69 Safari/537.36",
-        "x-ms-client-request-id": "070e0ca0-9adb-4550-855f-41c6179c9473",
+        "x-ms-client-request-id": "58b2e120-f744-43e3-9b13-3249307b8144",
         "x-ms-useragent": "azsdk-js-openai-rest/1.0.0-beta.11 core-rest-pipeline/1.14.1 OS/Linux"
       },
       "RequestBody": {
-        "tool_choice": "none",
         "tools": [
           {
             "type": "function",
             "function": {
-              "name": "get_current_weather",
-              "description": "Get the current weather in a given location",
+              "name": "getAssetInfo",
+              "description": "Returns information about an asset",
               "parameters": {
                 "type": "object",
                 "properties": {
-                  "location": {
+                  "assetName": {
                     "type": "string",
-                    "description": "The city and state, e.g. San Francisco, CA"
-                  },
-                  "unit": {
-                    "type": "string",
-                    "enum": [
-                      "celsius",
-                      "fahrenheit"
-                    ]
+                    "description": "The asset name. This is a required parameter."
                   }
                 },
                 "required": [
-                  "location"
+                  "assetName"
                 ]
               }
             }
@@ -194,32 +171,32 @@
         "messages": [
           {
             "role": "user",
-            "content": "What\u0027s the weather like in Boston?"
+            "content": "Give me information about Asset No1"
           }
         ]
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
-        "apim-request-id": "a060ba04-a9fa-4902-b4f3-102a0ad71ffc",
-        "azureml-model-session": "gpt4-0314-bb05f6b7",
+        "apim-request-id": "808707dd-1a49-49d5-964d-e63b037f3271",
+        "azureml-model-session": "gpt4-0314-2cebaaca",
         "Cache-Control": "must-revalidate, no-cache",
-        "Content-Length": "813",
+        "Content-Length": "742",
         "Content-Type": "application/json",
-        "Date": "Tue, 27 Feb 2024 23:02:31 GMT",
+        "Date": "Tue, 27 Feb 2024 23:02:36 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "070e0ca0-9adb-4550-855f-41c6179c9473",
+        "x-ms-client-request-id": "58b2e120-f744-43e3-9b13-3249307b8144",
         "x-ms-region": "East US",
-        "x-ratelimit-remaining-requests": "4",
-        "x-ratelimit-remaining-tokens": "4936",
-        "X-Request-ID": "fa1c996a-a330-4751-aef9-2bc906f86c15"
+        "x-ratelimit-remaining-requests": "3",
+        "x-ratelimit-remaining-tokens": "4920",
+        "X-Request-ID": "7e6c1631-e5b0-44e3-a46c-7ce6163af5df"
       },
       "ResponseBody": {
-        "id": "chatcmpl-8x0kwNqadVw2aLa6YcuR2T4Sq6oUt",
+        "id": "chatcmpl-8x0l1qcpEqDVSFOnAyZnHYIrijqor",
         "object": "chat.completion",
-        "created": 1709074950,
+        "created": 1709074955,
         "model": "gpt-4",
         "prompt_filter_results": [
           {
@@ -246,37 +223,30 @@
         ],
         "choices": [
           {
-            "finish_reason": "stop",
+            "finish_reason": "tool_calls",
             "index": 0,
             "message": {
               "role": "assistant",
-              "content": "Let me check the current weather in Boston for you."
+              "content": null,
+              "tool_calls": [
+                {
+                  "id": "call_P0WjUg3YpwNdgc8R68KTWOGb",
+                  "type": "function",
+                  "function": {
+                    "name": "getAssetInfo",
+                    "arguments": "{\n  \u0022assetName\u0022: \u0022Asset No1\u0022\n}"
+                  }
+                }
+              ]
             },
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            },
+            "content_filter_results": {},
             "logprobs": null
           }
         ],
         "usage": {
-          "prompt_tokens": 83,
-          "completion_tokens": 11,
-          "total_tokens": 94
+          "prompt_tokens": 65,
+          "completion_tokens": 19,
+          "total_tokens": 84
         }
       }
     },
@@ -288,7 +258,7 @@
         "Accept-Encoding": "gzip, deflate, br",
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
-        "Content-Length": "445",
+        "Content-Length": "357",
         "Content-Type": "application/json; charset=UTF-8",
         "Referer": "http://localhost:9876/",
         "sec-ch-ua": "\u0022Chromium\u0022;v=\u0022122\u0022, \u0022Not(A:Brand\u0022;v=\u002224\u0022, \u0022HeadlessChrome\u0022;v=\u0022122\u0022",
@@ -298,34 +268,26 @@
         "Sec-Fetch-Mode": "cors",
         "Sec-Fetch-Site": "same-site",
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/122.0.6261.69 Safari/537.36",
-        "x-ms-client-request-id": "958ea2cb-7e23-41ef-b715-ab90e9874e1e",
+        "x-ms-client-request-id": "2e043466-da95-41cc-abd9-bbb5461d7409",
         "x-ms-useragent": "azsdk-js-openai-rest/1.0.0-beta.11 core-rest-pipeline/1.14.1 OS/Linux"
       },
       "RequestBody": {
-        "tool_choice": "none",
         "tools": [
           {
             "type": "function",
             "function": {
-              "name": "get_current_weather",
-              "description": "Get the current weather in a given location",
+              "name": "getAssetInfo",
+              "description": "Returns information about an asset",
               "parameters": {
                 "type": "object",
                 "properties": {
-                  "location": {
+                  "assetName": {
                     "type": "string",
-                    "description": "The city and state, e.g. San Francisco, CA"
-                  },
-                  "unit": {
-                    "type": "string",
-                    "enum": [
-                      "celsius",
-                      "fahrenheit"
-                    ]
+                    "description": "The asset name. This is a required parameter."
                   }
                 },
                 "required": [
-                  "location"
+                  "assetName"
                 ]
               }
             }
@@ -334,32 +296,32 @@
         "messages": [
           {
             "role": "user",
-            "content": "What\u0027s the weather like in Boston?"
+            "content": "Give me information about Asset No1"
           }
         ]
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
-        "apim-request-id": "f03c2518-cb90-4769-8174-a8c7cd44c696",
-        "azureml-model-session": "gpt4-0314-2d0efa94",
+        "apim-request-id": "3cec8f7b-70ba-403a-9316-f8c7527ee2a2",
+        "azureml-model-session": "gpt4-0314-2e83f5a6",
         "Cache-Control": "must-revalidate, no-cache",
-        "Content-Length": "817",
+        "Content-Length": "746",
         "Content-Type": "application/json",
-        "Date": "Tue, 27 Feb 2024 23:02:32 GMT",
+        "Date": "Tue, 27 Feb 2024 23:02:37 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "958ea2cb-7e23-41ef-b715-ab90e9874e1e",
+        "x-ms-client-request-id": "2e043466-da95-41cc-abd9-bbb5461d7409",
         "x-ms-region": "East US",
-        "x-ratelimit-remaining-requests": "29",
+        "x-ratelimit-remaining-requests": "28",
         "x-ratelimit-remaining-tokens": "29920",
-        "X-Request-ID": "af7c25d5-5dc8-47f2-83ae-35c26bc108ae"
+        "X-Request-ID": "e35a22a5-f481-49b3-ac58-996b58d847d5"
       },
       "ResponseBody": {
-        "id": "chatcmpl-8x0kxF3BcvM1Sh4eyKvWp4KgVzsIg",
+        "id": "chatcmpl-8x0l2d37Tq7HOahL9FNEBysKXlUa7",
         "object": "chat.completion",
-        "created": 1709074951,
+        "created": 1709074956,
         "model": "gpt-4-32k",
         "prompt_filter_results": [
           {
@@ -386,37 +348,30 @@
         ],
         "choices": [
           {
-            "finish_reason": "stop",
+            "finish_reason": "tool_calls",
             "index": 0,
             "message": {
               "role": "assistant",
-              "content": "Let me check the current weather in Boston for you."
+              "content": null,
+              "tool_calls": [
+                {
+                  "id": "call_ypeBTEAmseKW79ATB31AsMQX",
+                  "type": "function",
+                  "function": {
+                    "name": "getAssetInfo",
+                    "arguments": "{\n  \u0022assetName\u0022: \u0022Asset No1\u0022\n}"
+                  }
+                }
+              ]
             },
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            },
+            "content_filter_results": {},
             "logprobs": null
           }
         ],
         "usage": {
-          "prompt_tokens": 83,
-          "completion_tokens": 11,
-          "total_tokens": 94
+          "prompt_tokens": 65,
+          "completion_tokens": 19,
+          "total_tokens": 84
         }
       }
     },
@@ -428,7 +383,7 @@
         "Accept-Encoding": "gzip, deflate, br",
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
-        "Content-Length": "445",
+        "Content-Length": "357",
         "Content-Type": "application/json; charset=UTF-8",
         "Referer": "http://localhost:9876/",
         "sec-ch-ua": "\u0022Chromium\u0022;v=\u0022122\u0022, \u0022Not(A:Brand\u0022;v=\u002224\u0022, \u0022HeadlessChrome\u0022;v=\u0022122\u0022",
@@ -438,34 +393,26 @@
         "Sec-Fetch-Mode": "cors",
         "Sec-Fetch-Site": "same-site",
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/122.0.6261.69 Safari/537.36",
-        "x-ms-client-request-id": "c89e86ef-40a0-4afc-bc1a-65bd10c60fd0",
+        "x-ms-client-request-id": "de1933a4-ec02-4b4e-ba16-d31c958ab8ec",
         "x-ms-useragent": "azsdk-js-openai-rest/1.0.0-beta.11 core-rest-pipeline/1.14.1 OS/Linux"
       },
       "RequestBody": {
-        "tool_choice": "none",
         "tools": [
           {
             "type": "function",
             "function": {
-              "name": "get_current_weather",
-              "description": "Get the current weather in a given location",
+              "name": "getAssetInfo",
+              "description": "Returns information about an asset",
               "parameters": {
                 "type": "object",
                 "properties": {
-                  "location": {
+                  "assetName": {
                     "type": "string",
-                    "description": "The city and state, e.g. San Francisco, CA"
-                  },
-                  "unit": {
-                    "type": "string",
-                    "enum": [
-                      "celsius",
-                      "fahrenheit"
-                    ]
+                    "description": "The asset name. This is a required parameter."
                   }
                 },
                 "required": [
-                  "location"
+                  "assetName"
                 ]
               }
             }
@@ -474,32 +421,32 @@
         "messages": [
           {
             "role": "user",
-            "content": "What\u0027s the weather like in Boston?"
+            "content": "Give me information about Asset No1"
           }
         ]
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
-        "apim-request-id": "62a9d03d-5bb6-4569-8ba9-0846812be0fa",
-        "azureml-model-session": "turbo-0613-4689d749",
+        "apim-request-id": "a7f0c77e-d64d-4637-a91c-0446aa306685",
+        "azureml-model-session": "turbo-0613-40d19a69",
         "Cache-Control": "must-revalidate, no-cache",
-        "Content-Length": "848",
+        "Content-Length": "749",
         "Content-Type": "application/json",
-        "Date": "Tue, 27 Feb 2024 23:02:32 GMT",
+        "Date": "Tue, 27 Feb 2024 23:02:37 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "c89e86ef-40a0-4afc-bc1a-65bd10c60fd0",
+        "x-ms-client-request-id": "de1933a4-ec02-4b4e-ba16-d31c958ab8ec",
         "x-ms-region": "East US",
-        "x-ratelimit-remaining-requests": "19",
-        "x-ratelimit-remaining-tokens": "19872",
-        "X-Request-ID": "8c1e6ea0-0a3d-478c-8f27-ac1e4d1a9926"
+        "x-ratelimit-remaining-requests": "18",
+        "x-ratelimit-remaining-tokens": "19856",
+        "X-Request-ID": "5308e641-98ef-40a7-89dc-e30f43fbfcab"
       },
       "ResponseBody": {
-        "id": "chatcmpl-8x0kyKNFpA82OFzzjzoqXUZS5rePw",
+        "id": "chatcmpl-8x0l37ipx4TViSXv8EkH5ci0akqrP",
         "object": "chat.completion",
-        "created": 1709074952,
+        "created": 1709074957,
         "model": "gpt-35-turbo",
         "prompt_filter_results": [
           {
@@ -526,37 +473,30 @@
         ],
         "choices": [
           {
-            "finish_reason": "stop",
+            "finish_reason": "tool_calls",
             "index": 0,
             "message": {
               "role": "assistant",
-              "content": "Just a moment, please. I will fetch the current weather information for Boston."
+              "content": null,
+              "tool_calls": [
+                {
+                  "id": "call_NQJfaoF4NJlNAv4ss0NxZ989",
+                  "type": "function",
+                  "function": {
+                    "name": "getAssetInfo",
+                    "arguments": "{\n  \u0022assetName\u0022: \u0022Asset No1\u0022\n}"
+                  }
+                }
+              ]
             },
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            },
+            "content_filter_results": {},
             "logprobs": null
           }
         ],
         "usage": {
-          "prompt_tokens": 83,
-          "completion_tokens": 16,
-          "total_tokens": 99
+          "prompt_tokens": 65,
+          "completion_tokens": 19,
+          "total_tokens": 84
         }
       }
     },
@@ -568,7 +508,7 @@
         "Accept-Encoding": "gzip, deflate, br",
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
-        "Content-Length": "445",
+        "Content-Length": "357",
         "Content-Type": "application/json; charset=UTF-8",
         "Referer": "http://localhost:9876/",
         "sec-ch-ua": "\u0022Chromium\u0022;v=\u0022122\u0022, \u0022Not(A:Brand\u0022;v=\u002224\u0022, \u0022HeadlessChrome\u0022;v=\u0022122\u0022",
@@ -578,34 +518,26 @@
         "Sec-Fetch-Mode": "cors",
         "Sec-Fetch-Site": "same-site",
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/122.0.6261.69 Safari/537.36",
-        "x-ms-client-request-id": "636563ed-fa46-474a-869e-7471d28141da",
+        "x-ms-client-request-id": "60bea5c9-15e8-4307-a36a-da4347f6abbb",
         "x-ms-useragent": "azsdk-js-openai-rest/1.0.0-beta.11 core-rest-pipeline/1.14.1 OS/Linux"
       },
       "RequestBody": {
-        "tool_choice": "none",
         "tools": [
           {
             "type": "function",
             "function": {
-              "name": "get_current_weather",
-              "description": "Get the current weather in a given location",
+              "name": "getAssetInfo",
+              "description": "Returns information about an asset",
               "parameters": {
                 "type": "object",
                 "properties": {
-                  "location": {
+                  "assetName": {
                     "type": "string",
-                    "description": "The city and state, e.g. San Francisco, CA"
-                  },
-                  "unit": {
-                    "type": "string",
-                    "enum": [
-                      "celsius",
-                      "fahrenheit"
-                    ]
+                    "description": "The asset name. This is a required parameter."
                   }
                 },
                 "required": [
-                  "location"
+                  "assetName"
                 ]
               }
             }
@@ -614,32 +546,32 @@
         "messages": [
           {
             "role": "user",
-            "content": "What\u0027s the weather like in Boston?"
+            "content": "Give me information about Asset No1"
           }
         ]
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
-        "apim-request-id": "29f3af75-19cd-4e09-8c6d-09cd9bfe640d",
-        "azureml-model-session": "gpt4-0613-4910048c",
+        "apim-request-id": "3a27ddaf-d56c-470d-ba90-301b8f71d623",
+        "azureml-model-session": "gpt4-0613-b9a2b205",
         "Cache-Control": "must-revalidate, no-cache",
-        "Content-Length": "798",
+        "Content-Length": "740",
         "Content-Type": "application/json",
-        "Date": "Tue, 27 Feb 2024 23:02:34 GMT",
+        "Date": "Tue, 27 Feb 2024 23:02:39 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "636563ed-fa46-474a-869e-7471d28141da",
+        "x-ms-client-request-id": "60bea5c9-15e8-4307-a36a-da4347f6abbb",
         "x-ms-region": "East US",
-        "x-ratelimit-remaining-requests": "9",
-        "x-ratelimit-remaining-tokens": "9904",
-        "X-Request-ID": "26d1f5a8-98d4-41ac-87ab-460ad4852b42"
+        "x-ratelimit-remaining-requests": "8",
+        "x-ratelimit-remaining-tokens": "9888",
+        "X-Request-ID": "032a2abf-5059-47df-976b-9f52173a35af"
       },
       "ResponseBody": {
-        "id": "chatcmpl-8x0kyrerz0P14oG4V7zVSFNN0Ur4v",
+        "id": "chatcmpl-8x0l3RDvc3HGh2RM7vkTgR6gAu1k9",
         "object": "chat.completion",
-        "created": 1709074952,
+        "created": 1709074957,
         "model": "gpt-4",
         "prompt_filter_results": [
           {
@@ -666,37 +598,30 @@
         ],
         "choices": [
           {
-            "finish_reason": "stop",
+            "finish_reason": "tool_calls",
             "index": 0,
             "message": {
               "role": "assistant",
-              "content": "{\n  \u0022location\u0022: \u0022Boston, MA\u0022\n}"
+              "content": null,
+              "tool_calls": [
+                {
+                  "id": "call_oMZmRttT7j0s2xBcZvzscjAm",
+                  "type": "function",
+                  "function": {
+                    "name": "getAssetInfo",
+                    "arguments": "{\n\u0022assetName\u0022: \u0022Asset No1\u0022\n}"
+                  }
+                }
+              ]
             },
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            },
+            "content_filter_results": {},
             "logprobs": null
           }
         ],
         "usage": {
-          "prompt_tokens": 83,
-          "completion_tokens": 11,
-          "total_tokens": 94
+          "prompt_tokens": 65,
+          "completion_tokens": 18,
+          "total_tokens": 83
         }
       }
     },
@@ -708,7 +633,7 @@
         "Accept-Encoding": "gzip, deflate, br",
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
-        "Content-Length": "445",
+        "Content-Length": "357",
         "Content-Type": "application/json; charset=UTF-8",
         "Referer": "http://localhost:9876/",
         "sec-ch-ua": "\u0022Chromium\u0022;v=\u0022122\u0022, \u0022Not(A:Brand\u0022;v=\u002224\u0022, \u0022HeadlessChrome\u0022;v=\u0022122\u0022",
@@ -718,34 +643,26 @@
         "Sec-Fetch-Mode": "cors",
         "Sec-Fetch-Site": "same-site",
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/122.0.6261.69 Safari/537.36",
-        "x-ms-client-request-id": "638c92ce-c7cc-4895-bea6-905f3ea18446",
+        "x-ms-client-request-id": "a9541fa2-885b-4ff9-94ea-c5c9f5de99e9",
         "x-ms-useragent": "azsdk-js-openai-rest/1.0.0-beta.11 core-rest-pipeline/1.14.1 OS/Linux"
       },
       "RequestBody": {
-        "tool_choice": "none",
         "tools": [
           {
             "type": "function",
             "function": {
-              "name": "get_current_weather",
-              "description": "Get the current weather in a given location",
+              "name": "getAssetInfo",
+              "description": "Returns information about an asset",
               "parameters": {
                 "type": "object",
                 "properties": {
-                  "location": {
+                  "assetName": {
                     "type": "string",
-                    "description": "The city and state, e.g. San Francisco, CA"
-                  },
-                  "unit": {
-                    "type": "string",
-                    "enum": [
-                      "celsius",
-                      "fahrenheit"
-                    ]
+                    "description": "The asset name. This is a required parameter."
                   }
                 },
                 "required": [
-                  "location"
+                  "assetName"
                 ]
               }
             }
@@ -754,32 +671,32 @@
         "messages": [
           {
             "role": "user",
-            "content": "What\u0027s the weather like in Boston?"
+            "content": "Give me information about Asset No1"
           }
         ]
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
-        "apim-request-id": "ddf37125-27e6-4749-8927-433b3a1faf81",
-        "azureml-model-session": "turbo-0613-1dc47b7a",
+        "apim-request-id": "49564d38-cc51-42a2-8796-00ae9d0e11f6",
+        "azureml-model-session": "turbo-0613-3bbab348",
         "Cache-Control": "must-revalidate, no-cache",
-        "Content-Length": "824",
+        "Content-Length": "753",
         "Content-Type": "application/json",
-        "Date": "Tue, 27 Feb 2024 23:02:34 GMT",
+        "Date": "Tue, 27 Feb 2024 23:02:39 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "638c92ce-c7cc-4895-bea6-905f3ea18446",
+        "x-ms-client-request-id": "a9541fa2-885b-4ff9-94ea-c5c9f5de99e9",
         "x-ms-region": "East US",
         "x-ratelimit-remaining-requests": "0",
-        "x-ratelimit-remaining-tokens": "1920",
-        "X-Request-ID": "d9c734c9-632c-4ccb-a004-488c1612cb77"
+        "x-ratelimit-remaining-tokens": "1904",
+        "X-Request-ID": "33b9243a-8418-48b3-91f9-84eedf32da52"
       },
       "ResponseBody": {
-        "id": "chatcmpl-8x0l0FDAxpC0rW7JnseyCXnmTeOEC",
+        "id": "chatcmpl-8x0l5IU8ktVI53PfVv1HGtvkV4Fq4",
         "object": "chat.completion",
-        "created": 1709074954,
+        "created": 1709074959,
         "model": "gpt-35-turbo-16k",
         "prompt_filter_results": [
           {
@@ -806,37 +723,30 @@
         ],
         "choices": [
           {
-            "finish_reason": "stop",
+            "finish_reason": "tool_calls",
             "index": 0,
             "message": {
               "role": "assistant",
-              "content": "Let me check the current weather in Boston for you."
+              "content": null,
+              "tool_calls": [
+                {
+                  "id": "call_SttJOcDezuA7I2Lei6S47SGC",
+                  "type": "function",
+                  "function": {
+                    "name": "getAssetInfo",
+                    "arguments": "{\n  \u0022assetName\u0022: \u0022Asset No1\u0022\n}"
+                  }
+                }
+              ]
             },
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            },
+            "content_filter_results": {},
             "logprobs": null
           }
         ],
         "usage": {
-          "prompt_tokens": 83,
-          "completion_tokens": 11,
-          "total_tokens": 94
+          "prompt_tokens": 65,
+          "completion_tokens": 19,
+          "total_tokens": 84
         }
       }
     },
@@ -848,7 +758,7 @@
         "Accept-Encoding": "gzip, deflate, br",
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
-        "Content-Length": "445",
+        "Content-Length": "357",
         "Content-Type": "application/json; charset=UTF-8",
         "Referer": "http://localhost:9876/",
         "sec-ch-ua": "\u0022Chromium\u0022;v=\u0022122\u0022, \u0022Not(A:Brand\u0022;v=\u002224\u0022, \u0022HeadlessChrome\u0022;v=\u0022122\u0022",
@@ -858,34 +768,26 @@
         "Sec-Fetch-Mode": "cors",
         "Sec-Fetch-Site": "same-site",
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/122.0.6261.69 Safari/537.36",
-        "x-ms-client-request-id": "776f7768-7f43-4dd5-ba5d-54466cda963d",
+        "x-ms-client-request-id": "c1cade03-b1c2-495c-a970-2516a6983947",
         "x-ms-useragent": "azsdk-js-openai-rest/1.0.0-beta.11 core-rest-pipeline/1.14.1 OS/Linux"
       },
       "RequestBody": {
-        "tool_choice": "none",
         "tools": [
           {
             "type": "function",
             "function": {
-              "name": "get_current_weather",
-              "description": "Get the current weather in a given location",
+              "name": "getAssetInfo",
+              "description": "Returns information about an asset",
               "parameters": {
                 "type": "object",
                 "properties": {
-                  "location": {
+                  "assetName": {
                     "type": "string",
-                    "description": "The city and state, e.g. San Francisco, CA"
-                  },
-                  "unit": {
-                    "type": "string",
-                    "enum": [
-                      "celsius",
-                      "fahrenheit"
-                    ]
+                    "description": "The asset name. This is a required parameter."
                   }
                 },
                 "required": [
-                  "location"
+                  "assetName"
                 ]
               }
             }
@@ -894,32 +796,32 @@
         "messages": [
           {
             "role": "user",
-            "content": "What\u0027s the weather like in Boston?"
+            "content": "Give me information about Asset No1"
           }
         ]
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
-        "apim-request-id": "27532b6b-246c-4778-99ed-57889d9d612b",
-        "azureml-model-session": "turbo-0613-8a21701a",
+        "apim-request-id": "dce1737e-caca-453b-bccb-113f934ee360",
+        "azureml-model-session": "turbo-0613-77c56293",
         "Cache-Control": "must-revalidate, no-cache",
-        "Content-Length": "820",
+        "Content-Length": "749",
         "Content-Type": "application/json",
-        "Date": "Tue, 27 Feb 2024 23:02:34 GMT",
+        "Date": "Tue, 27 Feb 2024 23:02:39 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "776f7768-7f43-4dd5-ba5d-54466cda963d",
+        "x-ms-client-request-id": "c1cade03-b1c2-495c-a970-2516a6983947",
         "x-ms-region": "East US",
         "x-ratelimit-remaining-requests": "13",
-        "x-ratelimit-remaining-tokens": "14920",
-        "X-Request-ID": "b39c8633-bdea-48fc-b0ea-7590c55fe9e0"
+        "x-ratelimit-remaining-tokens": "14904",
+        "X-Request-ID": "7e51d637-1648-460e-a6d2-c113ebaa1ee0"
       },
       "ResponseBody": {
-        "id": "chatcmpl-8x0l0bl2YGYnZyj2EcFhmCMe7qKNZ",
+        "id": "chatcmpl-8x0l5sTX47l7hiiFT08ZGFdmIC3ke",
         "object": "chat.completion",
-        "created": 1709074954,
+        "created": 1709074959,
         "model": "gpt-35-turbo",
         "prompt_filter_results": [
           {
@@ -946,37 +848,30 @@
         ],
         "choices": [
           {
-            "finish_reason": "stop",
+            "finish_reason": "tool_calls",
             "index": 0,
             "message": {
               "role": "assistant",
-              "content": "Let me check the current weather in Boston for you."
+              "content": null,
+              "tool_calls": [
+                {
+                  "id": "call_0DFXi3V3BUaW9szgMEl0oamc",
+                  "type": "function",
+                  "function": {
+                    "name": "getAssetInfo",
+                    "arguments": "{\n  \u0022assetName\u0022: \u0022Asset No1\u0022\n}"
+                  }
+                }
+              ]
             },
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            },
+            "content_filter_results": {},
             "logprobs": null
           }
         ],
         "usage": {
-          "prompt_tokens": 83,
-          "completion_tokens": 11,
-          "total_tokens": 94
+          "prompt_tokens": 65,
+          "completion_tokens": 19,
+          "total_tokens": 84
         }
       }
     }
