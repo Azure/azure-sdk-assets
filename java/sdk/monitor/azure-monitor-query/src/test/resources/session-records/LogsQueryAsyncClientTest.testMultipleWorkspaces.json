@@ -1,35 +1,34 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/v1/workspaces/d2d0e126-fa1e-4b0a-b647-250cdd471e68/query",
+      "RequestUri": "https://REDACTED/v1/workspaces/3265fd05-5f10-4ac2-be2f-f98c81df9aac/query",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "158",
+        "Content-Length": "850",
         "Content-Type": "application/json",
-        "Date": "Tue, 18 Apr 2023 18:00:54 GMT",
-        "User-Agent": "azsdk-java-azure-monitor-query/1.2.0-beta.1 (17.0.2; Windows 11; 10.0)",
-        "x-ms-client-request-id": "25bd903e-e6e1-421b-9444-4e42ee32486b"
+        "Date": "Fri, 01 Mar 2024 18:46:29 GMT",
+        "User-Agent": "azsdk-java-azure-monitor-query/1.3.0-beta.3 (17.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "6f57fe71-a9e0-4a75-84ea-377f89342d39"
       },
       "RequestBody": {
-        "query": "union * | where TimeGenerated \u003E ago(100d) | project TenantId | summarize count() by TenantId",
+        "query": "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic, TenantId: string)\n[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789, \u0027string value\u0027, 10s, decimal(0.10101), dynamic({\u0022a\u0022:123, \u0022b\u0022:\u0022hello\u0022, \u0022c\u0022:[1,2,3], \u0022d\u0022:{}}), \u00223265fd05-5f10-4ac2-be2f-f98c81df9aac\u0022, datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789, \u0027string value\u0027, 10s, decimal(0.10101), dynamic({\u0022a\u0022:123, \u0022b\u0022:\u0022hello\u0022, \u0022c\u0022:[1,2,3], \u0022d\u0022:{}}), \u0022a44c2e7a-8b4f-4a61-ac81-3139b3010e98\u0022];range x from 1 to 2 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long",
         "workspaces": [
-          "9dad0092-fd13-403a-b367-a189a090a541"
+          "a44c2e7a-8b4f-4a61-ac81-3139b3010e98"
         ]
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Expose-Headers": "Retry-After,Age,WWW-Authenticate,x-resource-identities,x-ms-status-location",
-        "Age": "87",
         "Connection": "keep-alive",
-        "Content-Length": "223",
+        "Content-Length": "1372",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 18 Apr 2023 18:00:54 GMT",
+        "Date": "Fri, 01 Mar 2024 18:46:32 GMT",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "Vary": "Accept-Encoding",
-        "Via": "1.1 draft-oms-666995cb46-ft782",
+        "Via": "1.1 draft-oms-bc65cdcd7-fnl52",
         "X-Content-Type-Options": "nosniff"
       },
       "ResponseBody": {
@@ -38,22 +37,118 @@
             "name": "PrimaryResult",
             "columns": [
               {
-                "name": "TenantId",
+                "name": "x",
+                "type": "long"
+              },
+              {
+                "name": "y",
+                "type": "long"
+              },
+              {
+                "name": "DateTime",
+                "type": "datetime"
+              },
+              {
+                "name": "Bool",
+                "type": "bool"
+              },
+              {
+                "name": "Guid",
+                "type": "guid"
+              },
+              {
+                "name": "Int",
+                "type": "int"
+              },
+              {
+                "name": "Long",
+                "type": "long"
+              },
+              {
+                "name": "Double",
+                "type": "real"
+              },
+              {
+                "name": "String",
                 "type": "string"
               },
               {
-                "name": "count_",
-                "type": "long"
+                "name": "Timespan",
+                "type": "timespan"
+              },
+              {
+                "name": "Decimal",
+                "type": "decimal"
+              },
+              {
+                "name": "Dynamic",
+                "type": "dynamic"
+              },
+              {
+                "name": "TenantId",
+                "type": "string"
               }
             ],
             "rows": [
               [
-                "d2d0e126-fa1e-4b0a-b647-250cdd471e68",
-                2520650
+                2,
+                1,
+                "2015-12-31T23:59:59.9Z",
+                false,
+                "74be27de-1e4e-49d9-b579-fe0b331d3642",
+                12345,
+                1,
+                12345.6789,
+                "string value",
+                "00:00:10",
+                "0.10101",
+                "{\u0022a\u0022:123,\u0022b\u0022:\u0022hello\u0022,\u0022c\u0022:[1,2,3],\u0022d\u0022:{}}",
+                "3265fd05-5f10-4ac2-be2f-f98c81df9aac"
               ],
               [
-                "9dad0092-fd13-403a-b367-a189a090a541",
-                261291
+                1,
+                1,
+                "2015-12-31T23:59:59.9Z",
+                false,
+                "74be27de-1e4e-49d9-b579-fe0b331d3642",
+                12345,
+                1,
+                12345.6789,
+                "string value",
+                "00:00:10",
+                "0.10101",
+                "{\u0022a\u0022:123,\u0022b\u0022:\u0022hello\u0022,\u0022c\u0022:[1,2,3],\u0022d\u0022:{}}",
+                "3265fd05-5f10-4ac2-be2f-f98c81df9aac"
+              ],
+              [
+                2,
+                1,
+                "2015-12-31T23:59:59.9Z",
+                false,
+                "74be27de-1e4e-49d9-b579-fe0b331d3642",
+                12345,
+                1,
+                12345.6789,
+                "string value",
+                "00:00:10",
+                "0.10101",
+                "{\u0022a\u0022:123,\u0022b\u0022:\u0022hello\u0022,\u0022c\u0022:[1,2,3],\u0022d\u0022:{}}",
+                "a44c2e7a-8b4f-4a61-ac81-3139b3010e98"
+              ],
+              [
+                1,
+                1,
+                "2015-12-31T23:59:59.9Z",
+                false,
+                "74be27de-1e4e-49d9-b579-fe0b331d3642",
+                12345,
+                1,
+                12345.6789,
+                "string value",
+                "00:00:10",
+                "0.10101",
+                "{\u0022a\u0022:123,\u0022b\u0022:\u0022hello\u0022,\u0022c\u0022:[1,2,3],\u0022d\u0022:{}}",
+                "a44c2e7a-8b4f-4a61-ac81-3139b3010e98"
               ]
             ]
           }
