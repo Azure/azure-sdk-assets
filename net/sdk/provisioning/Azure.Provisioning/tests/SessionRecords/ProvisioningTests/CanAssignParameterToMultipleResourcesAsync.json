@@ -1,0 +1,277 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57?api-version=2022-12-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "traceparent": "00-96377655ef14e5f4342af8e03eff6634-352301068e605306-00",
+        "User-Agent": "azsdk-net-ResourceManager/1.11.0-alpha.20240222.6 (.NET 7.0.16; Microsoft Windows 10.0.22631)",
+        "x-ms-client-request-id": "598a46eaf6f7fa3a4e03eb03f1871a72",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "467",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 03 Mar 2024 22:20:15 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "4863f6ff-ed1e-4f6c-9f4e-d5ecef1e9a16",
+        "x-ms-ratelimit-remaining-subscription-reads": "11995",
+        "x-ms-request-id": "4863f6ff-ed1e-4f6c-9f4e-d5ecef1e9a16",
+        "x-ms-routing-request-id": "WESTUS:20240303T222015Z:4863f6ff-ed1e-4f6c-9f4e-d5ecef1e9a16",
+        "X-MSEdge-Ref": "Ref A: 84D482CFA9474917886EEBCA673A91E8 Ref B: SJC211051205039 Ref C: 2024-03-03T22:20:15Z"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57",
+        "authorizationSource": "RoleBased",
+        "managedByTenants": [],
+        "tags": {
+          "tagKey1": "tag-value-1",
+          "tagKey2": "tag-value-2"
+        },
+        "subscriptionId": "faa080af-c1d8-40ad-9cce-e1a450ca5b57",
+        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+        "displayName": "Azure SDK Developer Playground",
+        "state": "Enabled",
+        "subscriptionPolicies": {
+          "locationPlacementId": "Internal_2014-09-01",
+          "quotaId": "Internal_2014-09-01",
+          "spendingLimit": "Off"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/providers/Microsoft.Resources/deployments/CanAssignParameterToMultipleResources/validate?api-version=2022-09-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "2188",
+        "Content-Type": "application/json",
+        "traceparent": "00-82ca46583f1bd0a4f80b9fff62fea104-a6f91b18f3a82460-00",
+        "User-Agent": "azsdk-net-ResourceManager.Resources/1.8.0-alpha.20240222.2 (.NET 7.0.16; Microsoft Windows 10.0.22631)",
+        "x-ms-client-request-id": "0d170524fe6230e3bf3242c7abd02b22",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "location": "westus",
+        "properties": {
+          "template": {
+            "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "metadata": {
+              "_generator": {
+                "name": "bicep",
+                "version": "0.25.53.49325",
+                "templateHash": "5643701253098671596"
+              }
+            },
+            "parameters": {
+              "overrideLocation": {
+                "type": "string",
+                "metadata": {
+                  "description": ""
+                }
+              }
+            },
+            "resources": [
+              {
+                "type": "Microsoft.Resources/resourceGroups",
+                "apiVersion": "2023-07-01",
+                "name": "rg-TEST",
+                "location": "westus",
+                "tags": {
+                  "azd-env-name": "TEST"
+                }
+              },
+              {
+                "type": "Microsoft.Resources/deployments",
+                "apiVersion": "2022-09-01",
+                "name": "rg_TEST_module",
+                "resourceGroup": "rg-TEST",
+                "properties": {
+                  "expressionEvaluationOptions": {
+                    "scope": "inner"
+                  },
+                  "mode": "Incremental",
+                  "parameters": {
+                    "overrideLocation": {
+                      "value": "[parameters(\u0027overrideLocation\u0027)]"
+                    }
+                  },
+                  "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "metadata": {
+                      "_generator": {
+                        "name": "bicep",
+                        "version": "0.25.53.49325",
+                        "templateHash": "14040581907985139060"
+                      }
+                    },
+                    "parameters": {
+                      "overrideLocation": {
+                        "type": "string",
+                        "metadata": {
+                          "description": ""
+                        }
+                      }
+                    },
+                    "resources": [
+                      {
+                        "type": "Microsoft.Storage/storageAccounts",
+                        "apiVersion": "2022-09-01",
+                        "name": "[toLower(take(concat(\u0027photoAcct\u0027, uniqueString(resourceGroup().id)), 24))]",
+                        "location": "westus",
+                        "sku": {
+                          "name": "Premium_LRS"
+                        },
+                        "kind": "BlockBlobStorage",
+                        "properties": {}
+                      },
+                      {
+                        "type": "Microsoft.Storage/storageAccounts",
+                        "apiVersion": "2022-09-01",
+                        "name": "[toLower(take(concat(\u0027sa1\u0027, uniqueString(resourceGroup().id)), 24))]",
+                        "location": "[parameters(\u0027overrideLocation\u0027)]",
+                        "sku": {
+                          "name": "Standard_LRS"
+                        },
+                        "kind": "BlobStorage",
+                        "properties": {
+                          "accessTier": "Hot"
+                        }
+                      },
+                      {
+                        "type": "Microsoft.Storage/storageAccounts",
+                        "apiVersion": "2022-09-01",
+                        "name": "[toLower(take(concat(\u0027sa2\u0027, uniqueString(resourceGroup().id)), 24))]",
+                        "location": "[parameters(\u0027overrideLocation\u0027)]",
+                        "sku": {
+                          "name": "Premium_LRS"
+                        },
+                        "kind": "BlobStorage",
+                        "properties": {
+                          "accessTier": "Hot"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "dependsOn": [
+                  "[subscriptionResourceId(\u0027Microsoft.Resources/resourceGroups\u0027, \u0027rg-TEST\u0027)]"
+                ]
+              }
+            ]
+          },
+          "parameters": {
+            "overrideLocation": {
+              "value": "eastus"
+            }
+          },
+          "mode": "Incremental"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1808",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 03 Mar 2024 22:20:20 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "977c289b-a9b5-4251-aa10-edb82161a4a9",
+        "x-ms-ratelimit-remaining-subscription-writes": "1199",
+        "x-ms-request-id": "977c289b-a9b5-4251-aa10-edb82161a4a9",
+        "x-ms-routing-request-id": "WESTUS:20240303T222021Z:977c289b-a9b5-4251-aa10-edb82161a4a9",
+        "X-MSEdge-Ref": "Ref A: 9B448F2C9B2645A2BFE4B789C936FE20 Ref B: SJC211051205039 Ref C: 2024-03-03T22:20:19Z"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/providers/Microsoft.Resources/deployments/CanAssignParameterToMultipleResources",
+        "name": "CanAssignParameterToMultipleResources",
+        "type": "Microsoft.Resources/deployments",
+        "location": "westus",
+        "properties": {
+          "templateHash": "5643701253098671596",
+          "parameters": {
+            "overrideLocation": {
+              "type": "String",
+              "value": "eastus"
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Succeeded",
+          "timestamp": "0001-01-01T00:00:00Z",
+          "duration": "PT0S",
+          "correlationId": "977c289b-a9b5-4251-aa10-edb82161a4a9",
+          "providers": [
+            {
+              "namespace": "Microsoft.Resources",
+              "resourceTypes": [
+                {
+                  "resourceType": "resourceGroups",
+                  "locations": [
+                    "westus"
+                  ]
+                },
+                {
+                  "resourceType": "deployments",
+                  "locations": [
+                    null
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST",
+                  "resourceType": "Microsoft.Resources/resourceGroups",
+                  "resourceName": "rg-TEST"
+                }
+              ],
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.Resources/deployments/rg_TEST_module",
+              "resourceType": "Microsoft.Resources/deployments",
+              "resourceName": "rg_TEST_module"
+            }
+          ],
+          "validatedResources": [
+            {
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST"
+            },
+            {
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.Resources/deployments/rg_TEST_module"
+            },
+            {
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.Storage/storageAccounts/photoacctbup6avpo2jgk2"
+            },
+            {
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.Storage/storageAccounts/sa1bup6avpo2jgk2"
+            },
+            {
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.Storage/storageAccounts/sa2bup6avpo2jgk2"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "RandomSeed": "520727650",
+    "RESOURCE_MANAGER_URL": null,
+    "SUBSCRIPTION_ID": "faa080af-c1d8-40ad-9cce-e1a450ca5b57"
+  }
+}
