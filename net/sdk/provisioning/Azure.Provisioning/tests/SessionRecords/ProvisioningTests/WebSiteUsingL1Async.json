@@ -6,9 +6,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "traceparent": "00-253e34312138fe77bab00972de333a0b-fa6f6594c01578c7-00",
+        "traceparent": "00-25cd950cd91c1cd7ab256ba2072e70ac-d8895eb162d31847-00",
         "User-Agent": "azsdk-net-ResourceManager/1.11.0-alpha.20240222.6 (.NET 7.0.16; Microsoft Windows 10.0.22631)",
-        "x-ms-client-request-id": "62e19a7fa75e1d8214d2fe27abd6be54",
+        "x-ms-client-request-id": "b7b64e776506cd3edbc161d2cab0ab89",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": null,
@@ -17,17 +17,17 @@
         "Cache-Control": "no-cache",
         "Content-Length": "467",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 03 Mar 2024 23:22:47 GMT",
+        "Date": "Mon, 04 Mar 2024 16:59:17 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "b3c6eed3-9c42-4f48-9c3c-381e011021ce",
-        "x-ms-ratelimit-remaining-subscription-reads": "11994",
-        "x-ms-request-id": "b3c6eed3-9c42-4f48-9c3c-381e011021ce",
-        "x-ms-routing-request-id": "WESTUS:20240303T232248Z:b3c6eed3-9c42-4f48-9c3c-381e011021ce",
-        "X-MSEdge-Ref": "Ref A: DA57628F1C6646B9B4615971B9D528E5 Ref B: SJC211051205035 Ref C: 2024-03-03T23:22:48Z"
+        "x-ms-correlation-request-id": "c87370a9-7ddb-402e-8a1e-5aba2cdb731d",
+        "x-ms-ratelimit-remaining-subscription-reads": "11999",
+        "x-ms-request-id": "c87370a9-7ddb-402e-8a1e-5aba2cdb731d",
+        "x-ms-routing-request-id": "WESTUS:20240304T165917Z:c87370a9-7ddb-402e-8a1e-5aba2cdb731d",
+        "X-MSEdge-Ref": "Ref A: 94D221A91E364929B6B920964CE94609 Ref B: SJC211051204027 Ref C: 2024-03-04T16:59:17Z"
       },
       "ResponseBody": {
         "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57",
@@ -54,11 +54,11 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "10631",
+        "Content-Length": "12241",
         "Content-Type": "application/json",
-        "traceparent": "00-f6d8cfbe5f7a6478ceb0a14341bf9b51-739607eb2667abfb-00",
+        "traceparent": "00-7b02db8f7037760b4261c188f0617ba0-ab2c8305684ecbc1-00",
         "User-Agent": "azsdk-net-ResourceManager.Resources/1.8.0-alpha.20240222.2 (.NET 7.0.16; Microsoft Windows 10.0.22631)",
-        "x-ms-client-request-id": "2e1cad2bed81752ac767aae6e4f0ee00",
+        "x-ms-client-request-id": "fd2934fb7dcc68849d5ada869fbdbe05",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
@@ -71,7 +71,7 @@
               "_generator": {
                 "name": "bicep",
                 "version": "0.25.53.49325",
-                "templateHash": "99131329082906548"
+                "templateHash": "3285949624170797119"
               }
             },
             "parameters": {
@@ -124,7 +124,7 @@
                       "_generator": {
                         "name": "bicep",
                         "version": "0.25.53.49325",
-                        "templateHash": "6148680460764583089"
+                        "templateHash": "5545856387420951674"
                       }
                     },
                     "parameters": {
@@ -217,7 +217,7 @@
                       {
                         "type": "Microsoft.KeyVault/vaults",
                         "apiVersion": "2023-02-01",
-                        "name": "kv-TEST",
+                        "name": "[toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24))]",
                         "location": "westus",
                         "properties": {
                           "tenantId": "[tenant().tenantId]",
@@ -231,7 +231,7 @@
                       {
                         "type": "Microsoft.KeyVault/vaults/accessPolicies",
                         "apiVersion": "2023-02-01",
-                        "name": "[format(\u0027{0}/{1}\u0027, \u0027kv-TEST\u0027, \u0027add\u0027)]",
+                        "name": "[format(\u0027{0}/{1}\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24)), \u0027add\u0027)]",
                         "properties": {
                           "accessPolicies": [
                             {
@@ -247,41 +247,55 @@
                           ]
                         },
                         "dependsOn": [
-                          "[resourceId(\u0027Microsoft.KeyVault/vaults\u0027, \u0027kv-TEST\u0027)]",
+                          "[resourceId(\u0027Microsoft.KeyVault/vaults\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24)))]",
                           "[resourceId(\u0027Microsoft.Web/sites\u0027, \u0027frontEnd-TEST\u0027)]"
                         ]
                       },
                       {
+                        "type": "Microsoft.Authorization/roleAssignments",
+                        "apiVersion": "2022-04-01",
+                        "scope": "[format(\u0027Microsoft.KeyVault/vaults/{0}\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24)))]",
+                        "name": "[guid(resourceId(\u0027Microsoft.KeyVault/vaults\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24))), \u002700000000-0000-0000-0000-000000000000\u0027, subscriptionResourceId(\u002700000000-0000-0000-0000-000000000000\u0027, \u0027Microsoft.Authorization/roleDefinitions\u0027, \u002700482a5a-887f-4fb3-b363-3b7fe8e74483\u0027))]",
+                        "properties": {
+                          "roleDefinitionId": "[subscriptionResourceId(\u002700000000-0000-0000-0000-000000000000\u0027, \u0027Microsoft.Authorization/roleDefinitions\u0027, \u002700482a5a-887f-4fb3-b363-3b7fe8e74483\u0027)]",
+                          "principalId": "00000000-0000-0000-0000-000000000000",
+                          "principalType": "ServicePrincipal"
+                        },
+                        "dependsOn": [
+                          "[resourceId(\u0027Microsoft.KeyVault/vaults\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24)))]"
+                        ]
+                      },
+                      {
                         "type": "Microsoft.KeyVault/vaults/secrets",
                         "apiVersion": "2023-02-01",
-                        "name": "[format(\u0027{0}/{1}\u0027, \u0027kv-TEST\u0027, \u0027sqlAdminPassword\u0027)]",
+                        "name": "[format(\u0027{0}/{1}\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24)), \u0027sqlAdminPassword\u0027)]",
                         "properties": {
                           "value": "[parameters(\u0027sqlAdminPassword\u0027)]"
                         },
                         "dependsOn": [
-                          "[resourceId(\u0027Microsoft.KeyVault/vaults\u0027, \u0027kv-TEST\u0027)]"
+                          "[resourceId(\u0027Microsoft.KeyVault/vaults\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24)))]"
                         ]
                       },
                       {
                         "type": "Microsoft.KeyVault/vaults/secrets",
                         "apiVersion": "2023-02-01",
-                        "name": "[format(\u0027{0}/{1}\u0027, \u0027kv-TEST\u0027, \u0027appUserPassword\u0027)]",
+                        "name": "[format(\u0027{0}/{1}\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24)), \u0027appUserPassword\u0027)]",
                         "properties": {
                           "value": "[parameters(\u0027appUserPassword\u0027)]"
                         },
                         "dependsOn": [
-                          "[resourceId(\u0027Microsoft.KeyVault/vaults\u0027, \u0027kv-TEST\u0027)]"
+                          "[resourceId(\u0027Microsoft.KeyVault/vaults\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24)))]"
                         ]
                       },
                       {
                         "type": "Microsoft.KeyVault/vaults/secrets",
                         "apiVersion": "2023-02-01",
-                        "name": "[format(\u0027{0}/{1}\u0027, \u0027kv-TEST\u0027, \u0027connectionString\u0027)]",
+                        "name": "[format(\u0027{0}/{1}\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24)), \u0027connectionString\u0027)]",
                         "properties": {
                           "value": "[format(\u0027Server={0}; Database={1}; User=appUser; Password={2}\u0027, reference(resourceId(\u0027Microsoft.Sql/servers\u0027, toLower(take(concat(\u0027sqlserver\u0027, uniqueString(resourceGroup().id)), 24))), \u00272022-08-01-preview\u0027).fullyQualifiedDomainName, \u0027db\u0027, parameters(\u0027appUserPassword\u0027))]"
                         },
                         "dependsOn": [
-                          "[resourceId(\u0027Microsoft.KeyVault/vaults\u0027, \u0027kv-TEST\u0027)]",
+                          "[resourceId(\u0027Microsoft.KeyVault/vaults\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24)))]",
                           "[resourceId(\u0027Microsoft.Sql/servers/databases\u0027, toLower(take(concat(\u0027sqlserver\u0027, uniqueString(resourceGroup().id)), 24)), \u0027db\u0027)]",
                           "[resourceId(\u0027Microsoft.Sql/servers\u0027, toLower(take(concat(\u0027sqlserver\u0027, uniqueString(resourceGroup().id)), 24)))]"
                         ]
@@ -407,7 +421,7 @@
                       },
                       "vaultUri": {
                         "type": "string",
-                        "value": "[reference(resourceId(\u0027Microsoft.KeyVault/vaults\u0027, \u0027kv-TEST\u0027), \u00272023-02-01\u0027).vaultUri]"
+                        "value": "[reference(resourceId(\u0027Microsoft.KeyVault/vaults\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24))), \u00272023-02-01\u0027).vaultUri]"
                       },
                       "sqlServerName": {
                         "type": "string",
@@ -450,19 +464,19 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "3515",
+        "Content-Length": "3780",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 03 Mar 2024 23:22:53 GMT",
+        "Date": "Mon, 04 Mar 2024 16:59:22 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "b66c026d-03cc-48c4-aca7-31cd9f1924d7",
+        "x-ms-correlation-request-id": "ca842f39-e971-4fa3-b09f-862142c5df49",
         "x-ms-ratelimit-remaining-subscription-writes": "1199",
-        "x-ms-request-id": "b66c026d-03cc-48c4-aca7-31cd9f1924d7",
-        "x-ms-routing-request-id": "WESTUS:20240303T232254Z:b66c026d-03cc-48c4-aca7-31cd9f1924d7",
-        "X-MSEdge-Ref": "Ref A: 9DB79EE8B3524257917BF769B545C411 Ref B: SJC211051205035 Ref C: 2024-03-03T23:22:52Z"
+        "x-ms-request-id": "ca842f39-e971-4fa3-b09f-862142c5df49",
+        "x-ms-routing-request-id": "WESTUS:20240304T165922Z:ca842f39-e971-4fa3-b09f-862142c5df49",
+        "X-MSEdge-Ref": "Ref A: CE8B92A6952242559A6920DC422BA2D7 Ref B: SJC211051204027 Ref C: 2024-03-04T16:59:20Z"
       },
       "ResponseBody": {
         "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/providers/Microsoft.Resources/deployments/WebSiteUsingL1",
@@ -470,7 +484,7 @@
         "type": "Microsoft.Resources/deployments",
         "location": "westus",
         "properties": {
-          "templateHash": "99131329082906548",
+          "templateHash": "3285949624170797119",
           "parameters": {
             "sqlAdminPassword": {
               "type": "SecureString"
@@ -483,7 +497,7 @@
           "provisioningState": "Succeeded",
           "timestamp": "0001-01-01T00:00:00Z",
           "duration": "PT0S",
-          "correlationId": "b66c026d-03cc-48c4-aca7-31cd9f1924d7",
+          "correlationId": "ca842f39-e971-4fa3-b09f-862142c5df49",
           "providers": [
             {
               "namespace": "Microsoft.Resources",
@@ -537,19 +551,22 @@
               "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.Web/sites/frontEnd-TEST/config/logs"
             },
             {
-              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.KeyVault/vaults/kv-TEST"
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.KeyVault/vaults/kvbup6avpo2jgk2"
             },
             {
-              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.KeyVault/vaults/kv-TEST/accessPolicies/add"
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.KeyVault/vaults/kvbup6avpo2jgk2/accessPolicies/add"
             },
             {
-              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.KeyVault/vaults/kv-TEST/secrets/sqlAdminPassword"
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.KeyVault/vaults/kvbup6avpo2jgk2/providers/Microsoft.Authorization/roleAssignments/65fbe8c8-0b1b-5f0c-a1a1-9b7557faa1cf"
             },
             {
-              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.KeyVault/vaults/kv-TEST/secrets/appUserPassword"
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.KeyVault/vaults/kvbup6avpo2jgk2/secrets/sqlAdminPassword"
             },
             {
-              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.KeyVault/vaults/kv-TEST/secrets/connectionString"
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.KeyVault/vaults/kvbup6avpo2jgk2/secrets/appUserPassword"
+            },
+            {
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.KeyVault/vaults/kvbup6avpo2jgk2/secrets/connectionString"
             },
             {
               "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.Sql/servers/sqlserverbup6avpo2jgk2"
@@ -575,7 +592,7 @@
     }
   ],
   "Variables": {
-    "RandomSeed": "660465466",
+    "RandomSeed": "113485813",
     "RESOURCE_MANAGER_URL": null,
     "SUBSCRIPTION_ID": "faa080af-c1d8-40ad-9cce-e1a450ca5b57"
   }
