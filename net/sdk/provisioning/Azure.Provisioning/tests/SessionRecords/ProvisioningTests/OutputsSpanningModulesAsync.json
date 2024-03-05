@@ -6,9 +6,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "traceparent": "00-55df18e755aa3b8ccd22db1386953312-55ae31fd44b418a0-00",
+        "traceparent": "00-69115f0d33204677e8d3dc5ed60469e3-5da45a8461be8e6b-00",
         "User-Agent": "azsdk-net-ResourceManager/1.11.0-alpha.20240222.6 (.NET 7.0.16; Microsoft Windows 10.0.22631)",
-        "x-ms-client-request-id": "294501b9925c2b2da09330c041edea19",
+        "x-ms-client-request-id": "04263477c80cdf11ea7dd6c3864a7d11",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": null,
@@ -17,17 +17,17 @@
         "Cache-Control": "no-cache",
         "Content-Length": "467",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 04 Mar 2024 16:44:17 GMT",
+        "Date": "Tue, 05 Mar 2024 15:53:25 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "34930719-ed7d-405b-8e16-8d016d984257",
+        "x-ms-correlation-request-id": "516fb2e4-8e74-457c-9ef1-dd871a8241af",
         "x-ms-ratelimit-remaining-subscription-reads": "11999",
-        "x-ms-request-id": "34930719-ed7d-405b-8e16-8d016d984257",
-        "x-ms-routing-request-id": "WESTUS:20240304T164418Z:34930719-ed7d-405b-8e16-8d016d984257",
-        "X-MSEdge-Ref": "Ref A: 7321ECD70CA24135992B8A1C42E5DBB4 Ref B: SJC211051205051 Ref C: 2024-03-04T16:44:17Z"
+        "x-ms-request-id": "516fb2e4-8e74-457c-9ef1-dd871a8241af",
+        "x-ms-routing-request-id": "WESTUS:20240305T155325Z:516fb2e4-8e74-457c-9ef1-dd871a8241af",
+        "X-MSEdge-Ref": "Ref A: D8945EB14D7E4E30801ECBA1D112881F Ref B: SJC211051203021 Ref C: 2024-03-05T15:53:25Z"
       },
       "ResponseBody": {
         "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57",
@@ -54,11 +54,11 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "10336",
+        "Content-Length": "11155",
         "Content-Type": "application/json",
-        "traceparent": "00-685011e428212e6a7f34ca809ab925ec-0989e0899ff8dde8-00",
+        "traceparent": "00-bcec7c8da0aed7417614161fb1af3db9-372de5392d25cc2c-00",
         "User-Agent": "azsdk-net-ResourceManager.Resources/1.8.0-alpha.20240222.2 (.NET 7.0.16; Microsoft Windows 10.0.22631)",
-        "x-ms-client-request-id": "fbafdb57dee7bdf4403a8c50609566a9",
+        "x-ms-client-request-id": "b71b921db84c1ee4a9cbdbd272744a33",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
@@ -71,7 +71,7 @@
               "_generator": {
                 "name": "bicep",
                 "version": "0.25.53.49325",
-                "templateHash": "16010803402465310513"
+                "templateHash": "207480315582005184"
               }
             },
             "parameters": {
@@ -269,8 +269,14 @@
                   },
                   "mode": "Incremental",
                   "parameters": {
+                    "enableSoftDelete": {
+                      "value": "[parameters(\u0027enableSoftDelete\u0027)]"
+                    },
                     "STORAGE_PRINCIPAL_ID": {
                       "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg1-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg1_TEST_module\u0027), \u00272022-09-01\u0027).outputs.STORAGE_PRINCIPAL_ID.value]"
+                    },
+                    "SERVICE_API_IDENTITY_PRINCIPAL_ID": {
+                      "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg3-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg3_TEST_module\u0027), \u00272022-09-01\u0027).outputs.SERVICE_API_IDENTITY_PRINCIPAL_ID.value]"
                     }
                   },
                   "template": {
@@ -280,12 +286,25 @@
                       "_generator": {
                         "name": "bicep",
                         "version": "0.25.53.49325",
-                        "templateHash": "5652608289668629048"
+                        "templateHash": "10829903661592279625"
                       }
                     },
                     "parameters": {
+                      "enableSoftDelete": {
+                        "type": "string",
+                        "defaultValue": "True",
+                        "metadata": {
+                          "description": "Enable soft delete"
+                        }
+                      },
                       "STORAGE_PRINCIPAL_ID": {
                         "type": "string",
+                        "metadata": {
+                          "description": ""
+                        }
+                      },
+                      "SERVICE_API_IDENTITY_PRINCIPAL_ID": {
+                        "type": "securestring",
                         "metadata": {
                           "description": ""
                         }
@@ -332,7 +351,8 @@
                 },
                 "dependsOn": [
                   "[subscriptionResourceId(\u0027Microsoft.Resources/resourceGroups\u0027, \u0027rg2-TEST\u0027)]",
-                  "[extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg1-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg1_TEST_module\u0027)]"
+                  "[extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg1-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg1_TEST_module\u0027)]",
+                  "[extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg3-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg3_TEST_module\u0027)]"
                 ]
               },
               {
@@ -455,19 +475,19 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "3974",
+        "Content-Length": "4448",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 04 Mar 2024 16:44:22 GMT",
+        "Date": "Tue, 05 Mar 2024 15:53:29 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "ec4763a2-24b1-4909-96b4-1115086f0093",
+        "x-ms-correlation-request-id": "54cff0a8-f560-44a1-a498-599015671b49",
         "x-ms-ratelimit-remaining-subscription-writes": "1199",
-        "x-ms-request-id": "ec4763a2-24b1-4909-96b4-1115086f0093",
-        "x-ms-routing-request-id": "WESTUS:20240304T164422Z:ec4763a2-24b1-4909-96b4-1115086f0093",
-        "X-MSEdge-Ref": "Ref A: 0950DB61E0D94BEF8B3397AD8333E710 Ref B: SJC211051205051 Ref C: 2024-03-04T16:44:20Z"
+        "x-ms-request-id": "54cff0a8-f560-44a1-a498-599015671b49",
+        "x-ms-routing-request-id": "WESTUS:20240305T155330Z:54cff0a8-f560-44a1-a498-599015671b49",
+        "X-MSEdge-Ref": "Ref A: AA21508F36B14B048A9367A70176606D Ref B: SJC211051203021 Ref C: 2024-03-05T15:53:28Z"
       },
       "ResponseBody": {
         "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/providers/Microsoft.Resources/deployments/OutputsSpanningModules",
@@ -475,7 +495,7 @@
         "type": "Microsoft.Resources/deployments",
         "location": "westus",
         "properties": {
-          "templateHash": "16010803402465310513",
+          "templateHash": "207480315582005184",
           "parameters": {
             "enableSoftDelete": {
               "type": "String",
@@ -486,7 +506,7 @@
           "provisioningState": "Succeeded",
           "timestamp": "0001-01-01T00:00:00Z",
           "duration": "PT0S",
-          "correlationId": "ec4763a2-24b1-4909-96b4-1115086f0093",
+          "correlationId": "54cff0a8-f560-44a1-a498-599015671b49",
           "providers": [
             {
               "namespace": "Microsoft.Resources",
@@ -543,9 +563,20 @@
                   "resourceName": "rg1_TEST_module"
                 },
                 {
+                  "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg3-TEST/providers/Microsoft.Resources/deployments/rg3_TEST_module",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "rg3_TEST_module"
+                },
+                {
                   "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg1-TEST/providers/Microsoft.Resources/deployments/rg1_TEST_module",
                   "resourceType": "Microsoft.Resources/deployments",
                   "resourceName": "rg1_TEST_module",
+                  "apiVersion": "2022-09-01"
+                },
+                {
+                  "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg3-TEST/providers/Microsoft.Resources/deployments/rg3_TEST_module",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "rg3_TEST_module",
                   "apiVersion": "2022-09-01"
                 }
               ],
@@ -600,7 +631,7 @@
     }
   ],
   "Variables": {
-    "RandomSeed": "1846094182",
+    "RandomSeed": "1027512299",
     "RESOURCE_MANAGER_URL": null,
     "SUBSCRIPTION_ID": "faa080af-c1d8-40ad-9cce-e1a450ca5b57"
   }
