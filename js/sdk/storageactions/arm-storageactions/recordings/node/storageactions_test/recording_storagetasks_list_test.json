@@ -1,0 +1,81 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/azure_subscription_id/resourceGroups/myjstest/providers/Microsoft.StorageActions/storageTasks?api-version=2023-01-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-js-arm-storageactions/1.0.0-beta.1 core-rest-pipeline/1.14.1 Node/18.19.0 OS/(x64-Windows_NT-10.0.22621)",
+        "x-ms-client-request-id": "fa0f597b-cdb3-4871-87a6-6bf0bf67d609"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "798",
+        "Content-Type": "application/json",
+        "Date": "Thu, 07 Mar 2024 09:28:15 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "9d5df116-30de-4279-8378-8eae33dce191",
+        "x-ms-ratelimit-remaining-subscription-reads": "11999",
+        "x-ms-request-id": "8085b5d1-5ce0-49c4-888b-2e85e17e0df2",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20240307T092816Z:9d5df116-30de-4279-8378-8eae33dce191",
+        "X-MSEdge-Ref": "Ref A: 6DBD799B4C474BA5969BA41202C76CB9 Ref B: MAA201060516019 Ref C: 2024-03-07T09:28:15Z"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/azure_subscription_id/resourceGroups/myjstest/providers/Microsoft.StorageActions/storageTasks/resourcetest",
+            "name": "resourcetest",
+            "type": "Microsoft.StorageActions/storageTasks",
+            "location": "eastus2euap",
+            "identity": {
+              "principalId": "e0b8c160-39d6-487b-ae62-c6bdfddc812c",
+              "tenantId": "88888888-8888-8888-8888-888888888888",
+              "type": "SystemAssigned"
+            },
+            "properties": {
+              "enabled": true,
+              "description": "My Storage task",
+              "action": {
+                "if": {
+                  "condition": "[[equals(AccessTier, \u0027Cool\u0027)]]",
+                  "operations": [
+                    {
+                      "name": "SetBlobTier",
+                      "parameters": {
+                        "tier": "Hot"
+                      },
+                      "onSuccess": "continue",
+                      "onFailure": "break"
+                    }
+                  ]
+                },
+                "else": {
+                  "operations": [
+                    {
+                      "name": "DeleteBlob",
+                      "onSuccess": "continue",
+                      "onFailure": "break"
+                    }
+                  ]
+                }
+              },
+              "taskVersion": 1,
+              "provisioningState": "Succeeded",
+              "creationTimeInUtc": "2024-03-07T09:27:52.5076009Z"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
+}
