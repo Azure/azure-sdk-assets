@@ -6,9 +6,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "traceparent": "00-c169aaa3076fa7385e7ff39e8db949e0-f966d543cd9ecc63-00",
-        "User-Agent": "azsdk-net-ResourceManager/1.11.0-alpha.20240222.6 (.NET 7.0.16; Microsoft Windows 10.0.22631)",
-        "x-ms-client-request-id": "554df12ff50b4d981b20f8c540614ffd",
+        "traceparent": "00-03d271c0f5407b078436814d119a579d-fd6e6f3c0a0d683f-00",
+        "User-Agent": "azsdk-net-ResourceManager/1.11.0-alpha.20240310.2 (.NET 7.0.16; Microsoft Windows 10.0.22631)",
+        "x-ms-client-request-id": "56838bac142a4eeb42905ce45d75f4de",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": null,
@@ -17,17 +17,17 @@
         "Cache-Control": "no-cache",
         "Content-Length": "467",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 03 Mar 2024 23:18:49 GMT",
+        "Date": "Tue, 12 Mar 2024 17:10:21 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "927796b6-d0ec-4022-b269-20c7c1bc36c4",
-        "x-ms-ratelimit-remaining-subscription-reads": "11998",
-        "x-ms-request-id": "927796b6-d0ec-4022-b269-20c7c1bc36c4",
-        "x-ms-routing-request-id": "WESTUS:20240303T231849Z:927796b6-d0ec-4022-b269-20c7c1bc36c4",
-        "X-MSEdge-Ref": "Ref A: 5DE21BDB5C1F403A9A143547C0889484 Ref B: SJC211051205035 Ref C: 2024-03-03T23:18:49Z"
+        "x-ms-correlation-request-id": "015a38ed-1059-4e40-8e9e-4c8d3a69c079",
+        "x-ms-ratelimit-remaining-subscription-reads": "11999",
+        "x-ms-request-id": "015a38ed-1059-4e40-8e9e-4c8d3a69c079",
+        "x-ms-routing-request-id": "WESTUS:20240312T171022Z:015a38ed-1059-4e40-8e9e-4c8d3a69c079",
+        "X-MSEdge-Ref": "Ref A: E467A3379B7544948775B898FEA81AE9 Ref B: SJC211051203007 Ref C: 2024-03-12T17:10:21Z"
       },
       "ResponseBody": {
         "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57",
@@ -54,11 +54,11 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "1791",
+        "Content-Length": "3028",
         "Content-Type": "application/json",
-        "traceparent": "00-ada1736bccc31ad084e4d90dcaeebb2d-e94e1bd0e8f21594-00",
-        "User-Agent": "azsdk-net-ResourceManager.Resources/1.8.0-alpha.20240222.2 (.NET 7.0.16; Microsoft Windows 10.0.22631)",
-        "x-ms-client-request-id": "a9c8b7e583b04d5ef6c22c06c11b5a9e",
+        "traceparent": "00-79da4735274cff13e50ece62895d7b31-9c2ef4d3959bfa69-00",
+        "User-Agent": "azsdk-net-ResourceManager.Resources/1.8.0-alpha.20240309.1 (.NET 7.0.16; Microsoft Windows 10.0.22631)",
+        "x-ms-client-request-id": "e3f24c7a6910e6515f402eedc91f4fea",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
@@ -71,7 +71,7 @@
               "_generator": {
                 "name": "bicep",
                 "version": "0.25.53.49325",
-                "templateHash": "7332378711058035854"
+                "templateHash": "8094665509866098715"
               }
             },
             "resources": [
@@ -101,25 +101,39 @@
                       "_generator": {
                         "name": "bicep",
                         "version": "0.25.53.49325",
-                        "templateHash": "3205742012849145826"
+                        "templateHash": "11226212472684844821"
                       }
                     },
                     "resources": [
                       {
                         "type": "Microsoft.AppConfiguration/configurationStores",
                         "apiVersion": "2023-03-01",
-                        "name": "store-TEST",
+                        "name": "[toLower(take(concat(\u0027store\u0027, uniqueString(resourceGroup().id)), 24))]",
                         "location": "westus",
                         "sku": {
-                          "name": "free"
+                          "name": "standard"
                         },
                         "properties": {}
+                      },
+                      {
+                        "type": "Microsoft.Authorization/roleAssignments",
+                        "apiVersion": "2022-04-01",
+                        "scope": "[format(\u0027Microsoft.AppConfiguration/configurationStores/{0}\u0027, toLower(take(concat(\u0027store\u0027, uniqueString(resourceGroup().id)), 24)))]",
+                        "name": "[guid(resourceId(\u0027Microsoft.AppConfiguration/configurationStores\u0027, toLower(take(concat(\u0027store\u0027, uniqueString(resourceGroup().id)), 24))), \u002700000000-0000-0000-0000-000000000000\u0027, subscriptionResourceId(\u002700000000-0000-0000-0000-000000000000\u0027, \u0027Microsoft.Authorization/roleDefinitions\u0027, \u00275ae67dd6-50cb-40e7-96ff-dc2bfa4b606b\u0027))]",
+                        "properties": {
+                          "roleDefinitionId": "[subscriptionResourceId(\u002700000000-0000-0000-0000-000000000000\u0027, \u0027Microsoft.Authorization/roleDefinitions\u0027, \u00275ae67dd6-50cb-40e7-96ff-dc2bfa4b606b\u0027)]",
+                          "principalId": "00000000-0000-0000-0000-000000000000",
+                          "principalType": "ServicePrincipal"
+                        },
+                        "dependsOn": [
+                          "[resourceId(\u0027Microsoft.AppConfiguration/configurationStores\u0027, toLower(take(concat(\u0027store\u0027, uniqueString(resourceGroup().id)), 24)))]"
+                        ]
                       }
                     ],
                     "outputs": {
-                      "appConfigurationStore_sgecYnln3_endpoint": {
+                      "appConfigurationStore_4WdTZ5u6X_endpoint": {
                         "type": "string",
-                        "value": "[reference(resourceId(\u0027Microsoft.AppConfiguration/configurationStores\u0027, \u0027store-TEST\u0027), \u00272023-03-01\u0027).endpoint]"
+                        "value": "[reference(resourceId(\u0027Microsoft.AppConfiguration/configurationStores\u0027, toLower(take(concat(\u0027store\u0027, uniqueString(resourceGroup().id)), 24))), \u00272023-03-01\u0027).endpoint]"
                       }
                     }
                   }
@@ -130,9 +144,9 @@
               }
             ],
             "outputs": {
-              "appConfigurationStore_sgecYnln3_endpoint": {
+              "appConfigurationStore_4WdTZ5u6X_endpoint": {
                 "type": "string",
-                "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg_TEST_module\u0027), \u00272022-09-01\u0027).outputs.appConfigurationStore_sgecYnln3_endpoint.value]"
+                "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg_TEST_module\u0027), \u00272022-09-01\u0027).outputs.appConfigurationStore_4WdTZ5u6X_endpoint.value]"
               }
             }
           },
@@ -142,19 +156,19 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "1408",
+        "Content-Length": "1663",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 03 Mar 2024 23:18:53 GMT",
+        "Date": "Tue, 12 Mar 2024 17:10:27 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "ee9589db-8a79-4d9e-a1c0-371cbc2e6d06",
+        "x-ms-correlation-request-id": "edbd2f10-ec58-4c3f-8f1a-05bdffa53f6a",
         "x-ms-ratelimit-remaining-subscription-writes": "1199",
-        "x-ms-request-id": "ee9589db-8a79-4d9e-a1c0-371cbc2e6d06",
-        "x-ms-routing-request-id": "WESTUS:20240303T231853Z:ee9589db-8a79-4d9e-a1c0-371cbc2e6d06",
-        "X-MSEdge-Ref": "Ref A: B12FBAD369804DE082BD02AF7C7241C0 Ref B: SJC211051205035 Ref C: 2024-03-03T23:18:52Z"
+        "x-ms-request-id": "edbd2f10-ec58-4c3f-8f1a-05bdffa53f6a",
+        "x-ms-routing-request-id": "WESTUS:20240312T171028Z:edbd2f10-ec58-4c3f-8f1a-05bdffa53f6a",
+        "X-MSEdge-Ref": "Ref A: 94AAB936C78D4BB6A399BA88E0F9E0B9 Ref B: SJC211051203007 Ref C: 2024-03-12T17:10:27Z"
       },
       "ResponseBody": {
         "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/providers/Microsoft.Resources/deployments/AppConfiguration",
@@ -162,12 +176,12 @@
         "type": "Microsoft.Resources/deployments",
         "location": "westus",
         "properties": {
-          "templateHash": "7332378711058035854",
+          "templateHash": "8094665509866098715",
           "mode": "Incremental",
           "provisioningState": "Succeeded",
           "timestamp": "0001-01-01T00:00:00Z",
           "duration": "PT0S",
-          "correlationId": "ee9589db-8a79-4d9e-a1c0-371cbc2e6d06",
+          "correlationId": "edbd2f10-ec58-4c3f-8f1a-05bdffa53f6a",
           "providers": [
             {
               "namespace": "Microsoft.Resources",
@@ -209,7 +223,10 @@
               "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.Resources/deployments/rg_TEST_module"
             },
             {
-              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.AppConfiguration/configurationStores/store-TEST"
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.AppConfiguration/configurationStores/storebup6avpo2jgk2"
+            },
+            {
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-TEST/providers/Microsoft.AppConfiguration/configurationStores/storebup6avpo2jgk2/providers/Microsoft.Authorization/roleAssignments/37bba732-76ad-5792-baca-b8f6d252409b"
             }
           ]
         }
@@ -217,7 +234,7 @@
     }
   ],
   "Variables": {
-    "RandomSeed": "1698315332",
+    "RandomSeed": "1443187294",
     "RESOURCE_MANAGER_URL": null,
     "SUBSCRIPTION_ID": "faa080af-c1d8-40ad-9cce-e1a450ca5b57"
   }
