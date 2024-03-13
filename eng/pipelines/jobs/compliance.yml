@@ -1,5 +1,5 @@
 parameters:
-  - name: TargetTag
+  - name: CheckoutTarget
     type: str
     default: ''
   - name: steps
@@ -21,7 +21,8 @@ jobs:
     steps:
       - ${{ if ne(parameters.TargetTag, '') }}:
         - pwsh:
-            git clone --branch ${{ parameters.TargetTag }} $(Build.SourcesDirectory)
+            git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git $(Build.SourcesDirectory)
+            git checkout ${{ parameters.CheckoutTarget }}
           displayName: Checkout target tag to sources directory
       - ${{ else }}:
         - checkout: self
