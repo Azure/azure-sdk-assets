@@ -1,0 +1,33 @@
+parameters:
+  - name: TargetTag
+    type: str
+    default: ''
+  - name: steps
+    type: object
+    default: {}
+
+
+jobs:
+  - job: Compliance
+    pool:
+      name: azsdk-pool-mms-win-2022-general
+      vmImage: MMS2022
+      os: windows
+
+    # per the guidance of the codeql team:
+    # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/snippets/codeql-3000-other-issues#timeouts
+    timeoutInMinutes: 360
+
+    steps:
+      - ${{ if ne(parameters.TargetTag, '') }}:
+        - pwsh:
+            git clone --branch ${{ parameters.TargetTag }} $(Build.SourcesDirectory)
+          displayName: Checkout target tag to sources directory
+      - ${{ else }}:
+        - checkout: self
+
+      - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
+        displayName: Invoke CredScan
+        inputs:
+          toolVersion: 2.3.12.23
+          scanFolder: "$(Build.SourcesDirectory)"
