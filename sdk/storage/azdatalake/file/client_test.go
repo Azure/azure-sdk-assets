@@ -2984,7 +2984,7 @@ func (s *UnrecordedTestSuite) TestFileUploadFile() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *RecordedTestSuite) TestFileUploadBufferEncryptionContext() {
+func (s *UnrecordedTestSuite) TestFileUploadBufferEncryptionContext() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3034,7 +3034,7 @@ func (s *RecordedTestSuite) TestFileUploadBufferEncryptionContext() {
 
 }
 
-func (s *RecordedTestSuite) TestFileUploadFileEncryptionContext() {
+func (s *UnrecordedTestSuite) TestFileUploadFileEncryptionContext() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3087,7 +3087,7 @@ func (s *RecordedTestSuite) TestFileUploadFileEncryptionContext() {
 	_require.Equal(testcommon.TestEncryptionContext, *dResp.EncryptionContext)
 }
 
-func (s *RecordedTestSuite) TestFileDownloadStreamEncryptionContext() {
+func (s *UnrecordedTestSuite) TestFileDownloadStreamEncryptionContext() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3613,7 +3613,7 @@ func (s *RecordedTestSuite) TestDownloadDataContentMD5() {
 	_require.Equal(resp1.ContentMD5, mdf[:])
 }
 
-func (s *RecordedTestSuite) TestFileAppendDataWithAcquireLease() {
+func (s *UnrecordedTestSuite) TestFileAppendDataWithAcquireLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
