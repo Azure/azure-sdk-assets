@@ -3024,7 +3024,6 @@ func (s *RecordedTestSuite) TestFileUploadBufferEncryptionContext() {
 	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
 		Concurrency:       5,
 		ChunkSize:         4 * 1024 * 1024,
-		EncryptionContext: &testcommon.TestEncryptionContext,
 	})
 	_require.NoError(err)
 
