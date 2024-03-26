@@ -6,9 +6,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "traceparent": "00-64006ea5dde90cc6d7e55b560429f8b3-04036046cc90185e-00",
-        "User-Agent": "azsdk-net-ResourceManager/1.12.0-alpha.20240323.1 (.NET 7.0.17; Microsoft Windows 10.0.22631)",
-        "x-ms-client-request-id": "ecc8a92a5918a23c6b470c068603421a",
+        "traceparent": "00-6ada224929036a7d58c25f5f7ae3feca-b8b3b84c822ead34-00",
+        "User-Agent": "azsdk-net-ResourceManager/1.11.0 (.NET 7.0.17; Microsoft Windows 10.0.22631)",
+        "x-ms-client-request-id": "b4f8edc0a16ae5753047d477cc013767",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": null,
@@ -17,17 +17,17 @@
         "Cache-Control": "no-cache",
         "Content-Length": "467",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sat, 23 Mar 2024 16:43:42 GMT",
+        "Date": "Tue, 26 Mar 2024 15:45:28 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "eae14ed5-a75a-4430-abb5-29a9022c00ec",
+        "x-ms-correlation-request-id": "7999954d-405b-4e35-8425-efdf9da08468",
         "x-ms-ratelimit-remaining-subscription-reads": "11999",
-        "x-ms-request-id": "eae14ed5-a75a-4430-abb5-29a9022c00ec",
-        "x-ms-routing-request-id": "WESTUS:20240323T164342Z:eae14ed5-a75a-4430-abb5-29a9022c00ec",
-        "X-MSEdge-Ref": "Ref A: 5A01E4B93D7445189B33E1B46661D236 Ref B: SJC211051204019 Ref C: 2024-03-23T16:43:42Z"
+        "x-ms-request-id": "7999954d-405b-4e35-8425-efdf9da08468",
+        "x-ms-routing-request-id": "WESTUS:20240326T154528Z:7999954d-405b-4e35-8425-efdf9da08468",
+        "X-MSEdge-Ref": "Ref A: 760749636B3A4F01B5DB495294D9D3CC Ref B: SJC211051204027 Ref C: 2024-03-26T15:45:27Z"
       },
       "ResponseBody": {
         "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57",
@@ -54,11 +54,11 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "11193",
+        "Content-Length": "6027",
         "Content-Type": "application/json",
-        "traceparent": "00-29b7aaa56376d9c9960d35cf87cb8cd7-69550c0176ccb567-00",
-        "User-Agent": "azsdk-net-ResourceManager.Resources/1.8.0-alpha.20240322.2 (.NET 7.0.17; Microsoft Windows 10.0.22631)",
-        "x-ms-client-request-id": "1e1d77f05fce8dd62bb316753b0dcb0c",
+        "traceparent": "00-e60e203e0eb9634243a3a17149b5f216-f57e3291c622bccb-00",
+        "User-Agent": "azsdk-net-ResourceManager.Resources/1.7.1 (.NET 7.0.17; Microsoft Windows 10.0.22631)",
+        "x-ms-client-request-id": "c9bb010dd65d217dceae48f66383ffef",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
@@ -71,7 +71,7 @@
               "_generator": {
                 "name": "bicep",
                 "version": "0.25.53.49325",
-                "templateHash": "1797052236819955027"
+                "templateHash": "14166299859508644406"
               }
             },
             "parameters": {
@@ -124,9 +124,6 @@
                   "parameters": {
                     "enableSoftDelete": {
                       "value": "[parameters(\u0027enableSoftDelete\u0027)]"
-                    },
-                    "SERVICE_API_IDENTITY_PRINCIPAL_ID": {
-                      "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg3-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg3_TEST_module\u0027), \u00272022-09-01\u0027).outputs.SERVICE_API_IDENTITY_PRINCIPAL_ID.value]"
                     }
                   },
                   "template": {
@@ -136,7 +133,7 @@
                       "_generator": {
                         "name": "bicep",
                         "version": "0.25.53.49325",
-                        "templateHash": "16416484690521483733"
+                        "templateHash": "11280069678076067222"
                       }
                     },
                     "parameters": {
@@ -146,61 +143,19 @@
                         "metadata": {
                           "description": "Enable soft delete"
                         }
-                      },
-                      "SERVICE_API_IDENTITY_PRINCIPAL_ID": {
-                        "type": "securestring",
-                        "metadata": {
-                          "description": ""
-                        }
                       }
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.Web/serverfarms",
-                        "apiVersion": "2021-02-01",
-                        "name": "appServicePlan-TEST",
+                        "type": "Microsoft.Storage/storageAccounts",
+                        "apiVersion": "2022-09-01",
+                        "name": "[toLower(take(concat(\u0027sa\u0027, uniqueString(resourceGroup().id)), 24))]",
                         "location": "westus",
                         "sku": {
-                          "name": "B1"
+                          "name": "Standard_GRS"
                         },
-                        "properties": {
-                          "reserved": true
-                        }
-                      },
-                      {
-                        "type": "Microsoft.Web/sites",
-                        "apiVersion": "2021-02-01",
-                        "name": "frontEnd-TEST",
-                        "location": "westus",
-                        "identity": {
-                          "type": "SystemAssigned"
-                        },
-                        "kind": "app,linux",
-                        "properties": {
-                          "serverFarmId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1-TEST/providers/Microsoft.Web/serverfarms/appServicePlan-TEST",
-                          "siteConfig": {
-                            "linuxFxVersion": "node|18-lts",
-                            "alwaysOn": true,
-                            "appCommandLine": "./entrypoint.sh -o ./env-config.js \u0026\u0026 pm2 serve /home/site/wwwroot --no-daemon --spa",
-                            "cors": {
-                              "allowedOrigins": [
-                                "https://portal.azure.com",
-                                "https://ms.portal.azure.com"
-                              ]
-                            },
-                            "minTlsVersion": "1.2",
-                            "ftpsState": "FtpsOnly"
-                          },
-                          "httpsOnly": true
-                        }
-                      },
-                      {
-                        "type": "Microsoft.Web/sites/config",
-                        "apiVersion": "2021-02-01",
-                        "name": "[format(\u0027{0}/{1}\u0027, \u0027frontEnd-TEST\u0027, \u0027appsettings\u0027)]",
-                        "dependsOn": [
-                          "[resourceId(\u0027Microsoft.Web/sites\u0027, \u0027frontEnd-TEST\u0027)]"
-                        ]
+                        "kind": "Storage",
+                        "properties": {}
                       },
                       {
                         "type": "Microsoft.KeyVault/vaults",
@@ -216,49 +171,18 @@
                           "enableSoftDelete": "[parameters(\u0027enableSoftDelete\u0027)]",
                           "enableRbacAuthorization": true
                         }
-                      },
-                      {
-                        "type": "Microsoft.KeyVault/vaults/accessPolicies",
-                        "apiVersion": "2023-02-01",
-                        "name": "[format(\u0027{0}/{1}\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24)), \u0027add\u0027)]",
-                        "properties": {
-                          "accessPolicies": [
-                            {
-                              "tenantId": "00000000-0000-0000-0000-000000000000",
-                              "objectId": "[parameters(\u0027SERVICE_API_IDENTITY_PRINCIPAL_ID\u0027)]",
-                              "permissions": {
-                                "secrets": [
-                                  "get",
-                                  "list"
-                                ]
-                              }
-                            }
-                          ]
-                        },
-                        "dependsOn": [
-                          "[resourceId(\u0027Microsoft.KeyVault/vaults\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24)))]"
-                        ]
                       }
                     ],
                     "outputs": {
-                      "STORAGE_PRINCIPAL_ID": {
+                      "STORAGE_KIND": {
                         "type": "string",
-                        "value": "[reference(resourceId(\u0027Microsoft.Web/sites\u0027, \u0027frontEnd-TEST\u0027), \u00272021-02-01\u0027, \u0027full\u0027).identity.principalId]"
-                      },
-                      "LOCATION": {
-                        "type": "string",
-                        "value": "[reference(resourceId(\u0027Microsoft.Web/sites\u0027, \u0027frontEnd-TEST\u0027), \u00272021-02-01\u0027, \u0027full\u0027).location]"
-                      },
-                      "vaultUri": {
-                        "type": "string",
-                        "value": "[reference(resourceId(\u0027Microsoft.KeyVault/vaults\u0027, toLower(take(concat(\u0027kv\u0027, uniqueString(resourceGroup().id)), 24))), \u00272022-07-01\u0027).vaultUri]"
+                        "value": "[reference(resourceId(\u0027Microsoft.Storage/storageAccounts\u0027, toLower(take(concat(\u0027sa\u0027, uniqueString(resourceGroup().id)), 24))), \u00272022-09-01\u0027, \u0027full\u0027).kind]"
                       }
                     }
                   }
                 },
                 "dependsOn": [
-                  "[subscriptionResourceId(\u0027Microsoft.Resources/resourceGroups\u0027, \u0027rg1-TEST\u0027)]",
-                  "[extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg3-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg3_TEST_module\u0027)]"
+                  "[subscriptionResourceId(\u0027Microsoft.Resources/resourceGroups\u0027, \u0027rg1-TEST\u0027)]"
                 ]
               },
               {
@@ -275,11 +199,8 @@
                     "enableSoftDelete": {
                       "value": "[parameters(\u0027enableSoftDelete\u0027)]"
                     },
-                    "STORAGE_PRINCIPAL_ID": {
-                      "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg1-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg1_TEST_module\u0027), \u00272022-09-01\u0027).outputs.STORAGE_PRINCIPAL_ID.value]"
-                    },
-                    "SERVICE_API_IDENTITY_PRINCIPAL_ID": {
-                      "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg3-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg3_TEST_module\u0027), \u00272022-09-01\u0027).outputs.SERVICE_API_IDENTITY_PRINCIPAL_ID.value]"
+                    "STORAGE_KIND": {
+                      "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg1-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg1_TEST_module\u0027), \u00272022-09-01\u0027).outputs.STORAGE_KIND.value]"
                     }
                   },
                   "template": {
@@ -289,7 +210,7 @@
                       "_generator": {
                         "name": "bicep",
                         "version": "0.25.53.49325",
-                        "templateHash": "15136582529514007876"
+                        "templateHash": "4941731956315568008"
                       }
                     },
                     "parameters": {
@@ -300,14 +221,8 @@
                           "description": "Enable soft delete"
                         }
                       },
-                      "STORAGE_PRINCIPAL_ID": {
+                      "STORAGE_KIND": {
                         "type": "string",
-                        "metadata": {
-                          "description": ""
-                        }
-                      },
-                      "SERVICE_API_IDENTITY_PRINCIPAL_ID": {
-                        "type": "securestring",
                         "metadata": {
                           "description": ""
                         }
@@ -315,47 +230,22 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.Web/sites",
-                        "apiVersion": "2021-02-01",
-                        "name": "frontEnd-TEST",
+                        "type": "Microsoft.Storage/storageAccounts",
+                        "apiVersion": "2022-09-01",
+                        "name": "[toLower(take(concat(\u0027sa\u0027, uniqueString(resourceGroup().id)), 24))]",
                         "location": "westus",
-                        "identity": {
-                          "type": "SystemAssigned"
+                        "sku": {
+                          "name": "Standard_GRS"
                         },
-                        "kind": "app,linux",
-                        "properties": {
-                          "serverFarmId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1-TEST/providers/Microsoft.Web/serverfarms/appServicePlan-TEST",
-                          "siteConfig": {
-                            "linuxFxVersion": "node|18-lts",
-                            "alwaysOn": true,
-                            "appCommandLine": "./entrypoint.sh -o ./env-config.js \u0026\u0026 pm2 serve /home/site/wwwroot --no-daemon --spa",
-                            "cors": {
-                              "allowedOrigins": [
-                                "https://portal.azure.com",
-                                "https://ms.portal.azure.com"
-                              ]
-                            },
-                            "minTlsVersion": "1.2",
-                            "ftpsState": "FtpsOnly"
-                          },
-                          "httpsOnly": true
-                        }
-                      },
-                      {
-                        "type": "Microsoft.Web/sites/config",
-                        "apiVersion": "2021-02-01",
-                        "name": "[format(\u0027{0}/{1}\u0027, \u0027frontEnd-TEST\u0027, \u0027appsettings\u0027)]",
-                        "dependsOn": [
-                          "[resourceId(\u0027Microsoft.Web/sites\u0027, \u0027frontEnd-TEST\u0027)]"
-                        ]
+                        "kind": "[parameters(\u0027STORAGE_KIND\u0027)]",
+                        "properties": {}
                       }
                     ]
                   }
                 },
                 "dependsOn": [
                   "[subscriptionResourceId(\u0027Microsoft.Resources/resourceGroups\u0027, \u0027rg2-TEST\u0027)]",
-                  "[extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg1-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg1_TEST_module\u0027)]",
-                  "[extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg3-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg3_TEST_module\u0027)]"
+                  "[extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg1-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg1_TEST_module\u0027)]"
                 ]
               },
               {
@@ -368,6 +258,14 @@
                     "scope": "inner"
                   },
                   "mode": "Incremental",
+                  "parameters": {
+                    "enableSoftDelete": {
+                      "value": "[parameters(\u0027enableSoftDelete\u0027)]"
+                    },
+                    "STORAGE_KIND": {
+                      "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg1-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg1_TEST_module\u0027), \u00272022-09-01\u0027).outputs.STORAGE_KIND.value]"
+                    }
+                  },
                   "template": {
                     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
                     "contentVersion": "1.0.0.0",
@@ -375,103 +273,49 @@
                       "_generator": {
                         "name": "bicep",
                         "version": "0.25.53.49325",
-                        "templateHash": "15439198252130968950"
+                        "templateHash": "16925090893777067387"
+                      }
+                    },
+                    "parameters": {
+                      "enableSoftDelete": {
+                        "type": "string",
+                        "defaultValue": "True",
+                        "metadata": {
+                          "description": "Enable soft delete"
+                        }
+                      },
+                      "STORAGE_KIND": {
+                        "type": "string",
+                        "metadata": {
+                          "description": ""
+                        }
                       }
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.Web/sites",
-                        "apiVersion": "2021-02-01",
-                        "name": "frontEnd-TEST",
+                        "type": "Microsoft.Storage/storageAccounts",
+                        "apiVersion": "2022-09-01",
+                        "name": "[toLower(take(concat(\u0027sa\u0027, uniqueString(resourceGroup().id)), 24))]",
                         "location": "westus",
-                        "identity": {
-                          "type": "SystemAssigned"
+                        "sku": {
+                          "name": "Standard_GRS"
                         },
-                        "kind": "app,linux",
-                        "properties": {
-                          "serverFarmId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1-TEST/providers/Microsoft.Web/serverfarms/appServicePlan-TEST",
-                          "siteConfig": {
-                            "linuxFxVersion": "node|18-lts",
-                            "alwaysOn": true,
-                            "appCommandLine": "./entrypoint.sh -o ./env-config.js \u0026\u0026 pm2 serve /home/site/wwwroot --no-daemon --spa",
-                            "cors": {
-                              "allowedOrigins": [
-                                "https://portal.azure.com",
-                                "https://ms.portal.azure.com"
-                              ]
-                            },
-                            "minTlsVersion": "1.2",
-                            "ftpsState": "FtpsOnly"
-                          },
-                          "httpsOnly": true
-                        }
-                      },
-                      {
-                        "type": "Microsoft.Web/sites/config",
-                        "apiVersion": "2021-02-01",
-                        "name": "[format(\u0027{0}/{1}\u0027, \u0027frontEnd-TEST\u0027, \u0027appsettings\u0027)]",
-                        "dependsOn": [
-                          "[resourceId(\u0027Microsoft.Web/sites\u0027, \u0027frontEnd-TEST\u0027)]"
-                        ]
-                      },
-                      {
-                        "type": "Microsoft.Web/sites/config",
-                        "apiVersion": "2021-02-01",
-                        "name": "[format(\u0027{0}/{1}\u0027, \u0027frontEnd-TEST\u0027, \u0027logs\u0027)]",
-                        "properties": {
-                          "applicationLogs": {
-                            "fileSystem": {
-                              "level": "Verbose"
-                            }
-                          },
-                          "httpLogs": {
-                            "fileSystem": {
-                              "retentionInMb": 35,
-                              "retentionInDays": 1,
-                              "enabled": true
-                            }
-                          },
-                          "failedRequestsTracing": {
-                            "enabled": true
-                          },
-                          "detailedErrorMessages": {
-                            "enabled": true
-                          }
-                        },
-                        "dependsOn": [
-                          "[resourceId(\u0027Microsoft.Web/sites\u0027, \u0027frontEnd-TEST\u0027)]"
-                        ]
+                        "kind": "Storage",
+                        "properties": {}
                       }
-                    ],
-                    "outputs": {
-                      "SERVICE_API_IDENTITY_PRINCIPAL_ID": {
-                        "type": "string",
-                        "value": "[reference(resourceId(\u0027Microsoft.Web/sites\u0027, \u0027frontEnd-TEST\u0027), \u00272021-02-01\u0027, \u0027full\u0027).identity.principalId]"
-                      }
-                    }
+                    ]
                   }
                 },
                 "dependsOn": [
-                  "[subscriptionResourceId(\u0027Microsoft.Resources/resourceGroups\u0027, \u0027rg3-TEST\u0027)]"
+                  "[subscriptionResourceId(\u0027Microsoft.Resources/resourceGroups\u0027, \u0027rg3-TEST\u0027)]",
+                  "[extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg1-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg1_TEST_module\u0027)]"
                 ]
               }
             ],
             "outputs": {
-              "STORAGE_PRINCIPAL_ID": {
+              "STORAGE_KIND": {
                 "type": "string",
-                "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg1-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg1_TEST_module\u0027), \u00272022-09-01\u0027).outputs.STORAGE_PRINCIPAL_ID.value]"
-              },
-              "LOCATION": {
-                "type": "string",
-                "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg1-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg1_TEST_module\u0027), \u00272022-09-01\u0027).outputs.LOCATION.value]"
-              },
-              "vaultUri": {
-                "type": "string",
-                "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg1-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg1_TEST_module\u0027), \u00272022-09-01\u0027).outputs.vaultUri.value]"
-              },
-              "SERVICE_API_IDENTITY_PRINCIPAL_ID": {
-                "type": "string",
-                "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg3-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg3_TEST_module\u0027), \u00272022-09-01\u0027).outputs.SERVICE_API_IDENTITY_PRINCIPAL_ID.value]"
+                "value": "[reference(extensionResourceId(format(\u0027/subscriptions/{0}/resourceGroups/{1}\u0027, subscription().subscriptionId, \u0027rg1-TEST\u0027), \u0027Microsoft.Resources/deployments\u0027, \u0027rg1_TEST_module\u0027), \u00272022-09-01\u0027).outputs.STORAGE_KIND.value]"
               }
             }
           },
@@ -481,19 +325,19 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "4449",
+        "Content-Length": "3838",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sat, 23 Mar 2024 16:43:47 GMT",
+        "Date": "Tue, 26 Mar 2024 15:45:33 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "bd461ff3-4c7d-4721-9501-b33fdc50cb4b",
+        "x-ms-correlation-request-id": "59715281-243f-4727-b4ae-5ed8405aa516",
         "x-ms-ratelimit-remaining-subscription-writes": "1199",
-        "x-ms-request-id": "bd461ff3-4c7d-4721-9501-b33fdc50cb4b",
-        "x-ms-routing-request-id": "WESTUS:20240323T164347Z:bd461ff3-4c7d-4721-9501-b33fdc50cb4b",
-        "X-MSEdge-Ref": "Ref A: 1D0EECF2F91749E2803E8232E6944570 Ref B: SJC211051204019 Ref C: 2024-03-23T16:43:46Z"
+        "x-ms-request-id": "59715281-243f-4727-b4ae-5ed8405aa516",
+        "x-ms-routing-request-id": "WESTUS:20240326T154533Z:59715281-243f-4727-b4ae-5ed8405aa516",
+        "X-MSEdge-Ref": "Ref A: D6D0947A72784508919C611678E19292 Ref B: SJC211051204027 Ref C: 2024-03-26T15:45:31Z"
       },
       "ResponseBody": {
         "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/providers/Microsoft.Resources/deployments/OutputsSpanningModules",
@@ -501,7 +345,7 @@
         "type": "Microsoft.Resources/deployments",
         "location": "westus",
         "properties": {
-          "templateHash": "1797052236819955027",
+          "templateHash": "14166299859508644406",
           "parameters": {
             "enableSoftDelete": {
               "type": "String",
@@ -512,7 +356,7 @@
           "provisioningState": "Succeeded",
           "timestamp": "0001-01-01T00:00:00Z",
           "duration": "PT0S",
-          "correlationId": "bd461ff3-4c7d-4721-9501-b33fdc50cb4b",
+          "correlationId": "59715281-243f-4727-b4ae-5ed8405aa516",
           "providers": [
             {
               "namespace": "Microsoft.Resources",
@@ -539,17 +383,6 @@
                   "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg1-TEST",
                   "resourceType": "Microsoft.Resources/resourceGroups",
                   "resourceName": "rg1-TEST"
-                },
-                {
-                  "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg3-TEST/providers/Microsoft.Resources/deployments/rg3_TEST_module",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "rg3_TEST_module"
-                },
-                {
-                  "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg3-TEST/providers/Microsoft.Resources/deployments/rg3_TEST_module",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "rg3_TEST_module",
-                  "apiVersion": "2022-09-01"
                 }
               ],
               "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg1-TEST/providers/Microsoft.Resources/deployments/rg1_TEST_module",
@@ -569,20 +402,9 @@
                   "resourceName": "rg1_TEST_module"
                 },
                 {
-                  "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg3-TEST/providers/Microsoft.Resources/deployments/rg3_TEST_module",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "rg3_TEST_module"
-                },
-                {
                   "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg1-TEST/providers/Microsoft.Resources/deployments/rg1_TEST_module",
                   "resourceType": "Microsoft.Resources/deployments",
                   "resourceName": "rg1_TEST_module",
-                  "apiVersion": "2022-09-01"
-                },
-                {
-                  "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg3-TEST/providers/Microsoft.Resources/deployments/rg3_TEST_module",
-                  "resourceType": "Microsoft.Resources/deployments",
-                  "resourceName": "rg3_TEST_module",
                   "apiVersion": "2022-09-01"
                 }
               ],
@@ -596,6 +418,17 @@
                   "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg3-TEST",
                   "resourceType": "Microsoft.Resources/resourceGroups",
                   "resourceName": "rg3-TEST"
+                },
+                {
+                  "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg1-TEST/providers/Microsoft.Resources/deployments/rg1_TEST_module",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "rg1_TEST_module"
+                },
+                {
+                  "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg1-TEST/providers/Microsoft.Resources/deployments/rg1_TEST_module",
+                  "resourceType": "Microsoft.Resources/deployments",
+                  "resourceName": "rg1_TEST_module",
+                  "apiVersion": "2022-09-01"
                 }
               ],
               "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg3-TEST/providers/Microsoft.Resources/deployments/rg3_TEST_module",
@@ -623,13 +456,10 @@
               "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg3-TEST/providers/Microsoft.Resources/deployments/rg3_TEST_module"
             },
             {
-              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg3-TEST/providers/Microsoft.Web/sites/frontEnd-TEST"
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg1-TEST/providers/Microsoft.Storage/storageAccounts/sagu3wyjj6d3cis"
             },
             {
-              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg3-TEST/providers/Microsoft.Web/sites/frontEnd-TEST/config/appsettings"
-            },
-            {
-              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg3-TEST/providers/Microsoft.Web/sites/frontEnd-TEST/config/logs"
+              "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg1-TEST/providers/Microsoft.KeyVault/vaults/kvgu3wyjj6d3cis"
             }
           ]
         }
@@ -637,7 +467,7 @@
     }
   ],
   "Variables": {
-    "RandomSeed": "1713316690",
+    "RandomSeed": "1471706611",
     "RESOURCE_MANAGER_URL": null,
     "SUBSCRIPTION_ID": "faa080af-c1d8-40ad-9cce-e1a450ca5b57"
   }
