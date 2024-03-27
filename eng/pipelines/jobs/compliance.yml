@@ -1,37 +1,30 @@
-parameters:
-- name: CheckoutTarget
-  type: string
-  default: ''
+trigger:
+  tags:
+  - '*'
 
 jobs:
   - job: Compliance
     pool:
       name: azsdk-pool-mms-win-2022-general
-      vmImage: MMS2022
+      image: azsdk-pool-mms-win-2022-1espt
       os: windows
 
-    # per the guidance of the codeql team:
-    # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/snippets/codeql-3000-other-issues#timeouts
-    timeoutInMinutes: 360
-
     steps:
-      - ${{ if ne(parameters.CheckoutTarget, '') }}:
-        - checkout: none
-        - pwsh: |
-            git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git .
-            git checkout ${{ parameters.CheckoutTarget }}
-          displayName: Checkout target tag to sources directory
-      - ${{ else }}:
-        - checkout: self
+      - checkout: self
+
+      - pwsh: |
+          ./eng/pipelines/scripts/get-suppressions.ps1 -CredScanSuppressionFolder $(Build.ArtifactStagingDirectory)
+        displayName: Get Suppressions File
 
       - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
         displayName: Invoke CredScan
         inputs:
           toolVersion: 2.3.12.23
           scanFolder: "$(Build.SourcesDirectory)"
+          suppressionsFile: $(Build.ArtifactStagingDirectory)/CredScanSuppressions.json
 
       - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
-        displayName: CredScan result analysis
+        displayName: Analyze Credscan Results
         inputs:
           GdnBreakAllTools: false
           GdnBreakGdnToolCredScan: true
