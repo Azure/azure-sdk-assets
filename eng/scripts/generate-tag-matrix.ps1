@@ -5,7 +5,7 @@ param(
 )
 
 [DateTime]$SinceDate = [DateTime]::UtcNow.AddMinutes(-20)
-if ($Since -ne $null -or $Since -ne "") {
+if (($Since -ne $null -or $Since -ne "") -and $Since -ne "<default to now() - 20>") {
     $SinceDate = [DateTime]::Parse($Since)
 }
 
