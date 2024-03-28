@@ -1,7 +1,7 @@
 trigger: none
 
 parameters:
-- name: CheckoutTarget
+- name: Since
   type: string
   default: ''
 
@@ -20,8 +20,12 @@ jobs:
       displayName: Get the repo
 
     - pwsh: |
-        ./eng/scripts/generate-tag-matrix.ps1 
+        ./eng/scripts/generate-tag-matrix.ps1 -MatrixFile $(Build.SourcesDirectory)/eng/basic_tag_matrix.json -RepoWithTags $(Build.SourcesDirectory) -Since ${{ parameters.Since }}
       displayName: Prepare the Matrix File
+
+    - pwsh: |
+        Get-Content $(Build.SourcesDirectory)/eng/basic_tag_matrix.json
+      displayName: Dump Matrix File
 
   # - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
   #   parameters:
