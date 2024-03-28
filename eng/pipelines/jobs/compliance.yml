@@ -27,16 +27,7 @@ jobs:
           ./eng/pipelines/scripts/get-suppressions.ps1 -CredScanSuppressionFolder $(Build.ArtifactStagingDirectory)
         displayName: Get Suppressions File
 
-      - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
-        displayName: Invoke CredScan
-        inputs:
-          toolVersion: 2.3.12.23
-          scanFolder: "$(Build.SourcesDirectory)"
-          suppressionsFile: $(Build.ArtifactStagingDirectory)/CredScanSuppressions.json
-
-      - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
-        displayName: Analyze Credscan Results
-        inputs:
-          GdnBreakAllTools: false
-          GdnBreakGdnToolCredScan: true
-          GdnBreakGdnToolCredScanSeverity: Error
+      - template: /eng/pipelines/steps/run-credscan.yml
+        parameters:
+          ScanFolder: '$(Build.SourcesDirectory)'
+          SuppressionsFile: '$(Build.ArtifactStagingDirectory)/CredScanSuppressions.json'

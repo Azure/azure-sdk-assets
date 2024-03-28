@@ -1,0 +1,22 @@
+parameters:
+- name: ScanFolder
+  type: string
+  default: "$(Build.SourcesDirectory)"
+- name: SuppressionsFile
+  type: string
+  default: $(Build.ArtifactStagingDirectory)/CredScanSuppressions.json
+
+steps:
+  - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
+    displayName: Invoke CredScan
+    inputs:
+      toolVersion: 2.3.12.23
+      scanFolder: ${{ parameters.ScanFolder }}
+      suppressionsFile: ${{ parameters.SuppressionsFile }}
+
+  - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
+    displayName: Analyze Credscan Results
+    inputs:
+      GdnBreakAllTools: false
+      GdnBreakGdnToolCredScan: true
+      GdnBreakGdnToolCredScanSeverity: Error
