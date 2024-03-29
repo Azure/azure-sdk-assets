@@ -1,0 +1,27 @@
+trigger: none
+
+parameters:
+- name: Since
+  type: string
+  default: '<default to now() - 2 hours>'
+
+stages:
+- stage: CredScan
+  variables:
+    - template: /eng/pipelines/variables/image.yml
+  jobs:
+  - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+    parameters:
+      JobTemplatePath: /eng/pipelines/jobs/credscan_matrix.yml
+      SparseCheckoutPaths: [ "eng" ]
+      MatrixConfigs:
+          - Name: Python_regression_envs
+            Path: eng/basic_tag_matrix.json
+            Selection: sparse
+            GenerateVMJobs: true
+      AdditionalParameters:
+        TestTimeoutInMinutes: 60
+      PreGenerationSteps:
+        - pwsh: |
+            $(Build.SourcesDirectory)/eng/scripts/generate-tag-matrix.ps1 -MatrixFile $(Build.SourcesDirectory)/eng/basic_tag_matrix.json -RepoWithTags $(Build.SourcesDirectory) -Since "${{ parameters.Since }}"
+          displayName: Prepare the Matrix File

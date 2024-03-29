@@ -14,12 +14,6 @@ if (($Since -ne $null -or $Since -ne "") -and $Since -ne "<default to now() - 2 
 $success = $true
 $MATRIX_BASE = [PSCustomObject]@{
     "matrix" = @{
-        "Agent" = @{
-            "ubuntu-20.04" = @{
-                "OSVmImage" = "azsdk-pool-mms-ubuntu-2004-1espt"
-                "Pool" = "azsdk-pool-mms-ubuntu-2004-general"
-            }
-        }
         "Tag" = @()
     }
 }
