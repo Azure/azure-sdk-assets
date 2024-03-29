@@ -17,10 +17,14 @@ jobs:
     - checkout: none
 
     - pwsh: |
+        $branch = "$(Build.SourceBranch)" -replace '^refs/heads/', ''
+
+        Write-Host $branch
+
         git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git $(Build.SourcesDirectory)
         git sparse-checkout init --cone
         git sparse-checkout set eng
-        git checkout ($(Build.SourceBranch) -replace '^refs/heads/', '')
+        git checkout $branch
       displayName: Get the repo
 
     - pwsh: |
