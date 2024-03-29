@@ -25,6 +25,7 @@ jobs:
 
     strategy:
       matrix: $[ ${{ parameters.Matrix }} ]
+      maxParallel: 5
 
     dependsOn:
       - ${{ parameters.DependsOn }}
@@ -51,7 +52,7 @@ jobs:
           New-Item -ItemType Directory -Path $(CloneFolder) -Force
         displayName: Create Clone Folder
 
-      - pwsh:
+      - pwsh: |
           git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git .
           git checkout $(Tag)
         displayName: Checkout $(Tag)
