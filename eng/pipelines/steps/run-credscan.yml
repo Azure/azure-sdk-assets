@@ -24,11 +24,22 @@ steps:
       GdnBreakGdnToolCredScanSeverity: Error
       GdnBreakCustomLogsFolder: ${{ parameters.ArtifactFolder }}
 
+  - pwsh: |
+      $tag = "$(Tag)"
+      $disallowedCharacters = @('\', '/', "'", ':', '<', '>', '|', '*', '?')
+      $placeholder = '_'
+      $pattern = ($disallowedCharacters | ForEach-Object { [regex]::Escape($_) }) -join '|'
+      $artifactName = $tag -replace $pattern, $placeholder
+
+      Write-Host "##vso[task.setvariable variable=ArtifactName]$artifactName"
+    displayName: Generate Artifact Name
+    condition: failed()
+
   - task: PublishPipelineArtifact@1
     condition: failed()
     displayName: 'Publish Credscan Artifact'
     inputs:
-      artifactName: $(Tag)
+      artifactName: $(ArtifactName)
       path: ${{ parameters.ArtifactFolder }}
 
   - pwsh: |
