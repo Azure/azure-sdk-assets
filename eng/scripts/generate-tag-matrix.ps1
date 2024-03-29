@@ -18,7 +18,7 @@ $MATRIX_BASE = [PSCustomObject]@{
                 "Pool" = "azsdk-pool-mms-ubuntu-2004-general"
             }
         }
-        "Tags" = @()
+        "Tag" = @()
     }
 }
 

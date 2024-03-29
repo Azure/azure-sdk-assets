@@ -16,49 +16,29 @@ jobs:
   steps:
     - checkout: none
 
-    - pwsh: |
-        $branch = "$(Build.SourceBranch)" -replace '^refs/heads/', ''
+    # - pwsh: |
+    #     $branch = "$(Build.SourceBranch)" -replace '^refs/heads/', ''
 
-        Write-Host $branch
+    #     Write-Host $branch
 
-        git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git $(Build.SourcesDirectory)
-        git sparse-checkout init --cone
-        git sparse-checkout set eng
-        git checkout $branch
-      displayName: Get the repo
+    #     git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git $(Build.SourcesDirectory)
+    #     git sparse-checkout init --cone
+    #     git sparse-checkout set eng
+    #     git checkout $branch
+    #   displayName: Get the repo
 
-    - pwsh: |
-        $(Build.SourcesDirectory)/eng/scripts/generate-tag-matrix.ps1 -MatrixFile $(Build.SourcesDirectory)/eng/basic_tag_matrix.json -RepoWithTags $(Build.SourcesDirectory) -Since "${{ parameters.Since }}"
-      displayName: Prepare the Matrix File
-
-    - pwsh: |
-        Get-Content $(Build.SourcesDirectory)/eng/basic_tag_matrix.json
-      displayName: Dump Matrix File
-
-  # - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
-  #   parameters:
-  #     JobTemplatePath: /eng/pipelines/templates/jobs/regression.yml
-  #     OsVmImage: azsdk-pool-mms-ubuntu-2004-1espt
-  #     Pool: azsdk-pool-mms-ubuntu-2004-general
-  #     GenerateJobName: generate_regression_matrix
-  #     SparseCheckoutPaths: [ "scripts/", "sdk/", "tools/azure-sdk-tools/" ]
-  #     MatrixConfigs:
-  #         - Name: Python_regression_envs
-  #           Path: eng/pipelines/templates/stages/regression-job-matrix.json
-  #           Selection: sparse
-  #           GenerateVMJobs: true
-  #     PreGenerationSteps:
-  #       - pwsh: |
-  #           python -m pip install "./tools/azure-sdk-tools[build]"
-  #         displayName: 'Prep Environment'
-  #       - template: /eng/pipelines/templates/steps/targeting-string-resolve.yml
-  #         parameters:
-  #           BuildTargetingString: ${{ parameters.BuildTargetingString }}
-  #       - task: PythonScript@0
-  #         displayName: 'Ensure service coverage'
-  #         inputs:
-  #           scriptPath: '$(Build.SourcesDirectory)/scripts/devops_tasks/update_regression_services.py'
-  #           arguments: >-
-  #             "$(TargetingString)"
-  #             --service="${{ parameters.ServiceDirectory }}"
-  #             --json=$(Build.SourcesDirectory)/eng/pipelines/templates/stages/regression-job-matrix.json
+  - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+    parameters:
+      JobTemplatePath: /eng/pipelines/jobs/credscan_matrix.yml
+      OsVmImage: azsdk-pool-mms-ubuntu-2004-1espt
+      Pool: azsdk-pool-mms-ubuntu-2004-general
+      SparseCheckoutPaths: [ "eng" ]
+      MatrixConfigs:
+          - Name: Python_regression_envs
+            Path: eng/basic_tag_matrix.json
+            Selection: sparse
+            GenerateVMJobs: true
+      PreGenerationSteps:
+        - pwsh: |
+            $(Build.SourcesDirectory)/eng/scripts/generate-tag-matrix.ps1 -MatrixFile $(Build.SourcesDirectory)/eng/basic_tag_matrix.json -RepoWithTags $(Build.SourcesDirectory) -Since "${{ parameters.Since }}"
+          displayName: Prepare the Matrix File
