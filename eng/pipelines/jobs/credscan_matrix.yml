@@ -1,0 +1,41 @@
+parameters:
+  - name: Matrix
+    type: string
+  - name: BeforeTestSteps
+    type: object
+    default: []
+jobs:
+  - job:
+    displayName: 'CredScan'
+    condition: |
+      and(
+        succeededOrFailed(),
+        ne(${{ parameters.Matrix }}, '{}')
+      )
+    timeoutInMinutes: ${{ parameters.TestTimeoutInMinutes }}
+
+    strategy:
+      matrix: $[ ${{ parameters.Matrix }} ]
+
+    pool:
+      name: azsdk-pool-mms-win-2022-general
+      image: azsdk-pool-mms-win-2022-1espt
+      os: linux
+
+    steps:
+      - ${{ if ne(parameters.CheckoutTarget, '') }}:
+        - pwsh:
+            git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git $(Build.SourcesDirectory)
+            git checkout ${{ parameters.CheckoutTarget }}
+          displayName: Checkout $(Tag)
+      - ${{ else }}:
+        - checkout: self
+
+      - pwsh: |
+          ./eng/pipelines/scripts/get-suppressions.ps1 -CredScanSuppressionFolder $(Build.ArtifactStagingDirectory)
+        displayName: Get Suppressions File
+
+      - template: /eng/pipelines/steps/run-credscan.yml
+        parameters:
+          ScanFolder: '$(Build.SourcesDirectory)'
+          SuppressionsFile: '$(Build.ArtifactStagingDirectory)/CredScanSuppressions.json'
