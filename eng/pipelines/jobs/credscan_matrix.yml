@@ -39,6 +39,9 @@ jobs:
       - checkout: none
 
       - pwsh: |
+          Write-Host "${{ parameters.Matrix }}"
+
+      - pwsh: |
           $ErrorActionPreference = 'Stop'
 
           $req = Invoke-WebRequest https://raw.githubusercontent.com/Azure/azure-sdk-assets/main/eng/CredScanSuppression.json
@@ -52,5 +55,6 @@ jobs:
 
       - template: /eng/pipelines/steps/run-credscan.yml
         parameters:
+          Tag: $(Tag)
           ScanFolder: '$(Build.SourcesDirectory)'
           SuppressionsFile: '$(Agent.BuildDirectory)/CredScanSuppression.json'

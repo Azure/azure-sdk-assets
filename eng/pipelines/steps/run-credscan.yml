@@ -1,4 +1,6 @@
 parameters:
+- name: Tag
+  type: string
 - name: ScanFolder
   type: string
   default: "$(Build.SourcesDirectory)"
@@ -25,7 +27,7 @@ steps:
       GdnBreakCustomLogsFolder: ${{ parameters.ArtifactFolder }}
 
   - pwsh: |
-      $tag = "$(Tag)"
+      $tag = "${{ parameters.Tag }}"
       $disallowedCharacters = @('\', '/', "'", ':', '<', '>', '|', '*', '?')
       $placeholder = '_'
       $pattern = ($disallowedCharacters | ForEach-Object { [regex]::Escape($_) }) -join '|'
