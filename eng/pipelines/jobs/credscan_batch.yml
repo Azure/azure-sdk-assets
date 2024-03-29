@@ -6,15 +6,30 @@ parameters:
   default: '<default to now() - 20 minutes>'
 
 jobs:
-- job: Generate_Work_List
-  displayName: Generate Tag List
-  pool:
-    name: azsdk-pool-mms-win-2022-general
-    image: azsdk-pool-mms-win-2022-1espt
-    os: windows
+- template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+  parameters:
+    JobTemplatePath: /eng/pipelines/jobs/credscan_matrix.yml
+    SparseCheckoutPaths: [ "eng" ]
+    MatrixConfigs:
+        - Name: Python_regression_envs
+          Path: eng/basic_tag_matrix.json
+          Selection: sparse
+          GenerateVMJobs: true
+    PreGenerationSteps:
+      - pwsh: |
+          $(Build.SourcesDirectory)/eng/scripts/generate-tag-matrix.ps1 -MatrixFile $(Build.SourcesDirectory)/eng/basic_tag_matrix.json -RepoWithTags $(Build.SourcesDirectory) -Since "${{ parameters.Since }}"
+        displayName: Prepare the Matrix File
 
-  steps:
-    - checkout: none
+
+# - job: Generate_Work_List
+#   displayName: Generate Tag List
+#   pool:
+#     name: azsdk-pool-mms-win-2022-general
+#     image: azsdk-pool-mms-win-2022-1espt
+#     os: windows
+
+#   steps:
+#     - checkout: none
 
     # - pwsh: |
     #     $branch = "$(Build.SourceBranch)" -replace '^refs/heads/', ''
@@ -26,19 +41,7 @@ jobs:
     #     git sparse-checkout set eng
     #     git checkout $branch
     #   displayName: Get the repo
+        # - pwsh: |
+        #     $(Build.SourcesDirectory)/eng/scripts/generate-tag-matrix.ps1 -MatrixFile $(Build.SourcesDirectory)/eng/basic_tag_matrix.json -RepoWithTags $(Build.SourcesDirectory) -Since "${{ parameters.Since }}"
+        #   displayName: Prepare the Matrix File
 
-  - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
-    parameters:
-      JobTemplatePath: /eng/pipelines/jobs/credscan_matrix.yml
-      OsVmImage: azsdk-pool-mms-ubuntu-2004-1espt
-      Pool: azsdk-pool-mms-ubuntu-2004-general
-      SparseCheckoutPaths: [ "eng" ]
-      MatrixConfigs:
-          - Name: Python_regression_envs
-            Path: eng/basic_tag_matrix.json
-            Selection: sparse
-            GenerateVMJobs: true
-      PreGenerationSteps:
-        - pwsh: |
-            $(Build.SourcesDirectory)/eng/scripts/generate-tag-matrix.ps1 -MatrixFile $(Build.SourcesDirectory)/eng/basic_tag_matrix.json -RepoWithTags $(Build.SourcesDirectory) -Since "${{ parameters.Since }}"
-          displayName: Prepare the Matrix File
