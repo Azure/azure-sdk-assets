@@ -65,7 +65,7 @@ try {
       }
     }
 
-    $MATRIX_BASE.matrix.Tags = $results | Sort-Object -Unique
+    $MATRIX_BASE.matrix.Tag = $results | Sort-Object -Unique
 }
 finally {
     Pop-Location

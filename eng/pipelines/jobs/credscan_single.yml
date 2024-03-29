@@ -24,7 +24,10 @@ jobs:
         - checkout: self
 
       - pwsh: |
-          ./eng/pipelines/scripts/get-suppressions.ps1 -CredScanSuppressionFolder $(Build.ArtifactStagingDirectory)
+          $ErrorActionPreference = 'Stop'
+
+          $req = Invoke-WebRequest https://raw.githubusercontent.com/Azure/azure-sdk-assets/main/eng/CredScanSuppression.json
+          $req.RawContent | Out-File (Join-Path -Path $(Build.ArtifactStagingDirectory) -ChildPath CredScanSuppression.json)
         displayName: Get Suppressions File
 
       - template: /eng/pipelines/steps/run-credscan.yml
