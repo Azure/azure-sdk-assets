@@ -4,6 +4,15 @@ parameters:
   - name: TestTimeoutInMinutes
     type: number
     default: 60
+  - name: CloudConfig
+    type: object
+    default: {}
+  - name: UsePlatformContainer
+    type: boolean
+    default: false
+  - name: DependsOn
+    type: object
+    default: []
 jobs:
   - job:
     displayName: 'CredScan'
@@ -31,6 +40,10 @@ jobs:
       - pwsh: |
           ./eng/pipelines/scripts/get-suppressions.ps1 -CredScanSuppressionFolder $(Build.ArtifactStagingDirectory)
         displayName: Get Suppressions File
+
+      - pwsh: |
+          New-Item -ItemType Directory -Path $(CloneFolder) -Force
+        displayName: Create Clone Folder
 
       - pwsh:
           git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git .
