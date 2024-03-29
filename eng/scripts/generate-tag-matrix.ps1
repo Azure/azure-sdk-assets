@@ -4,8 +4,8 @@ param(
     [string] $Since = $null
 )
 
-[DateTime]$SinceDate = [DateTime]::UtcNow.AddMinutes(-20)
-if (($Since -ne $null -or $Since -ne "") -and $Since -ne "<default to now() - 1 hour>") {
+[DateTime]$SinceDate = [DateTime]::UtcNow.AddMinutes(-125)
+if (($Since -ne $null -or $Since -ne "") -and $Since -ne "<default to now() - 2 hours>") {
     $SinceDate = [DateTime]::Parse($Since)
 }
 
