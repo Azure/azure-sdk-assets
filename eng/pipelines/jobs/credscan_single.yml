@@ -5,7 +5,6 @@ trigger:
 parameters:
 - name: CheckoutTarget
   type: string
-  default: ''
 
 jobs:
   - job: Compliance
@@ -30,10 +29,10 @@ jobs:
           $ErrorActionPreference = 'Stop'
 
           $req = Invoke-WebRequest https://raw.githubusercontent.com/Azure/azure-sdk-assets/main/eng/CredScanSuppression.json
-          $req.RawContent | Out-File (Join-Path -Path $(Build.ArtifactStagingDirectory) -ChildPath CredScanSuppression.json)
+          $req.RawContent | Out-File (Join-Path -Path $(Agent.BuildDirectory) -ChildPath CredScanSuppression.json)
         displayName: Get Suppressions File
 
       - template: /eng/pipelines/steps/run-credscan.yml
         parameters:
           ScanFolder: '$(Build.SourcesDirectory)'
-          SuppressionsFile: '$(Build.ArtifactStagingDirectory)/CredScanSuppression.json'
+          SuppressionsFile: '$(Agent.BuildDirectory)/CredScanSuppression.json'

@@ -4,7 +4,9 @@ parameters:
   default: "$(Build.SourcesDirectory)"
 - name: SuppressionsFile
   type: string
-  default: $(Build.ArtifactStagingDirectory)/CredScanSuppressions.json
+- name: ArtifactFolder
+  type: string
+  default: "$(Build.ArtifactStagingDirectory)"
 
 steps:
   - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
@@ -20,3 +22,16 @@ steps:
       GdnBreakAllTools: false
       GdnBreakGdnToolCredScan: true
       GdnBreakGdnToolCredScanSeverity: Error
+      GdnBreakCustomLogsFolder: ${{ parameters.ArtifactFolder }}
+
+  - task: PublishPipelineArtifact@1
+    condition: failed()
+    displayName: 'Publish Credscan Artifact'
+    inputs:
+      artifactName: $(Tag)
+      path: ${{ parameters.ArtifactFolder }}
+
+  - pwsh: |
+      Get-ChildItem -Recurse $(Build.SourcesDirectory) | % { Write-Host $_.FullName }
+    displayName: Parse Failing Credscan Results
+    condition: failed()

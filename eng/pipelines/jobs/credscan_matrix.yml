@@ -35,9 +35,6 @@ jobs:
       image: $(WINDOWSVMIMAGE)
       os: linux
 
-    variables:
-      CloneFolder: '$(Build.SourcesDirectory)/tag_clone'
-
     steps:
       - checkout: none
 
@@ -45,20 +42,15 @@ jobs:
           $ErrorActionPreference = 'Stop'
 
           $req = Invoke-WebRequest https://raw.githubusercontent.com/Azure/azure-sdk-assets/main/eng/CredScanSuppression.json
-          $req.RawContent | Out-File (Join-Path -Path $(Build.ArtifactStagingDirectory) -ChildPath CredScanSuppression.json)
+          $req.RawContent | Out-File (Join-Path -Path $(Agent.BuildDirectory) -ChildPath CredScanSuppression.json)
         displayName: Get Suppressions File
-
-      - pwsh: |
-          New-Item -ItemType Directory -Path $(CloneFolder) -Force
-        displayName: Create Clone Folder
 
       - pwsh: |
           git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git .
           git checkout $(Tag)
         displayName: Checkout $(Tag)
-        workingDirectory: $(CloneFolder)
 
       - template: /eng/pipelines/steps/run-credscan.yml
         parameters:
-          ScanFolder: '$(CloneFolder)'
-          SuppressionsFile: '$(Build.ArtifactStagingDirectory)/CredScanSuppression.json'
+          ScanFolder: '$(Build.SourcesDirectory)'
+          SuppressionsFile: '$(Agent.BuildDirectory)/CredScanSuppression.json'
