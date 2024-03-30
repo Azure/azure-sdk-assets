@@ -51,9 +51,8 @@ jobs:
           if (-not (Test-Path $destinationFolder)) {
             New-Item -Path $destinationFolder -ItemType Directory
           }
-
-          $req = Invoke-WebRequest https://raw.githubusercontent.com/Azure/azure-sdk-assets/main/eng/CredScanSuppression.json
-          $req.RawContent | Out-File (Join-Path -Path "$destinationFolder" -ChildPath CredScanSuppression.json)
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Azure/azure-sdk-assets/main/eng/CredScanSuppression.json" `
+            -OutFile (Join-Path -Path "$destinationFolder" -ChildPath CredScanSuppression.json)
         displayName: Get Suppressions File
 
       - template: /eng/pipelines/steps/run-credscan.yml
