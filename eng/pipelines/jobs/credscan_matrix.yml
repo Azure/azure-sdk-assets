@@ -47,8 +47,13 @@ jobs:
       - pwsh: |
           $ErrorActionPreference = 'Stop'
 
+          $destinationFolder = Join-Path -Path "$(Build.SourcesDirectory)" -ChildPath "eng"
+          if (-not (Test-Path $destinationFolder)) {
+            New-Item -Path $destinationFolder -ItemType Directory
+          }
+
           $req = Invoke-WebRequest https://raw.githubusercontent.com/Azure/azure-sdk-assets/main/eng/CredScanSuppression.json
-          $req.RawContent | Out-File (Join-Path -Path "$(Build.SourcesDirectory)/eng" -ChildPath CredScanSuppression.json)
+          $req.RawContent | Out-File (Join-Path -Path "$destinationFolder" -ChildPath CredScanSuppression.json)
         displayName: Get Suppressions File
 
       - template: /eng/pipelines/steps/run-credscan.yml
