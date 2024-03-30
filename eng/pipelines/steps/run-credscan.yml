@@ -25,23 +25,25 @@ steps:
       GdnBreakGdnToolCredScan: true
       GdnBreakGdnToolCredScanSeverity: Error
 
-  # - pwsh: |
-  #     $tag = "${{ parameters.Tag }}"
-  #     $disallowedCharacters = @('\', '/', "'", ':', '<', '>', '|', '*', '?')
-  #     $placeholder = '_'
-  #     $pattern = ($disallowedCharacters | ForEach-Object { [regex]::Escape($_) }) -join '|'
-  #     $artifactName = $tag -replace $pattern, $placeholder
+  - pwsh: |
+      $tag = "${{ parameters.Tag }}"
+      $disallowedCharacters = @('\', '/', "'", ':', '<', '>', '|', '*', '?')
+      $placeholder = '_'
+      $pattern = ($disallowedCharacters | ForEach-Object { [regex]::Escape($_) }) -join '|'
+      $artifactName = $tag -replace $pattern, $placeholder
 
-  #     Write-Host "##vso[task.setvariable variable=ArtifactName]$artifactName"
-  #   displayName: Generate Artifact Name
-  #   condition: failed()
+      Write-Host "##vso[task.setvariable variable=ArtifactName]$artifactName"
+    displayName: Generate Artifact Name
+    condition: failed()
 
-  # - task: PublishPipelineArtifact@1
-  #   condition: failed()
-  #   displayName: 'Publish Credscan Artifact'
-  #   inputs:
-  #     artifactName: $(ArtifactName)
-  #     path: ${{ parameters.ArtifactFolder }}
+  steps:
+  - task: PublishSecurityAnalysisLogs@3
+    displayName: 'CredScan Artifacts'
+    inputs:
+      ArtifactName: $(ArtifactName)
+      ArtifactType: Container
+      PublishProcessedResults: false
+      AllTools: true
 
   - pwsh: |
       Get-ChildItem -Recurse $(Build.ArtifactStagingDirectory) | % { Write-Host $_.FullName }
