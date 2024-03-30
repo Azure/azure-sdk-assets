@@ -6,8 +6,8 @@ param(
 
 Set-StrictMode -Version 4
 
-[DateTime]$SinceDate = [DateTime]::UtcNow.AddMinutes(-125)
-if (($Since -ne $null -or $Since -ne "") -and $Since -ne "<default to now() - 2 hours>") {
+[DateTime]$SinceDate = [DateTime]::UtcNow.AddMinutes(-305)
+if (($Since -ne $null -or $Since -ne "") -and $Since -ne "<default to now() - 6 hours>") {
     $SinceDate = [DateTime]::Parse($Since)
 }
 
