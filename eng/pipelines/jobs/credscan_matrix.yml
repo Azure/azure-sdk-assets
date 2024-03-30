@@ -40,22 +40,19 @@ jobs:
       - checkout: none
 
       - pwsh: |
-          Write-Host "${{ parameters.Matrix }}"
+          git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git .
+          git checkout $(Tag)
+        displayName: Checkout $(Tag)
 
       - pwsh: |
           $ErrorActionPreference = 'Stop'
 
           $req = Invoke-WebRequest https://raw.githubusercontent.com/Azure/azure-sdk-assets/main/eng/CredScanSuppression.json
-          $req.RawContent | Out-File (Join-Path -Path $(Agent.BuildDirectory) -ChildPath CredScanSuppression.json)
+          $req.RawContent | Out-File (Join-Path -Path "$(Build.SourcesDirectory)/eng" -ChildPath CredScanSuppression.json)
         displayName: Get Suppressions File
-
-      - pwsh: |
-          git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git .
-          git checkout $(Tag)
-        displayName: Checkout $(Tag)
 
       - template: /eng/pipelines/steps/run-credscan.yml
         parameters:
           Tag: $(Tag)
           ScanFolder: '$(Build.SourcesDirectory)'
-          SuppressionsFile: '$(Agent.BuildDirectory)/CredScanSuppression.json'
+          SuppressionsFile: '$(Build.SourcesDirectory)/eng/CredScanSuppression.json'
