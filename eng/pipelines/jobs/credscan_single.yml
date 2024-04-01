@@ -43,10 +43,6 @@ jobs:
             -OutFile (Join-Path -Path "$destinationFolder" -ChildPath CredScanSuppression.json)
         displayName: Get Suppressions File
 
-      - pwsh: |
-          Get-ChildItem -Recurse $(Build.SourcesDirectory) | % { Write-Host $_.FullName }
-        displayName: Dump Visible Files
-
       - template: /eng/pipelines/steps/run-credscan.yml
         parameters:
           Tag: ${{ parameters.CheckoutTarget }}
