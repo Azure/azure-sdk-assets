@@ -19,6 +19,8 @@ jobs:
     - template: /eng/pipelines/variables/image.yml
 
     steps:
+      - checkout: none
+
       - ${{ if and(ne(parameters.CheckoutTarget, 'self'), ne(parameters.CheckoutTarget, '')) }}:
         - pwsh:
             git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git $(Build.SourcesDirectory)
@@ -28,7 +30,7 @@ jobs:
         - pwsh:
             git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git $(Build.SourcesDirectory)
             git checkout $(Build.SourceBranch)
-          displayName: Checkout Build.SourceVersion to sources directory
+          displayName: Checkout Build.SourceBranch to sources directory
 
       - pwsh: |
           $ErrorActionPreference = 'Stop'
@@ -40,6 +42,10 @@ jobs:
           Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Azure/azure-sdk-assets/main/eng/CredScanSuppression.json" `
             -OutFile (Join-Path -Path "$destinationFolder" -ChildPath CredScanSuppression.json)
         displayName: Get Suppressions File
+
+      - pwsh: |
+          Get-ChildItem -Recurse $(Build.SourcesDirectory) | % { Write-Host $_.FullName }
+        displayName: Dump Visible Files
 
       - template: /eng/pipelines/steps/run-credscan.yml
         parameters:
