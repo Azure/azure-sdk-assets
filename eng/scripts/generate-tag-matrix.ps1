@@ -1,10 +1,21 @@
 param(
-    [string] $MatrixFile,
     [string] $RepoWithTags, 
     [string] $Since = $null
 )
 
 Set-StrictMode -Version 4
+
+$DisallowedCharactersRegex = (@('\', '/', "'", ':', '<', '>', '|', '*', '?') | ForEach-Object { [regex]::Escape($_) }) -join '|'
+
+function SanitizeTagForMatrix {
+  param(
+    [string] $tag
+  )
+  $placeholder = '_'
+  $artifactName = $tag -replace $pattern, $placeholder
+  return $artifactName
+}
+
 
 [DateTime]$SinceDate = [DateTime]::UtcNow.AddMinutes(-305)
 if (($Since -ne $null -or $Since -ne "") -and $Since -ne "<default to now() - 6 hours>") {
@@ -12,11 +23,13 @@ if (($Since -ne $null -or $Since -ne "") -and $Since -ne "<default to now() - 6 
 }
 
 $success = $true
-$MATRIX_BASE = [PSCustomObject]@{
-    "matrix" = @{
-        "Tag" = @()
-    }
-}
+
+# format is a dictionary with the following structure:
+#{
+#  "<tag_name_sanitized>": {
+#    "Tag": "<raw_tag_name>" 
+#  } 
+#}
 
 try {
     Push-Location $RepoWithTags
@@ -65,12 +78,4 @@ try {
 }
 finally {
     Pop-Location
-}
-
-if ($success) {
-    $MATRIX_BASE | ConvertTo-Json -Depth 40 | Out-File $MatrixFile
-}
-else {
-    Write-Error "Failed to generate tag matrix"
-    exit 1
 }
