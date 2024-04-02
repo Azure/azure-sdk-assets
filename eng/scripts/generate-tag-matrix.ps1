@@ -1,22 +1,26 @@
 param(
-    [string] $MatrixFile,
     [string] $RepoWithTags, 
     [string] $Since = $null
 )
 
 Set-StrictMode -Version 4
 
+$DisallowedCharactersRegex = (@('\', '/', "'", ':', '<', '>', '|', '*', '?') | ForEach-Object { [regex]::Escape($_) }) -join '|'
+function SanitizeTagForMatrix {
+  param(
+    [string] $tag
+  )
+  $placeholder = '_'
+  $artifactName = $tag -replace $DisallowedCharactersRegex, $placeholder
+  return $artifactName
+}
+
 [DateTime]$SinceDate = [DateTime]::UtcNow.AddMinutes(-305)
 if (($Since -ne $null -or $Since -ne "") -and $Since -ne "<default to now() - 6 hours>") {
     $SinceDate = [DateTime]::Parse($Since)
 }
 
-$success = $true
-$MATRIX_BASE = [PSCustomObject]@{
-    "matrix" = @{
-        "Tag" = @()
-    }
-}
+$matrix = @{}
 
 try {
     Push-Location $RepoWithTags
@@ -24,7 +28,7 @@ try {
 
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Unable to fetch tags for $RepoWithTags"
-        $success = $false
+        exit 1
     }
 
     $allTags = git log --date=iso --tags --simplify-by-decoration --pretty="format:%ai::%d"
@@ -57,20 +61,15 @@ try {
     {
       foreach($tag in $tagObject.TagList)
       {
-        $results += $tag
+        $contentObj = [PSCustomObject]@{
+          Tag = $tag
+        }
+        $matrix[(SanitizeTagForMatrix($tag))] = $contentObj
       }
     }
 
-    $MATRIX_BASE.matrix.Tag = $results | Sort-Object -Unique
+    Write-Output "##vso[task.setVariable variable=matrix;isOutput=true]$($matrix | ConvertTo-Json -Compress)"
 }
 finally {
     Pop-Location
-}
-
-if ($success) {
-    $MATRIX_BASE | ConvertTo-Json -Depth 40 | Out-File $MatrixFile
-}
-else {
-    Write-Error "Failed to generate tag matrix"
-    exit 1
 }

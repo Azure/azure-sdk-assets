@@ -1,15 +1,6 @@
 parameters:
   - name: Matrix
     type: string
-  - name: TestTimeoutInMinutes
-    type: number
-    default: 60
-  - name: CloudConfig
-    type: object
-    default: {}
-  - name: UsePlatformContainer
-    type: boolean
-    default: false
   - name: DependsOn
     type: object
     default: []
@@ -22,7 +13,6 @@ jobs:
         ne(${{ parameters.Matrix }}, '{}'),
         ne(${{ parameters.Matrix}}, '{"":{"Tag":null}}')
       )
-    timeoutInMinutes: ${{ parameters.TestTimeoutInMinutes }}
 
     strategy:
       matrix: $[ ${{ parameters.Matrix }} ]
@@ -34,10 +24,18 @@ jobs:
     pool:
       name: $(WINDOWSPOOL)
       image: $(WINDOWSVMIMAGE)
-      os: linux
+      os: windows
 
     steps:
       - checkout: none
+
+      - pwsh: |
+          Write-Host '${{ parameters.Matrix }}'
+        displayName: Dump Matrix
+
+      - pwsh: |
+          Write-Host '$[ ${{ parameters.Matrix }} ]'
+        displayName: Dump Matrix RunTime
 
       - pwsh: |
           git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git .
