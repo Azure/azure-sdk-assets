@@ -10,19 +10,24 @@ stages:
   variables:
     - template: /eng/pipelines/variables/image.yml
   jobs:
-  - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+  - job: Identify_Tags
+
+    pool:
+      name: $(LINUXPOOL)
+      image: $(LINUXVMIMAGE)
+      os: linux
+
+    steps:
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+
+      - pwsh: |
+          $(Build.SourcesDirectory)/eng/scripts/generate-tag-matrix.ps1 -MatrixFile $(Build.SourcesDirectory)/eng/basic_tag_matrix.json -RepoWithTags $(Build.SourcesDirectory) -Since "${{ parameters.Since }}"
+        displayName: Prepare the Matrix File
+        name: prepare_matrix
+
+  - template: /eng/pipelines/stages/credscan_batch.yml
     parameters:
-      JobTemplatePath: /eng/pipelines/jobs/credscan_matrix.yml
-      GenerateJobName: Identify_Target_Tags
-      SparseCheckoutPaths: [ "eng" ]
-      MatrixConfigs:
-          - Name: tag_matrix
-            Path: eng/basic_tag_matrix.json
-            Selection: sparse
-            GenerateVMJobs: true
-      AdditionalParameters:
-        TestTimeoutInMinutes: 60
-      PreGenerationSteps:
-        - pwsh: |
-            $(Build.SourcesDirectory)/eng/scripts/generate-tag-matrix.ps1 -MatrixFile $(Build.SourcesDirectory)/eng/basic_tag_matrix.json -RepoWithTags $(Build.SourcesDirectory) -Since "${{ parameters.Since }}"
-          displayName: Prepare the Matrix File
+      Matrix: $[ dependencies.Identify_Tags.outputs['prepare_matrix.matrix'] ]
+      DependsOn: 
+        - Identify_Tags
+

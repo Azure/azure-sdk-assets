@@ -6,7 +6,6 @@ param(
 Set-StrictMode -Version 4
 
 $DisallowedCharactersRegex = (@('\', '/', "'", ':', '<', '>', '|', '*', '?') | ForEach-Object { [regex]::Escape($_) }) -join '|'
-
 function SanitizeTagForMatrix {
   param(
     [string] $tag
@@ -24,12 +23,13 @@ if (($Since -ne $null -or $Since -ne "") -and $Since -ne "<default to now() - 6 
 
 $success = $true
 
-# format is a dictionary with the following structure:
+# format is an dictionary with the following structure:
 #{
 #  "<tag_name_sanitized>": {
 #    "Tag": "<raw_tag_name>" 
 #  } 
 #}
+$matrix = @{}
 
 try {
     Push-Location $RepoWithTags
@@ -70,11 +70,14 @@ try {
     {
       foreach($tag in $tagObject.TagList)
       {
-        $results += $tag
+        $contentObj = [PSCustomObject]@{
+          Tag = $tag
+        }
+        $matrix[(SanitizeTagForMatrix($tag))] = $contentObj
       }
     }
 
-    $MATRIX_BASE.matrix.Tag = $results | Sort-Object -Unique
+    Write-Output "##vso[task.setVariable variable=matrix;isOutput=true]$($matrix | ConvertTo-Json -Compress)"
 }
 finally {
     Pop-Location
