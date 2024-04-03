@@ -15,20 +15,11 @@ function SanitizeTagForMatrix {
   return $artifactName
 }
 
-
 [DateTime]$SinceDate = [DateTime]::UtcNow.AddMinutes(-305)
 if (($Since -ne $null -or $Since -ne "") -and $Since -ne "<default to now() - 6 hours>") {
     $SinceDate = [DateTime]::Parse($Since)
 }
 
-$success = $true
-
-# format is an dictionary with the following structure:
-#{
-#  "<tag_name_sanitized>": {
-#    "Tag": "<raw_tag_name>" 
-#  } 
-#}
 $matrix = @{}
 
 try {
@@ -37,7 +28,7 @@ try {
 
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Unable to fetch tags for $RepoWithTags"
-        $success = $false
+        exit 1
     }
 
     $allTags = git log --date=iso --tags --simplify-by-decoration --pretty="format:%ai::%d"
