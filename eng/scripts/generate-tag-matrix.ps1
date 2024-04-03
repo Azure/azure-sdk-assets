@@ -11,7 +11,7 @@ function SanitizeTagForMatrix {
     [string] $tag
   )
   $placeholder = '_'
-  $artifactName = $tag -replace $pattern, $placeholder
+  $artifactName = $tag -replace $DisallowedCharactersRegex, $placeholder
   return $artifactName
 }
 
