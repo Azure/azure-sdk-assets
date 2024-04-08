@@ -22,7 +22,7 @@ Please include the requested information listed below (as much as you can provid
   * Full paths of source file(s) related to the manifestation of the issue
   * The location of the affected source code (tag/branch/commit or direct URL)
   * Any special configuration required to reproduce the issue
-  * Step-by-step instructions to reproduce the issue
+  * Step-by-step instruction to reproduce the issue
   * Proof-of-concept or exploit code (if possible)
   * Impact of the issue, including how an attacker might exploit the issue
 
@@ -39,3 +39,4 @@ We prefer all communications to be in English.
 Microsoft follows the principle of [Coordinated Vulnerability Disclosure](https://aka.ms/opensource/security/cvd).
 
 <!-- END MICROSOFT SECURITY.MD BLOCK -->
+"RequestBody": "client_id=cfb5fe52-8bb2-4901-9056-70449fa2df96\u0026client_secret=k178Q~AV~TwFKwXJtaFMacDETWgebAMAwR6oHbzb\u0026grant_type=client_credentials\u0026scope=https%3A%2F%2Fpurview.azure.net%2F.default",
