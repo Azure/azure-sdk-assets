@@ -24,14 +24,9 @@ jobs:
       - ${{ if and(ne(parameters.Tag, 'self'), ne(parameters.Tag, '')) }}:
         - pwsh: |
             git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git $(Build.SourcesDirectory)
-            git checkout ${{ parameters.Tag }}
+            git fetch origin refs/heads/${{ parameters.Tag }}:${{ parameters.Tag }}
+            git checkout ${{ parameters.Tag}}
           displayName: Checkout target branch to sources directory
-      - ${{ else }}:
-        - pwsh: |
-            git clone --no-checkout --filter=tree:0 https://github.com/azure/azure-sdk-assets.git $(Build.SourcesDirectory)
-            git fetch origin $(Build.SourceBranch)
-            git checkout ("$(Build.SourceBranch)" -replace "refs/heads/", "")
-          displayName: Checkout $(Build.SourceBranchName) to sources directory
 
       - pwsh: |
           $ErrorActionPreference = 'Stop'
