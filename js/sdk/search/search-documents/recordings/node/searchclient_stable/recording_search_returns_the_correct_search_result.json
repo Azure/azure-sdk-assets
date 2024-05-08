@@ -1,20 +1,20 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://subdomain.search.windows.net/indexes?api-version=2023-11-01",
+      "RequestUri": "https://subdomain.search.windows.net/indexes?api-version=2024-03-01-Preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json;odata.metadata=minimal",
         "Accept-Encoding": "gzip,deflate",
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
-        "Content-Length": "4011",
+        "Content-Length": "4389",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-js-search-documents/12.1.0-beta.1 core-rest-pipeline/1.16.1 Node/18.19.1 OS/(x64-Linux-6.5.0-1018-azure)",
-        "x-ms-client-request-id": "218e395e-63aa-4ffe-924b-c19d1b6ea361"
+        "x-ms-client-request-id": "a8eefaa7-c1c5-45d3-b974-99e8a7c5a05a"
       },
       "RequestBody": {
-        "name": "hotel-live-test-1071521",
+        "name": "hotel-live-test-1081671",
         "fields": [
           {
             "name": "hotelId",
@@ -234,7 +234,7 @@
             "sortable": false,
             "facetable": false,
             "dimensions": 1536,
-            "vectorSearchProfile": "profile-name"
+            "vectorSearchProfile": "vector-search-profile"
           }
         ],
         "scoringProfiles": [
@@ -272,7 +272,7 @@
         "semantic": {
           "configurations": [
             {
-              "name": "semantic-configuration-name",
+              "name": "semantic-configuration",
               "prioritizedFields": {
                 "titleField": {
                   "fieldName": "hotelName"
@@ -294,16 +294,34 @@
         "vectorSearch": {
           "profiles": [
             {
-              "name": "profile-name",
-              "algorithm": "algorithm-configuration-name"
+              "name": "vector-search-profile",
+              "algorithm": "vector-search-algorithm-configuration",
+              "vectorizer": "vector-search-vectorizer"
             }
           ],
           "algorithms": [
             {
-              "name": "algorithm-configuration-name",
+              "name": "vector-search-algorithm-configuration",
               "kind": "hnsw",
               "hnswParameters": {
                 "metric": "dotProduct"
+              }
+            },
+            {
+              "name": "vector-search-algorithm-configuration-1",
+              "kind": "exhaustiveKnn",
+              "exhaustiveKnnParameters": {
+                "metric": "euclidean"
+              }
+            }
+          ],
+          "vectorizers": [
+            {
+              "name": "vector-search-vectorizer",
+              "kind": "azureOpenAI",
+              "azureOpenAIParameters": {
+                "resourceUri": "https://subdomain.openai.azure.com/",
+                "deploymentId": "deployment-name"
               }
             }
           ]
@@ -312,13 +330,13 @@
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Tue, 07 May 2024 22:01:56 GMT",
-        "elapsed-time": "655",
-        "ETag": "\"0x8DC6EE14FE1CE8C\"",
-        "Location": "https://subdomain.search.windows.net/indexes('hotel-live-test-1071521')?api-version=2023-11-01",
+        "Date": "Wed, 08 May 2024 02:51:51 GMT",
+        "elapsed-time": "970",
+        "ETag": "\"0x8DC6F09CFD231AF\"",
+        "Location": "https://subdomain.search.windows.net/indexes('hotel-live-test-1081671')?api-version=2024-03-01-Preview",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "218e395e-63aa-4ffe-924b-c19d1b6ea361",
+        "request-id": "a8eefaa7-c1c5-45d3-b974-99e8a7c5a05a",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
@@ -328,8 +346,8 @@
       },
       "ResponseBody": {
         "@odata.context": "https://subdomain.search.windows.net/$metadata#indexes/$entity",
-        "@odata.etag": "\"0x8DC6EE14FE1CE8C\"",
-        "name": "hotel-live-test-1071521",
+        "@odata.etag": "\"0x8DC6F09CFD231AF\"",
+        "name": "hotel-live-test-1081671",
         "defaultScoringProfile": null,
         "fields": [
           {
@@ -338,12 +356,14 @@
             "searchable": false,
             "filterable": true,
             "retrievable": true,
+            "stored": true,
             "sortable": true,
             "facetable": false,
             "key": true,
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
+            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
             "synonymMaps": []
@@ -354,12 +374,14 @@
             "searchable": true,
             "filterable": true,
             "retrievable": true,
+            "stored": true,
             "sortable": true,
             "facetable": false,
             "key": false,
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
+            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
             "synonymMaps": []
@@ -370,12 +392,14 @@
             "searchable": true,
             "filterable": false,
             "retrievable": true,
+            "stored": true,
             "sortable": false,
             "facetable": false,
             "key": false,
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": "en.lucene",
+            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
             "synonymMaps": []
@@ -386,12 +410,14 @@
             "searchable": true,
             "filterable": false,
             "retrievable": true,
+            "stored": true,
             "sortable": false,
             "facetable": false,
             "key": false,
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": "fr.lucene",
+            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
             "synonymMaps": []
@@ -402,12 +428,14 @@
             "searchable": true,
             "filterable": true,
             "retrievable": true,
+            "stored": true,
             "sortable": true,
             "facetable": true,
             "key": false,
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
+            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
             "synonymMaps": []
@@ -418,12 +446,14 @@
             "searchable": true,
             "filterable": true,
             "retrievable": true,
+            "stored": true,
             "sortable": false,
             "facetable": true,
             "key": false,
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
+            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
             "synonymMaps": []
@@ -434,12 +464,14 @@
             "searchable": false,
             "filterable": true,
             "retrievable": true,
+            "stored": true,
             "sortable": true,
             "facetable": true,
             "key": false,
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
+            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
             "synonymMaps": []
@@ -450,12 +482,14 @@
             "searchable": false,
             "filterable": true,
             "retrievable": true,
+            "stored": true,
             "sortable": true,
             "facetable": true,
             "key": false,
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
+            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
             "synonymMaps": []
@@ -466,12 +500,14 @@
             "searchable": false,
             "filterable": true,
             "retrievable": true,
+            "stored": true,
             "sortable": true,
             "facetable": true,
             "key": false,
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
+            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
             "synonymMaps": []
@@ -482,12 +518,14 @@
             "searchable": false,
             "filterable": true,
             "retrievable": true,
+            "stored": true,
             "sortable": true,
             "facetable": true,
             "key": false,
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
+            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
             "synonymMaps": []
@@ -498,12 +536,14 @@
             "searchable": false,
             "filterable": true,
             "retrievable": true,
+            "stored": true,
             "sortable": true,
             "facetable": false,
             "key": false,
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
+            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
             "synonymMaps": []
@@ -518,12 +558,14 @@
                 "searchable": true,
                 "filterable": false,
                 "retrievable": true,
+                "stored": true,
                 "sortable": false,
                 "facetable": false,
                 "key": false,
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
+                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
                 "synonymMaps": []
@@ -534,12 +576,14 @@
                 "searchable": true,
                 "filterable": true,
                 "retrievable": true,
+                "stored": true,
                 "sortable": true,
                 "facetable": true,
                 "key": false,
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
+                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
                 "synonymMaps": []
@@ -550,12 +594,14 @@
                 "searchable": true,
                 "filterable": true,
                 "retrievable": true,
+                "stored": true,
                 "sortable": true,
                 "facetable": true,
                 "key": false,
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
+                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
                 "synonymMaps": []
@@ -566,12 +612,14 @@
                 "searchable": true,
                 "filterable": true,
                 "retrievable": true,
+                "stored": true,
                 "sortable": true,
                 "facetable": true,
                 "key": false,
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
+                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
                 "synonymMaps": []
@@ -582,12 +630,14 @@
                 "searchable": true,
                 "filterable": true,
                 "retrievable": true,
+                "stored": true,
                 "sortable": true,
                 "facetable": true,
                 "key": false,
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
+                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
                 "synonymMaps": []
@@ -604,12 +654,14 @@
                 "searchable": true,
                 "filterable": false,
                 "retrievable": true,
+                "stored": true,
                 "sortable": false,
                 "facetable": false,
                 "key": false,
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": "en.lucene",
+                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
                 "synonymMaps": []
@@ -620,12 +672,14 @@
                 "searchable": true,
                 "filterable": false,
                 "retrievable": true,
+                "stored": true,
                 "sortable": false,
                 "facetable": false,
                 "key": false,
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": "fr.lucene",
+                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
                 "synonymMaps": []
@@ -636,12 +690,14 @@
                 "searchable": true,
                 "filterable": true,
                 "retrievable": true,
+                "stored": true,
                 "sortable": false,
                 "facetable": true,
                 "key": false,
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
+                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
                 "synonymMaps": []
@@ -652,12 +708,14 @@
                 "searchable": false,
                 "filterable": true,
                 "retrievable": true,
+                "stored": true,
                 "sortable": false,
                 "facetable": true,
                 "key": false,
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
+                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
                 "synonymMaps": []
@@ -668,12 +726,14 @@
                 "searchable": true,
                 "filterable": true,
                 "retrievable": true,
+                "stored": true,
                 "sortable": false,
                 "facetable": true,
                 "key": false,
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
+                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
                 "synonymMaps": []
@@ -684,12 +744,14 @@
                 "searchable": false,
                 "filterable": true,
                 "retrievable": true,
+                "stored": true,
                 "sortable": false,
                 "facetable": true,
                 "key": false,
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
+                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
                 "synonymMaps": []
@@ -700,12 +762,14 @@
                 "searchable": false,
                 "filterable": true,
                 "retrievable": true,
+                "stored": true,
                 "sortable": false,
                 "facetable": true,
                 "key": false,
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
+                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
                 "synonymMaps": []
@@ -716,12 +780,14 @@
                 "searchable": true,
                 "filterable": true,
                 "retrievable": true,
+                "stored": true,
                 "sortable": false,
                 "facetable": true,
                 "key": false,
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
+                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
                 "synonymMaps": []
@@ -734,14 +800,16 @@
             "searchable": true,
             "filterable": false,
             "retrievable": false,
+            "stored": true,
             "sortable": false,
             "facetable": false,
             "key": false,
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
+            "normalizer": null,
             "dimensions": 1536,
-            "vectorSearchProfile": "profile-name",
+            "vectorSearchProfile": "vector-search-profile",
             "synonymMaps": []
           }
         ],
@@ -784,6 +852,7 @@
           }
         ],
         "analyzers": [],
+        "normalizers": [],
         "tokenizers": [],
         "tokenFilters": [],
         "charFilters": [],
@@ -793,32 +862,11 @@
           "k1": null,
           "b": null
         },
-        "vectorSearch": {
-          "algorithms": [
-            {
-              "name": "algorithm-configuration-name",
-              "kind": "hnsw",
-              "hnswParameters": {
-                "metric": "dotProduct",
-                "m": 4,
-                "efConstruction": 400,
-                "efSearch": 500
-              },
-              "exhaustiveKnnParameters": null
-            }
-          ],
-          "profiles": [
-            {
-              "name": "profile-name",
-              "algorithm": "algorithm-configuration-name"
-            }
-          ]
-        },
         "semantic": {
           "defaultConfiguration": null,
           "configurations": [
             {
-              "name": "semantic-configuration-name",
+              "name": "semantic-configuration",
               "prioritizedFields": {
                 "titleField": {
                   "fieldName": "hotelName"
@@ -836,6 +884,51 @@
               }
             }
           ]
+        },
+        "vectorSearch": {
+          "algorithms": [
+            {
+              "name": "vector-search-algorithm-configuration",
+              "kind": "hnsw",
+              "hnswParameters": {
+                "metric": "dotProduct",
+                "m": 4,
+                "efConstruction": 400,
+                "efSearch": 500
+              },
+              "exhaustiveKnnParameters": null
+            },
+            {
+              "name": "vector-search-algorithm-configuration-1",
+              "kind": "exhaustiveKnn",
+              "hnswParameters": null,
+              "exhaustiveKnnParameters": {
+                "metric": "euclidean"
+              }
+            }
+          ],
+          "profiles": [
+            {
+              "name": "vector-search-profile",
+              "algorithm": "vector-search-algorithm-configuration",
+              "vectorizer": "vector-search-vectorizer",
+              "compression": null
+            }
+          ],
+          "vectorizers": [
+            {
+              "name": "vector-search-vectorizer",
+              "kind": "azureOpenAI",
+              "azureOpenAIParameters": {
+                "resourceUri": "https://subdomain.openai.azure.com",
+                "deploymentId": "deployment-name",
+                "apiKey": null,
+                "authIdentity": null
+              },
+              "customWebApiParameters": null
+            }
+          ],
+          "compressions": []
         }
       }
     },
@@ -850,7 +943,7 @@
         "Content-Length": "1043",
         "Content-Type": "application/json; charset=UTF-8",
         "User-Agent": "azsdk-js-openai-rest/1.0.0-beta.12 core-rest-pipeline/1.16.0 Node/18.19.1 OS/(x64-Linux-6.5.0-1018-azure)",
-        "x-ms-client-request-id": "6b981b59-b8ee-4988-b6d4-fc2f1bd777d4"
+        "x-ms-client-request-id": "c6b65ad9-7d48-4e39-a515-2375a2c0ea73"
       },
       "RequestBody": {
         "input": [
@@ -869,18 +962,18 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
-        "apim-request-id": "a3fd8fa6-1d87-4cfa-b11c-598cdbbda8a3",
-        "azureml-model-session": "d015-20240505012900",
+        "apim-request-id": "f1eae3bd-1060-4fa0-a196-de929664cd53",
+        "azureml-model-session": "d016-20240505022429",
         "Content-Length": "333846",
         "Content-Type": "application/json",
-        "Date": "Tue, 07 May 2024 22:02:00 GMT",
+        "Date": "Wed, 08 May 2024 02:51:55 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "6b981b59-b8ee-4988-b6d4-fc2f1bd777d4",
+        "x-ms-client-request-id": "c6b65ad9-7d48-4e39-a515-2375a2c0ea73",
         "x-ms-region": "East US",
         "x-ratelimit-remaining-requests": "119",
         "x-ratelimit-remaining-tokens": "118984",
-        "X-Request-ID": "af8d2981-d8a1-4cd7-9d6a-1eabb4c9285b"
+        "X-Request-ID": "c3ea6274-cfb7-40fc-917e-5284f48ab1d5"
       },
       "ResponseBody": {
         "object": "list",
@@ -16314,7 +16407,7 @@
       }
     },
     {
-      "RequestUri": "https://subdomain.search.windows.net//indexes('hotel-live-test-1071521')/docs/search.index?api-version=2023-11-01",
+      "RequestUri": "https://subdomain.search.windows.net//indexes('hotel-live-test-1081671')/docs/search.index?api-version=2024-03-01-Preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json;odata.metadata=none",
@@ -16324,7 +16417,7 @@
         "Content-Length": "201188",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-js-search-documents/12.1.0-beta.1 core-rest-pipeline/1.16.1 Node/18.19.1 OS/(x64-Linux-6.5.0-1018-azure)",
-        "x-ms-client-request-id": "de66cfe3-8fb1-4eda-ab91-2a6698a7a653"
+        "x-ms-client-request-id": "9983445b-a321-4f8c-97a5-a3f8d708a5d7"
       },
       "RequestBody": {
         "value": [
@@ -32007,11 +32100,11 @@
       "ResponseHeaders": {
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; odata.metadata=none; odata.streaming=true; charset=utf-8",
-        "Date": "Tue, 07 May 2024 22:02:02 GMT",
-        "elapsed-time": "344",
+        "Date": "Wed, 08 May 2024 02:51:56 GMT",
+        "elapsed-time": "330",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "de66cfe3-8fb1-4eda-ab91-2a6698a7a653",
+        "request-id": "9983445b-a321-4f8c-97a5-a3f8d708a5d7",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
@@ -32086,7 +32179,7 @@
       }
     },
     {
-      "RequestUri": "https://subdomain.search.windows.net//indexes('hotel-live-test-1071521')/docs/$count?api-version=2023-11-01",
+      "RequestUri": "https://subdomain.search.windows.net//indexes('hotel-live-test-1081671')/docs/$count?api-version=2024-03-01-Preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json;odata.metadata=none",
@@ -32094,18 +32187,18 @@
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
         "User-Agent": "azsdk-js-search-documents/12.1.0-beta.1 core-rest-pipeline/1.16.1 Node/18.19.1 OS/(x64-Linux-6.5.0-1018-azure)",
-        "x-ms-client-request-id": "03e1c05f-2864-4bf9-9d61-4e54b30e7d66"
+        "x-ms-client-request-id": "6f2e4f02-0793-4fad-819c-e4e8bb468c2e"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Encoding": "gzip",
         "Content-Type": "text/plain; charset=utf-8",
-        "Date": "Tue, 07 May 2024 22:02:02 GMT",
-        "elapsed-time": "94",
+        "Date": "Wed, 08 May 2024 02:51:56 GMT",
+        "elapsed-time": "82",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "03e1c05f-2864-4bf9-9d61-4e54b30e7d66",
+        "request-id": "6f2e4f02-0793-4fad-819c-e4e8bb468c2e",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
@@ -32117,7 +32210,7 @@
       "ResponseBody": 0
     },
     {
-      "RequestUri": "https://subdomain.search.windows.net//indexes('hotel-live-test-1071521')/docs/$count?api-version=2023-11-01",
+      "RequestUri": "https://subdomain.search.windows.net//indexes('hotel-live-test-1081671')/docs/$count?api-version=2024-03-01-Preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json;odata.metadata=none",
@@ -32125,18 +32218,18 @@
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
         "User-Agent": "azsdk-js-search-documents/12.1.0-beta.1 core-rest-pipeline/1.16.1 Node/18.19.1 OS/(x64-Linux-6.5.0-1018-azure)",
-        "x-ms-client-request-id": "e636e811-008c-4c35-bd2e-f21518c4dcef"
+        "x-ms-client-request-id": "9e07be1e-2d48-40cc-a595-0127c3e91dc0"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Encoding": "gzip",
         "Content-Type": "text/plain; charset=utf-8",
-        "Date": "Tue, 07 May 2024 22:02:06 GMT",
+        "Date": "Wed, 08 May 2024 02:52:01 GMT",
         "elapsed-time": "4",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "e636e811-008c-4c35-bd2e-f21518c4dcef",
+        "request-id": "9e07be1e-2d48-40cc-a595-0127c3e91dc0",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
@@ -32148,7 +32241,7 @@
       "ResponseBody": 10
     },
     {
-      "RequestUri": "https://subdomain.search.windows.net//indexes('hotel-live-test-1071521')/docs/search.post.search?api-version=2023-11-01",
+      "RequestUri": "https://subdomain.search.windows.net//indexes('hotel-live-test-1081671')/docs/search.post.search?api-version=2024-03-01-Preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json;odata.metadata=none",
@@ -32158,7 +32251,7 @@
         "Content-Length": "82",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-js-search-documents/12.1.0-beta.1 core-rest-pipeline/1.16.1 Node/18.19.1 OS/(x64-Linux-6.5.0-1018-azure)",
-        "x-ms-client-request-id": "e6288454-e45c-4837-96ba-a21f340785ea"
+        "x-ms-client-request-id": "2c906aa2-7339-4d73-ac43-6a57393100bb"
       },
       "RequestBody": {
         "count": true,
@@ -32171,11 +32264,11 @@
       "ResponseHeaders": {
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; odata.metadata=none; odata.streaming=true; charset=utf-8",
-        "Date": "Tue, 07 May 2024 22:02:10 GMT",
-        "elapsed-time": "34",
+        "Date": "Wed, 08 May 2024 02:52:05 GMT",
+        "elapsed-time": "31",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "e6288454-e45c-4837-96ba-a21f340785ea",
+        "request-id": "2c906aa2-7339-4d73-ac43-6a57393100bb",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
@@ -32215,7 +32308,7 @@
       }
     },
     {
-      "RequestUri": "https://subdomain.search.windows.net/indexes('hotel-live-test-1071521')?api-version=2023-11-01",
+      "RequestUri": "https://subdomain.search.windows.net/indexes('hotel-live-test-1081671')?api-version=2024-03-01-Preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json;odata.metadata=minimal",
@@ -32223,15 +32316,15 @@
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
         "User-Agent": "azsdk-js-search-documents/12.1.0-beta.1 core-rest-pipeline/1.16.1 Node/18.19.1 OS/(x64-Linux-6.5.0-1018-azure)",
-        "x-ms-client-request-id": "45c8b722-2c01-406b-b2df-f063c653b3cc"
+        "x-ms-client-request-id": "cfecc260-9ace-48e3-8e10-cdbad6016a7d"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Tue, 07 May 2024 22:02:10 GMT",
-        "elapsed-time": "247",
+        "Date": "Wed, 08 May 2024 02:52:05 GMT",
+        "elapsed-time": "212",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "45c8b722-2c01-406b-b2df-f063c653b3cc",
+        "request-id": "cfecc260-9ace-48e3-8e10-cdbad6016a7d",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
@@ -32242,6 +32335,6 @@
     }
   ],
   "Variables": {
-    "TEST_INDEX_NAME": "hotel-live-test-1071521"
+    "TEST_INDEX_NAME": "hotel-live-test-1081671"
   }
 }
