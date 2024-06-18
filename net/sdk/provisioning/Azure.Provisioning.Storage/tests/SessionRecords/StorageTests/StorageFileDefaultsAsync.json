@@ -6,7 +6,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "traceparent": "00-583f4b72227a391ddbdb4737c5a35282-f7c9d91a9c306f86-00",
+        "traceparent": "00-8dbe33e8b445615756c63d6a623b7e1b-d085957181918757-00",
         "User-Agent": "azsdk-net-ResourceManager/1.12.0 (.NET 6.0.31; Microsoft Windows 10.0.22631)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
@@ -17,17 +17,17 @@
         "Cache-Control": "no-cache",
         "Content-Length": "438",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 16 Jun 2024 10:56:25 GMT",
+        "Date": "Sun, 16 Jun 2024 11:00:10 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "0b4345ca-42dd-470c-8a26-d645ce0cde10",
-        "x-ms-ratelimit-remaining-subscription-reads": "11990",
-        "x-ms-request-id": "0b4345ca-42dd-470c-8a26-d645ce0cde10",
-        "x-ms-routing-request-id": "ISRAELCENTRAL:20240616T105625Z:0b4345ca-42dd-470c-8a26-d645ce0cde10",
-        "X-MSEdge-Ref": "Ref A: 86F9BBDCFE01439290340561DEEDA398 Ref B: AMS231020512021 Ref C: 2024-06-16T10:56:25Z"
+        "x-ms-correlation-request-id": "ee5f6a6c-f7d1-4c1b-99e3-40745472a1c7",
+        "x-ms-ratelimit-remaining-subscription-reads": "11992",
+        "x-ms-request-id": "ee5f6a6c-f7d1-4c1b-99e3-40745472a1c7",
+        "x-ms-routing-request-id": "ISRAELCENTRAL:20240616T110010Z:ee5f6a6c-f7d1-4c1b-99e3-40745472a1c7",
+        "X-MSEdge-Ref": "Ref A: E20BB49D37A849D5829F25E701DABAAC Ref B: AMS231020512021 Ref C: 2024-06-16T11:00:10Z"
       },
       "ResponseBody": {
         "id": "/subscriptions/caedc0f5-7aa8-4612-98f7-9ce6ad4dc1ba",
@@ -45,14 +45,14 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/caedc0f5-7aa8-4612-98f7-9ce6ad4dc1ba/providers/Microsoft.Resources/deployments/ExistingResources/validate?api-version=2022-09-01",
+      "RequestUri": "https://management.azure.com/subscriptions/caedc0f5-7aa8-4612-98f7-9ce6ad4dc1ba/providers/Microsoft.Resources/deployments/StorageFileDefaults/validate?api-version=2022-09-01",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "981",
+        "Content-Length": "2257",
         "Content-Type": "application/json",
-        "traceparent": "00-bd0ee612ff6d42dbf52bdcfeebd34aac-07905d39df4e138e-00",
+        "traceparent": "00-bf7f6a2eb0087da91db850d349b1ab90-82294bff02495d74-00",
         "User-Agent": "azsdk-net-ResourceManager.Resources/1.7.3 (.NET 6.0.31; Microsoft Windows 10.0.22631)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
@@ -68,6 +68,19 @@
                 "name": "bicep",
                 "version": "Sanitized",
                 "templateHash": "Sanitized"
+              }
+            },
+            "parameters": {
+              "primaryEndpoints": {
+                "type": "object",
+                "defaultValue": {
+                  "blob": "https://photoacct.blob.core.windows.net/",
+                  "file": "https://photoacct.file.core.windows.net/",
+                  "queue": "https://photoacct.queue.core.windows.net/"
+                },
+                "metadata": {
+                  "description": ""
+                }
               }
             },
             "resources": [
@@ -90,6 +103,11 @@
                     "scope": "inner"
                   },
                   "mode": "Incremental",
+                  "parameters": {
+                    "primaryEndpoints": {
+                      "value": "[parameters('primaryEndpoints')]"
+                    }
+                  },
                   "template": {
                     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
                     "contentVersion": "1.0.0.0",
@@ -100,7 +118,46 @@
                         "templateHash": "Sanitized"
                       }
                     },
-                    "resources": []
+                    "parameters": {
+                      "primaryEndpoints": {
+                        "type": "object",
+                        "defaultValue": {
+                          "blob": "https://photoacct.blob.core.windows.net/",
+                          "file": "https://photoacct.file.core.windows.net/",
+                          "queue": "https://photoacct.queue.core.windows.net/"
+                        },
+                        "metadata": {
+                          "description": ""
+                        }
+                      }
+                    },
+                    "resources": [
+                      {
+                        "type": "Microsoft.Storage/storageAccounts",
+                        "apiVersion": "2022-09-01",
+                        "name": "[toLower(take(format('photoAcct{0}', uniqueString(resourceGroup().id)), 24))]",
+                        "location": "westus",
+                        "sku": {
+                          "name": "Premium_LRS"
+                        },
+                        "kind": "FileStorage",
+                        "properties": {
+                          "primaryEndpoints": "[parameters('primaryEndpoints')]",
+                          "networkAcls": {
+                            "defaultAction": "Deny"
+                          }
+                        }
+                      },
+                      {
+                        "type": "Microsoft.Storage/storageAccounts/fileServices",
+                        "apiVersion": "2022-09-01",
+                        "name": "[format('{0}/{1}', toLower(take(format('photoAcct{0}', uniqueString(resourceGroup().id)), 24)), 'default')]",
+                        "properties": {},
+                        "dependsOn": [
+                          "[resourceId('Microsoft.Storage/storageAccounts', toLower(take(format('photoAcct{0}', uniqueString(resourceGroup().id)), 24)))]"
+                        ]
+                      }
+                    ]
                   }
                 },
                 "dependsOn": [
@@ -115,32 +172,42 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "1259",
+        "Content-Length": "1800",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 16 Jun 2024 10:56:35 GMT",
+        "Date": "Sun, 16 Jun 2024 11:00:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "42e46578-d909-40d1-b416-f6a072302b41",
-        "x-ms-ratelimit-remaining-subscription-writes": "1196",
-        "x-ms-request-id": "42e46578-d909-40d1-b416-f6a072302b41",
-        "x-ms-routing-request-id": "ISRAELCENTRAL:20240616T105635Z:42e46578-d909-40d1-b416-f6a072302b41",
-        "X-MSEdge-Ref": "Ref A: 1385917442A8421EA5AC3F6255A1D000 Ref B: AMS231020512021 Ref C: 2024-06-16T10:56:32Z"
+        "x-ms-correlation-request-id": "f5a6bc3b-bb1f-4bcf-ad57-17ab19be6a36",
+        "x-ms-ratelimit-remaining-subscription-writes": "1192",
+        "x-ms-request-id": "f5a6bc3b-bb1f-4bcf-ad57-17ab19be6a36",
+        "x-ms-routing-request-id": "ISRAELCENTRAL:20240616T110031Z:f5a6bc3b-bb1f-4bcf-ad57-17ab19be6a36",
+        "X-MSEdge-Ref": "Ref A: 42A4997CA23241DCB29B783A7F2302C1 Ref B: AMS231020512021 Ref C: 2024-06-16T11:00:26Z"
       },
       "ResponseBody": {
-        "id": "/subscriptions/caedc0f5-7aa8-4612-98f7-9ce6ad4dc1ba/providers/Microsoft.Resources/deployments/ExistingResources",
-        "name": "ExistingResources",
+        "id": "/subscriptions/caedc0f5-7aa8-4612-98f7-9ce6ad4dc1ba/providers/Microsoft.Resources/deployments/StorageFileDefaults",
+        "name": "StorageFileDefaults",
         "type": "Microsoft.Resources/deployments",
         "location": "westus",
         "properties": {
-          "templateHash": "11382075418724702207",
+          "templateHash": "11721335614221462733",
+          "parameters": {
+            "primaryEndpoints": {
+              "type": "Object",
+              "value": {
+                "blob": "https://photoacct.blob.core.windows.net/",
+                "file": "https://photoacct.file.core.windows.net/",
+                "queue": "https://photoacct.queue.core.windows.net/"
+              }
+            }
+          },
           "mode": "Incremental",
           "provisioningState": "Succeeded",
           "timestamp": "0001-01-01T00:00:00Z",
           "duration": "PT0S",
-          "correlationId": "42e46578-d909-40d1-b416-f6a072302b41",
+          "correlationId": "f5a6bc3b-bb1f-4bcf-ad57-17ab19be6a36",
           "providers": [
             {
               "namespace": "Microsoft.Resources",
@@ -180,6 +247,12 @@
             },
             {
               "id": "/subscriptions/caedc0f5-7aa8-4612-98f7-9ce6ad4dc1ba/resourceGroups/rg-TEST/providers/Microsoft.Resources/deployments/rg_TEST_module"
+            },
+            {
+              "id": "/subscriptions/caedc0f5-7aa8-4612-98f7-9ce6ad4dc1ba/resourceGroups/rg-TEST/providers/Microsoft.Storage/storageAccounts/photoacctm36wqufm7ax4k"
+            },
+            {
+              "id": "/subscriptions/caedc0f5-7aa8-4612-98f7-9ce6ad4dc1ba/resourceGroups/rg-TEST/providers/Microsoft.Storage/storageAccounts/photoacctm36wqufm7ax4k/fileServices/default"
             }
           ]
         }
@@ -187,7 +260,7 @@
     }
   ],
   "Variables": {
-    "RandomSeed": "1223104027",
+    "RandomSeed": "1984770760",
     "RESOURCE_MANAGER_URL": null,
     "SUBSCRIPTION_ID": "caedc0f5-7aa8-4612-98f7-9ce6ad4dc1ba"
   }
