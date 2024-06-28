@@ -1,20 +1,20 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/indexes?api-version=2024-03-01-preview",
+      "RequestUri": "https://REDACTED/indexes?api-version=2024-07-01",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
         "api-key": "REDACTED",
         "Content-Length": "4759",
         "Content-Type": "application/json",
-        "Date": "Tue, 05 Mar 2024 04:07:19 GMT",
+        "Date": "Fri, 28 Jun 2024 14:57:49 GMT",
         "return-client-request-id": "true",
-        "User-Agent": "azsdk-java-azure-search-documents/11.7.0-beta.2 (17.0.9; Windows 11; 10.0)",
-        "x-ms-client-request-id": "453fdacd-ab14-434e-9d2b-973baed0fc1f"
+        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
-        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync82e43610c4d7",
+        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync1b939547eafd",
         "fields": [
           {
             "name": "HotelId",
@@ -247,7 +247,6 @@
             },
             "functions": [
               {
-                "type": "magnitude",
                 "fieldName": "Rating",
                 "boost": 2.0,
                 "interpolation": "constant",
@@ -255,26 +254,27 @@
                   "boostingRangeStart": 1.0,
                   "boostingRangeEnd": 4.0,
                   "constantBoostBeyondRange": true
-                }
+                },
+                "type": "magnitude"
               },
               {
-                "type": "distance",
                 "fieldName": "Location",
                 "boost": 1.5,
                 "interpolation": "linear",
                 "distance": {
                   "referencePointParameter": "Loc",
                   "boostingDistance": 5.0
-                }
+                },
+                "type": "distance"
               },
               {
-                "type": "freshness",
                 "fieldName": "LastRenovationDate",
                 "boost": 1.1,
                 "interpolation": "logarithmic",
                 "freshness": {
                   "boostingDuration": "P365D"
-                }
+                },
+                "type": "freshness"
               }
             ],
             "functionAggregation": "average"
@@ -283,13 +283,13 @@
             "name": "ProfileTwo",
             "functions": [
               {
-                "type": "tag",
                 "fieldName": "Tags",
                 "boost": 1.5,
                 "interpolation": "linear",
                 "tag": {
                   "tagsParameter": "MyTags"
-                }
+                },
+                "type": "tag"
               }
             ],
             "functionAggregation": "maximum"
@@ -298,7 +298,6 @@
             "name": "ProfileThree",
             "functions": [
               {
-                "type": "magnitude",
                 "fieldName": "Rating",
                 "boost": 3.0,
                 "interpolation": "quadratic",
@@ -306,7 +305,8 @@
                   "boostingRangeStart": 0.0,
                   "boostingRangeEnd": 10.0,
                   "constantBoostBeyondRange": false
-                }
+                },
+                "type": "magnitude"
               }
             ],
             "functionAggregation": "minimum"
@@ -315,7 +315,6 @@
             "name": "ProfileFour",
             "functions": [
               {
-                "type": "magnitude",
                 "fieldName": "Rating",
                 "boost": 3.25,
                 "interpolation": "constant",
@@ -323,7 +322,8 @@
                   "boostingRangeStart": 1.0,
                   "boostingRangeEnd": 5.0,
                   "constantBoostBeyondRange": false
-                }
+                },
+                "type": "magnitude"
               }
             ],
             "functionAggregation": "firstMatching"
@@ -348,49 +348,51 @@
         ],
         "analyzers": [
           {
-            "@odata.type": "#Microsoft.Azure.Search.StopAnalyzer",
-            "name": "a1"
+            "name": "a1",
+            "@odata.type": "#Microsoft.Azure.Search.StopAnalyzer"
           }
         ]
       },
-      "StatusCode": 429,
+      "StatusCode": 503,
       "ResponseHeaders": {
-        "Cache-Control": "no-store, no-cache",
-        "client-request-id": "453fdacd-ab14-434e-9d2b-973baed0fc1f",
+        "client-request-id": "Sanitized",
         "Content-Language": "en",
-        "Content-Length": "387",
+        "Content-Length": "92",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 05 Mar 2024 04:07:19 GMT",
-        "elapsed-time": "139",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "request-id": "453fdacd-ab14-434e-9d2b-973baed0fc1f",
+        "Date": "Fri, 28 Jun 2024 14:57:49 GMT",
+        "elapsed-time": "81",
+        "Preference-Applied": "odata.include-annotations=\"*\"",
+        "request-id": "11073596-730b-4716-ba11-75c398d467c1",
         "Server": "Microsoft-IIS/10.0",
-        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-        "x-ms-client-request-id": "453fdacd-ab14-434e-9d2b-973baed0fc1f"
+        "Strict-Transport-Security": [
+          "max-age=2592000",
+          "max-age=15724800; includeSubDomains"
+        ],
+        "throttle-reason": "rateLimitExceeded",
+        "x-ms-client-request-id": "Sanitized"
       },
       "ResponseBody": {
         "error": {
           "code": "",
-          "message": "An index with the name \u0027hotelscanaddcustomanalyzerwithindexdowntimeasync82e43610c4d7\u0027 in service \u00272040301preview\u0027 could not be created. Index quota has been exceeded for this service. You must either delete unused indexes first, add a delay between index creation requests, or upgrade the service for higher limits. Maximum number of indexes allowed: 15"
+          "message": "You are sending too many requests. Please try again later."
         }
       }
     },
     {
-      "RequestUri": "https://REDACTED/indexes?api-version=2024-03-01-preview",
+      "RequestUri": "https://REDACTED/indexes?api-version=2024-07-01",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
         "api-key": "REDACTED",
         "Content-Length": "4759",
         "Content-Type": "application/json",
-        "Date": "Tue, 05 Mar 2024 04:07:34 GMT",
+        "Date": "Fri, 28 Jun 2024 14:58:19 GMT",
         "return-client-request-id": "true",
-        "User-Agent": "azsdk-java-azure-search-documents/11.7.0-beta.2 (17.0.9; Windows 11; 10.0)",
-        "x-ms-client-request-id": "453fdacd-ab14-434e-9d2b-973baed0fc1f"
+        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
-        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync82e43610c4d7",
+        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync1b939547eafd",
         "fields": [
           {
             "name": "HotelId",
@@ -623,7 +625,6 @@
             },
             "functions": [
               {
-                "type": "magnitude",
                 "fieldName": "Rating",
                 "boost": 2.0,
                 "interpolation": "constant",
@@ -631,26 +632,27 @@
                   "boostingRangeStart": 1.0,
                   "boostingRangeEnd": 4.0,
                   "constantBoostBeyondRange": true
-                }
+                },
+                "type": "magnitude"
               },
               {
-                "type": "distance",
                 "fieldName": "Location",
                 "boost": 1.5,
                 "interpolation": "linear",
                 "distance": {
                   "referencePointParameter": "Loc",
                   "boostingDistance": 5.0
-                }
+                },
+                "type": "distance"
               },
               {
-                "type": "freshness",
                 "fieldName": "LastRenovationDate",
                 "boost": 1.1,
                 "interpolation": "logarithmic",
                 "freshness": {
                   "boostingDuration": "P365D"
-                }
+                },
+                "type": "freshness"
               }
             ],
             "functionAggregation": "average"
@@ -659,13 +661,13 @@
             "name": "ProfileTwo",
             "functions": [
               {
-                "type": "tag",
                 "fieldName": "Tags",
                 "boost": 1.5,
                 "interpolation": "linear",
                 "tag": {
                   "tagsParameter": "MyTags"
-                }
+                },
+                "type": "tag"
               }
             ],
             "functionAggregation": "maximum"
@@ -674,7 +676,6 @@
             "name": "ProfileThree",
             "functions": [
               {
-                "type": "magnitude",
                 "fieldName": "Rating",
                 "boost": 3.0,
                 "interpolation": "quadratic",
@@ -682,7 +683,8 @@
                   "boostingRangeStart": 0.0,
                   "boostingRangeEnd": 10.0,
                   "constantBoostBeyondRange": false
-                }
+                },
+                "type": "magnitude"
               }
             ],
             "functionAggregation": "minimum"
@@ -691,7 +693,6 @@
             "name": "ProfileFour",
             "functions": [
               {
-                "type": "magnitude",
                 "fieldName": "Rating",
                 "boost": 3.25,
                 "interpolation": "constant",
@@ -699,7 +700,8 @@
                   "boostingRangeStart": 1.0,
                   "boostingRangeEnd": 5.0,
                   "constantBoostBeyondRange": false
-                }
+                },
+                "type": "magnitude"
               }
             ],
             "functionAggregation": "firstMatching"
@@ -724,49 +726,51 @@
         ],
         "analyzers": [
           {
-            "@odata.type": "#Microsoft.Azure.Search.StopAnalyzer",
-            "name": "a1"
+            "name": "a1",
+            "@odata.type": "#Microsoft.Azure.Search.StopAnalyzer"
           }
         ]
       },
-      "StatusCode": 429,
+      "StatusCode": 503,
       "ResponseHeaders": {
-        "Cache-Control": "no-store, no-cache",
-        "client-request-id": "453fdacd-ab14-434e-9d2b-973baed0fc1f",
+        "client-request-id": "Sanitized",
         "Content-Language": "en",
-        "Content-Length": "387",
+        "Content-Length": "92",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 05 Mar 2024 04:07:34 GMT",
-        "elapsed-time": "163",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "request-id": "453fdacd-ab14-434e-9d2b-973baed0fc1f",
+        "Date": "Fri, 28 Jun 2024 14:58:27 GMT",
+        "elapsed-time": "8375",
+        "Preference-Applied": "odata.include-annotations=\"*\"",
+        "request-id": "11073596-730b-4716-ba11-75c398d467c1",
         "Server": "Microsoft-IIS/10.0",
-        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-        "x-ms-client-request-id": "453fdacd-ab14-434e-9d2b-973baed0fc1f"
+        "Strict-Transport-Security": [
+          "max-age=2592000",
+          "max-age=15724800; includeSubDomains"
+        ],
+        "throttle-reason": "rateLimitExceeded",
+        "x-ms-client-request-id": "Sanitized"
       },
       "ResponseBody": {
         "error": {
           "code": "",
-          "message": "An index with the name \u0027hotelscanaddcustomanalyzerwithindexdowntimeasync82e43610c4d7\u0027 in service \u00272040301preview\u0027 could not be created. Index quota has been exceeded for this service. You must either delete unused indexes first, add a delay between index creation requests, or upgrade the service for higher limits. Maximum number of indexes allowed: 15"
+          "message": "You are sending too many requests. Please try again later."
         }
       }
     },
     {
-      "RequestUri": "https://REDACTED/indexes?api-version=2024-03-01-preview",
+      "RequestUri": "https://REDACTED/indexes?api-version=2024-07-01",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
         "api-key": "REDACTED",
         "Content-Length": "4759",
         "Content-Type": "application/json",
-        "Date": "Tue, 05 Mar 2024 04:07:49 GMT",
+        "Date": "Fri, 28 Jun 2024 14:58:57 GMT",
         "return-client-request-id": "true",
-        "User-Agent": "azsdk-java-azure-search-documents/11.7.0-beta.2 (17.0.9; Windows 11; 10.0)",
-        "x-ms-client-request-id": "453fdacd-ab14-434e-9d2b-973baed0fc1f"
+        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
-        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync82e43610c4d7",
+        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync1b939547eafd",
         "fields": [
           {
             "name": "HotelId",
@@ -999,7 +1003,6 @@
             },
             "functions": [
               {
-                "type": "magnitude",
                 "fieldName": "Rating",
                 "boost": 2.0,
                 "interpolation": "constant",
@@ -1007,26 +1010,27 @@
                   "boostingRangeStart": 1.0,
                   "boostingRangeEnd": 4.0,
                   "constantBoostBeyondRange": true
-                }
+                },
+                "type": "magnitude"
               },
               {
-                "type": "distance",
                 "fieldName": "Location",
                 "boost": 1.5,
                 "interpolation": "linear",
                 "distance": {
                   "referencePointParameter": "Loc",
                   "boostingDistance": 5.0
-                }
+                },
+                "type": "distance"
               },
               {
-                "type": "freshness",
                 "fieldName": "LastRenovationDate",
                 "boost": 1.1,
                 "interpolation": "logarithmic",
                 "freshness": {
                   "boostingDuration": "P365D"
-                }
+                },
+                "type": "freshness"
               }
             ],
             "functionAggregation": "average"
@@ -1035,13 +1039,13 @@
             "name": "ProfileTwo",
             "functions": [
               {
-                "type": "tag",
                 "fieldName": "Tags",
                 "boost": 1.5,
                 "interpolation": "linear",
                 "tag": {
                   "tagsParameter": "MyTags"
-                }
+                },
+                "type": "tag"
               }
             ],
             "functionAggregation": "maximum"
@@ -1050,7 +1054,6 @@
             "name": "ProfileThree",
             "functions": [
               {
-                "type": "magnitude",
                 "fieldName": "Rating",
                 "boost": 3.0,
                 "interpolation": "quadratic",
@@ -1058,7 +1061,8 @@
                   "boostingRangeStart": 0.0,
                   "boostingRangeEnd": 10.0,
                   "constantBoostBeyondRange": false
-                }
+                },
+                "type": "magnitude"
               }
             ],
             "functionAggregation": "minimum"
@@ -1067,7 +1071,6 @@
             "name": "ProfileFour",
             "functions": [
               {
-                "type": "magnitude",
                 "fieldName": "Rating",
                 "boost": 3.25,
                 "interpolation": "constant",
@@ -1075,7 +1078,8 @@
                   "boostingRangeStart": 1.0,
                   "boostingRangeEnd": 5.0,
                   "constantBoostBeyondRange": false
-                }
+                },
+                "type": "magnitude"
               }
             ],
             "functionAggregation": "firstMatching"
@@ -1100,34 +1104,790 @@
         ],
         "analyzers": [
           {
-            "@odata.type": "#Microsoft.Azure.Search.StopAnalyzer",
-            "name": "a1"
+            "name": "a1",
+            "@odata.type": "#Microsoft.Azure.Search.StopAnalyzer"
+          }
+        ]
+      },
+      "StatusCode": 503,
+      "ResponseHeaders": {
+        "client-request-id": "Sanitized",
+        "Content-Language": "en",
+        "Content-Length": "92",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 28 Jun 2024 14:59:05 GMT",
+        "elapsed-time": "7243",
+        "Preference-Applied": "odata.include-annotations=\"*\"",
+        "request-id": "11073596-730b-4716-ba11-75c398d467c1",
+        "Server": "Microsoft-IIS/10.0",
+        "Strict-Transport-Security": [
+          "max-age=2592000",
+          "max-age=15724800; includeSubDomains"
+        ],
+        "throttle-reason": "rateLimitExceeded",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "",
+          "message": "You are sending too many requests. Please try again later."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/indexes?api-version=2024-07-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "4759",
+        "Content-Type": "application/json",
+        "Date": "Fri, 28 Jun 2024 14:59:35 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync1b939547eafd",
+        "fields": [
+          {
+            "name": "HotelId",
+            "type": "Edm.String",
+            "key": true,
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "HotelName",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true
+          },
+          {
+            "name": "Description",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "analyzer": "en.lucene"
+          },
+          {
+            "name": "DescriptionFr",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "analyzer": "fr.lucene"
+          },
+          {
+            "name": "Description_Custom",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "searchAnalyzer": "stop",
+            "indexAnalyzer": "stop"
+          },
+          {
+            "name": "Category",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "Tags",
+            "type": "Collection(Edm.String)",
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "facetable": true
+          },
+          {
+            "name": "ParkingIncluded",
+            "type": "Edm.Boolean",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "SmokingAllowed",
+            "type": "Edm.Boolean",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "LastRenovationDate",
+            "type": "Edm.DateTimeOffset",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "Rating",
+            "type": "Edm.Int32",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "Address",
+            "type": "Edm.ComplexType",
+            "fields": [
+              {
+                "name": "StreetAddress",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true
+              },
+              {
+                "name": "City",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              },
+              {
+                "name": "StateProvince",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              },
+              {
+                "name": "Country",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              },
+              {
+                "name": "PostalCode",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              }
+            ]
+          },
+          {
+            "name": "Location",
+            "type": "Edm.GeographyPoint",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true
+          },
+          {
+            "name": "Rooms",
+            "type": "Collection(Edm.ComplexType)",
+            "fields": [
+              {
+                "name": "Description",
+                "type": "Edm.String",
+                "searchable": true,
+                "analyzer": "en.lucene"
+              },
+              {
+                "name": "DescriptionFr",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "analyzer": "fr.lucene"
+              },
+              {
+                "name": "Type",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "BaseRate",
+                "type": "Edm.Double",
+                "key": false,
+                "retrievable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "BedOptions",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "SleepsCount",
+                "type": "Edm.Int32",
+                "retrievable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "SmokingAllowed",
+                "type": "Edm.Boolean",
+                "retrievable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "Tags",
+                "type": "Collection(Edm.String)",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "facetable": true
+              }
+            ]
+          },
+          {
+            "name": "TotalGuests",
+            "type": "Edm.Int64",
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "ProfitMargin",
+            "type": "Edm.Double"
+          }
+        ],
+        "scoringProfiles": [
+          {
+            "name": "MyProfile",
+            "text": {
+              "weights": {
+                "Description": 1.5,
+                "Category": 2.0
+              }
+            },
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "boost": 2.0,
+                "interpolation": "constant",
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 4.0,
+                  "constantBoostBeyondRange": true
+                },
+                "type": "magnitude"
+              },
+              {
+                "fieldName": "Location",
+                "boost": 1.5,
+                "interpolation": "linear",
+                "distance": {
+                  "referencePointParameter": "Loc",
+                  "boostingDistance": 5.0
+                },
+                "type": "distance"
+              },
+              {
+                "fieldName": "LastRenovationDate",
+                "boost": 1.1,
+                "interpolation": "logarithmic",
+                "freshness": {
+                  "boostingDuration": "P365D"
+                },
+                "type": "freshness"
+              }
+            ],
+            "functionAggregation": "average"
+          },
+          {
+            "name": "ProfileTwo",
+            "functions": [
+              {
+                "fieldName": "Tags",
+                "boost": 1.5,
+                "interpolation": "linear",
+                "tag": {
+                  "tagsParameter": "MyTags"
+                },
+                "type": "tag"
+              }
+            ],
+            "functionAggregation": "maximum"
+          },
+          {
+            "name": "ProfileThree",
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "boost": 3.0,
+                "interpolation": "quadratic",
+                "magnitude": {
+                  "boostingRangeStart": 0.0,
+                  "boostingRangeEnd": 10.0,
+                  "constantBoostBeyondRange": false
+                },
+                "type": "magnitude"
+              }
+            ],
+            "functionAggregation": "minimum"
+          },
+          {
+            "name": "ProfileFour",
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "boost": 3.25,
+                "interpolation": "constant",
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 5.0,
+                  "constantBoostBeyondRange": false
+                },
+                "type": "magnitude"
+              }
+            ],
+            "functionAggregation": "firstMatching"
+          }
+        ],
+        "defaultScoringProfile": "MyProfile",
+        "corsOptions": {
+          "allowedOrigins": [
+            "http://tempuri.org",
+            "http://localhost:80"
+          ],
+          "maxAgeInSeconds": 60
+        },
+        "suggesters": [
+          {
+            "name": "FancySuggester",
+            "sourceFields": [
+              "HotelName"
+            ],
+            "searchMode": "analyzingInfixMatching"
+          }
+        ],
+        "analyzers": [
+          {
+            "name": "a1",
+            "@odata.type": "#Microsoft.Azure.Search.StopAnalyzer"
+          }
+        ]
+      },
+      "StatusCode": 503,
+      "ResponseHeaders": {
+        "client-request-id": "Sanitized",
+        "Content-Language": "en",
+        "Content-Length": "92",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 28 Jun 2024 14:59:45 GMT",
+        "elapsed-time": "10359",
+        "Preference-Applied": "odata.include-annotations=\"*\"",
+        "request-id": "11073596-730b-4716-ba11-75c398d467c1",
+        "Server": "Microsoft-IIS/10.0",
+        "Strict-Transport-Security": [
+          "max-age=2592000",
+          "max-age=15724800; includeSubDomains"
+        ],
+        "throttle-reason": "rateLimitExceeded",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "",
+          "message": "You are sending too many requests. Please try again later."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/indexes?api-version=2024-07-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "4759",
+        "Content-Type": "application/json",
+        "Date": "Fri, 28 Jun 2024 15:00:15 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync1b939547eafd",
+        "fields": [
+          {
+            "name": "HotelId",
+            "type": "Edm.String",
+            "key": true,
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "HotelName",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true
+          },
+          {
+            "name": "Description",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "analyzer": "en.lucene"
+          },
+          {
+            "name": "DescriptionFr",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "analyzer": "fr.lucene"
+          },
+          {
+            "name": "Description_Custom",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "searchAnalyzer": "stop",
+            "indexAnalyzer": "stop"
+          },
+          {
+            "name": "Category",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "Tags",
+            "type": "Collection(Edm.String)",
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "facetable": true
+          },
+          {
+            "name": "ParkingIncluded",
+            "type": "Edm.Boolean",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "SmokingAllowed",
+            "type": "Edm.Boolean",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "LastRenovationDate",
+            "type": "Edm.DateTimeOffset",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "Rating",
+            "type": "Edm.Int32",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "Address",
+            "type": "Edm.ComplexType",
+            "fields": [
+              {
+                "name": "StreetAddress",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true
+              },
+              {
+                "name": "City",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              },
+              {
+                "name": "StateProvince",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              },
+              {
+                "name": "Country",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              },
+              {
+                "name": "PostalCode",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              }
+            ]
+          },
+          {
+            "name": "Location",
+            "type": "Edm.GeographyPoint",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true
+          },
+          {
+            "name": "Rooms",
+            "type": "Collection(Edm.ComplexType)",
+            "fields": [
+              {
+                "name": "Description",
+                "type": "Edm.String",
+                "searchable": true,
+                "analyzer": "en.lucene"
+              },
+              {
+                "name": "DescriptionFr",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "analyzer": "fr.lucene"
+              },
+              {
+                "name": "Type",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "BaseRate",
+                "type": "Edm.Double",
+                "key": false,
+                "retrievable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "BedOptions",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "SleepsCount",
+                "type": "Edm.Int32",
+                "retrievable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "SmokingAllowed",
+                "type": "Edm.Boolean",
+                "retrievable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "Tags",
+                "type": "Collection(Edm.String)",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "facetable": true
+              }
+            ]
+          },
+          {
+            "name": "TotalGuests",
+            "type": "Edm.Int64",
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "ProfitMargin",
+            "type": "Edm.Double"
+          }
+        ],
+        "scoringProfiles": [
+          {
+            "name": "MyProfile",
+            "text": {
+              "weights": {
+                "Description": 1.5,
+                "Category": 2.0
+              }
+            },
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "boost": 2.0,
+                "interpolation": "constant",
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 4.0,
+                  "constantBoostBeyondRange": true
+                },
+                "type": "magnitude"
+              },
+              {
+                "fieldName": "Location",
+                "boost": 1.5,
+                "interpolation": "linear",
+                "distance": {
+                  "referencePointParameter": "Loc",
+                  "boostingDistance": 5.0
+                },
+                "type": "distance"
+              },
+              {
+                "fieldName": "LastRenovationDate",
+                "boost": 1.1,
+                "interpolation": "logarithmic",
+                "freshness": {
+                  "boostingDuration": "P365D"
+                },
+                "type": "freshness"
+              }
+            ],
+            "functionAggregation": "average"
+          },
+          {
+            "name": "ProfileTwo",
+            "functions": [
+              {
+                "fieldName": "Tags",
+                "boost": 1.5,
+                "interpolation": "linear",
+                "tag": {
+                  "tagsParameter": "MyTags"
+                },
+                "type": "tag"
+              }
+            ],
+            "functionAggregation": "maximum"
+          },
+          {
+            "name": "ProfileThree",
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "boost": 3.0,
+                "interpolation": "quadratic",
+                "magnitude": {
+                  "boostingRangeStart": 0.0,
+                  "boostingRangeEnd": 10.0,
+                  "constantBoostBeyondRange": false
+                },
+                "type": "magnitude"
+              }
+            ],
+            "functionAggregation": "minimum"
+          },
+          {
+            "name": "ProfileFour",
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "boost": 3.25,
+                "interpolation": "constant",
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 5.0,
+                  "constantBoostBeyondRange": false
+                },
+                "type": "magnitude"
+              }
+            ],
+            "functionAggregation": "firstMatching"
+          }
+        ],
+        "defaultScoringProfile": "MyProfile",
+        "corsOptions": {
+          "allowedOrigins": [
+            "http://tempuri.org",
+            "http://localhost:80"
+          ],
+          "maxAgeInSeconds": 60
+        },
+        "suggesters": [
+          {
+            "name": "FancySuggester",
+            "sourceFields": [
+              "HotelName"
+            ],
+            "searchMode": "analyzingInfixMatching"
+          }
+        ],
+        "analyzers": [
+          {
+            "name": "a1",
+            "@odata.type": "#Microsoft.Azure.Search.StopAnalyzer"
           }
         ]
       },
       "StatusCode": 201,
       "ResponseHeaders": {
-        "client-request-id": "453fdacd-ab14-434e-9d2b-973baed0fc1f",
+        "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Tue, 05 Mar 2024 04:08:08 GMT",
-        "elapsed-time": "18123",
-        "ETag": "\u00220x8DC3CC9DD7D5D10\u0022",
-        "Location": "https://2040301preview.search.windows.net/indexes(\u0027hotelscanaddcustomanalyzerwithindexdowntimeasync82e43610c4d7\u0027)?api-version=2024-03-01-preview",
+        "Date": "Fri, 28 Jun 2024 15:00:15 GMT",
+        "elapsed-time": "807",
+        "ETag": "\"0x8DC9783053EE75E\"",
+        "Location": "https://REDACTED.com",
         "OData-Version": "4.0",
-        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
-        "request-id": "453fdacd-ab14-434e-9d2b-973baed0fc1f",
+        "Preference-Applied": "odata.include-annotations=\"*\"",
+        "request-id": "11073596-730b-4716-ba11-75c398d467c1",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
         ],
         "Transfer-Encoding": "chunked",
-        "x-ms-client-request-id": "453fdacd-ab14-434e-9d2b-973baed0fc1f"
+        "x-ms-client-request-id": "Sanitized"
       },
       "ResponseBody": {
-        "@odata.context": "https://2040301preview.search.windows.net/$metadata#indexes/$entity",
-        "@odata.etag": "\u00220x8DC3CC9DD7D5D10\u0022",
-        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync82e43610c4d7",
+        "@odata.context": "https://azs-java-t5ce5274b0647cb99.search.windows.net/$metadata#indexes/$entity",
+        "@odata.etag": "\"0x8DC9783053EE75E\"",
+        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync1b939547eafd",
         "defaultScoringProfile": "MyProfile",
         "fields": [
           {
@@ -1143,9 +1903,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -1161,9 +1921,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -1179,9 +1939,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": "en.lucene",
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -1197,9 +1957,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": "fr.lucene",
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -1215,9 +1975,9 @@
             "indexAnalyzer": "stop",
             "searchAnalyzer": "stop",
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -1233,9 +1993,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -1251,9 +2011,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -1269,9 +2029,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -1287,9 +2047,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -1305,9 +2065,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -1323,9 +2083,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -1345,9 +2105,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -1363,9 +2123,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -1381,9 +2141,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -1399,9 +2159,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -1417,9 +2177,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               }
             ]
@@ -1437,9 +2197,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -1459,9 +2219,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": "en.lucene",
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -1477,9 +2237,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": "fr.lucene",
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -1495,9 +2255,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -1513,9 +2273,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -1531,9 +2291,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -1549,9 +2309,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -1567,9 +2327,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -1585,9 +2345,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               }
             ]
@@ -1605,9 +2365,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -1623,9 +2383,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           }
         ],
@@ -1766,7 +2526,6 @@
             "stopwords": []
           }
         ],
-        "normalizers": [],
         "tokenizers": [],
         "tokenFilters": [],
         "charFilters": [],
@@ -1781,21 +2540,21 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/indexes(\u0027hotelscanaddcustomanalyzerwithindexdowntimeasync82e43610c4d7\u0027)?allowIndexDowntime=true\u0026api-version=2024-03-01-preview",
+      "RequestUri": "https://REDACTED/indexes('hotelscanaddcustomanalyzerwithindexdowntimeasync1b939547eafd')?allowIndexDowntime=true&api-version=2024-07-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
         "api-key": "REDACTED",
         "Content-Length": "4826",
         "Content-Type": "application/json",
-        "Date": "Tue, 05 Mar 2024 04:08:08 GMT",
+        "Date": "Fri, 28 Jun 2024 15:00:16 GMT",
         "Prefer": "return=representation",
         "return-client-request-id": "true",
-        "User-Agent": "azsdk-java-azure-search-documents/11.7.0-beta.2 (17.0.9; Windows 11; 10.0)",
-        "x-ms-client-request-id": "12531c22-b912-44df-8f75-5c70e08ae1e6"
+        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
-        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync82e43610c4d7",
+        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync1b939547eafd",
         "fields": [
           {
             "name": "HotelId",
@@ -2028,7 +2787,6 @@
             },
             "functions": [
               {
-                "type": "magnitude",
                 "fieldName": "Rating",
                 "boost": 2.0,
                 "interpolation": "constant",
@@ -2036,26 +2794,27 @@
                   "boostingRangeStart": 1.0,
                   "boostingRangeEnd": 4.0,
                   "constantBoostBeyondRange": true
-                }
+                },
+                "type": "magnitude"
               },
               {
-                "type": "distance",
                 "fieldName": "Location",
                 "boost": 1.5,
                 "interpolation": "linear",
                 "distance": {
                   "referencePointParameter": "Loc",
                   "boostingDistance": 5.0
-                }
+                },
+                "type": "distance"
               },
               {
-                "type": "freshness",
                 "fieldName": "LastRenovationDate",
                 "boost": 1.1,
                 "interpolation": "logarithmic",
                 "freshness": {
                   "boostingDuration": "P365D"
-                }
+                },
+                "type": "freshness"
               }
             ],
             "functionAggregation": "average"
@@ -2064,13 +2823,13 @@
             "name": "ProfileTwo",
             "functions": [
               {
-                "type": "tag",
                 "fieldName": "Tags",
                 "boost": 1.5,
                 "interpolation": "linear",
                 "tag": {
                   "tagsParameter": "MyTags"
-                }
+                },
+                "type": "tag"
               }
             ],
             "functionAggregation": "maximum"
@@ -2079,7 +2838,6 @@
             "name": "ProfileThree",
             "functions": [
               {
-                "type": "magnitude",
                 "fieldName": "Rating",
                 "boost": 3.0,
                 "interpolation": "quadratic",
@@ -2087,7 +2845,8 @@
                   "boostingRangeStart": 0.0,
                   "boostingRangeEnd": 10.0,
                   "constantBoostBeyondRange": false
-                }
+                },
+                "type": "magnitude"
               }
             ],
             "functionAggregation": "minimum"
@@ -2096,7 +2855,6 @@
             "name": "ProfileFour",
             "functions": [
               {
-                "type": "magnitude",
                 "fieldName": "Rating",
                 "boost": 3.25,
                 "interpolation": "constant",
@@ -2104,7 +2862,8 @@
                   "boostingRangeStart": 1.0,
                   "boostingRangeEnd": 5.0,
                   "constantBoostBeyondRange": false
-                }
+                },
+                "type": "magnitude"
               }
             ],
             "functionAggregation": "firstMatching"
@@ -2129,37 +2888,37 @@
         ],
         "analyzers": [
           {
-            "@odata.type": "#Microsoft.Azure.Search.StopAnalyzer",
-            "name": "a1"
+            "name": "a1",
+            "@odata.type": "#Microsoft.Azure.Search.StopAnalyzer"
           },
           {
-            "@odata.type": "#Microsoft.Azure.Search.StopAnalyzer",
-            "name": "a2"
+            "name": "a2",
+            "@odata.type": "#Microsoft.Azure.Search.StopAnalyzer"
           }
         ]
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "client-request-id": "12531c22-b912-44df-8f75-5c70e08ae1e6",
+        "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Tue, 05 Mar 2024 04:08:11 GMT",
-        "elapsed-time": "2873",
-        "ETag": "\u00220x8DC3CC9DF5EF737\u0022",
+        "Date": "Fri, 28 Jun 2024 15:00:16 GMT",
+        "elapsed-time": "221",
+        "ETag": "\"0x8DC9783056C325E\"",
         "OData-Version": "4.0",
-        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
-        "request-id": "12531c22-b912-44df-8f75-5c70e08ae1e6",
+        "Preference-Applied": "odata.include-annotations=\"*\"",
+        "request-id": "a6b8b91b-36b4-48fb-8efb-0f7057b94579",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
         ],
         "Transfer-Encoding": "chunked",
-        "x-ms-client-request-id": "12531c22-b912-44df-8f75-5c70e08ae1e6"
+        "x-ms-client-request-id": "Sanitized"
       },
       "ResponseBody": {
-        "@odata.context": "https://2040301preview.search.windows.net/$metadata#indexes/$entity",
-        "@odata.etag": "\u00220x8DC3CC9DF5EF737\u0022",
-        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync82e43610c4d7",
+        "@odata.context": "https://azs-java-t5ce5274b0647cb99.search.windows.net/$metadata#indexes/$entity",
+        "@odata.etag": "\"0x8DC9783056C325E\"",
+        "name": "hotelscanaddcustomanalyzerwithindexdowntimeasync1b939547eafd",
         "defaultScoringProfile": "MyProfile",
         "fields": [
           {
@@ -2175,9 +2934,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -2193,9 +2952,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -2211,9 +2970,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": "en.lucene",
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -2229,9 +2988,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": "fr.lucene",
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -2247,9 +3006,9 @@
             "indexAnalyzer": "stop",
             "searchAnalyzer": "stop",
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -2265,9 +3024,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -2283,9 +3042,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -2301,9 +3060,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -2319,9 +3078,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -2337,9 +3096,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -2355,9 +3114,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -2377,9 +3136,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -2395,9 +3154,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -2413,9 +3172,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -2431,9 +3190,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -2449,9 +3208,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               }
             ]
@@ -2469,9 +3228,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -2491,9 +3250,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": "en.lucene",
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -2509,9 +3268,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": "fr.lucene",
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -2527,9 +3286,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -2545,9 +3304,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -2563,9 +3322,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -2581,9 +3340,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -2599,9 +3358,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               },
               {
@@ -2617,9 +3376,9 @@
                 "indexAnalyzer": null,
                 "searchAnalyzer": null,
                 "analyzer": null,
-                "normalizer": null,
                 "dimensions": null,
                 "vectorSearchProfile": null,
+                "vectorEncoding": null,
                 "synonymMaps": []
               }
             ]
@@ -2637,9 +3396,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           },
           {
@@ -2655,9 +3414,9 @@
             "indexAnalyzer": null,
             "searchAnalyzer": null,
             "analyzer": null,
-            "normalizer": null,
             "dimensions": null,
             "vectorSearchProfile": null,
+            "vectorEncoding": null,
             "synonymMaps": []
           }
         ],
@@ -2803,7 +3562,6 @@
             "stopwords": []
           }
         ],
-        "normalizers": [],
         "tokenizers": [],
         "tokenFilters": [],
         "charFilters": [],
@@ -2818,36 +3576,74 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/indexes(\u0027hotelscanaddcustomanalyzerwithindexdowntimeasync82e43610c4d7\u0027)?api-version=2024-03-01-preview",
+      "RequestUri": "https://REDACTED/indexes('hotelscanaddcustomanalyzerwithindexdowntimeasync1b939547eafd')?api-version=2024-07-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
         "api-key": "REDACTED",
         "Content-Length": "0",
-        "Date": "Tue, 05 Mar 2024 04:08:11 GMT",
+        "Date": "Fri, 28 Jun 2024 15:00:16 GMT",
         "return-client-request-id": "true",
-        "User-Agent": "azsdk-java-azure-search-documents/11.7.0-beta.2 (17.0.9; Windows 11; 10.0)",
-        "x-ms-client-request-id": "9d435428-7d6a-4143-ab71-c6359fe9cd83"
+        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
-      "StatusCode": 204,
+      "StatusCode": 503,
       "ResponseHeaders": {
-        "client-request-id": "9d435428-7d6a-4143-ab71-c6359fe9cd83",
-        "Date": "Tue, 05 Mar 2024 04:08:11 GMT",
-        "elapsed-time": "226",
-        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
-        "request-id": "9d435428-7d6a-4143-ab71-c6359fe9cd83",
+        "client-request-id": "Sanitized",
+        "Content-Language": "en",
+        "Content-Length": "92",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 28 Jun 2024 15:00:22 GMT",
+        "elapsed-time": "5199",
+        "Preference-Applied": "odata.include-annotations=\"*\"",
+        "request-id": "78f65b3c-8a92-4c28-a9ed-e623d4fa40c1",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
         ],
-        "x-ms-client-request-id": "9d435428-7d6a-4143-ab71-c6359fe9cd83"
+        "throttle-reason": "rateLimitExceeded",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "",
+          "message": "You are sending too many requests. Please try again later."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/indexes('hotelscanaddcustomanalyzerwithindexdowntimeasync1b939547eafd')?api-version=2024-07-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Fri, 28 Jun 2024 15:00:52 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "client-request-id": "Sanitized",
+        "Date": "Fri, 28 Jun 2024 15:00:51 GMT",
+        "elapsed-time": "172",
+        "Preference-Applied": "odata.include-annotations=\"*\"",
+        "request-id": "78f65b3c-8a92-4c28-a9ed-e623d4fa40c1",
+        "Server": "Microsoft-IIS/10.0",
+        "Strict-Transport-Security": [
+          "max-age=2592000",
+          "max-age=15724800; includeSubDomains"
+        ],
+        "x-ms-client-request-id": "Sanitized"
       },
       "ResponseBody": null
     }
   ],
   "Variables": {
-    "0": "hotelscanaddcustomanalyzerwithindexdowntimeasync82e43610c4d7"
+    "0": "hotelscanaddcustomanalyzerwithindexdowntimeasync1b939547eafd"
   }
 }
