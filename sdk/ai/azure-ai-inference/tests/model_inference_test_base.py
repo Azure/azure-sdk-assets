@@ -58,7 +58,7 @@ ServicePreparerChatCompletions = functools.partial(
 ServicePreparerAOAIChatCompletions = functools.partial(
     EnvironmentVariableLoader,
     "azure_openai_chat",
-    azure_openai_chat_endpoint="https://your-deployment-name.your-azure-region.inference.ai.azure.com",
+    azure_openai_chat_endpoint="https://your-deployment-name.openai.azure.com/openai/deployments/gpt-4o",
     azure_openai_chat_key="00000000000000000000000000000000",
 )
 
@@ -83,14 +83,15 @@ class ModelClientTestBase(AzureRecordedTestCase):
     PRINT_RESULT = True
 
     # Regular expression describing the pattern of a result ID returned from MaaS/MaaP endpoint. Format allowed are:
-    # "183b56eb-8512-484d-be50-5d8df82301a2", "26ef25aa45424781865a2d38a4484274" and "Sanitized"
+    # "183b56eb-8512-484d-be50-5d8df82301a2", "26ef25aa45424781865a2d38a4484274" and "Sanitized" (when running tests 
+    # from recordings)
     REGEX_RESULT_ID = re.compile(
         r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$|^[0-9a-fA-F]{32}$|^Sanitized$"
     )
 
     # Regular expression describing the pattern of a result ID returned from AOAI endpoint.
-    # For example: "chatcmpl-9jscXwejvOMnGrxRfACmNrCCdiwWb"
-    REGEX_AOAI_RESULT_ID = re.compile(r"^chatcmpl-[0-9a-zA-Z]{29}$")
+    # For example: "chatcmpl-9jscXwejvOMnGrxRfACmNrCCdiwWb" or "Sanitized" (when runing tests from recordings)
+    REGEX_AOAI_RESULT_ID = re.compile(r"^chatcmpl-[0-9a-zA-Z]{29}$|^Sanitized$")
 
     # A couple of tool definitions to use in the tests
     TOOL1 = sdk.models.ChatCompletionsFunctionToolDefinition(

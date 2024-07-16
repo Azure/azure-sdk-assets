@@ -167,6 +167,79 @@ class ChatCompletionsClient(ChatCompletionsClientGenerated):
         seed: Optional[int] = None,
         model: Optional[str] = None,
     ) -> "ChatCompletionsClient":
+        """Set defaults for all following chat completion operations.
+
+        :keyword model_extras: Additional, model-specific parameters that are not in the
+         standard request payload. They will be added as-is to the root of the JSON in the request body.
+         How the service handles these extra parameters depends on the value of the
+         ``extra-parameters`` request header. Default value is None.
+        :paramtype model_extras: dict[str, Any]
+        :keyword frequency_penalty: A value that influences the probability of generated tokens
+         appearing based on their cumulative frequency in generated text.
+         Positive values will make tokens less likely to appear as their frequency increases and
+         decrease the likelihood of the model repeating the same statements verbatim.
+         Supported range is [-2, 2].
+         Default value is None.
+        :paramtype frequency_penalty: float
+        :keyword presence_penalty: A value that influences the probability of generated tokens
+         appearing based on their existing
+         presence in generated text.
+         Positive values will make tokens less likely to appear when they already exist and increase
+         the model's likelihood to output new topics.
+         Supported range is [-2, 2].
+         Default value is None.
+        :paramtype presence_penalty: float
+        :keyword temperature: The sampling temperature to use that controls the apparent creativity of
+         generated completions.
+         Higher values will make output more random while lower values will make results more focused
+         and deterministic.
+         It is not recommended to modify temperature and top_p for the same completions request as the
+         interaction of these two settings is difficult to predict.
+         Supported range is [0, 1].
+         Default value is None.
+        :paramtype temperature: float
+        :keyword top_p: An alternative to sampling with temperature called nucleus sampling. This value
+         causes the
+         model to consider the results of tokens with the provided probability mass. As an example, a
+         value of 0.15 will cause only the tokens comprising the top 15% of probability mass to be
+         considered.
+         It is not recommended to modify temperature and top_p for the same completions request as the
+         interaction of these two settings is difficult to predict.
+         Supported range is [0, 1].
+         Default value is None.
+        :paramtype top_p: float
+        :keyword max_tokens: The maximum number of tokens to generate. Default value is None.
+        :paramtype max_tokens: int
+        :keyword response_format: An object specifying the format that the model must output. Used to
+         enable JSON mode. Known values are: "text" and "json_object". Default value is None.
+        :paramtype response_format: str or ~azure.ai.inference.models.ChatCompletionsResponseFormat
+        :keyword stop: A collection of textual sequences that will end completions generation. Default
+         value is None.
+        :paramtype stop: list[str]
+        :keyword stream: A value indicating whether chat completions should be streamed for this request.
+         Default value is False. If streaming is enabled, the response will be a StreamingChatCompletions.
+         Otherwise the response will be a ChatCompletions.
+        :paramtype stream: bool
+        :keyword tools: The available tool definitions that the chat completions request can use,
+         including caller-defined functions. Default value is None.
+        :paramtype tools: list[~azure.ai.inference.models.ChatCompletionsToolDefinition]
+        :keyword tool_choice: If specified, the model will configure which of the provided tools it can
+         use for the chat completions response. Is either a Union[str,
+         "_models.ChatCompletionsToolSelectionPreset"] type or a ChatCompletionsNamedToolSelection type.
+         Default value is None.
+        :paramtype tool_choice: str or ~azure.ai.inference.models.ChatCompletionsToolSelectionPreset or
+         ~azure.ai.inference.models.ChatCompletionsNamedToolSelection
+        :keyword seed: If specified, the system will make a best effort to sample deterministically
+         such that repeated requests with the
+         same seed and parameters should return the same result. Determinism is not guaranteed.
+         Default value is None.
+        :paramtype seed: int
+        :keyword model: ID of the specific AI model to use, if more than one model is available on the
+         endpoint. Default value is None.
+        :paramtype model: str
+        :return: this ChatCompletionsClient object, with defaults set.
+        :rtype: ~azure.ai.inference.aio.ChatCompletionsClient
+        """
         self._model_extras = model_extras
         self._frequency_penalty = frequency_penalty
         self._presence_penalty = presence_penalty
@@ -641,6 +714,33 @@ class EmbeddingsClient(EmbeddingsClientGenerated):
         input_type: Optional[Union[str, _models.EmbeddingInputType]] = None,
         model: Optional[str] = None,
     ) -> "EmbeddingsClient":
+        """Set defaults for all following embedding operations.
+
+        :keyword model_extras: Additional, model-specific parameters that are not in the
+         standard request payload. They will be added as-is to the root of the JSON in the request body.
+         How the service handles these extra parameters depends on the value of the
+         ``extra-parameters`` request header. Default value is None.
+        :paramtype model_extras: dict[str, Any]
+        :keyword dimensions: Optional. The number of dimensions the resulting output embeddings should
+         have.
+         Passing null causes the model to use its default value.
+         Returns a 422 error if the model doesn't support the value or parameter. Default value is
+         None.
+        :paramtype dimensions: int
+        :keyword encoding_format: Optional. The desired format for the returned embeddings.
+         Known values are:
+         "base64", "binary", "float", "int8", "ubinary", and "uint8". Default value is None.
+        :paramtype encoding_format: str or ~azure.ai.inference.models.EmbeddingEncodingFormat
+        :keyword input_type: Optional. The type of the input.
+         Returns a 422 error if the model doesn't support the value or parameter. Known values are:
+         "text", "query", and "document". Default value is None.
+        :paramtype input_type: str or ~azure.ai.inference.models.EmbeddingInputType
+        :keyword model: ID of the specific AI model to use, if more than one model is available on the
+         endpoint. Default value is None.
+        :paramtype model: str
+        :return: this EmbeddingsClient object, with defaults set.
+        :rtype: ~azure.ai.inference.aio.EmbeddingsClient
+        """
         self._model_extras = model_extras
         self._dimensions = dimensions
         self._encoding_format = encoding_format
@@ -921,6 +1021,33 @@ class ImageEmbeddingsClient(ImageEmbeddingsClientGenerated):
         input_type: Optional[Union[str, _models.EmbeddingInputType]] = None,
         model: Optional[str] = None,
     ) -> "ImageEmbeddingsClient":
+        """Set defaults for all following image embeddings operations.
+
+        :keyword model_extras: Additional, model-specific parameters that are not in the
+         standard request payload. They will be added as-is to the root of the JSON in the request body.
+         How the service handles these extra parameters depends on the value of the
+         ``extra-parameters`` request header. Default value is None.
+        :paramtype model_extras: dict[str, Any]
+        :keyword dimensions: Optional. The number of dimensions the resulting output embeddings should
+         have.
+         Passing null causes the model to use its default value.
+         Returns a 422 error if the model doesn't support the value or parameter. Default value is
+         None.
+        :paramtype dimensions: int
+        :keyword encoding_format: Optional. The desired format for the returned embeddings.
+         Known values are:
+         "base64", "binary", "float", "int8", "ubinary", and "uint8". Default value is None.
+        :paramtype encoding_format: str or ~azure.ai.inference.models.EmbeddingEncodingFormat
+        :keyword input_type: Optional. The type of the input.
+         Returns a 422 error if the model doesn't support the value or parameter. Known values are:
+         "text", "query", and "document". Default value is None.
+        :paramtype input_type: str or ~azure.ai.inference.models.EmbeddingInputType
+        :keyword model: ID of the specific AI model to use, if more than one model is available on the
+         endpoint. Default value is None.
+        :paramtype model: str
+        :return: This ImageEmbeddingsClient object, with defaults set.
+        :rtype: ~azure.ai.inference.aio.ImageEmbeddingsClient
+        """
         self._model_extras = model_extras
         self._dimensions = dimensions
         self._encoding_format = encoding_format

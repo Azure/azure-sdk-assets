@@ -103,6 +103,25 @@ client = ChatCompletionsClient(
 
 During application development, you would typically set up the environment for authentication using Entra ID by first [Installing the Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli), running `az login` in your console window, then entering your credentials in the browser window that was opened. The call to `DefaultAzureCredential()` will then succeed. Setting `exclude_interactive_browser_credential=False` in that call will enable launching a browser window if the user isn't already logged in.
 
+### Defining default settings while creating the clients
+
+The method `with_defaults` can be called on the clients, in order to define default input settings that will apply to all future service calls.
+
+For example, here we create a `ChatCompletionsClient` using API key authentication, and apply two settings, `temperature` and `max_tokens`:
+
+```python
+from azure.ai.inference import ChatCompletionsClient
+from azure.core.credentials import AzureKeyCredential
+
+client = ChatCompletionsClient(
+    endpoint=endpoint,
+    credential=AzureKeyCredential(key)
+).with_defaults(
+    temperature=0.5,
+    max_tokens=1000
+)
+```
+
 ### Create and authentice clients using `load_client`
 
 As an alternative to creating a specific client directly, you can use the function `load_client` to return the relevant client (of types `ChatCompletionsClient` or `EmbeddingsClient`) based on the provided endpoint:
