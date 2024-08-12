@@ -5,16 +5,16 @@
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
-        "api-key": "REDACTED",
+        "Authorization": "Sanitized",
         "Content-Length": "697",
         "Content-Type": "application/json",
-        "Date": "Fri, 28 Jun 2024 15:09:07 GMT",
+        "Date": "Thu, 08 Aug 2024 18:21:58 GMT",
         "return-client-request-id": "true",
-        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
+        "User-Agent": "azsdk-java-azure-search-documents/11.8.0-beta.1 (21.0.2; Windows 11; 10.0)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
-        "name": "ocr-key-phrase-skillset311731bb43278b7",
+        "name": "ocr-key-phrase-skillset856951766d01374",
         "description": "Skillset for testing",
         "skills": [
           {
@@ -65,13 +65,159 @@
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Fri, 28 Jun 2024 15:09:06 GMT",
+        "Date": "Thu, 08 Aug 2024 18:22:00 GMT",
+        "elapsed-time": "57",
+        "ETag": "\"0x8DCB7D6FE8EE4B8\"",
+        "Location": "https://REDACTED.com",
+        "OData-Version": "4.0",
+        "Preference-Applied": "odata.include-annotations=\"*\"",
+        "request-id": "92100057-924e-4627-b228-7fbdb6e47a82",
+        "Server": "Microsoft-IIS/10.0",
+        "Strict-Transport-Security": [
+          "max-age=2592000",
+          "max-age=15724800; includeSubDomains"
+        ],
+        "Transfer-Encoding": "chunked",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-tb9a3e882b9658d50.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\"0x8DCB7D6FE8EE4B8\"",
+        "name": "ocr-key-phrase-skillset856951766d01374",
+        "description": "Skillset for testing",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Vision.OcrSkill",
+            "name": "myocr",
+            "description": "Tested OCR skill",
+            "context": "/document",
+            "textExtractionAlgorithm": null,
+            "lineEnding": null,
+            "defaultLanguageCode": "en",
+            "detectOrientation": null,
+            "inputs": [
+              {
+                "name": "url",
+                "source": "/document/url",
+                "sourceContext": null,
+                "inputs": []
+              },
+              {
+                "name": "queryString",
+                "source": "/document/queryString",
+                "sourceContext": null,
+                "inputs": []
+              }
+            ],
+            "outputs": [
+              {
+                "name": "text",
+                "targetName": "mytext"
+              }
+            ]
+          },
+          {
+            "@odata.type": "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
+            "name": "mykeyphrases",
+            "description": "Tested Key Phrase skill",
+            "context": "/document",
+            "defaultLanguageCode": "en",
+            "maxKeyPhraseCount": null,
+            "modelVersion": null,
+            "inputs": [
+              {
+                "name": "text",
+                "source": "/document/mytext",
+                "sourceContext": null,
+                "inputs": []
+              }
+            ],
+            "outputs": [
+              {
+                "name": "keyPhrases",
+                "targetName": "myKeyPhrases"
+              }
+            ]
+          }
+        ],
+        "cognitiveServices": null,
+        "knowledgeStore": null,
+        "indexProjections": null,
+        "encryptionKey": null
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/skillsets?api-version=2024-07-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "Authorization": "Sanitized",
+        "Content-Length": "697",
+        "Content-Type": "application/json",
+        "Date": "Thu, 08 Aug 2024 18:22:00 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.8.0-beta.1 (21.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "name": "ocr-key-phrase-skillset81377318bb84017",
+        "description": "Skillset for testing",
+        "skills": [
+          {
+            "inputs": [
+              {
+                "name": "url",
+                "source": "/document/url"
+              },
+              {
+                "name": "queryString",
+                "source": "/document/queryString"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "text",
+                "targetName": "mytext"
+              }
+            ],
+            "name": "myocr",
+            "description": "Tested OCR skill",
+            "context": "/document",
+            "@odata.type": "#Microsoft.Skills.Vision.OcrSkill",
+            "defaultLanguageCode": "fr"
+          },
+          {
+            "inputs": [
+              {
+                "name": "text",
+                "source": "/document/mytext"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "keyPhrases",
+                "targetName": "myKeyPhrases"
+              }
+            ],
+            "name": "mykeyphrases",
+            "description": "Tested Key Phrase skill",
+            "context": "/document",
+            "@odata.type": "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
+            "defaultLanguageCode": "fr"
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "client-request-id": "Sanitized",
+        "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
+        "Date": "Thu, 08 Aug 2024 18:22:00 GMT",
         "elapsed-time": "49",
-        "ETag": "\"0x8DC9784419C3018\"",
+        "ETag": "\"0x8DCB7D6FE9C9E60\"",
         "Location": "https://REDACTED.com",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "f7f61d6f-0fd7-45e5-bf4d-7208f7beb14a",
+        "request-id": "98f5c75e-187a-4a38-9f4b-8c672ddc0cf0",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
@@ -81,155 +227,9 @@
         "x-ms-client-request-id": "Sanitized"
       },
       "ResponseBody": {
-        "@odata.context": "https://azs-java-t5ce5274b0647cb99.search.windows.net/$metadata#skillsets/$entity",
-        "@odata.etag": "\"0x8DC9784419C3018\"",
-        "name": "ocr-key-phrase-skillset311731bb43278b7",
-        "description": "Skillset for testing",
-        "skills": [
-          {
-            "@odata.type": "#Microsoft.Skills.Vision.OcrSkill",
-            "name": "myocr",
-            "description": "Tested OCR skill",
-            "context": "/document",
-            "textExtractionAlgorithm": null,
-            "lineEnding": null,
-            "defaultLanguageCode": "en",
-            "detectOrientation": null,
-            "inputs": [
-              {
-                "name": "url",
-                "source": "/document/url",
-                "sourceContext": null,
-                "inputs": []
-              },
-              {
-                "name": "queryString",
-                "source": "/document/queryString",
-                "sourceContext": null,
-                "inputs": []
-              }
-            ],
-            "outputs": [
-              {
-                "name": "text",
-                "targetName": "mytext"
-              }
-            ]
-          },
-          {
-            "@odata.type": "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
-            "name": "mykeyphrases",
-            "description": "Tested Key Phrase skill",
-            "context": "/document",
-            "defaultLanguageCode": "en",
-            "maxKeyPhraseCount": null,
-            "modelVersion": null,
-            "inputs": [
-              {
-                "name": "text",
-                "source": "/document/mytext",
-                "sourceContext": null,
-                "inputs": []
-              }
-            ],
-            "outputs": [
-              {
-                "name": "keyPhrases",
-                "targetName": "myKeyPhrases"
-              }
-            ]
-          }
-        ],
-        "cognitiveServices": null,
-        "knowledgeStore": null,
-        "indexProjections": null,
-        "encryptionKey": null
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/skillsets?api-version=2024-07-01",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json; odata.metadata=minimal",
-        "api-key": "REDACTED",
-        "Content-Length": "697",
-        "Content-Type": "application/json",
-        "Date": "Fri, 28 Jun 2024 15:09:07 GMT",
-        "return-client-request-id": "true",
-        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
-        "x-ms-client-request-id": "Sanitized"
-      },
-      "RequestBody": {
-        "name": "ocr-key-phrase-skillset35624ed6afea41b",
-        "description": "Skillset for testing",
-        "skills": [
-          {
-            "inputs": [
-              {
-                "name": "url",
-                "source": "/document/url"
-              },
-              {
-                "name": "queryString",
-                "source": "/document/queryString"
-              }
-            ],
-            "outputs": [
-              {
-                "name": "text",
-                "targetName": "mytext"
-              }
-            ],
-            "name": "myocr",
-            "description": "Tested OCR skill",
-            "context": "/document",
-            "@odata.type": "#Microsoft.Skills.Vision.OcrSkill",
-            "defaultLanguageCode": "fr"
-          },
-          {
-            "inputs": [
-              {
-                "name": "text",
-                "source": "/document/mytext"
-              }
-            ],
-            "outputs": [
-              {
-                "name": "keyPhrases",
-                "targetName": "myKeyPhrases"
-              }
-            ],
-            "name": "mykeyphrases",
-            "description": "Tested Key Phrase skill",
-            "context": "/document",
-            "@odata.type": "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
-            "defaultLanguageCode": "fr"
-          }
-        ]
-      },
-      "StatusCode": 201,
-      "ResponseHeaders": {
-        "client-request-id": "Sanitized",
-        "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Fri, 28 Jun 2024 15:09:06 GMT",
-        "elapsed-time": "55",
-        "ETag": "\"0x8DC978441B35E3D\"",
-        "Location": "https://REDACTED.com",
-        "OData-Version": "4.0",
-        "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "33f5d94e-ad86-4434-9edd-1d197bda4353",
-        "Server": "Microsoft-IIS/10.0",
-        "Strict-Transport-Security": [
-          "max-age=2592000",
-          "max-age=15724800; includeSubDomains"
-        ],
-        "Transfer-Encoding": "chunked",
-        "x-ms-client-request-id": "Sanitized"
-      },
-      "ResponseBody": {
-        "@odata.context": "https://azs-java-t5ce5274b0647cb99.search.windows.net/$metadata#skillsets/$entity",
-        "@odata.etag": "\"0x8DC978441B35E3D\"",
-        "name": "ocr-key-phrase-skillset35624ed6afea41b",
+        "@odata.context": "https://azs-java-tb9a3e882b9658d50.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\"0x8DCB7D6FE9C9E60\"",
+        "name": "ocr-key-phrase-skillset81377318bb84017",
         "description": "Skillset for testing",
         "skills": [
           {
@@ -297,16 +297,16 @@
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
-        "api-key": "REDACTED",
+        "Authorization": "Sanitized",
         "Content-Length": "697",
         "Content-Type": "application/json",
-        "Date": "Fri, 28 Jun 2024 15:09:07 GMT",
+        "Date": "Thu, 08 Aug 2024 18:22:00 GMT",
         "return-client-request-id": "true",
-        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
+        "User-Agent": "azsdk-java-azure-search-documents/11.8.0-beta.1 (21.0.2; Windows 11; 10.0)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
-        "name": "ocr-key-phrase-skillset47751be2becec4b",
+        "name": "ocr-key-phrase-skillset108192e8fe05ed8",
         "description": "Skillset for testing",
         "skills": [
           {
@@ -357,13 +357,13 @@
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Fri, 28 Jun 2024 15:09:06 GMT",
-        "elapsed-time": "43",
-        "ETag": "\"0x8DC978441C5AB14\"",
+        "Date": "Thu, 08 Aug 2024 18:22:00 GMT",
+        "elapsed-time": "49",
+        "ETag": "\"0x8DCB7D6FEB0BFBC\"",
         "Location": "https://REDACTED.com",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "0ca425f0-0c67-4505-a6dc-7c48363831ae",
+        "request-id": "a1277e52-b00a-4c37-b449-9da8e95f0ab8",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
@@ -373,9 +373,9 @@
         "x-ms-client-request-id": "Sanitized"
       },
       "ResponseBody": {
-        "@odata.context": "https://azs-java-t5ce5274b0647cb99.search.windows.net/$metadata#skillsets/$entity",
-        "@odata.etag": "\"0x8DC978441C5AB14\"",
-        "name": "ocr-key-phrase-skillset47751be2becec4b",
+        "@odata.context": "https://azs-java-tb9a3e882b9658d50.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\"0x8DCB7D6FEB0BFBC\"",
+        "name": "ocr-key-phrase-skillset108192e8fe05ed8",
         "description": "Skillset for testing",
         "skills": [
           {
@@ -439,25 +439,25 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/skillsets('ocr-key-phrase-skillset311731bb43278b7')?api-version=2024-07-01",
+      "RequestUri": "https://REDACTED/skillsets('ocr-key-phrase-skillset856951766d01374')?api-version=2024-07-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
-        "api-key": "REDACTED",
+        "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 28 Jun 2024 15:09:07 GMT",
+        "Date": "Thu, 08 Aug 2024 18:22:00 GMT",
         "return-client-request-id": "true",
-        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
+        "User-Agent": "azsdk-java-azure-search-documents/11.8.0-beta.1 (21.0.2; Windows 11; 10.0)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
-        "Date": "Fri, 28 Jun 2024 15:09:06 GMT",
-        "elapsed-time": "29",
+        "Date": "Thu, 08 Aug 2024 18:22:01 GMT",
+        "elapsed-time": "165",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "3da3fd07-40a7-4684-83d7-e101a6d753df",
+        "request-id": "d1c9087f-5b1e-4444-8fcc-1acca490b360",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
@@ -468,25 +468,25 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/skillsets('ocr-key-phrase-skillset35624ed6afea41b')?api-version=2024-07-01",
+      "RequestUri": "https://REDACTED/skillsets('ocr-key-phrase-skillset81377318bb84017')?api-version=2024-07-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
-        "api-key": "REDACTED",
+        "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 28 Jun 2024 15:09:07 GMT",
+        "Date": "Thu, 08 Aug 2024 18:22:01 GMT",
         "return-client-request-id": "true",
-        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
+        "User-Agent": "azsdk-java-azure-search-documents/11.8.0-beta.1 (21.0.2; Windows 11; 10.0)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
-        "Date": "Fri, 28 Jun 2024 15:09:06 GMT",
-        "elapsed-time": "29",
+        "Date": "Thu, 08 Aug 2024 18:22:01 GMT",
+        "elapsed-time": "176",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "94869fbd-9bc0-4829-a213-8fcfba272f53",
+        "request-id": "6f53930f-ceaf-45d7-8a10-7d48bed142b2",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
@@ -497,25 +497,25 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/skillsets('ocr-key-phrase-skillset47751be2becec4b')?api-version=2024-07-01",
+      "RequestUri": "https://REDACTED/skillsets('ocr-key-phrase-skillset108192e8fe05ed8')?api-version=2024-07-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
-        "api-key": "REDACTED",
+        "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 28 Jun 2024 15:09:07 GMT",
+        "Date": "Thu, 08 Aug 2024 18:22:02 GMT",
         "return-client-request-id": "true",
-        "User-Agent": "azsdk-java-azure-search-documents/11.7.0 (21.0.2; Windows 11; 10.0)",
+        "User-Agent": "azsdk-java-azure-search-documents/11.8.0-beta.1 (21.0.2; Windows 11; 10.0)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
-        "Date": "Fri, 28 Jun 2024 15:09:06 GMT",
-        "elapsed-time": "26",
+        "Date": "Thu, 08 Aug 2024 18:22:01 GMT",
+        "elapsed-time": "177",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "2a5cfa7f-f2e1-4ada-8ca7-f851d57f313b",
+        "request-id": "93a745ba-47e8-4157-8ef4-7aa1993d5b24",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": [
           "max-age=2592000",
@@ -527,8 +527,8 @@
     }
   ],
   "Variables": {
-    "0": "ocr-key-phrase-skillset311731bb43278b7",
-    "1": "ocr-key-phrase-skillset35624ed6afea41b",
-    "2": "ocr-key-phrase-skillset47751be2becec4b"
+    "0": "ocr-key-phrase-skillset856951766d01374",
+    "1": "ocr-key-phrase-skillset81377318bb84017",
+    "2": "ocr-key-phrase-skillset108192e8fe05ed8"
   }
 }
