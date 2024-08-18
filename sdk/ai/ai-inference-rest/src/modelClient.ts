@@ -9,6 +9,7 @@ import {
   isKeyCredential,
 } from "@azure/core-auth";
 import { ModelClient } from "./clientDefinitions.js";
+import { tracingPolicy } from "./tracingPolicy.js";
 
 /** The optional parameters for the client */
 export interface ModelClientOptions extends ClientOptions {
@@ -73,6 +74,10 @@ export default function createClient(
       },
     });
   }
+
+  client.pipeline.addPolicy(tracingPolicy(), {
+    afterPhase: "Retry",
+  });
 
   return client;
 }

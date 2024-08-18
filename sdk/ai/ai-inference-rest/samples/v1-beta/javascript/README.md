@@ -19,6 +19,7 @@ These sample programs show how to use the JavaScript client libraries for Azure 
 | [imageFileCompletions.js][imagefilecompletions]   | get chat completions with image file. |
 | [streamChatCompletions.js][streamchatcompletions] | list chat completions.                |
 | [toolCall.js][toolcall]                           | get chat completions with functions.  |
+| [telemetry.js][telemetry]                         | instrument through open telemetry.    |
 
 ## Prerequisites
 
@@ -66,4 +67,5 @@ Take a look at our [API Documentation][apiref] for more information about the AP
 [toolcall]: https://github.com/Azure/azure-sdk-for-js/blob/main/sdk/ai/ai-inference-rest/samples/v1-beta/javascript/toolCall.js
 [apiref]: https://learn.microsoft.com/javascript/api/@azure-rest/ai-inference
 [freesub]: https://azure.microsoft.com/free/
+[telemetry]: https://github.com/Azure/azure-sdk-for-js/blob/main/sdk/ai/ai-inference-rest/samples/v1-beta/javascript/telemetry.js
 [package]: https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/ai/ai-inference-rest/README.md
