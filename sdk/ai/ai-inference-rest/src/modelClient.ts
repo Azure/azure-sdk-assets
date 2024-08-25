@@ -9,7 +9,7 @@ import {
   isKeyCredential,
 } from "@azure/core-auth";
 import { ModelClient } from "./clientDefinitions.js";
-import { tracingPolicy } from "./tracingPolicy.js";
+import { trace } from "./trace.js";
 
 /** The optional parameters for the client */
 export interface ModelClientOptions extends ClientOptions {
@@ -47,7 +47,7 @@ export default function createClient(
       apiKeyHeaderName: options.credentials?.apiKeyHeaderName ?? "api-key",
     },
   };
-  const client = getClient(endpointUrl, credentials, options) as ModelClient;
+  const client = getClient(endpointUrl, credentials, options, trace) as ModelClient;
 
   client.pipeline.removePolicy({ name: "ApiVersionPolicy" });
   client.pipeline.addPolicy({
@@ -57,9 +57,8 @@ export default function createClient(
       // Append one if there is no apiVersion and we have one at client options
       const url = new URL(req.url);
       if (!url.searchParams.get("api-version") && apiVersion) {
-        req.url = `${req.url}${
-          Array.from(url.searchParams.keys()).length > 0 ? "&" : "?"
-        }api-version=${apiVersion}`;
+        req.url = `${req.url}${Array.from(url.searchParams.keys()).length > 0 ? "&" : "?"
+          }api-version=${apiVersion}`;
       }
 
       return next(req);
@@ -75,9 +74,6 @@ export default function createClient(
     });
   }
 
-  client.pipeline.addPolicy(tracingPolicy(), {
-    afterPhase: "Retry",
-  });
 
   return client;
 }

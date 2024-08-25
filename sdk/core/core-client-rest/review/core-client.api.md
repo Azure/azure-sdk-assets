@@ -89,7 +89,7 @@ export interface FullOperationResponse extends PipelineResponse {
 export function getClient(endpoint: string, options?: ClientOptions): Client;
 
 // @public
-export function getClient(endpoint: string, credentials?: TokenCredential | KeyCredential, options?: ClientOptions): Client;
+export function getClient(endpoint: string, credentials?: TokenCredential | KeyCredential, options?: ClientOptions, tracer?: ((url: string, options: RequestParameters, operation: () => StreamableMethod) => StreamableMethod)): Client;
 
 // @public
 export type HttpBrowserStreamResponse = HttpResponse & {

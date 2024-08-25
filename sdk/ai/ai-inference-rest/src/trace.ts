@@ -1,18 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { PipelinePolicy, PipelineRequest, PipelineResponse, SendRequest } from "@azure/core-rest-pipeline";
-import {
-  type TracingClient,
-  type TracingContext,
-  type TracingSpan,
-  createTracingClient,
-} from "@azure/core-tracing";
-
-
+import { PipelineResponse } from "@azure/core-rest-pipeline";
 import { getErrorMessage, isError } from "@azure/core-util";
 import { SDK_VERSION } from "./constants.js";
 import { logger } from "./logger.js";
+import { PathUncheckedResponse, RequestParameters, StreamableMethod } from "@azure-rest/core-client";
+import { createTracingClient, TracingClient, TracingContext, TracingSpan } from "@azure/core-tracing";
+import { GetChatCompletionsBodyParam, GetEmbeddingsBodyParam, GetImageEmbeddingsBodyParam } from "./parameters.js";
 
 /**
  * The programmatic identifier of the tracingPolicy.
@@ -31,7 +26,6 @@ export interface TracingPolicyOptions {
    */
   additionalAllowedQueryParameters?: string[];
 }
-
 
 export enum TracingAttributesEnum {
   Operation_Name = "gen_ai.operation.name",
@@ -54,83 +48,81 @@ export enum TracingAttributesEnum {
   Server_Address = "server.address"
 }
 
-export type TracingAttributes = { [key in TracingAttributesEnum]?: string | number };
+export type TracingAttributes = { [key in TracingAttributesEnum]?: string[] | string | number };
 
-/**
- * A simple policy to create OpenTelemetry Spans for each request made by the pipeline
- * that has SpanOptions with a parent.
- * Requests made without a parent Span will not be recorded.
- */
-export function tracingPolicy(): PipelinePolicy {
 
-  return {
-    name: tracingPolicyName,
-    async sendRequest(request: PipelineRequest, next: SendRequest): Promise<PipelineResponse> {
-      if (!tracingClient) {
-        return next(request);
-      }
 
-      /* sample of request
-      request = {
-        url: "https://models.inference.ai.azure.com/chat/completions?api-version=2024-05-01-preview",
-        body: "{\"messages\":[{\"role\":\"system\",\"content\":\"You are a helpful assistant.\"},{\"role\":\"user\",\"content\":\"What is the capital of France?\"}],\"model\":\"Phi-3-medium-128k-instruct\",\"temperature\":1,\"max_tokens\":1000,\"top_p\":1}",
-        headers: {
-          _headersMap: {
-          },
-        },
-        method: "POST",
-        timeout: 0,
-        multipartBody: undefined,
-        formData: undefined,
-        disableKeepAlive: false,
-        proxySettings: undefined,
-        streamResponseStatusCodes: undefined,
-        withCredentials: false,
-        abortSignal: undefined,
-        tracingOptions: {
-        },
-        onUploadProgress: undefined,
-        onDownloadProgress: undefined,
-        requestId: "e89d3930-257d-4d96-a60b-216e5ecc8040",
-        allowInsecureConnection: false,
-        enableBrowserStreams: true,
-      }
-
-       */
-      if (!request.body)
-        return next(request);
-      const body = JSON.parse(request.body as string);
-
-      const spanAttributes: TracingAttributes = {
-        [TracingAttributesEnum.Operation_Name]: "chat; text_completion", ///TODD: don't know how to determine yet
-        [TracingAttributesEnum.System]: "openai",
-        [TracingAttributesEnum.Request_Model]: body.model,
-        [TracingAttributesEnum.Request_Frequency_Penalty]: body.frequency_penalty,
-        [TracingAttributesEnum.Request_Max_Tokens]: body.max_tokens,
-        [TracingAttributesEnum.Request_Presence_Penalty]: body.presence_penalty,
-        [TracingAttributesEnum.Request_Stop_Sequences]: body.stop,
-        [TracingAttributesEnum.Request_Temperature]: body.temperature,
-        [TracingAttributesEnum.Request_Top_K]: body.top_k,
-        [TracingAttributesEnum.Request_Top_P]: body.top_p
-      };
-
-      const { span, tracingContext } = tryCreateSpan(tracingClient, request, spanAttributes) ?? {};
-
-      if (!span || !tracingContext) {
-        return next(request);
-      }
-
-      try {
-        const response = await tracingClient.withContext(tracingContext, next, request);
-        tryProcessResponse(span, response);
-        return response;
-      } catch (err: any) {
-        tryProcessError(span, err);
-        throw err;
-      }
+export function trace(_: string, options: RequestParameters, operation: () => StreamableMethod): StreamableMethod {
+  if (!tracingClient) {
+    return operation();
+  }
+  /* sample of request
+  request = {
+    url: "https://models.inference.ai.azure.com/chat/completions?api-version=2024-05-01-preview",
+    body: "{\"messages\":[{\"role\":\"system\",\"content\":\"You are a helpful assistant.\"},{\"role\":\"user\",\"content\":\"What is the capital of France?\"}],\"model\":\"Phi-3-medium-128k-instruct\",\"temperature\":1,\"max_tokens\":1000,\"top_p\":1}",
+    headers: {
+      _headersMap: {
+      },
     },
+    method: "POST",
+    timeout: 0,
+    multipartBody: undefined,
+    formData: undefined,
+    disableKeepAlive: false,
+    proxySettings: undefined,
+    streamResponseStatusCodes: undefined,
+    withCredentials: false,
+    abortSignal: undefined,
+    tracingOptions: {
+    },
+    onUploadProgress: undefined,
+    onDownloadProgress: undefined,
+    requestId: "e89d3930-257d-4d96-a60b-216e5ecc8040",
+    allowInsecureConnection: false,
+    enableBrowserStreams: true,
+  }
+
+   */
+
+
+  const body = (options as GetImageEmbeddingsBodyParam &
+    GetEmbeddingsBodyParam &
+    GetChatCompletionsBodyParam &
+    GetImageEmbeddingsBodyParam).body;
+
+
+  const spanAttributes: TracingAttributes = {
+    [TracingAttributesEnum.Operation_Name]: "chat; text_completion", ///TODD: don't know how to determine yet
+    [TracingAttributesEnum.System]: "openai",
+    [TracingAttributesEnum.Request_Model]: body?.model,
+    [TracingAttributesEnum.Request_Frequency_Penalty]: body?.frequency_penalty,
+    [TracingAttributesEnum.Request_Max_Tokens]: body?.max_tokens,
+    [TracingAttributesEnum.Request_Presence_Penalty]: body?.presence_penalty,
+    [TracingAttributesEnum.Request_Stop_Sequences]: body?.stop,
+    [TracingAttributesEnum.Request_Temperature]: body?.temperature,
+    [TracingAttributesEnum.Request_Top_P]: body?.top_p
   };
+
+  const { span, tracingContext } = tryCreateSpan(tracingClient, spanAttributes) ?? {};
+
+  if (!span || !tracingContext) {
+    return operation();
+  }
+
+  try {
+    const promise = tracingClient.withContext(tracingContext, operation)
+
+    promise.then(response => {
+      tryProcessResponse(span, response as PipelineResponse & PathUncheckedResponse);
+    });
+    return promise;
+  } catch (err: any) {
+    tryProcessError(span, err);
+    throw err;
+  }
 }
+
+
 
 function tryCreateTracingClient(): TracingClient | undefined {
   try {
@@ -147,7 +139,6 @@ function tryCreateTracingClient(): TracingClient | undefined {
 
 function tryCreateSpan(
   tracingClient: TracingClient,
-  request: PipelineRequest,
   spanAttributes: Record<string, unknown>,
 ): { span: TracingSpan; tracingContext: TracingContext } | undefined {
   try {
@@ -166,13 +157,7 @@ function tryCreateSpan(
       return undefined;
     }
 
-    // set headers
-    const headers = tracingClient.createRequestHeaders(
-      updatedOptions.tracingOptions.tracingContext,
-    );
-    for (const [key, value] of Object.entries(headers)) {
-      request.headers.set(key, value);
-    }
+
     return { span, tracingContext: updatedOptions.tracingOptions.tracingContext };
   } catch (e: any) {
     logger.warning(`Skipping creating a tracing span due to an error: ${getErrorMessage(e)}`);
@@ -192,9 +177,9 @@ function tryProcessError(span: TracingSpan, error: unknown): void {
   }
 }
 
-function tryProcessResponse(span: TracingSpan, response: PipelineResponse): void {
+function tryProcessResponse(span: TracingSpan, response: PathUncheckedResponse): void {
   try {
-    const body = JSON.parse(response?.bodyAsText || "{}");
+    const body = response.body;
     /* sample of body for success
     const body = {
       choices: [
