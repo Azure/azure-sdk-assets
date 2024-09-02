@@ -7,8 +7,8 @@
  */
 export type Resolved<T> = T extends { then(onfulfilled: infer F): any } // `await` only unwraps object types with a callable `then`. Non-object types are not unwrapped
   ? F extends (value: infer V) => any // if the argument to `then` is callable, extracts the first argument
-    ? Resolved<V> // recursively unwrap the value
-    : never // the argument to `then` was not callable
+  ? Resolved<V> // recursively unwrap the value
+  : never // the argument to `then` was not callable
   : T; // non-object or non-thenable
 
 /**
@@ -100,6 +100,42 @@ export interface TracingClient {
    * @returns The set of headers to add to a request.
    */
   createRequestHeaders(tracingContext?: TracingContext): Record<string, string>;
+
+  /**
+   * Capture the arguments and return of a function and create a span.
+   * @param name - name of the span.
+   * @param args - arguments of the method to be traced.  Generally, you should pass in `arguments` reserve word.
+   * @param methodToTrace - function pointer of the implementation.
+   * @param paramAttributeMapper - mapping function to map the arguments to span's attributes.
+   * @param returnAttributeMapper - mapping function to map the return object to span's attributes.
+   * @returns - return back the return from methodToTrace.
+   */
+  trace<Arguments, Return>(
+    name: string,
+    args: Arguments,
+    methodToTrace: () => Return,
+    paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
+    returnAttributeMapper?: (rt: Return) => Map<string, unknown>,
+    statusMapper?: (rt: Return) => SpanStatus,
+    options?: OperationTracingOptions): Return;
+
+  /**
+   * Capture the arguments and return of a function and create a span.
+   * @param name - name of the span.
+   * @param args - arguments of the method to be traced.  Generally, you should pass in `arguments` reserve word.
+   * @param methodToTrace - function pointer of the implementation.
+   * @param paramAttributeMapper - mapping function to map the arguments to span's attributes.
+   * @param returnAttributeMapper - mapping function to map the return object to span's attributes.
+   * @returns - return back the return from methodToTrace.
+   */
+  traceAsync<Arguments, ResolvedReturn, PromiseReturn extends Promise<ResolvedReturn> | PromiseLike<ResolvedReturn>>(
+    name: string,
+    args: Arguments,
+    methodToTrace: () => PromiseReturn,
+    paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
+    returnAttributeMapper?: (rt: ResolvedReturn) => Map<string, unknown>,
+    statusMapper?: (rt: ResolvedReturn) => SpanStatus,
+    options?: OperationTracingOptions): PromiseReturn;
 }
 
 /**

@@ -15,7 +15,7 @@ import {
 } from "@azure/core-rest-pipeline";
 import { RawHttpHeadersInput } from "@azure/core-rest-pipeline";
 import { AbortSignalLike } from "@azure/abort-controller";
-import { OperationTracingOptions } from "@azure/core-tracing";
+import { OperationTracingOptions, SpanStatus } from "@azure/core-tracing";
 
 /**
  * Shape of the default request parameters, this may be overriden by the specific
@@ -383,23 +383,23 @@ export type HttpResponse = {
  */
 export type PathParameters<
   TRoute extends string,
-  // This is trying to match the string in TRoute with a template where HEAD/{PARAM}/TAIL
-  // for example in the followint path: /foo/{fooId}/bar/{barId}/baz the template will infer
-  // HEAD: /foo
-  // Param: fooId
-  // Tail: /bar/{barId}/baz
-  // The above sample path would return [pathParam: string, pathParam: string]
+// This is trying to match the string in TRoute with a template where HEAD/{PARAM}/TAIL
+// for example in the followint path: /foo/{fooId}/bar/{barId}/baz the template will infer
+// HEAD: /foo
+// Param: fooId
+// Tail: /bar/{barId}/baz
+// The above sample path would return [pathParam: string, pathParam: string]
 > = TRoute extends `${infer _Head}/{${infer _Param}}${infer Tail}`
   ? // In case we have a match for the template above we know for sure
-    // that we have at least one pathParameter, that's why we set the first pathParam
-    // in the tuple. At this point we have only matched up until param, if we want to identify
-    // additional parameters we can call RouteParameters recursively on the Tail to match the remaining parts,
-    // in case the Tail has more parameters, it will return a tuple with the parameters found in tail.
-    // We spread the second path params to end up with a single dimension tuple at the end.
-    [pathParameter: string, ...pathParameters: PathParameters<Tail>]
+  // that we have at least one pathParameter, that's why we set the first pathParam
+  // in the tuple. At this point we have only matched up until param, if we want to identify
+  // additional parameters we can call RouteParameters recursively on the Tail to match the remaining parts,
+  // in case the Tail has more parameters, it will return a tuple with the parameters found in tail.
+  // We spread the second path params to end up with a single dimension tuple at the end.
+  [pathParameter: string, ...pathParameters: PathParameters<Tail>]
   : // When the path doesn't match the template, it means that we have no path parameters so we return
-    // an empty tuple.
-    [];
+  // an empty tuple.
+  [];
 
 /** A response containing error details. */
 export interface ErrorResponse {
@@ -427,4 +427,10 @@ export interface InnerError {
   code: string;
   /** Inner error. */
   innererror?: InnerError;
+}
+
+export interface TracerCallbacks {
+  requestAttributeMapper: (params: RequestParameters) => Map<string, unknown>,
+  responseAttributeMapper: (response: PathUncheckedResponse) => Map<string, unknown>,
+  statusMapper: (response: PathUncheckedResponse) => SpanStatus,
 }

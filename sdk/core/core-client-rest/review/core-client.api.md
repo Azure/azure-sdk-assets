@@ -18,6 +18,7 @@ import { RawHttpHeaders } from '@azure/core-rest-pipeline';
 import { RawHttpHeadersInput } from '@azure/core-rest-pipeline';
 import { RequestBodyType } from '@azure/core-rest-pipeline';
 import { RestError } from '@azure/core-rest-pipeline';
+import { SpanStatus } from '@azure/core-tracing';
 import { TokenCredential } from '@azure/core-auth';
 import { TransferProgressEvent } from '@azure/core-rest-pipeline';
 
@@ -89,7 +90,7 @@ export interface FullOperationResponse extends PipelineResponse {
 export function getClient(endpoint: string, options?: ClientOptions): Client;
 
 // @public
-export function getClient(endpoint: string, credentials?: TokenCredential | KeyCredential, options?: ClientOptions, tracer?: ((url: string, options: RequestParameters, operation: () => StreamableMethod) => StreamableMethod)): Client;
+export function getClient(endpoint: string, credentials?: TokenCredential | KeyCredential, options?: ClientOptions, tracerCallbacks?: TracerCallbacks): Client;
 
 // @public
 export type HttpBrowserStreamResponse = HttpResponse & {
@@ -189,5 +190,15 @@ export type StreamableMethod<TResponse = PathUncheckedResponse> = PromiseLike<TR
     asNodeStream: () => Promise<HttpNodeStreamResponse>;
     asBrowserStream: () => Promise<HttpBrowserStreamResponse>;
 };
+
+// @public (undocumented)
+export interface TracerCallbacks {
+    // (undocumented)
+    requestAttributeMapper: (params: RequestParameters) => Map<string, unknown>;
+    // (undocumented)
+    responseAttributeMapper: (response: PathUncheckedResponse) => Map<string, unknown>;
+    // (undocumented)
+    statusMapper: (response: PathUncheckedResponse) => SpanStatus;
+}
 
 ```

@@ -30,7 +30,7 @@ registerInstrumentations({
 });
 
 import ModelClient from "@azure-rest/ai-inference";
-import { isUnexpected } from "@azure-rest/ai-inference";
+import { isUnexpected, ChatChoiceOutput } from "@azure-rest/ai-inference";
 import { AzureKeyCredential } from "@azure/core-auth";
 import { createTracingClient } from "@azure/core-tracing";
 
@@ -74,11 +74,32 @@ async function main() {
       throw response.body.error;
     }
 
-    for (const choice of response.body.choices) {
-      console.log(choice.message.content);
-    }
+    const firstChoice = getFirstChoiceToDisplay(response.body.choices);
+
+    console.log(firstChoice);
   });
 }
+
+function getFirstChoiceToDisplay(choice: ChatChoiceOutput[]): string[] {
+  const allChoices: string = choice.map((arg) => arg.message.content).join(", ");
+  const impl = () => {
+    return choice[0].message.content;
+  };
+  return trace("getChoiceToDisplay", arguments, impl, argsAttributeMapper, returnAttributeMapper);
+}
+
+function argsAttributeMapper(args: IArguments): Map<string, any> {
+  const attributes = new Map<string, any>();
+  attributes.set("all-choices", args[0].map((arg) => arg.message.content).join(", "));
+  return attributes;
+}
+
+function returnAttributeMapper(returnVal: string): Map<string, any> {
+  const attributes = new Map<string, any>();
+  attributes.set("first-choice", returnVal);
+  return attributes;
+}
+
 
 main().catch((err) => {
   console.error("The sample encountered an error:", err);
@@ -87,7 +108,7 @@ main().catch((err) => {
 export { main };
 
 /**
- * Output of the sample:
+ * The following spans will be created:
  */
 /*
 {
@@ -152,7 +173,6 @@ export { main };
   events: [],
   links: []
 }
-Shiver me timbers! To train yer parrot, first ye must bond with it. Spend time with it each day, feed it from yer hand, and give it lots of love and attention. Next, teach it simple commands like "step up" to get onto yer hand or "get down" to go to its perch. Use positive reinforcement like treats and praise when it follows commands. If ye want it to talk, repeat the same words and phrases over and over, and reward it when it mimics ye. Keep the training sessions short and fun, and be patient - parrots can take time to learn new things. And remember, parrots be intelligent creatures, so always treat them with kindness and respect. Arrr!
 {
   resource: {
     attributes: {
@@ -175,4 +195,60 @@ Shiver me timbers! To train yer parrot, first ye must bond with it. Spend time w
   events: [],
   links: []
 }
+{
+  resource: {
+    attributes: {
+      'service.name': 'unknown_service:C:\\Program Files\\nodejs\\node.exe',
+      'telemetry.sdk.language': 'nodejs',
+      'telemetry.sdk.name': 'opentelemetry',
+      'telemetry.sdk.version': '1.25.1'
+    }
+  },
+  traceId: '46ebf950b63b90aa29f8dfb2e93b82ed',
+  parentId: '4b718583a5c0b378',
+  traceState: undefined,
+  name: 'HTTP POST',
+  id: 'eba5005694622f2d',
+  kind: 2,
+  timestamp: 1724451988968000,
+  duration: 6504423.2,
+  attributes: {
+    'http.url': 'https://mistral-large-ajmih-serverless.eastus2.inference.ai.azure.com/chat/completions?api-version=2024-05-01-preview',
+    'http.method': 'POST',
+    'http.user_agent': 'azsdk-js-AiModelInference-rest/1.0.0-beta.2 core-rest-pipeline/1.16.3 Node/20.16.0 OS/(x64-Windows_NT-10.0.22631)',
+    requestId: 'b82c6c23-e3c3-41a2-8846-3be66606b470',
+    'az.namespace': 'Microsoft.OtelSample',
+    'http.status_code': 200
+  },
+  status: { code: 1 },
+  events: [],
+  links: []
+}
+{
+  resource: {
+    attributes: {
+      'service.name': 'unknown_service:C:\\Program Files\\nodejs\\node.exe',
+      'telemetry.sdk.language': 'nodejs',
+      'telemetry.sdk.name': 'opentelemetry',
+      'telemetry.sdk.version': '1.25.1'
+    }
+  },
+  traceId: '46ebf950b63b90aa29f8dfb2e93b82ed',
+  parentId: undefined,
+  traceState: undefined,
+  name: 'main',
+  id: '4b718583a5c0b378',
+  kind: 0,
+  timestamp: 1724451988934000,
+  duration: 6543868.6,
+  attributes: { 
+    'az.namespace': 'Microsoft.OtelSample',
+    'first-choice': 'There are 5,280 feet in a mile. This is a standard unit conversion in the imperial system, where 1 mile is equivalent to 5,280 feet, 1,760 yards, or 8 furlongs.'
+    'all-choices': 'There are 5,280 feet in a mile. This is a standard unit conversion in the imperial system, where 1 mile is equivalent to 5,280 feet, 1,760 yards, or 8 furlongs.'
+  },
+  status: { code: 1 },
+  events: [],
+  links: []
+}
+
 */
