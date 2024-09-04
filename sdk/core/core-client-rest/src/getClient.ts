@@ -17,7 +17,7 @@ import { buildRequestUrl } from "./urlHelpers.js";
 import { OperationTracingOptions } from "@azure/core-tracing";
 
 type TracerCallback = (
-  name: string,
+  path: string,
   args: RequestParameters,
   methodToTrace: () => StreamableMethod,
   options?: OperationTracingOptions) => StreamableMethod;
@@ -73,12 +73,12 @@ export function getClient(
   const client = (path: string, ...args: Array<any>) => {
     const getUrl = (requestOptions: RequestParameters) =>
       buildRequestUrl(endpointUrl, path, args, { allowInsecureConnection, ...requestOptions });
-
     return {
       get: (requestOptions: RequestParameters = {}): StreamableMethod => {
         return buildOperation(
           "GET",
           getUrl(requestOptions),
+          path,
           pipeline,
           requestOptions,
           allowInsecureConnection,
@@ -90,6 +90,7 @@ export function getClient(
         return buildOperation(
           "POST",
           getUrl(requestOptions),
+          path,
           pipeline,
           requestOptions,
           allowInsecureConnection,
@@ -101,6 +102,7 @@ export function getClient(
         return buildOperation(
           "PUT",
           getUrl(requestOptions),
+          path,
           pipeline,
           requestOptions,
           allowInsecureConnection,
@@ -112,6 +114,7 @@ export function getClient(
         return buildOperation(
           "PATCH",
           getUrl(requestOptions),
+          path,
           pipeline,
           requestOptions,
           allowInsecureConnection,
@@ -123,6 +126,7 @@ export function getClient(
         return buildOperation(
           "DELETE",
           getUrl(requestOptions),
+          path,
           pipeline,
           requestOptions,
           allowInsecureConnection,
@@ -134,6 +138,7 @@ export function getClient(
         return buildOperation(
           "HEAD",
           getUrl(requestOptions),
+          path,
           pipeline,
           requestOptions,
           allowInsecureConnection,
@@ -145,6 +150,7 @@ export function getClient(
         return buildOperation(
           "OPTIONS",
           getUrl(requestOptions),
+          path,
           pipeline,
           requestOptions,
           allowInsecureConnection,
@@ -156,6 +162,7 @@ export function getClient(
         return buildOperation(
           "TRACE",
           getUrl(requestOptions),
+          path,
           pipeline,
           requestOptions,
           allowInsecureConnection,
@@ -176,6 +183,7 @@ export function getClient(
 function buildOperation(
   method: HttpMethods,
   url: string,
+  path: string,
   pipeline: Pipeline,
   options: RequestParameters,
   allowInsecureConnection?: boolean,
@@ -183,7 +191,6 @@ function buildOperation(
   tracer?: TracerCallback,
 ): StreamableMethod {
   allowInsecureConnection = options.allowInsecureConnection ?? allowInsecureConnection;
-
 
   const operation: () => StreamableMethod = () => ({
     then: function (onFulfilled, onrejected) {
@@ -216,7 +223,7 @@ function buildOperation(
   });
 
   return tracer ?
-    tracer(url, options, operation) :
+    tracer(path, options, operation) :
     operation();
 }
 
