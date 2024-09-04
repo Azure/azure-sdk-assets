@@ -9,8 +9,7 @@ import {
   isKeyCredential,
 } from "@azure/core-auth";
 import { ModelClient } from "./clientDefinitions.js";
-import { requestAttributeMapper, responseAttributeMapper, statusMapper } from "./trace.js";
-import { TracerCallbacks } from "@azure-rest/core-client";
+import { traceInference } from "./trace.js";
 
 /** The optional parameters for the client */
 export interface ModelClientOptions extends ClientOptions {
@@ -49,12 +48,7 @@ export default function createClient(
     },
   };
 
-  const tracerCallbacks: TracerCallbacks = {
-    requestAttributeMapper,
-    responseAttributeMapper,
-    statusMapper
-  };
-  const client = getClient(endpointUrl, credentials, options, tracerCallbacks) as ModelClient;
+  const client = getClient(endpointUrl, credentials, options, traceInference) as ModelClient;
 
   client.pipeline.removePolicy({ name: "ApiVersionPolicy" });
   client.pipeline.addPolicy({

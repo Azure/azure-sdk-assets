@@ -18,7 +18,6 @@ import { RawHttpHeaders } from '@azure/core-rest-pipeline';
 import { RawHttpHeadersInput } from '@azure/core-rest-pipeline';
 import { RequestBodyType } from '@azure/core-rest-pipeline';
 import { RestError } from '@azure/core-rest-pipeline';
-import { SpanStatus } from '@azure/core-tracing';
 import { TokenCredential } from '@azure/core-auth';
 import { TransferProgressEvent } from '@azure/core-rest-pipeline';
 
@@ -89,8 +88,10 @@ export interface FullOperationResponse extends PipelineResponse {
 // @public
 export function getClient(endpoint: string, options?: ClientOptions): Client;
 
+// Warning: (ae-forgotten-export) The symbol "TracerCallback" needs to be exported by the entry point index.d.ts
+//
 // @public
-export function getClient(endpoint: string, credentials?: TokenCredential | KeyCredential, options?: ClientOptions, tracerCallbacks?: TracerCallbacks): Client;
+export function getClient(endpoint: string, credentials?: TokenCredential | KeyCredential, options?: ClientOptions, tracer?: TracerCallback): Client;
 
 // @public
 export type HttpBrowserStreamResponse = HttpResponse & {
@@ -190,15 +191,5 @@ export type StreamableMethod<TResponse = PathUncheckedResponse> = PromiseLike<TR
     asNodeStream: () => Promise<HttpNodeStreamResponse>;
     asBrowserStream: () => Promise<HttpBrowserStreamResponse>;
 };
-
-// @public (undocumented)
-export interface TracerCallbacks {
-    // (undocumented)
-    requestAttributeMapper: (params: RequestParameters) => Map<string, unknown>;
-    // (undocumented)
-    responseAttributeMapper: (response: PathUncheckedResponse) => Map<string, unknown>;
-    // (undocumented)
-    statusMapper: (response: PathUncheckedResponse) => SpanStatus;
-}
 
 ```

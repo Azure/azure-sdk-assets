@@ -130,9 +130,9 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     args: Arguments,
     methodToTrace: () => Return,
     paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
-    returnAttributeMapper?: (rt: Return) => Map<string, unknown>,
+    returnAttributeMapper?: (args: Arguments, rt: Return) => Map<string, unknown>,
     statusMapper?: (rt: Return) => SpanStatus,
-    options?: OperationTracingOptions): Return {
+    tracingOptions?: OperationTracingOptions): Return {
 
     let spanAttributesInObject = {};
 
@@ -140,7 +140,7 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
       const spanAttributesInMap = paramAttributeMapper(args);
       spanAttributesInObject = mapToObject(spanAttributesInMap);
     }
-    const { span, tracingContext } = tryCreateSpan(name, spanAttributesInObject, options) ?? {};
+    const { span, tracingContext } = tryCreateSpan(name, spanAttributesInObject, tracingOptions) ?? {};
 
     if (!span || !tracingContext) {
       return methodToTrace();
@@ -148,7 +148,7 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
 
     try {
       const returnObj = withContext(tracingContext, methodToTrace)
-      tryProcessReturn(span, returnObj, returnAttributeMapper, statusMapper);
+      tryProcessReturn(span, args, returnObj, returnAttributeMapper, statusMapper);
 
       return returnObj;
     } catch (err: any) {
@@ -171,9 +171,9 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     args: Arguments,
     methodToTrace: () => PromiseReturn,
     paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
-    returnAttributeMapper?: (rt: ResolvedReturn) => Map<string, unknown>,
+    returnAttributeMapper?: (args: Arguments, rt: ResolvedReturn) => Map<string, unknown>,
     statusMapper?: (rt: ResolvedReturn) => SpanStatus,
-    options?: OperationTracingOptions): PromiseReturn {
+    tracingOptions?: OperationTracingOptions): PromiseReturn {
 
     let spanAttributesInObject = {};
 
@@ -181,7 +181,7 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
       const spanAttributesInMap = paramAttributeMapper(args);
       spanAttributesInObject = mapToObject(spanAttributesInMap);
     }
-    const { span, tracingContext } = tryCreateSpan(name, spanAttributesInObject, options) ?? {};
+    const { span, tracingContext } = tryCreateSpan(name, spanAttributesInObject, tracingOptions) ?? {};
 
     if (!span || !tracingContext) {
       return methodToTrace();
@@ -191,8 +191,10 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
       const returnObj = withContext(tracingContext, methodToTrace);
 
       returnObj.then((response) => {
-        tryProcessReturn(span, response, returnAttributeMapper, statusMapper);
+        tryProcessReturn(span, args, response, returnAttributeMapper, statusMapper);
       });
+
+
 
       return returnObj;
     } catch (err: any) {
@@ -249,14 +251,15 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     }
   }
 
-  function tryProcessReturn<Return>(
+  function tryProcessReturn<Arguments, Return>(
     span: TracingSpan,
+    args: Arguments,
     returnObj: Return,
-    returnAttributeMapper?: (rt: Return) => Map<string, any>,
+    returnAttributeMapper?: (args: Arguments, rt: Return) => Map<string, any>,
     statusMapper?: (rt: Return) => SpanStatus): void {
     try {
       if (returnAttributeMapper) {
-        const returnAttributes = returnAttributeMapper(returnObj);
+        const returnAttributes = returnAttributeMapper(args, returnObj);
         returnAttributes.forEach((value, key) => {
           span.setAttribute(key, value);
         });

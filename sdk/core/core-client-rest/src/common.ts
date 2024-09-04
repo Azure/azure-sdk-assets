@@ -15,7 +15,7 @@ import {
 } from "@azure/core-rest-pipeline";
 import { RawHttpHeadersInput } from "@azure/core-rest-pipeline";
 import { AbortSignalLike } from "@azure/abort-controller";
-import { OperationTracingOptions, SpanStatus } from "@azure/core-tracing";
+import { OperationTracingOptions } from "@azure/core-tracing";
 
 /**
  * Shape of the default request parameters, this may be overriden by the specific
@@ -427,10 +427,4 @@ export interface InnerError {
   code: string;
   /** Inner error. */
   innererror?: InnerError;
-}
-
-export interface TracerCallbacks {
-  requestAttributeMapper: (params: RequestParameters) => Map<string, unknown>,
-  responseAttributeMapper: (response: PathUncheckedResponse) => Map<string, unknown>,
-  statusMapper: (response: PathUncheckedResponse) => SpanStatus,
 }

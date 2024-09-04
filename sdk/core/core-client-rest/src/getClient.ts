@@ -10,12 +10,17 @@ import {
   HttpBrowserStreamResponse,
   HttpNodeStreamResponse,
   RequestParameters,
-  StreamableMethod,
-  TracerCallbacks,
+  StreamableMethod
 } from "./common.js";
 import { sendRequest } from "./sendRequest.js";
 import { buildRequestUrl } from "./urlHelpers.js";
-import { createTracingClient } from "@azure/core-tracing";
+import { OperationTracingOptions } from "@azure/core-tracing";
+
+type TracerCallback = (
+  name: string,
+  args: RequestParameters,
+  methodToTrace: () => StreamableMethod,
+  options?: OperationTracingOptions) => StreamableMethod;
 
 /**
  * Creates a client with a default pipeline
@@ -34,13 +39,13 @@ export function getClient(
   endpoint: string,
   credentials?: TokenCredential | KeyCredential,
   options?: ClientOptions,
-  tracerCallbacks?: TracerCallbacks,
+  tracer?: TracerCallback,
 ): Client;
 export function getClient(
   endpoint: string,
   credentialsOrPipelineOptions?: (TokenCredential | KeyCredential) | ClientOptions,
   clientOptions: ClientOptions = {},
-  tracerCallbacks?: TracerCallbacks,
+  tracer?: TracerCallback,
 ): Client {
   let credentials: TokenCredential | KeyCredential | undefined;
   if (credentialsOrPipelineOptions) {
@@ -78,7 +83,7 @@ export function getClient(
           requestOptions,
           allowInsecureConnection,
           httpClient,
-          tracerCallbacks
+          tracer
         );
       },
       post: (requestOptions: RequestParameters = {}): StreamableMethod => {
@@ -89,7 +94,7 @@ export function getClient(
           requestOptions,
           allowInsecureConnection,
           httpClient,
-          tracerCallbacks
+          tracer
         );
       },
       put: (requestOptions: RequestParameters = {}): StreamableMethod => {
@@ -100,7 +105,7 @@ export function getClient(
           requestOptions,
           allowInsecureConnection,
           httpClient,
-          tracerCallbacks
+          tracer
         );
       },
       patch: (requestOptions: RequestParameters = {}): StreamableMethod => {
@@ -111,7 +116,7 @@ export function getClient(
           requestOptions,
           allowInsecureConnection,
           httpClient,
-          tracerCallbacks
+          tracer
         );
       },
       delete: (requestOptions: RequestParameters = {}): StreamableMethod => {
@@ -122,7 +127,7 @@ export function getClient(
           requestOptions,
           allowInsecureConnection,
           httpClient,
-          tracerCallbacks
+          tracer
         );
       },
       head: (requestOptions: RequestParameters = {}): StreamableMethod => {
@@ -133,7 +138,7 @@ export function getClient(
           requestOptions,
           allowInsecureConnection,
           httpClient,
-          tracerCallbacks
+          tracer
         );
       },
       options: (requestOptions: RequestParameters = {}): StreamableMethod => {
@@ -144,7 +149,7 @@ export function getClient(
           requestOptions,
           allowInsecureConnection,
           httpClient,
-          tracerCallbacks
+          tracer
         );
       },
       trace: (requestOptions: RequestParameters = {}): StreamableMethod => {
@@ -155,7 +160,7 @@ export function getClient(
           requestOptions,
           allowInsecureConnection,
           httpClient,
-          tracerCallbacks
+          tracer
         );
       },
     };
@@ -168,11 +173,6 @@ export function getClient(
   };
 }
 
-const tracer = createTracingClient({
-  packageName: "Azure.Rest",
-  namespace: "Microsoft.Rest",
-});
-
 function buildOperation(
   method: HttpMethods,
   url: string,
@@ -180,7 +180,7 @@ function buildOperation(
   options: RequestParameters,
   allowInsecureConnection?: boolean,
   httpClient?: HttpClient,
-  tracerCallbacks?: TracerCallbacks,
+  tracer?: TracerCallback,
 ): StreamableMethod {
   allowInsecureConnection = options.allowInsecureConnection ?? allowInsecureConnection;
 
@@ -215,8 +215,8 @@ function buildOperation(
     },
   });
 
-  return tracerCallbacks ?
-    tracer.traceAsync(url, options, operation, tracerCallbacks.requestAttributeMapper, tracerCallbacks.responseAttributeMapper, tracerCallbacks.statusMapper) :
+  return tracer ?
+    tracer(url, options, operation) :
     operation();
 }
 
