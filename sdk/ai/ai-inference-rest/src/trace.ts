@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 import { PathUncheckedResponse, RequestParameters, StreamableMethod } from "@azure-rest/core-client";
-import { createTracingClient, OperationTracingOptions, SpanStatus } from "@azure/core-tracing";
+import { createTracingClient, OperationTracingOptions } from "@azure/core-tracing";
 import { GetChatCompletionsBodyParam, GetEmbeddingsBodyParam, GetImageEmbeddingsBodyParam } from "./parameters.js";
 
 const traceCLient = createTracingClient({ namespace: "Micirsoft.CognitiveServices", packageName: "ai-inference-rest", packageVersion: "1.0.0" });
@@ -70,37 +70,32 @@ export function traceInference(
     return map;
   }
 
-  const responseAttributeMapper = (_: RequestParameters, response: PathUncheckedResponse) => {
-    let body = response.body;
+  const responseAttributeMapper = (_: RequestParameters, response?: PathUncheckedResponse, error?: unknown) => {
     const map = new Map<string, unknown>();
-    map.set(TracingAttributesEnum.Response_Id, body.id);
-    map.set(TracingAttributesEnum.Response_Model, body.model);
-    if (body.usage) {
-      map.set(TracingAttributesEnum.Usage_Input_Tokens, body.usage.prompt_tokens);
-      map.set(TracingAttributesEnum.Usage_Output_Tokens, body.usage.completion_tokens);
+    if (error) {
+      if (error instanceof Error) {
+        map.set(TracingAttributesEnum.Error_Type, error.message);
+      } else {
+        map.set(TracingAttributesEnum.Error_Type, error);
+      }
     }
-    if (body.error) {
-      map.set(TracingAttributesEnum.Error_Type, body.error.code);
+    if (response) {
+      let body = response.body;
+      map.set(TracingAttributesEnum.Response_Id, body.id);
+      map.set(TracingAttributesEnum.Response_Model, body.model);
+      if (body.usage) {
+        map.set(TracingAttributesEnum.Usage_Input_Tokens, body.usage.prompt_tokens);
+        map.set(TracingAttributesEnum.Usage_Output_Tokens, body.usage.completion_tokens);
+      }
+      if (body.error) {
+        map.set(TracingAttributesEnum.Error_Type, body.error.code);
+      }
     }
     return map;
-  }
-
-  const statusMapper = ({ body }: PathUncheckedResponse) => {
-    let status: SpanStatus = {
-      status: "success",
-    };
-
-    if (body.error) {
-      status = {
-        status: "error",
-        error: body.error.message,
-      };
-    }
-    return status;
   }
 
   const request = args as RequestParameterWithBodyType;
 
   const name = `${getOperationName(path)} ${request.body?.model ?? ""}`;
-  return traceCLient.traceAsync(name, request, methodToTrace, requestAttributeMapper, responseAttributeMapper, statusMapper, options);
+  return traceCLient.traceAsync(name, request, methodToTrace, requestAttributeMapper, responseAttributeMapper, options);
 }

@@ -5,7 +5,6 @@ import {
   OperationTracingOptions,
   OptionsWithTracingContext,
   Resolved,
-  SpanStatus,
   TracingClient,
   TracingClientOptions,
   TracingContext,
@@ -15,7 +14,7 @@ import {
 import { getInstrumenter } from "./instrumenter.js";
 import { knownContextKeys } from "./tracingContext.js";
 import { createClientLogger } from "@azure/logger";
-import { getErrorMessage, isError } from "@azure/core-util";
+import { getErrorMessage } from "@azure/core-util";
 
 /**
  * Creates a new tracing client.
@@ -130,8 +129,7 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     args: Arguments,
     methodToTrace: () => Return,
     paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
-    returnAttributeMapper?: (args: Arguments, rt: Return) => Map<string, unknown>,
-    statusMapper?: (rt: Return) => SpanStatus,
+    returnAttributeMapper?: (args: Arguments, rt?: Return, error?: unknown) => Map<string, unknown>,
     tracingOptions?: OperationTracingOptions): Return {
 
     let spanAttributesInObject = {};
@@ -148,11 +146,11 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
 
     try {
       const returnObj = withContext(tracingContext, methodToTrace)
-      tryProcessReturn(span, args, returnObj, returnAttributeMapper, statusMapper);
+      tryProcessReturn(span, args, returnObj, returnAttributeMapper);
 
       return returnObj;
     } catch (err: any) {
-      tryProcessError(span, err);
+      tryProcessReturn(span, args, undefined, err, returnAttributeMapper);
       throw err;
     }
   }
@@ -171,8 +169,7 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     args: Arguments,
     methodToTrace: () => PromiseReturn,
     paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
-    returnAttributeMapper?: (args: Arguments, rt: ResolvedReturn) => Map<string, unknown>,
-    statusMapper?: (rt: ResolvedReturn) => SpanStatus,
+    returnAttributeMapper?: (args: Arguments, rt?: ResolvedReturn, error?: unknown) => Map<string, unknown>,
     tracingOptions?: OperationTracingOptions): PromiseReturn {
 
     let spanAttributesInObject = {};
@@ -191,14 +188,12 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
       const returnObj = withContext(tracingContext, methodToTrace);
 
       returnObj.then((response) => {
-        tryProcessReturn(span, args, response, returnAttributeMapper, statusMapper);
+        tryProcessReturn(span, args, response, undefined, returnAttributeMapper);
       });
 
-
-
       return returnObj;
-    } catch (err: any) {
-      tryProcessError(span, err);
+    } catch (err) {
+      tryProcessReturn(span, args, undefined, err, returnAttributeMapper);
       throw err;
     }
   }
@@ -239,37 +234,18 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     }
   }
 
-  function tryProcessError(span: TracingSpan, error: string | Error): void {
-    try {
-      span.setStatus({
-        status: "error",
-        error: isError(error) ? error : undefined,
-      });
-      span.end();
-    } catch (e: any) {
-      logger.warning(`Skipping tracing span processing due to an error: ${getErrorMessage(e)}`);
-    }
-  }
-
   function tryProcessReturn<Arguments, Return>(
     span: TracingSpan,
     args: Arguments,
-    returnObj: Return,
-    returnAttributeMapper?: (args: Arguments, rt: Return) => Map<string, any>,
-    statusMapper?: (rt: Return) => SpanStatus): void {
+    returnObj?: Return,
+    error?: unknown,
+    returnAttributeMapper?: (args: Arguments, rt?: Return, error?: unknown) => Map<string, any>): void {
     try {
       if (returnAttributeMapper) {
-        const returnAttributes = returnAttributeMapper(args, returnObj);
+        const returnAttributes = returnAttributeMapper(args, returnObj, error);
         returnAttributes.forEach((value, key) => {
           span.setAttribute(key, value);
         });
-      }
-
-
-      if (statusMapper) {
-        span.setStatus(statusMapper(returnObj));
-      } else {
-        span.setStatus({ status: "success" });
       }
 
       span.end();

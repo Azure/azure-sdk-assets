@@ -115,8 +115,7 @@ export interface TracingClient {
     args: Arguments,
     methodToTrace: () => Return,
     paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
-    returnAttributeMapper?: (args: Arguments, rt: Return) => Map<string, unknown>,
-    statusMapper?: (rt: Return) => SpanStatus,
+    returnAttributeMapper?: (args: Arguments, rt?: Return, error?: unknown) => Map<string, unknown>,
     options?: OperationTracingOptions): Return;
 
   /**
@@ -133,8 +132,7 @@ export interface TracingClient {
     args: Arguments,
     methodToTrace: () => PromiseReturn,
     paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
-    returnAttributeMapper?: (args: Arguments, rt: ResolvedReturn) => Map<string, unknown>,
-    statusMapper?: (rt: ResolvedReturn) => SpanStatus,
+    returnAttributeMapper?: (args: Arguments, rt?: ResolvedReturn, error?: unknown) => Map<string, unknown>,
     options?: OperationTracingOptions): PromiseReturn;
 }
 
