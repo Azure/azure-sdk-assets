@@ -5,6 +5,7 @@ import {
   OperationTracingOptions,
   OptionsWithTracingContext,
   Resolved,
+  SpanStatus,
   TracingClient,
   TracingClientOptions,
   TracingContext,
@@ -129,7 +130,7 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     args: Arguments,
     methodToTrace: () => Return,
     paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
-    returnAttributeMapper?: (args: Arguments, rt?: Return, error?: unknown) => Map<string, unknown>,
+    returnAttributeMapper?: (args: Arguments, rt?: Return, error?: unknown) => Map<string, unknown> & [Map<string, unknown>, SpanStatus],
     tracingOptions?: OperationTracingOptions): Return {
 
     let spanAttributesInObject = {};
@@ -169,7 +170,7 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     args: Arguments,
     methodToTrace: () => PromiseReturn,
     paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
-    returnAttributeMapper?: (args: Arguments, rt?: ResolvedReturn, error?: unknown) => Map<string, unknown>,
+    returnAttributeMapper?: (args: Arguments, rt?: ResolvedReturn, error?: unknown) => Map<string, unknown> & [Map<string, unknown>, SpanStatus],
     tracingOptions?: OperationTracingOptions): PromiseReturn {
 
     let spanAttributesInObject = {};
@@ -212,8 +213,10 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     try {
       const { span, updatedOptions } = startSpan(
         spanName,
+
         { tracingOptions },
         {
+          spanKind: "client",
           spanAttributes,
         },
       );
@@ -237,13 +240,17 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     args: Arguments,
     returnObj?: Return,
     error?: unknown,
-    returnAttributeMapper?: (args: Arguments, rt?: Return, error?: unknown) => Map<string, any>): void {
+    returnAttributeMapper?: (args: Arguments, rt?: Return, error?: unknown) => Map<string, unknown> & [Map<string, unknown>, SpanStatus]): void {
     try {
       if (returnAttributeMapper) {
-        const returnAttributes = returnAttributeMapper(args, returnObj, error);
+        const rt = returnAttributeMapper(args, returnObj, error);
+        const returnAttributes = Array.isArray(rt) ? rt[0] : rt;
         returnAttributes.forEach((value, key) => {
           span.setAttribute(key, value);
         });
+        if (Array.isArray(rt)) {
+          span.setStatus(rt[1]);
+        }
       }
 
       span.end();

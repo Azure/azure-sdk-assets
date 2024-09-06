@@ -2,10 +2,10 @@
 // Licensed under the MIT license.
 
 import { PathUncheckedResponse, RequestParameters, StreamableMethod } from "@azure-rest/core-client";
-import { createTracingClient, OperationTracingOptions } from "@azure/core-tracing";
+import { createTracingClient, OperationTracingOptions, SpanStatus } from "@azure/core-tracing";
 import { GetChatCompletionsBodyParam, GetEmbeddingsBodyParam, GetImageEmbeddingsBodyParam } from "./parameters.js";
 
-const traceCLient = createTracingClient({ namespace: "Micirsoft.CognitiveServices", packageName: "ai-inference-rest", packageVersion: "1.0.0" });
+const traceClient = createTracingClient({ namespace: "Micirsoft.CognitiveServices", packageName: "ai-inference-rest", packageVersion: "1.0.0" });
 
 type RequestParameterWithBodyType = RequestParameters & GetImageEmbeddingsBodyParam &
   GetEmbeddingsBodyParam &
@@ -30,7 +30,6 @@ export function traceInference(
     Request_Presence_Penalty = "gen_ai.request.presence_penalty",
     Request_Stop_Sequences = "gen_ai.request.stop_sequences",
     Request_Temperature = "gen_ai.request.temperature",
-    Request_Top_K = "gen_ai.request.top_k",
     Request_Top_P = "gen_ai.request.top_p",
     Response_Finish_Reasons = "gen_ai.response.finish_reasons",
     Response_Id = "gen_ai.response.id",
@@ -77,14 +76,18 @@ export function traceInference(
     return map;
   }
 
-  const responseAttributeMapper = (_: RequestParameters, response?: PathUncheckedResponse, error?: unknown) => {
+  const responseAttributeMapper: (args: RequestParameters, rt?: PathUncheckedResponse, error?: unknown) => Map<string, unknown> | [Map<string, unknown>, SpanStatus] = (_: RequestParameters, response?: PathUncheckedResponse, error?: unknown) => {
     const map = new Map<string, unknown>();
+    let status: SpanStatus | undefined;
     if (error) {
       if (error instanceof Error) {
         map.set(TracingAttributesEnum.Error_Type, error.message);
+        status = { status: "error", error: error.message };
       } else {
         map.set(TracingAttributesEnum.Error_Type, error);
+        status = { status: "error", error: error.toString() };
       }
+
     }
     if (response) {
       let body = response.body;
@@ -98,7 +101,7 @@ export function traceInference(
         map.set(TracingAttributesEnum.Error_Type, body.error.code);
       }
     }
-    return map;
+    return status ? [map, status] : map;
   }
 
   const request = args as RequestParameterWithBodyType;
@@ -108,5 +111,5 @@ export function traceInference(
     return methodToTrace();
   }
   const name = `${getOperationName(routePath)} ${model ?? ""}`.trim();
-  return traceCLient.traceAsync(name, request, methodToTrace, requestAttributeMapper, responseAttributeMapper, options);
+  return traceClient.traceAsync(name, request, methodToTrace, requestAttributeMapper, responseAttributeMapper, options);
 }

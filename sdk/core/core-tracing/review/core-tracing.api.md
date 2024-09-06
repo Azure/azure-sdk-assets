@@ -68,8 +68,8 @@ export interface TracingClient {
         span: TracingSpan;
         updatedOptions: OptionsWithTracingContext<Options>;
     };
-    trace<Arguments, Return>(name: string, args: Arguments, methodToTrace: () => Return, paramAttributeMapper?: (args: Arguments) => Map<string, unknown>, returnAttributeMapper?: (args: Arguments, rt?: Return, error?: unknown) => Map<string, unknown>, options?: OperationTracingOptions): Return;
-    traceAsync<Arguments, ResolvedReturn, PromiseReturn extends Promise<ResolvedReturn> | PromiseLike<ResolvedReturn>>(name: string, args: Arguments, methodToTrace: () => PromiseReturn, paramAttributeMapper?: (args: Arguments) => Map<string, unknown>, returnAttributeMapper?: (args: Arguments, rt?: ResolvedReturn, error?: unknown) => Map<string, unknown>, options?: OperationTracingOptions): PromiseReturn;
+    trace<Arguments, Return>(name: string, args: Arguments, methodToTrace: () => Return, paramAttributeMapper?: (args: Arguments) => Map<string, unknown>, returnAttributeMapper?: (args: Arguments, rt?: Return, error?: unknown) => Map<string, unknown> | [Map<string, unknown>, SpanStatus], options?: OperationTracingOptions): Return;
+    traceAsync<Arguments, ResolvedReturn, PromiseReturn extends Promise<ResolvedReturn> | PromiseLike<ResolvedReturn>>(name: string, args: Arguments, methodToTrace: () => PromiseReturn, paramAttributeMapper?: (args: Arguments) => Map<string, unknown>, returnAttributeMapper?: (args: Arguments, rt?: ResolvedReturn, error?: unknown) => Map<string, unknown> | [Map<string, unknown>, SpanStatus], options?: OperationTracingOptions): PromiseReturn;
     withContext<CallbackArgs extends unknown[], Callback extends (...args: CallbackArgs) => ReturnType<Callback>>(context: TracingContext, callback: Callback, ...callbackArgs: CallbackArgs): ReturnType<Callback>;
     withSpan<Options extends {
         tracingOptions?: OperationTracingOptions;
