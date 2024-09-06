@@ -185,13 +185,11 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     }
 
     try {
-      const returnObj = withContext(tracingContext, methodToTrace);
-
-      returnObj.then((response) => {
-        tryProcessReturn(span, args, response, undefined, returnAttributeMapper);
-      });
-
-      return returnObj;
+      return withContext(tracingContext, methodToTrace).
+        then((response) => {
+          tryProcessReturn(span, args, response, undefined, returnAttributeMapper);
+          return response;
+        }) as PromiseReturn;
     } catch (err) {
       tryProcessReturn(span, args, undefined, err, returnAttributeMapper);
       throw err;

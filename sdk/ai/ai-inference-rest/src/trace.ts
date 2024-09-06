@@ -13,7 +13,8 @@ type RequestParameterWithBodyType = RequestParameters & GetImageEmbeddingsBodyPa
   GetImageEmbeddingsBodyParam;
 
 export function traceInference(
-  path: string,
+  routePath: string,
+  url: string,
   args: RequestParameters,
   methodToTrace: () => StreamableMethod,
   options?: OperationTracingOptions): StreamableMethod {
@@ -23,7 +24,7 @@ export function traceInference(
     Request_Model = "gen_ai.request.model",
     System = "gen_ai.system",
     Error_Type = "error.type",
-    Server_Port = "server.port", // not use it for now
+    Server_Port = "server.port",
     Request_Frequency_Penalty = "gen_ai.request.frequency_penalty",
     Request_Max_Tokens = "gen_ai.request.max_tokens",
     Request_Presence_Penalty = "gen_ai.request.presence_penalty",
@@ -39,6 +40,8 @@ export function traceInference(
     Server_Address = "server.address"
   }
 
+  //TODO: if model is not provided, we probably should parse from the URL
+  const model = (args as RequestParameterWithBodyType).body?.model;
   const getOperationName = (path: string) => {
     switch (path) {
       case "/chat/completions":
@@ -57,10 +60,14 @@ export function traceInference(
   const requestAttributeMapper = (request: RequestParameterWithBodyType) => {
     const map = new Map<string, unknown>();
     const body = (request as RequestParameterWithBodyType).body;
+    const urlObj = new URL(url);
+    const port = urlObj.port || (urlObj.protocol === 'https:' ? 443 : 80);
 
-    map.set(TracingAttributesEnum.Operation_Name, getOperationName(path));
+    map.set(TracingAttributesEnum.Server_Address, urlObj.hostname);
+    map.set(TracingAttributesEnum.Server_Port, port);
+    map.set(TracingAttributesEnum.Operation_Name, getOperationName(routePath));
     map.set(TracingAttributesEnum.System, "az.ai_inference");
-    map.set(TracingAttributesEnum.Request_Model, body?.model);
+    map.set(TracingAttributesEnum.Request_Model, model);
     map.set(TracingAttributesEnum.Request_Frequency_Penalty, body?.frequency_penalty);
     map.set(TracingAttributesEnum.Request_Max_Tokens, body?.max_tokens);
     map.set(TracingAttributesEnum.Request_Presence_Penalty, body?.presence_penalty);
@@ -96,6 +103,10 @@ export function traceInference(
 
   const request = args as RequestParameterWithBodyType;
 
-  const name = `${getOperationName(path)} ${request.body?.model ?? ""}`;
+  /// TODO: the code for streaming needs to be clean up.   We will implement tracing for streaming later 
+  if (request.body?.stream == true || !Boolean(process.env["AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED"])) {
+    return methodToTrace();
+  }
+  const name = `${getOperationName(routePath)} ${model ?? ""}`.trim();
   return traceCLient.traceAsync(name, request, methodToTrace, requestAttributeMapper, responseAttributeMapper, options);
 }

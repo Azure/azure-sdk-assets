@@ -17,7 +17,8 @@ import { buildRequestUrl } from "./urlHelpers.js";
 import { OperationTracingOptions } from "@azure/core-tracing";
 
 type TracerCallback = (
-  path: string,
+  routePath: string,
+  url: string,
   args: RequestParameters,
   methodToTrace: () => StreamableMethod,
   options?: OperationTracingOptions) => StreamableMethod;
@@ -223,7 +224,7 @@ function buildOperation(
   });
 
   return tracer ?
-    tracer(path, options, operation) :
+    tracer(path, url, options, operation) :
     operation();
 }
 

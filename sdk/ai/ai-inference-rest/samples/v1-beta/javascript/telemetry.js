@@ -11,11 +11,31 @@ const { diag, DiagConsoleLogger, DiagLogLevel } = require("@opentelemetry/api");
 const { registerInstrumentations } = require("@opentelemetry/instrumentation");
 const { createAzureSdkInstrumentation } = require("@azure/opentelemetry-instrumentation-azure-sdk");
 const { ConsoleSpanExporter, NodeTracerProvider, SimpleSpanProcessor } = require("@opentelemetry/sdk-trace-node");
+const { AzureMonitorTraceExporter } = require("@azure/monitor-opentelemetry-exporter");
 
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.VERBOSE);
 
+// Load the .env file if it exists
+require("dotenv").config();
+
+// You will need to set these environment variables or edit the following values
+const endpoint = process.env["ENDPOINT"] || "<endpoint>";
+const key = process.env["KEY"] || "<key>";
+const connectionString = process.env["APPLICATIONINSIGHTS_CONNECTION_STRING"];
+
+// Initialize the exporter
 const provider = new NodeTracerProvider();
-provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
+if (connectionString) {
+  const exporter = new AzureMonitorTraceExporter({
+    connectionString
+  });
+  provider.addSpanProcessor(
+    new SimpleSpanProcessor(exporter)
+  );
+}
+provider.addSpanProcessor(
+  new SimpleSpanProcessor(new ConsoleSpanExporter())
+);
 provider.register();
 
 // register Azure SDK Instrumentation.
@@ -37,12 +57,6 @@ const tracingClient = createTracingClient({
   packageVersion: "1.0.0",
 });
 
-// Load the .env file if it exists
-require("dotenv").config();
-
-// You will need to set these environment variables or edit the following values
-const endpoint = process.env["ENDPOINT"] || "<endpoint>";
-const key = process.env["KEY"] || "<key>";
 
 async function main() {
   console.log("== Chat Completions Sample ==");
@@ -75,7 +89,6 @@ async function main() {
     }
   });
 }
-
 main().catch((err) => {
   console.error("The sample encountered an error:", err);
 });
@@ -86,61 +99,34 @@ module.exports = { main };
  * Output of the sample:
  */
 /*
+== Chat Completions Sample ==
 {
   resource: {
     attributes: {
-      'service.name': 'unknown_service:C:\\Program Files\\nodejs\\node.exe',
+      'service.name': 'howieinsight',
       'telemetry.sdk.language': 'nodejs',
       'telemetry.sdk.name': 'opentelemetry',
-      'telemetry.sdk.version': '1.25.1'
+      'telemetry.sdk.version': '1.26.0'
     }
   },
-  traceId: '46ebf950b63b90aa29f8dfb2e93b82ed',
-  parentId: 'eba5005694622f2d',
-  traceState: undefined,
-  name: '{gen_ai.operation.name} {gen_ai.request.model}',
-  id: 'bf9cab807e0d4cab',
-  kind: 0,
-  timestamp: 1724451988970000,
-  duration: 6496652.4,
-  attributes: {
-    'gen_ai.operation.name': 'chat; text_completion',
-    'gen_ai.system': 'openai',
-    'gen_ai.request.max_tokens': 1000,
-    'gen_ai.request.temperature': 1,
-    'gen_ai.request.top_p': 1,
-    'az.namespace': 'Microsoft.OtelSample',
-    'gen_ai.response.id': 'b9f3658342bb48e18a6f7d61a362b53c',
-    'gen_ai.response.model': 'mistral-large',
-    'gen_ai.usage.input_tokens': 57,
-    'gen_ai.usage.output_tokens': 157
+  instrumentationScope: {
+    name: '@azure/core-rest-pipeline',
+    version: '1.16.4',
+    schemaUrl: undefined
   },
-  status: { code: 1 },
-  events: [],
-  links: []
-}
-{
-  resource: {
-    attributes: {
-      'service.name': 'unknown_service:C:\\Program Files\\nodejs\\node.exe',
-      'telemetry.sdk.language': 'nodejs',
-      'telemetry.sdk.name': 'opentelemetry',
-      'telemetry.sdk.version': '1.25.1'
-    }
-  },
-  traceId: '46ebf950b63b90aa29f8dfb2e93b82ed',
-  parentId: '4b718583a5c0b378',
+  traceId: '6c9a1a89426e53ee27d4ac127ccaf832',
+  parentId: 'f1b4a676d9b58b78',
   traceState: undefined,
   name: 'HTTP POST',
-  id: 'eba5005694622f2d',
+  id: '4a99e2564e3e17e4',
   kind: 2,
-  timestamp: 1724451988968000,
-  duration: 6504423.2,
+  timestamp: 1725578892511000,
+  duration: 4317602.4,
   attributes: {
     'http.url': 'https://mistral-large-ajmih-serverless.eastus2.inference.ai.azure.com/chat/completions?api-version=2024-05-01-preview',
     'http.method': 'POST',
-    'http.user_agent': 'azsdk-js-AiModelInference-rest/1.0.0-beta.2 core-rest-pipeline/1.16.3 Node/20.16.0 OS/(x64-Windows_NT-10.0.22631)',
-    requestId: 'b82c6c23-e3c3-41a2-8846-3be66606b470',
+    'http.user_agent': 'azsdk-js-ai-inference/1.0.0-beta.2 core-rest-pipeline/1.16.4 Node/18.20.4 OS/(x64-Windows_NT-10.0.22631)',
+    requestId: 'bac64077-def9-4c75-a704-0d6bcd19d3f7',
     'az.namespace': 'Microsoft.OtelSample',
     'http.status_code': 200
   },
@@ -148,27 +134,72 @@ module.exports = { main };
   events: [],
   links: []
 }
-Shiver me timbers! To train yer parrot, first ye must bond with it. Spend time with it each day, feed it from yer hand, and give it lots of love and attention. Next, teach it simple commands like "step up" to get onto yer hand or "get down" to go to its perch. Use positive reinforcement like treats and praise when it follows commands. If ye want it to talk, repeat the same words and phrases over and over, and reward it when it mimics ye. Keep the training sessions short and fun, and be patient - parrots can take time to learn new things. And remember, parrots be intelligent creatures, so always treat them with kindness and respect. Arrr!
+Exporting 1 span(s). Converting to envelopes...
+Exporting 2 envelope(s)
+Instrumentation suppressed, returning Noop Span
 {
   resource: {
     attributes: {
-      'service.name': 'unknown_service:C:\\Program Files\\nodejs\\node.exe',
+      'service.name': 'howieinsight',
       'telemetry.sdk.language': 'nodejs',
       'telemetry.sdk.name': 'opentelemetry',
-      'telemetry.sdk.version': '1.25.1'
+      'telemetry.sdk.version': '1.26.0'
     }
   },
-  traceId: '46ebf950b63b90aa29f8dfb2e93b82ed',
+  instrumentationScope: { name: 'ai-inference-rest', version: '1.0.0', schemaUrl: undefined },
+  traceId: '6c9a1a89426e53ee27d4ac127ccaf832',
+  parentId: 'f1b4a676d9b58b78',
+  traceState: undefined,
+  name: 'chat',
+  id: '97620d98f691963a',
+  kind: 0,
+  timestamp: 1725578892479000,
+  duration: 4376479.3,
+  attributes: {
+    'server.address': 'mistral-large-ajmih-serverless.eastus2.inference.ai.azure.com',
+    'server.port': 443,
+    'gen_ai.operation.name': 'chat',
+    'gen_ai.system': 'az.ai_inference',
+    'gen_ai.request.max_tokens': 1000,
+    'gen_ai.request.temperature': 1,
+    'gen_ai.request.top_p': 1,
+    'az.namespace': 'Microsoft.OtelSample',
+    'gen_ai.response.id': '73b1a5ba89b545a1af217843000855aa',
+    'gen_ai.response.model': 'mistral-large',
+    'gen_ai.usage.input_tokens': 57,
+    'gen_ai.usage.output_tokens': 98
+  },
+  status: { code: 0 },
+  events: [],
+  links: []
+}
+Exporting 1 span(s). Converting to envelopes...
+Exporting 2 envelope(s)
+Sure thing! To train a parrot, matey, first ye need to build trust with the bird. Spend time with it, feed it by hand, and speak to it softly. Then, start with simple commands, like "step up" or "come here". Reward the parrot with treats and praise when it follows the command. Be patient, and practice consistently, and soon ye will have a well-trained parrot, wise as old Captain Flint himself!
+Instrumentation suppressed, returning Noop Span
+{
+  resource: {
+    attributes: {
+      'service.name': 'howieinsight',
+      'telemetry.sdk.language': 'nodejs',
+      'telemetry.sdk.name': 'opentelemetry',
+      'telemetry.sdk.version': '1.26.0'
+    }
+  },
+  instrumentationScope: { name: 'otel-sample', version: '1.0.0', schemaUrl: undefined },
+  traceId: '6c9a1a89426e53ee27d4ac127ccaf832',
   parentId: undefined,
   traceState: undefined,
   name: 'main',
-  id: '4b718583a5c0b378',
+  id: 'f1b4a676d9b58b78',
   kind: 0,
-  timestamp: 1724451988934000,
-  duration: 6543868.6,
+  timestamp: 1725578892476000,
+  duration: 4387288.6,
   attributes: { 'az.namespace': 'Microsoft.OtelSample' },
   status: { code: 1 },
   events: [],
   links: []
 }
+Exporting 1 span(s). Converting to envelopes...
+Exporting 2 envelope(s)
 */

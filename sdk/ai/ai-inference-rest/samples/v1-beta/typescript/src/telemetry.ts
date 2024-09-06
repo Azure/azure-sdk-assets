@@ -11,15 +11,32 @@ import { diag, DiagConsoleLogger, DiagLogLevel } from "@opentelemetry/api";
 import { registerInstrumentations } from "@opentelemetry/instrumentation";
 import { createAzureSdkInstrumentation } from "@azure/opentelemetry-instrumentation-azure-sdk";
 import { ConsoleSpanExporter, NodeTracerProvider, SimpleSpanProcessor } from "@opentelemetry/sdk-trace-node";
+import { AzureMonitorTraceExporter } from "@azure/monitor-opentelemetry-exporter";
 
-// Set the logger to the console with verbose logging level
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.VERBOSE);
 
-// Initialize the NodeTracerProvider
+// Load the .env file if it exists
+import * as dotenv from "dotenv";
+dotenv.config();
+
+// You will need to set these environment variables or edit the following values
+const endpoint: string = process.env["ENDPOINT"] || "<endpoint>";
+const key: string = process.env["KEY"] || "<key>";
+const connectionString = process.env["APPLICATIONINSIGHTS_CONNECTION_STRING"];
+
+// Initialize the exporter
 const provider = new NodeTracerProvider();
-// Add a SimpleSpanProcessor and ConsoleSpanExporter to the provider
-provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
-// Register the provider
+if (connectionString) {
+  const exporter = new AzureMonitorTraceExporter({
+    connectionString
+  });
+  provider.addSpanProcessor(
+    new SimpleSpanProcessor(exporter)
+  );
+}
+provider.addSpanProcessor(
+  new SimpleSpanProcessor(new ConsoleSpanExporter())
+);
 provider.register();
 
 // register Azure SDK Instrumentation.
@@ -30,28 +47,20 @@ registerInstrumentations({
 });
 
 import ModelClient from "@azure-rest/ai-inference";
-import { isUnexpected, ChatChoiceOutput } from "@azure-rest/ai-inference";
+import { isUnexpected } from "@azure-rest/ai-inference";
 import { AzureKeyCredential } from "@azure/core-auth";
 import { createTracingClient } from "@azure/core-tracing";
 
-// Create a tracing client
 const tracingClient = createTracingClient({
   namespace: "Microsoft.OtelSample",
   packageName: "otel-sample",
   packageVersion: "1.0.0",
 });
 
-// Load the .env file if it exists
-import "dotenv/config";
-
-// You will need to set these environment variables or edit the following values
-const endpoint = process.env["ENDPOINT"] || "<endpoint>";
-const key = process.env["KEY"] || "<key>";
-
 async function main() {
   console.log("== Chat Completions Sample ==");
 
-  // Initialize a span named "main" with default options for the spans
+  // initialize a span named "main" with default options for the spans
   await tracingClient.withSpan("main", {}, async (updatedOptions) => {
     const client = ModelClient(endpoint, new AzureKeyCredential(key));
 
@@ -74,98 +83,48 @@ async function main() {
       throw response.body.error;
     }
 
-    const firstChoice = getFirstChoiceToDisplay(response.body.choices);
-
-    console.log(firstChoice);
+    for (const choice of response.body.choices) {
+      console.log(choice.message.content);
+    }
   });
 }
-
-function getFirstChoiceToDisplay(choice: ChatChoiceOutput[]): string[] {
-  const allChoices: string = choice.map((arg) => arg.message.content).join(", ");
-  const impl = () => {
-    return choice[0].message.content;
-  };
-  return trace("getChoiceToDisplay", arguments, impl, argsAttributeMapper, returnAttributeMapper);
-}
-
-function argsAttributeMapper(args: IArguments): Map<string, any> {
-  const attributes = new Map<string, any>();
-  attributes.set("all-choices", args[0].map((arg) => arg.message.content).join(", "));
-  return attributes;
-}
-
-function returnAttributeMapper(returnVal: string): Map<string, any> {
-  const attributes = new Map<string, any>();
-  attributes.set("first-choice", returnVal);
-  return attributes;
-}
-
 
 main().catch((err) => {
   console.error("The sample encountered an error:", err);
 });
 
-export { main };
-
 /**
- * The following spans will be created:
+ * Output of the sample:
  */
 /*
+== Chat Completions Sample ==
 {
   resource: {
     attributes: {
-      'service.name': 'unknown_service:C:\\Program Files\\nodejs\\node.exe',
+      'service.name': 'howieinsight',
       'telemetry.sdk.language': 'nodejs',
       'telemetry.sdk.name': 'opentelemetry',
-      'telemetry.sdk.version': '1.25.1'
+      'telemetry.sdk.version': '1.26.0'
     }
   },
-  traceId: '46ebf950b63b90aa29f8dfb2e93b82ed',
-  parentId: 'eba5005694622f2d',
-  traceState: undefined,
-  name: '{gen_ai.operation.name} {gen_ai.request.model}',
-  id: 'bf9cab807e0d4cab',
-  kind: 0,
-  timestamp: 1724451988970000,
-  duration: 6496652.4,
-  attributes: {
-    'gen_ai.operation.name': 'chat; text_completion',
-    'gen_ai.system': 'openai',
-    'gen_ai.request.max_tokens': 1000,
-    'gen_ai.request.temperature': 1,
-    'gen_ai.request.top_p': 1,
-    'az.namespace': 'Microsoft.OtelSample',
-    'gen_ai.response.id': 'b9f3658342bb48e18a6f7d61a362b53c',
-    'gen_ai.response.model': 'mistral-large',
-    'gen_ai.usage.input_tokens': 57,
-    'gen_ai.usage.output_tokens': 157
+  instrumentationScope: {
+    name: '@azure/core-rest-pipeline',
+    version: '1.16.4',
+    schemaUrl: undefined
   },
-  status: { code: 1 },
-  events: [],
-  links: []
-}
-{
-  resource: {
-    attributes: {
-      'service.name': 'unknown_service:C:\\Program Files\\nodejs\\node.exe',
-      'telemetry.sdk.language': 'nodejs',
-      'telemetry.sdk.name': 'opentelemetry',
-      'telemetry.sdk.version': '1.25.1'
-    }
-  },
-  traceId: '46ebf950b63b90aa29f8dfb2e93b82ed',
-  parentId: '4b718583a5c0b378',
+  traceId: '6c9a1a89426e53ee27d4ac127ccaf832',
+  parentId: 'f1b4a676d9b58b78',
   traceState: undefined,
   name: 'HTTP POST',
-  id: 'eba5005694622f2d',
+  id: '4a99e2564e3e17e4',
   kind: 2,
-  timestamp: 1724451988968000,
-  duration: 6504423.2,
+  timestamp: 1725578892511000,
+  duration: 4317602.4,
   attributes: {
     'http.url': 'https://mistral-large-ajmih-serverless.eastus2.inference.ai.azure.com/chat/completions?api-version=2024-05-01-preview',
     'http.method': 'POST',
-    'http.user_agent': 'azsdk-js-AiModelInference-rest/1.0.0-beta.2 core-rest-pipeline/1.16.3 Node/20.16.0 OS/(x64-Windows_NT-10.0.22631)',
-    requestId: 'b82c6c23-e3c3-41a2-8846-3be66606b470',
+    'http.user_agent': 'azsdk-js-ai-inference/1.0.0-beta.2 core-rest-pipeline/1.16.4 Node/18.20.4 OS/(x64-Windows_NT-10.0.22631)',
+    requestId: 'bac64077-def9-4c75-a704-0d6bcd19d3f7',
     'az.namespace': 'Microsoft.OtelSample',
     'http.status_code': 200
   },
@@ -173,82 +132,72 @@ export { main };
   events: [],
   links: []
 }
+Exporting 1 span(s). Converting to envelopes...
+Exporting 2 envelope(s)
+Instrumentation suppressed, returning Noop Span
 {
   resource: {
     attributes: {
-      'service.name': 'unknown_service:C:\\Program Files\\nodejs\\node.exe',
+      'service.name': 'howieinsight',
       'telemetry.sdk.language': 'nodejs',
       'telemetry.sdk.name': 'opentelemetry',
-      'telemetry.sdk.version': '1.25.1'
+      'telemetry.sdk.version': '1.26.0'
     }
   },
-  traceId: '46ebf950b63b90aa29f8dfb2e93b82ed',
+  instrumentationScope: { name: 'ai-inference-rest', version: '1.0.0', schemaUrl: undefined },
+  traceId: '6c9a1a89426e53ee27d4ac127ccaf832',
+  parentId: 'f1b4a676d9b58b78',
+  traceState: undefined,
+  name: 'chat',
+  id: '97620d98f691963a',
+  kind: 0,
+  timestamp: 1725578892479000,
+  duration: 4376479.3,
+  attributes: {
+    'server.address': 'mistral-large-ajmih-serverless.eastus2.inference.ai.azure.com',
+    'server.port': 443,
+    'gen_ai.operation.name': 'chat',
+    'gen_ai.system': 'az.ai_inference',
+    'gen_ai.request.max_tokens': 1000,
+    'gen_ai.request.temperature': 1,
+    'gen_ai.request.top_p': 1,
+    'az.namespace': 'Microsoft.OtelSample',
+    'gen_ai.response.id': '73b1a5ba89b545a1af217843000855aa',
+    'gen_ai.response.model': 'mistral-large',
+    'gen_ai.usage.input_tokens': 57,
+    'gen_ai.usage.output_tokens': 98
+  },
+  status: { code: 0 },
+  events: [],
+  links: []
+}
+Exporting 1 span(s). Converting to envelopes...
+Exporting 2 envelope(s)
+Sure thing! To train a parrot, matey, first ye need to build trust with the bird. Spend time with it, feed it by hand, and speak to it softly. Then, start with simple commands, like "step up" or "come here". Reward the parrot with treats and praise when it follows the command. Be patient, and practice consistently, and soon ye will have a well-trained parrot, wise as old Captain Flint himself!
+Instrumentation suppressed, returning Noop Span
+{
+  resource: {
+    attributes: {
+      'service.name': 'howieinsight',
+      'telemetry.sdk.language': 'nodejs',
+      'telemetry.sdk.name': 'opentelemetry',
+      'telemetry.sdk.version': '1.26.0'
+    }
+  },
+  instrumentationScope: { name: 'otel-sample', version: '1.0.0', schemaUrl: undefined },
+  traceId: '6c9a1a89426e53ee27d4ac127ccaf832',
   parentId: undefined,
   traceState: undefined,
   name: 'main',
-  id: '4b718583a5c0b378',
+  id: 'f1b4a676d9b58b78',
   kind: 0,
-  timestamp: 1724451988934000,
-  duration: 6543868.6,
+  timestamp: 1725578892476000,
+  duration: 4387288.6,
   attributes: { 'az.namespace': 'Microsoft.OtelSample' },
   status: { code: 1 },
   events: [],
   links: []
 }
-{
-  resource: {
-    attributes: {
-      'service.name': 'unknown_service:C:\\Program Files\\nodejs\\node.exe',
-      'telemetry.sdk.language': 'nodejs',
-      'telemetry.sdk.name': 'opentelemetry',
-      'telemetry.sdk.version': '1.25.1'
-    }
-  },
-  traceId: '46ebf950b63b90aa29f8dfb2e93b82ed',
-  parentId: '4b718583a5c0b378',
-  traceState: undefined,
-  name: 'HTTP POST',
-  id: 'eba5005694622f2d',
-  kind: 2,
-  timestamp: 1724451988968000,
-  duration: 6504423.2,
-  attributes: {
-    'http.url': 'https://mistral-large-ajmih-serverless.eastus2.inference.ai.azure.com/chat/completions?api-version=2024-05-01-preview',
-    'http.method': 'POST',
-    'http.user_agent': 'azsdk-js-AiModelInference-rest/1.0.0-beta.2 core-rest-pipeline/1.16.3 Node/20.16.0 OS/(x64-Windows_NT-10.0.22631)',
-    requestId: 'b82c6c23-e3c3-41a2-8846-3be66606b470',
-    'az.namespace': 'Microsoft.OtelSample',
-    'http.status_code': 200
-  },
-  status: { code: 1 },
-  events: [],
-  links: []
-}
-{
-  resource: {
-    attributes: {
-      'service.name': 'unknown_service:C:\\Program Files\\nodejs\\node.exe',
-      'telemetry.sdk.language': 'nodejs',
-      'telemetry.sdk.name': 'opentelemetry',
-      'telemetry.sdk.version': '1.25.1'
-    }
-  },
-  traceId: '46ebf950b63b90aa29f8dfb2e93b82ed',
-  parentId: undefined,
-  traceState: undefined,
-  name: 'main',
-  id: '4b718583a5c0b378',
-  kind: 0,
-  timestamp: 1724451988934000,
-  duration: 6543868.6,
-  attributes: { 
-    'az.namespace': 'Microsoft.OtelSample',
-    'first-choice': 'There are 5,280 feet in a mile. This is a standard unit conversion in the imperial system, where 1 mile is equivalent to 5,280 feet, 1,760 yards, or 8 furlongs.'
-    'all-choices': 'There are 5,280 feet in a mile. This is a standard unit conversion in the imperial system, where 1 mile is equivalent to 5,280 feet, 1,760 yards, or 8 furlongs.'
-  },
-  status: { code: 1 },
-  events: [],
-  links: []
-}
-
+Exporting 1 span(s). Converting to envelopes...
+Exporting 2 envelope(s)
 */
