@@ -102,20 +102,20 @@ export interface TracingClient {
   createRequestHeaders(tracingContext?: TracingContext): Record<string, string>;
 
   /**
-   * Capture the arguments and return of a function and create a span.
-   * @param name - name of the span.
-   * @param args - arguments of the method to be traced.  Generally, you should pass in `arguments` reserve word.
-   * @param methodToTrace - function pointer of the implementation.
-   * @param paramAttributeMapper - mapping function to map the arguments to span's attributes.
-   * @param returnAttributeMapper - mapping function to map the return object to span's attributes.
-   * @returns - return back the return from methodToTrace.
-   */
+  * This method will create a span, call the methodToTrace, and end the span.
+  * @param name - name of the span.
+  * @param args - arguments of the method to be traced.  Generally, you should pass in `arguments` reserve word.
+  * @param methodToTrace - function pointer of the implementation.
+  * @param onStartTracing - callback function to set attributes and events before calling methodTotrace.
+  * @param onEndTracing - callback function to set attributes, events, and status before ending the span.
+  * @returns - return back the return from methodToTrace.
+  */
   trace<Arguments, Return>(
     name: string,
     args: Arguments,
     methodToTrace: () => Return,
-    paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
-    returnAttributeMapper?: (args: Arguments, rt?: Return, error?: unknown) => Map<string, unknown> | [Map<string, unknown>, SpanStatus],
+    onStartTracing?: (span: TracingSpan, args: Arguments) => void,
+    onEndTracing?: (span: TracingSpan, args: Arguments, rt?: Return, error?: unknown) => void,
     options?: OperationTracingOptions): Return;
 
   /**
@@ -131,8 +131,8 @@ export interface TracingClient {
     name: string,
     args: Arguments,
     methodToTrace: () => PromiseReturn,
-    paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
-    returnAttributeMapper?: (args: Arguments, rt?: ResolvedReturn, error?: unknown) => Map<string, unknown> | [Map<string, unknown>, SpanStatus],
+    onStartTracing?: (span: TracingSpan, args: Arguments) => void,
+    onEndTracing?: (span: TracingSpan, args: Arguments, rt?: ResolvedReturn, error?: unknown) => void,
     options?: OperationTracingOptions): PromiseReturn;
 }
 
@@ -226,6 +226,11 @@ export interface InstrumenterSpanOptions extends TracingSpanOptions {
 }
 
 /**
+ * Status representing an unknow operation status that can be sent to {@link TracingSpan.setStatus}
+ */
+export type SpanStatusUnset = { status: "unset" };
+
+/**
  * Status representing a successful operation that can be sent to {@link TracingSpan.setStatus}
  */
 export type SpanStatusSuccess = { status: "success" };
@@ -240,7 +245,7 @@ export type SpanStatusError = { status: "error"; error?: Error | string };
  *
  * By default, all spans will be created with status "unset".
  */
-export type SpanStatus = SpanStatusSuccess | SpanStatusError;
+export type SpanStatus = SpanStatusSuccess | SpanStatusError | SpanStatusUnset;
 
 /**
  * Represents an implementation agnostic tracing span.
@@ -282,6 +287,16 @@ export interface TracingSpan {
    * Depending on the span implementation, this may return false if the span is not being sampled.
    */
   isRecording(): boolean;
+
+  /**
+   * Adds an event to the Span.
+   *
+   * @param name the name of the event.
+   * @param [attributesOrStartTime] the attributes that will be added; these are
+   *     associated with this event. Can be also a start time
+   * @param [startTime] start time of the event.
+   */
+  addEvent(name: string, attributesOrStartTime?: unknown, startTime?: unknown): void;
 }
 
 /** An immutable context bag of tracing values for the current operation. */

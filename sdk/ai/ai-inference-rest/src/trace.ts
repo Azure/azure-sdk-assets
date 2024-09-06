@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 import { PathUncheckedResponse, RequestParameters, StreamableMethod } from "@azure-rest/core-client";
-import { createTracingClient, OperationTracingOptions, SpanStatus } from "@azure/core-tracing";
+import { createTracingClient, OperationTracingOptions, SpanStatus, TracingSpan } from "@azure/core-tracing";
 import { GetChatCompletionsBodyParam, GetEmbeddingsBodyParam, GetImageEmbeddingsBodyParam } from "./parameters.js";
 
 const traceClient = createTracingClient({ namespace: "Micirsoft.CognitiveServices", packageName: "ai-inference-rest", packageVersion: "1.0.0" });
@@ -56,52 +56,49 @@ export function traceInference(
     }
   }
 
-  const requestAttributeMapper = (request: RequestParameterWithBodyType) => {
-    const map = new Map<string, unknown>();
+  function onStartTracing(span: TracingSpan, request: RequestParameters) {
     const body = (request as RequestParameterWithBodyType).body;
     const urlObj = new URL(url);
     const port = urlObj.port || (urlObj.protocol === 'https:' ? 443 : 80);
 
-    map.set(TracingAttributesEnum.Server_Address, urlObj.hostname);
-    map.set(TracingAttributesEnum.Server_Port, port);
-    map.set(TracingAttributesEnum.Operation_Name, getOperationName(routePath));
-    map.set(TracingAttributesEnum.System, "az.ai_inference");
-    map.set(TracingAttributesEnum.Request_Model, model);
-    map.set(TracingAttributesEnum.Request_Frequency_Penalty, body?.frequency_penalty);
-    map.set(TracingAttributesEnum.Request_Max_Tokens, body?.max_tokens);
-    map.set(TracingAttributesEnum.Request_Presence_Penalty, body?.presence_penalty);
-    map.set(TracingAttributesEnum.Request_Stop_Sequences, body?.stop);
-    map.set(TracingAttributesEnum.Request_Temperature, body?.temperature);
-    map.set(TracingAttributesEnum.Request_Top_P, body?.top_p);
-    return map;
+    span.setAttribute(TracingAttributesEnum.Server_Address, urlObj.hostname);
+    span.setAttribute(TracingAttributesEnum.Server_Port, port);
+    span.setAttribute(TracingAttributesEnum.Operation_Name, getOperationName(routePath));
+    span.setAttribute(TracingAttributesEnum.System, "az.ai_inference");
+    span.setAttribute(TracingAttributesEnum.Request_Model, model);
+    span.setAttribute(TracingAttributesEnum.Request_Frequency_Penalty, body?.frequency_penalty);
+    span.setAttribute(TracingAttributesEnum.Request_Max_Tokens, body?.max_tokens);
+    span.setAttribute(TracingAttributesEnum.Request_Presence_Penalty, body?.presence_penalty);
+    span.setAttribute(TracingAttributesEnum.Request_Stop_Sequences, body?.stop);
+    span.setAttribute(TracingAttributesEnum.Request_Temperature, body?.temperature);
+    span.setAttribute(TracingAttributesEnum.Request_Top_P, body?.top_p);
   }
 
-  const responseAttributeMapper: (args: RequestParameters, rt?: PathUncheckedResponse, error?: unknown) => Map<string, unknown> | [Map<string, unknown>, SpanStatus] = (_: RequestParameters, response?: PathUncheckedResponse, error?: unknown) => {
-    const map = new Map<string, unknown>();
-    let status: SpanStatus | undefined;
+  function onEndTracing(span: TracingSpan, _request: RequestParameters, response?: PathUncheckedResponse, error?: unknown) {
+    let status: SpanStatus = { status: "unset" };
     if (error) {
       if (error instanceof Error) {
-        map.set(TracingAttributesEnum.Error_Type, error.message);
+        span.setAttribute(TracingAttributesEnum.Error_Type, error.message);
         status = { status: "error", error: error.message };
       } else {
-        map.set(TracingAttributesEnum.Error_Type, error);
+        span.setAttribute(TracingAttributesEnum.Error_Type, error);
         status = { status: "error", error: error.toString() };
       }
 
     }
     if (response) {
       let body = response.body;
-      map.set(TracingAttributesEnum.Response_Id, body.id);
-      map.set(TracingAttributesEnum.Response_Model, body.model);
+      span.setAttribute(TracingAttributesEnum.Response_Id, body.id);
+      span.setAttribute(TracingAttributesEnum.Response_Model, body.model);
       if (body.usage) {
-        map.set(TracingAttributesEnum.Usage_Input_Tokens, body.usage.prompt_tokens);
-        map.set(TracingAttributesEnum.Usage_Output_Tokens, body.usage.completion_tokens);
+        span.setAttribute(TracingAttributesEnum.Usage_Input_Tokens, body.usage.prompt_tokens);
+        span.setAttribute(TracingAttributesEnum.Usage_Output_Tokens, body.usage.completion_tokens);
       }
       if (body.error) {
-        map.set(TracingAttributesEnum.Error_Type, body.error.code);
+        span.setAttribute(TracingAttributesEnum.Error_Type, body.error.code);
       }
     }
-    return status ? [map, status] : map;
+    span.setStatus(status);
   }
 
   const request = args as RequestParameterWithBodyType;
@@ -111,5 +108,5 @@ export function traceInference(
     return methodToTrace();
   }
   const name = `${getOperationName(routePath)} ${model ?? ""}`.trim();
-  return traceClient.traceAsync(name, request, methodToTrace, requestAttributeMapper, responseAttributeMapper, options);
+  return traceClient.traceAsync(name, request, methodToTrace, onStartTracing, onEndTracing, options);
 }

@@ -5,7 +5,6 @@ import {
   OperationTracingOptions,
   OptionsWithTracingContext,
   Resolved,
-  SpanStatus,
   TracingClient,
   TracingClientOptions,
   TracingContext,
@@ -117,92 +116,81 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
   }
 
   /**
- * Capture the arguments and return of a function and create a span.
- * @param name - name of the span.
- * @param args - arguments of the method to be traced.  Generally, you should pass in `arguments` reserve word.
- * @param methodToTrace - function pointer of the implementation.
- * @param paramAttributeMapper - mapping function to map the arguments to span's attributes.
- * @param returnAttributeMapper - mapping function to map the return object to span's attributes.
- * @returns - return back the return from methodToTrace.
- */
+  * This method will create a span, call the methodToTrace, and end the span.
+  * @param name - name of the span.
+  * @param args - arguments of the method to be traced.  Generally, you should pass in `arguments` reserve word.
+  * @param methodToTrace - function pointer of the implementation.
+  * @param onStartTracing - callback function to set attributes and events before calling methodTotrace.
+  * @param onEndTracing - callback function to set attributes, events, and status before ending the span.
+  * @returns - return back the return from methodToTrace.
+  */
   function trace<Arguments, Return>(
     name: string,
     args: Arguments,
     methodToTrace: () => Return,
-    paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
-    returnAttributeMapper?: (args: Arguments, rt?: Return, error?: unknown) => Map<string, unknown> & [Map<string, unknown>, SpanStatus],
-    tracingOptions?: OperationTracingOptions): Return {
+    onStartTracing?: (span: TracingSpan, args: Arguments) => void,
+    onEndTracing?: (span: TracingSpan, args: Arguments, rt?: Return, error?: unknown) => void,
+    options?: OperationTracingOptions): Return {
 
-    let spanAttributesInObject = {};
+    const { span, tracingContext } = tryCreateSpan(name, {}, options) ?? {};
 
-    if (paramAttributeMapper) {
-      const spanAttributesInMap = paramAttributeMapper(args);
-      spanAttributesInObject = mapToObject(spanAttributesInMap);
-    }
-    const { span, tracingContext } = tryCreateSpan(name, spanAttributesInObject, tracingOptions) ?? {};
 
     if (!span || !tracingContext) {
       return methodToTrace();
     }
 
+    if (onStartTracing) {
+      onStartTracing(span, args);
+    }
+
     try {
       const returnObj = withContext(tracingContext, methodToTrace)
-      tryProcessReturn(span, args, returnObj, returnAttributeMapper);
+      tryProcessReturn(span, args, returnObj, onEndTracing);
 
       return returnObj;
     } catch (err: any) {
-      tryProcessReturn(span, args, undefined, err, returnAttributeMapper);
+      tryProcessReturn(span, args, undefined, err, onEndTracing);
       throw err;
     }
   }
 
   /**
-* Capture the arguments and return of a function and create a span.
-* @param name - name of the span.
-* @param args - arguments of the method to be traced.  Generally, you should pass in `arguments` reserve word.
-* @param methodToTrace - function pointer of the implementation.
-* @param paramAttributeMapper - mapping function to map the arguments to span's attributes.
-* @param returnAttributeMapper - mapping function to map the return object to span's attributes.
-* @returns - return back the return from methodToTrace.
-*/
+  * This method will create a span, call the methodToTrace, and end the span.
+  * @param name - name of the span.
+  * @param args - arguments of the method to be traced.  Generally, you should pass in `arguments` reserve word.
+  * @param methodToTrace - function pointer of the implementation.
+  * @param onStartTracing - callback function to set attributes and events before calling methodTotrace.
+  * @param onEndTracing - callback function to set attributes, events, and status before ending the span.
+  * @returns - return back the return from methodToTrace.
+  */
   function traceAsync<Arguments, ResolvedReturn, PromiseReturn extends Promise<ResolvedReturn> | PromiseLike<ResolvedReturn>>(
     name: string,
     args: Arguments,
     methodToTrace: () => PromiseReturn,
-    paramAttributeMapper?: (args: Arguments) => Map<string, unknown>,
-    returnAttributeMapper?: (args: Arguments, rt?: ResolvedReturn, error?: unknown) => Map<string, unknown> & [Map<string, unknown>, SpanStatus],
-    tracingOptions?: OperationTracingOptions): PromiseReturn {
+    onStartTracing?: (span: TracingSpan, args: Arguments) => void,
+    onEndTracing?: (span: TracingSpan, args: Arguments, rt?: ResolvedReturn, error?: unknown) => void,
+    options?: OperationTracingOptions): PromiseReturn {
 
-    let spanAttributesInObject = {};
-
-    if (paramAttributeMapper) {
-      const spanAttributesInMap = paramAttributeMapper(args);
-      spanAttributesInObject = mapToObject(spanAttributesInMap);
-    }
-    const { span, tracingContext } = tryCreateSpan(name, spanAttributesInObject, tracingOptions) ?? {};
+    const { span, tracingContext } = tryCreateSpan(name, {}, options) ?? {};
 
     if (!span || !tracingContext) {
       return methodToTrace();
     }
 
+    if (onStartTracing) {
+      onStartTracing(span, args);
+    }
+
     try {
       return withContext(tracingContext, methodToTrace).
         then((response) => {
-          tryProcessReturn(span, args, response, undefined, returnAttributeMapper);
+          tryProcessReturn(span, args, response, undefined, onEndTracing);
           return response;
         }) as PromiseReturn;
     } catch (err) {
-      tryProcessReturn(span, args, undefined, err, returnAttributeMapper);
+      tryProcessReturn(span, args, undefined, err, onEndTracing);
       throw err;
     }
-  }
-
-  function mapToObject(map: Map<string, any>): any {
-    const object: any = {};
-    map.forEach((value, key) => {
-      object[key] = value;
-    });
-    return object;
   }
 
   function tryCreateSpan(
@@ -238,21 +226,13 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
   function tryProcessReturn<Arguments, Return>(
     span: TracingSpan,
     args: Arguments,
-    returnObj?: Return,
+    rt?: Return,
     error?: unknown,
-    returnAttributeMapper?: (args: Arguments, rt?: Return, error?: unknown) => Map<string, unknown> & [Map<string, unknown>, SpanStatus]): void {
+    onEndTracing?: (span: TracingSpan, args: Arguments, rt?: Return, error?: unknown) => void) {
     try {
-      if (returnAttributeMapper) {
-        const rt = returnAttributeMapper(args, returnObj, error);
-        const returnAttributes = Array.isArray(rt) ? rt[0] : rt;
-        returnAttributes.forEach((value, key) => {
-          span.setAttribute(key, value);
-        });
-        if (Array.isArray(rt)) {
-          span.setStatus(rt[1]);
-        }
+      if (onEndTracing) {
+        onEndTracing(span, args, rt, error);
       }
-
       span.end();
     } catch (e: any) {
       logger.warning(`Skipping tracing span processing due to an error: ${getErrorMessage(e)}`);
