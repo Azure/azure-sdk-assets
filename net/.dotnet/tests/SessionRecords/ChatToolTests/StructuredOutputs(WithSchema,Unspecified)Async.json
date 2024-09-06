@@ -1,0 +1,112 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://api.openai.com/v1/chat/completions",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "565",
+        "Content-Type": "application/json",
+        "OpenAI-Beta": "assistants=v2",
+        "User-Agent": "OpenAI/2.0.0-beta.11 (.NET 8.0.8; Microsoft Windows 10.0.22631)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "Call applicable tools when the user asks a question. Prefer JSON output when possible."
+          },
+          {
+            "role": "user",
+            "content": "What's my favorite color on Tuesday?"
+          }
+        ],
+        "model": "gpt-4o-2024-08-06",
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "description": "Given a weekday name like Tuesday, gets the favorite color of the user on that day.",
+              "name": "get_favorite_color_for_day_of_week",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "the_day_of_the_week": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "the_day_of_the_week"
+                ],
+                "additionalProperties": true
+              }
+            }
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "X-Request-ID",
+        "Alt-Svc": "h3=\":443\"",
+        "CF-Cache-Status": "DYNAMIC",
+        "CF-RAY": "8be155f4b924176b-SJC",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json",
+        "Date": "Wed, 04 Sep 2024 22:15:01 GMT",
+        "openai-organization": "Sanitized",
+        "openai-processing-ms": "396",
+        "openai-version": "2020-10-01",
+        "Server": "cloudflare",
+        "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ratelimit-limit-requests": "10000",
+        "x-ratelimit-limit-tokens": "30000000",
+        "x-ratelimit-remaining-requests": "9999",
+        "x-ratelimit-remaining-tokens": "29999950",
+        "x-ratelimit-reset-requests": "6ms",
+        "x-ratelimit-reset-tokens": "0s",
+        "X-Request-ID": "Sanitized"
+      },
+      "ResponseBody": {
+        "id": "chatcmpl-A3sZALFfELT5dbnpy91X4CyLa7ygr",
+        "object": "chat.completion",
+        "created": 1725488100,
+        "model": "gpt-4o-2024-08-06",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": null,
+              "tool_calls": [
+                {
+                  "id": "call_DJxa6R9AaOBmcI8LMYdh3D2n",
+                  "type": "function",
+                  "function": {
+                    "name": "get_favorite_color_for_day_of_week",
+                    "arguments": "{\"the_day_of_the_week\":\"Tuesday\"}"
+                  }
+                }
+              ],
+              "refusal": null
+            },
+            "logprobs": null,
+            "finish_reason": "tool_calls"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 95,
+          "completion_tokens": 24,
+          "total_tokens": 119
+        },
+        "system_fingerprint": "fp_9e15ccd6a4"
+      }
+    }
+  ],
+  "Variables": {
+    "RandomSeed": "1346725296"
+  }
+}

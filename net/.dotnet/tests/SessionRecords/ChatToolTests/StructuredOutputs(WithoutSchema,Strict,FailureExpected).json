@@ -1,0 +1,75 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://api.openai.com/v1/chat/completions",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "430",
+        "Content-Type": "application/json",
+        "OpenAI-Beta": "assistants=v2",
+        "User-Agent": "OpenAI/2.0.0-beta.11 (.NET 8.0.8; Microsoft Windows 10.0.22631)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "Call applicable tools when the user asks a question. Prefer JSON output when possible."
+          },
+          {
+            "role": "user",
+            "content": "What's my favorite color on Tuesday?"
+          }
+        ],
+        "model": "gpt-4o-2024-08-06",
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "description": "Given a weekday name like Tuesday, gets the favorite color of the user on that day.",
+              "name": "get_favorite_color_for_day_of_week",
+              "strict": true
+            }
+          }
+        ]
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "X-Request-ID",
+        "Alt-Svc": "h3=\":443\"",
+        "CF-Cache-Status": "DYNAMIC",
+        "CF-RAY": "8be155b8681396c0-SJC",
+        "Connection": "keep-alive",
+        "Content-Length": "310",
+        "Content-Type": "application/json",
+        "Date": "Wed, 04 Sep 2024 22:14:51 GMT",
+        "openai-organization": "Sanitized",
+        "openai-processing-ms": "15",
+        "openai-version": "2020-10-01",
+        "Server": "cloudflare",
+        "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-ratelimit-limit-requests": "10000",
+        "x-ratelimit-limit-tokens": "30000000",
+        "x-ratelimit-remaining-requests": "9999",
+        "x-ratelimit-remaining-tokens": "29999950",
+        "x-ratelimit-reset-requests": "6ms",
+        "x-ratelimit-reset-tokens": "0s",
+        "X-Request-ID": "Sanitized"
+      },
+      "ResponseBody": {
+        "error": {
+          "message": "Invalid schema for function 'get_favorite_color_for_day_of_week': In context=(), 'additionalProperties' is required to be supplied and to be false.",
+          "type": "invalid_request_error",
+          "param": "tools[0].function.parameters",
+          "code": "invalid_function_parameters"
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "RandomSeed": "1732757033"
+  }
+}
