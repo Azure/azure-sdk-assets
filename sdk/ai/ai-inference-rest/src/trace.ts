@@ -4,6 +4,8 @@
 import { PathUncheckedResponse, RequestParameters, StreamableMethod } from "@azure-rest/core-client";
 import { createTracingClient, OperationTracingOptions, SpanStatus, TracingSpan } from "@azure/core-tracing";
 import { GetChatCompletionsBodyParam, GetEmbeddingsBodyParam, GetImageEmbeddingsBodyParam } from "./parameters.js";
+import { ChatRequestMessage } from "./models.js";
+import { ChatChoiceOutput } from "./outputModels.js";
 
 const traceClient = createTracingClient({ namespace: "Micirsoft.CognitiveServices", packageName: "ai-inference-rest", packageVersion: "1.0.0" });
 
@@ -57,7 +59,7 @@ export function traceInference(
   }
 
   function onStartTracing(span: TracingSpan, request: RequestParameters) {
-    const body = (request as RequestParameterWithBodyType).body;
+
     const urlObj = new URL(url);
     const port = urlObj.port || (urlObj.protocol === 'https:' ? 443 : 80);
 
@@ -66,12 +68,20 @@ export function traceInference(
     span.setAttribute(TracingAttributesEnum.Operation_Name, getOperationName(routePath));
     span.setAttribute(TracingAttributesEnum.System, "az.ai_inference");
     span.setAttribute(TracingAttributesEnum.Request_Model, model);
-    span.setAttribute(TracingAttributesEnum.Request_Frequency_Penalty, body?.frequency_penalty);
-    span.setAttribute(TracingAttributesEnum.Request_Max_Tokens, body?.max_tokens);
-    span.setAttribute(TracingAttributesEnum.Request_Presence_Penalty, body?.presence_penalty);
-    span.setAttribute(TracingAttributesEnum.Request_Stop_Sequences, body?.stop);
-    span.setAttribute(TracingAttributesEnum.Request_Temperature, body?.temperature);
-    span.setAttribute(TracingAttributesEnum.Request_Top_P, body?.top_p);
+
+    const body = (request as RequestParameterWithBodyType).body;
+    if (!body) return;
+
+    span.setAttribute(TracingAttributesEnum.Request_Frequency_Penalty, body.frequency_penalty);
+    span.setAttribute(TracingAttributesEnum.Request_Max_Tokens, body.max_tokens);
+    span.setAttribute(TracingAttributesEnum.Request_Presence_Penalty, body.presence_penalty);
+    span.setAttribute(TracingAttributesEnum.Request_Stop_Sequences, body.stop);
+    span.setAttribute(TracingAttributesEnum.Request_Temperature, body.temperature);
+    span.setAttribute(TracingAttributesEnum.Request_Top_P, body.top_p);
+
+    if (body.messages) {
+      addRequestChatMessageEvent(span, body.messages);
+    }
   }
 
   function onEndTracing(span: TracingSpan, _request: RequestParameters, response?: PathUncheckedResponse, error?: unknown) {
@@ -97,9 +107,70 @@ export function traceInference(
       if (body.error) {
         span.setAttribute(TracingAttributesEnum.Error_Type, body.error.code);
       }
+      addResponseChatMessageEvent(span, response);
     }
     span.setStatus(status);
   }
+
+  /*
+  * Add event to span.  Sample:
+      {
+      name: 'gen_ai.user.message',
+      attributes: {
+        'gen_ai.system': 'INFERENCE_GEN_AI_SYSTEM_NAME',
+        'gen_ai.event.content': `{"role":"user","content":"What's the weather like in Boston?"}`  
+      },
+      time: [ 1725666879, 622695900 ],
+      droppedAttributesCount: 0
+    },
+  */
+  function addRequestChatMessageEvent(span: TracingSpan, messages: Array<ChatRequestMessage>) {
+    messages.forEach((message) => {
+
+      if (message.role) {
+        span.addEvent(`gen_ai.${message.role}.message`, {
+          "gen_ai.system": "INFERENCE_GEN_AI_SYSTEM_NAME", // Replace with actual system name
+          "gen_ai.event.content": JSON.stringify(message)
+        });
+      }
+
+    });
+  }
+
+  /*
+* Add event to span.  Sample:
+  {
+    name: 'gen_ai.choice',
+    attributes: {
+      'gen_ai.system': 'INFERENCE_GEN_AI_SYSTEM_NAME',
+      'gen_ai.event.content': '{"finish_reason":"tool_calls","index":0,"message":{"content":""}}'
+    },
+    time: [ 1725666881, 780608000 ],
+    droppedAttributesCount: 0
+  }  
+*/
+  function addResponseChatMessageEvent(span: TracingSpan, response: PathUncheckedResponse) {
+    response.body?.choices?.forEach((choice: ChatChoiceOutput) => {
+      let response: any = {
+        "finish_reason": choice.finish_reason,
+        "index": choice.index,
+      };
+
+      let attributes: any = {
+        "gen_ai.system": "INFERENCE_GEN_AI_SYSTEM_NAME", // Replace with actual system name
+      };
+
+      response = { ...response, message: { "content": choice.message.content } };
+      attributes = { ...attributes, "gen_ai.event.content": JSON.stringify(response) };
+
+      if (choice.message.tool_calls) {
+        response.message = { ...response, toolCalls: JSON.stringify(choice.message.tool_calls) };
+      }
+
+      span.addEvent("gen_ai.choice", attributes);
+    });
+  }
+
 
   const request = args as RequestParameterWithBodyType;
 
