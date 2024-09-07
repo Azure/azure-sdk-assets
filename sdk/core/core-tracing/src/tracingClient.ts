@@ -145,7 +145,7 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
 
     try {
       const returnObj = withContext(tracingContext, methodToTrace)
-      tryProcessReturn(span, args, returnObj, onEndTracing);
+      tryProcessReturn(span, args, returnObj, undefined, onEndTracing);
 
       return returnObj;
     } catch (err: any) {
@@ -177,6 +177,9 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
       return methodToTrace();
     }
 
+    if (options) {
+      options.tracingContext = tracingContext;
+    }
     if (onStartTracing) {
       onStartTracing(span, args);
     }
@@ -201,7 +204,6 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     try {
       const { span, updatedOptions } = startSpan(
         spanName,
-
         { tracingOptions },
         {
           spanKind: "client",

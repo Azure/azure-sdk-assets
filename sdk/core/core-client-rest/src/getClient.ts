@@ -14,14 +14,12 @@ import {
 } from "./common.js";
 import { sendRequest } from "./sendRequest.js";
 import { buildRequestUrl } from "./urlHelpers.js";
-import { OperationTracingOptions } from "@azure/core-tracing";
 
 type TracerCallback = (
   routePath: string,
   url: string,
   args: RequestParameters,
-  methodToTrace: () => StreamableMethod,
-  options?: OperationTracingOptions) => StreamableMethod;
+  methodToTrace: () => StreamableMethod) => StreamableMethod;
 
 /**
  * Creates a client with a default pipeline

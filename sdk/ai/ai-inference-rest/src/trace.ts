@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 import { PathUncheckedResponse, RequestParameters, StreamableMethod } from "@azure-rest/core-client";
-import { createTracingClient, OperationTracingOptions, SpanStatus, TracingSpan } from "@azure/core-tracing";
+import { createTracingClient, SpanStatus, TracingSpan } from "@azure/core-tracing";
 import { GetChatCompletionsBodyParam, GetEmbeddingsBodyParam, GetImageEmbeddingsBodyParam } from "./parameters.js";
 import { ChatRequestMessage } from "./models.js";
 import { ChatChoiceOutput } from "./outputModels.js";
@@ -18,8 +18,7 @@ export function traceInference(
   routePath: string,
   url: string,
   args: RequestParameters,
-  methodToTrace: () => StreamableMethod,
-  options?: OperationTracingOptions): StreamableMethod {
+  methodToTrace: () => StreamableMethod): StreamableMethod {
 
   enum TracingAttributesEnum {
     Operation_Name = "gen_ai.operation.name",
@@ -157,7 +156,7 @@ export function traceInference(
       };
 
       let attributes: any = {
-        "gen_ai.system": "INFERENCE_GEN_AI_SYSTEM_NAME", // Replace with actual system name
+        "gen_ai.system": "INFERENCE_GEN_AI_SYSTEM_NAME",
       };
 
       response = { ...response, message: { "content": choice.message.content } };
@@ -179,5 +178,5 @@ export function traceInference(
     return methodToTrace();
   }
   const name = `${getOperationName(routePath)} ${model ?? ""}`.trim();
-  return traceClient.traceAsync(name, request, methodToTrace, onStartTracing, onEndTracing, options);
+  return traceClient.traceAsync(name, request, methodToTrace, onStartTracing, onEndTracing, args.tracingOptions);
 }
