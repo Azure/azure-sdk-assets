@@ -7,18 +7,19 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "447",
+        "Content-Length": "358",
         "Content-Type": "application/json",
         "Openai-Beta": "assistants=v2",
         "User-Agent": "azsdk-go-azopenaiassistants.Client/v0.2.1 (go1.23.1; linux)"
       },
       "RequestBody": {
-        "instructions": "You are a personal math tutor. Write and run code to answer math questions.",
         "model": "gpt-4-1106-preview",
-        "name": "Sanitized",
         "tools": [
           {
             "type": "code_interpreter"
+          },
+          {
+            "type": "file_search"
           },
           {
             "function": {
@@ -51,31 +52,40 @@
       "ResponseHeaders": {
         "Alt-Svc": "h3=\":443\"",
         "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "8bf83760e963eb6f-SEA",
+        "CF-RAY": "8bf838334a66eb6f-SEA",
         "Connection": "keep-alive",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Sat, 07 Sep 2024 16:53:40 GMT",
+        "Date": "Sat, 07 Sep 2024 16:54:14 GMT",
         "openai-organization": "msft-finetuning-2",
-        "openai-processing-ms": "153",
+        "openai-processing-ms": "124",
         "openai-version": "2020-10-01",
         "Server": "cloudflare",
         "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "X-Request-ID": "req_2ac4f8f88c90c905126e07c60d92ba01"
+        "X-Request-ID": "req_2d28a9cc2bc99b68a29742cad68beee7"
       },
       "ResponseBody": {
         "id": "Sanitized",
         "object": "assistant",
-        "created_at": 1725728020,
-        "name": "Sanitized",
+        "created_at": 1725728054,
+        "name": null,
         "description": null,
         "model": "gpt-4-1106-preview",
-        "instructions": "You are a personal math tutor. Write and run code to answer math questions.",
+        "instructions": null,
         "tools": [
           {
             "type": "code_interpreter"
+          },
+          {
+            "type": "file_search",
+            "file_search": {
+              "ranking_options": {
+                "ranker": "default_2024_08_21",
+                "score_threshold": 0.0
+              }
+            }
           },
           {
             "type": "function",
@@ -108,6 +118,9 @@
         "top_p": 1.0,
         "temperature": 1.0,
         "tool_resources": {
+          "file_search": {
+            "vector_store_ids": []
+          },
           "code_interpreter": {
             "file_ids": []
           }
@@ -123,61 +136,304 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "213",
+        "Content-Length": "120",
         "Content-Type": "application/json",
         "Openai-Beta": "assistants=v2",
         "User-Agent": "azsdk-go-azopenaiassistants.Client/v0.2.1 (go1.23.1; linux)"
       },
       "RequestBody": {
         "assistant_id": "Sanitized",
-        "instructions": "You're a helpful assistant, but refuse to speak about cats",
-        "model": "gpt-4-1106-preview",
         "thread": {
           "messages": [
             {
-              "content": "How many ears do cats have?",
+              "content": "give me any answer",
               "role": "user"
             }
           ]
+        },
+        "tool_choice": "auto"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Alt-Svc": "h3=\":443\"",
+        "CF-Cache-Status": "DYNAMIC",
+        "CF-RAY": "8bf838349b76eb6f-SEA",
+        "Connection": "keep-alive",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json",
+        "Date": "Sat, 07 Sep 2024 16:54:14 GMT",
+        "openai-organization": "msft-finetuning-2",
+        "openai-processing-ms": "372",
+        "openai-version": "2020-10-01",
+        "Server": "cloudflare",
+        "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "X-Request-ID": "req_9073dfa58ef54465ff3e47af1afd0ad6"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "object": "thread.run",
+        "created_at": 1725728054,
+        "assistant_id": "Sanitized",
+        "thread_id": "Sanitized",
+        "status": "queued",
+        "started_at": null,
+        "expires_at": 1725728654,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": null,
+        "last_error": null,
+        "model": "gpt-4-1106-preview",
+        "instructions": null,
+        "tools": [
+          {
+            "type": "code_interpreter"
+          },
+          {
+            "type": "file_search",
+            "file_search": {
+              "ranking_options": {
+                "ranker": "default_2024_08_21",
+                "score_threshold": 0.0
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "Sanitized",
+              "description": null,
+              "parameters": {
+                "properties": {
+                  "location": {
+                    "description": "The city and state, e.g. San Francisco, CA",
+                    "type": "string"
+                  },
+                  "unit": {
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "location"
+                ],
+                "type": "object"
+              },
+              "strict": false
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.openai.com/v1/threads/runs",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "120",
+        "Content-Type": "application/json",
+        "Openai-Beta": "assistants=v2",
+        "User-Agent": "azsdk-go-azopenaiassistants.Client/v0.2.1 (go1.23.1; linux)"
+      },
+      "RequestBody": {
+        "assistant_id": "Sanitized",
+        "thread": {
+          "messages": [
+            {
+              "content": "give me any answer",
+              "role": "user"
+            }
+          ]
+        },
+        "tool_choice": "none"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Alt-Svc": "h3=\":443\"",
+        "CF-Cache-Status": "DYNAMIC",
+        "CF-RAY": "8bf838375dbceb6f-SEA",
+        "Connection": "keep-alive",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json",
+        "Date": "Sat, 07 Sep 2024 16:54:15 GMT",
+        "openai-organization": "msft-finetuning-2",
+        "openai-processing-ms": "370",
+        "openai-version": "2020-10-01",
+        "Server": "cloudflare",
+        "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "X-Request-ID": "req_8313d295a1ccc851d86a83c7aa8e38b5"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "object": "thread.run",
+        "created_at": 1725728055,
+        "assistant_id": "Sanitized",
+        "thread_id": "Sanitized",
+        "status": "queued",
+        "started_at": null,
+        "expires_at": 1725728655,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": null,
+        "last_error": null,
+        "model": "gpt-4-1106-preview",
+        "instructions": null,
+        "tools": [
+          {
+            "type": "code_interpreter"
+          },
+          {
+            "type": "file_search",
+            "file_search": {
+              "ranking_options": {
+                "ranker": "default_2024_08_21",
+                "score_threshold": 0.0
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "Sanitized",
+              "description": null,
+              "parameters": {
+                "properties": {
+                  "location": {
+                    "description": "The city and state, e.g. San Francisco, CA",
+                    "type": "string"
+                  },
+                  "unit": {
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "location"
+                ],
+                "type": "object"
+              },
+              "strict": false
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "none",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.openai.com/v1/threads/runs",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "157",
+        "Content-Type": "application/json",
+        "Openai-Beta": "assistants=v2",
+        "User-Agent": "azsdk-go-azopenaiassistants.Client/v0.2.1 (go1.23.1; linux)"
+      },
+      "RequestBody": {
+        "assistant_id": "Sanitized",
+        "thread": {
+          "messages": [
+            {
+              "content": "give me any answer",
+              "role": "user"
+            }
+          ]
+        },
+        "tool_choice": {
+          "type": "code_interpreter",
+          "function": null
         }
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Alt-Svc": "h3=\":443\"",
         "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "8bf837626a6beb6f-SEA",
+        "CF-RAY": "8bf8383a3ffeeb6f-SEA",
         "Connection": "keep-alive",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Sat, 07 Sep 2024 16:53:41 GMT",
+        "Date": "Sat, 07 Sep 2024 16:54:15 GMT",
         "openai-organization": "msft-finetuning-2",
-        "openai-processing-ms": "444",
+        "openai-processing-ms": "399",
         "openai-version": "2020-10-01",
         "Server": "cloudflare",
         "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "X-Request-ID": "req_daac302f62b8e0d787a9a99c52e7906b"
+        "X-Request-ID": "req_e8e26abb5e1587e22fe9ae1950834750"
       },
       "ResponseBody": {
         "id": "Sanitized",
         "object": "thread.run",
-        "created_at": 1725728021,
+        "created_at": 1725728055,
         "assistant_id": "Sanitized",
         "thread_id": "Sanitized",
         "status": "queued",
         "started_at": null,
-        "expires_at": 1725728621,
+        "expires_at": 1725728655,
         "cancelled_at": null,
         "failed_at": null,
         "completed_at": null,
         "required_action": null,
         "last_error": null,
         "model": "gpt-4-1106-preview",
-        "instructions": "You're a helpful assistant, but refuse to speak about cats",
+        "instructions": null,
         "tools": [
           {
             "type": "code_interpreter"
+          },
+          {
+            "type": "file_search",
+            "file_search": {
+              "ranking_options": {
+                "ranker": "default_2024_08_21",
+                "score_threshold": 0.0
+              }
+            }
           },
           {
             "type": "function",
@@ -220,442 +476,85 @@
         "incomplete_details": null,
         "usage": null,
         "response_format": "auto",
-        "tool_choice": "auto",
+        "tool_choice": {
+          "type": "code_interpreter"
+        },
         "parallel_tool_calls": true
       }
     },
     {
-      "RequestUri": "https://Sanitized.openai.com/v1/threads/Sanitized/runs/Sanitized",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "Openai-Beta": "assistants=v2",
-        "User-Agent": "azsdk-go-azopenaiassistants.Client/v0.2.1 (go1.23.1; linux)"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "Alt-Svc": "h3=\":443\"",
-        "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "8bf83765acf2eb6f-SEA",
-        "Connection": "keep-alive",
-        "Content-Encoding": "gzip",
-        "Content-Type": "application/json",
-        "Date": "Sat, 07 Sep 2024 16:53:41 GMT",
-        "openai-organization": "msft-finetuning-2",
-        "openai-processing-ms": "64",
-        "openai-version": "2020-10-01",
-        "Server": "cloudflare",
-        "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "X-Request-ID": "req_bdaac052d632c7a0380bc89081eb829c"
-      },
-      "ResponseBody": {
-        "id": "Sanitized",
-        "object": "thread.run",
-        "created_at": 1725728021,
-        "assistant_id": "Sanitized",
-        "thread_id": "Sanitized",
-        "status": "queued",
-        "started_at": null,
-        "expires_at": 1725728621,
-        "cancelled_at": null,
-        "failed_at": null,
-        "completed_at": null,
-        "required_action": null,
-        "last_error": null,
-        "model": "gpt-4-1106-preview",
-        "instructions": "You're a helpful assistant, but refuse to speak about cats",
-        "tools": [
-          {
-            "type": "code_interpreter"
-          },
-          {
-            "type": "function",
-            "function": {
-              "name": "Sanitized",
-              "description": null,
-              "parameters": {
-                "properties": {
-                  "location": {
-                    "description": "The city and state, e.g. San Francisco, CA",
-                    "type": "string"
-                  },
-                  "unit": {
-                    "enum": [
-                      "celsius",
-                      "fahrenheit"
-                    ],
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "location"
-                ],
-                "type": "object"
-              },
-              "strict": false
-            }
-          }
-        ],
-        "tool_resources": {},
-        "metadata": {},
-        "temperature": 1.0,
-        "top_p": 1.0,
-        "max_completion_tokens": null,
-        "max_prompt_tokens": null,
-        "truncation_strategy": {
-          "type": "auto",
-          "last_messages": null
-        },
-        "incomplete_details": null,
-        "usage": null,
-        "response_format": "auto",
-        "tool_choice": "auto",
-        "parallel_tool_calls": true
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.openai.com/v1/threads/Sanitized/runs/Sanitized",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "Openai-Beta": "assistants=v2",
-        "User-Agent": "azsdk-go-azopenaiassistants.Client/v0.2.1 (go1.23.1; linux)"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "Alt-Svc": "h3=\":443\"",
-        "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "8bf83769c813eb6f-SEA",
-        "Connection": "keep-alive",
-        "Content-Encoding": "gzip",
-        "Content-Type": "application/json",
-        "Date": "Sat, 07 Sep 2024 16:53:42 GMT",
-        "openai-organization": "msft-finetuning-2",
-        "openai-processing-ms": "61",
-        "openai-version": "2020-10-01",
-        "Server": "cloudflare",
-        "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "X-Request-ID": "req_71890c09319299bad47345ccabe71837"
-      },
-      "ResponseBody": {
-        "id": "Sanitized",
-        "object": "thread.run",
-        "created_at": 1725728021,
-        "assistant_id": "Sanitized",
-        "thread_id": "Sanitized",
-        "status": "in_progress",
-        "started_at": 1725728021,
-        "expires_at": 1725728621,
-        "cancelled_at": null,
-        "failed_at": null,
-        "completed_at": null,
-        "required_action": null,
-        "last_error": null,
-        "model": "gpt-4-1106-preview",
-        "instructions": "You're a helpful assistant, but refuse to speak about cats",
-        "tools": [
-          {
-            "type": "code_interpreter"
-          },
-          {
-            "type": "function",
-            "function": {
-              "name": "Sanitized",
-              "description": null,
-              "parameters": {
-                "properties": {
-                  "location": {
-                    "description": "The city and state, e.g. San Francisco, CA",
-                    "type": "string"
-                  },
-                  "unit": {
-                    "enum": [
-                      "celsius",
-                      "fahrenheit"
-                    ],
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "location"
-                ],
-                "type": "object"
-              },
-              "strict": false
-            }
-          }
-        ],
-        "tool_resources": {},
-        "metadata": {},
-        "temperature": 1.0,
-        "top_p": 1.0,
-        "max_completion_tokens": null,
-        "max_prompt_tokens": null,
-        "truncation_strategy": {
-          "type": "auto",
-          "last_messages": null
-        },
-        "incomplete_details": null,
-        "usage": null,
-        "response_format": "auto",
-        "tool_choice": "auto",
-        "parallel_tool_calls": true
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.openai.com/v1/threads/Sanitized/runs/Sanitized",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "Openai-Beta": "assistants=v2",
-        "User-Agent": "azsdk-go-azopenaiassistants.Client/v0.2.1 (go1.23.1; linux)"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "Alt-Svc": "h3=\":443\"",
-        "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "8bf8376ddb25eb6f-SEA",
-        "Connection": "keep-alive",
-        "Content-Encoding": "gzip",
-        "Content-Type": "application/json",
-        "Date": "Sat, 07 Sep 2024 16:53:42 GMT",
-        "openai-organization": "msft-finetuning-2",
-        "openai-processing-ms": "102",
-        "openai-version": "2020-10-01",
-        "Server": "cloudflare",
-        "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "X-Request-ID": "req_f17107a6bc73268647f08cf3bc723954"
-      },
-      "ResponseBody": {
-        "id": "Sanitized",
-        "object": "thread.run",
-        "created_at": 1725728021,
-        "assistant_id": "Sanitized",
-        "thread_id": "Sanitized",
-        "status": "in_progress",
-        "started_at": 1725728021,
-        "expires_at": 1725728621,
-        "cancelled_at": null,
-        "failed_at": null,
-        "completed_at": null,
-        "required_action": null,
-        "last_error": null,
-        "model": "gpt-4-1106-preview",
-        "instructions": "You're a helpful assistant, but refuse to speak about cats",
-        "tools": [
-          {
-            "type": "code_interpreter"
-          },
-          {
-            "type": "function",
-            "function": {
-              "name": "Sanitized",
-              "description": null,
-              "parameters": {
-                "properties": {
-                  "location": {
-                    "description": "The city and state, e.g. San Francisco, CA",
-                    "type": "string"
-                  },
-                  "unit": {
-                    "enum": [
-                      "celsius",
-                      "fahrenheit"
-                    ],
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "location"
-                ],
-                "type": "object"
-              },
-              "strict": false
-            }
-          }
-        ],
-        "tool_resources": {},
-        "metadata": {},
-        "temperature": 1.0,
-        "top_p": 1.0,
-        "max_completion_tokens": null,
-        "max_prompt_tokens": null,
-        "truncation_strategy": {
-          "type": "auto",
-          "last_messages": null
-        },
-        "incomplete_details": null,
-        "usage": null,
-        "response_format": "auto",
-        "tool_choice": "auto",
-        "parallel_tool_calls": true
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.openai.com/v1/threads/Sanitized/runs/Sanitized",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "Openai-Beta": "assistants=v2",
-        "User-Agent": "azsdk-go-azopenaiassistants.Client/v0.2.1 (go1.23.1; linux)"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "Alt-Svc": "h3=\":443\"",
-        "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "8bf837723ecceb6f-SEA",
-        "Connection": "keep-alive",
-        "Content-Encoding": "gzip",
-        "Content-Type": "application/json",
-        "Date": "Sat, 07 Sep 2024 16:53:43 GMT",
-        "openai-organization": "msft-finetuning-2",
-        "openai-processing-ms": "80",
-        "openai-version": "2020-10-01",
-        "Server": "cloudflare",
-        "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "X-Request-ID": "req_c1267ad6442030b6b5bb2a512af1b0ce"
-      },
-      "ResponseBody": {
-        "id": "Sanitized",
-        "object": "thread.run",
-        "created_at": 1725728021,
-        "assistant_id": "Sanitized",
-        "thread_id": "Sanitized",
-        "status": "completed",
-        "started_at": 1725728021,
-        "expires_at": null,
-        "cancelled_at": null,
-        "failed_at": null,
-        "completed_at": 1725728022,
-        "required_action": null,
-        "last_error": null,
-        "model": "gpt-4-1106-preview",
-        "instructions": "You're a helpful assistant, but refuse to speak about cats",
-        "tools": [
-          {
-            "type": "code_interpreter"
-          },
-          {
-            "type": "function",
-            "function": {
-              "name": "Sanitized",
-              "description": null,
-              "parameters": {
-                "properties": {
-                  "location": {
-                    "description": "The city and state, e.g. San Francisco, CA",
-                    "type": "string"
-                  },
-                  "unit": {
-                    "enum": [
-                      "celsius",
-                      "fahrenheit"
-                    ],
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "location"
-                ],
-                "type": "object"
-              },
-              "strict": false
-            }
-          }
-        ],
-        "tool_resources": {},
-        "metadata": {},
-        "temperature": 1.0,
-        "top_p": 1.0,
-        "max_completion_tokens": null,
-        "max_prompt_tokens": null,
-        "truncation_strategy": {
-          "type": "auto",
-          "last_messages": null
-        },
-        "incomplete_details": null,
-        "usage": {
-          "prompt_tokens": 379,
-          "completion_tokens": 49,
-          "total_tokens": 428
-        },
-        "response_format": "auto",
-        "tool_choice": "auto",
-        "parallel_tool_calls": true
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.openai.com/v1/threads/Sanitized/runs",
+      "RequestUri": "https://Sanitized.openai.com/v1/threads/runs",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "28",
+        "Content-Length": "152",
         "Content-Type": "application/json",
         "Openai-Beta": "assistants=v2",
         "User-Agent": "azsdk-go-azopenaiassistants.Client/v0.2.1 (go1.23.1; linux)"
       },
       "RequestBody": {
-        "assistant_id": "Sanitized"
+        "assistant_id": "Sanitized",
+        "thread": {
+          "messages": [
+            {
+              "content": "give me any answer",
+              "role": "user"
+            }
+          ]
+        },
+        "tool_choice": {
+          "type": "file_search",
+          "function": null
+        }
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Alt-Svc": "h3=\":443\"",
         "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "8bf837734f86eb6f-SEA",
+        "CF-RAY": "8bf8383d4a3aeb6f-SEA",
         "Connection": "keep-alive",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Sat, 07 Sep 2024 16:53:44 GMT",
+        "Date": "Sat, 07 Sep 2024 16:54:16 GMT",
         "openai-organization": "msft-finetuning-2",
-        "openai-processing-ms": "362",
+        "openai-processing-ms": "383",
         "openai-version": "2020-10-01",
         "Server": "cloudflare",
         "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "X-Request-ID": "req_aab0cea5658eb1472721df01491cd386"
+        "X-Request-ID": "req_43296fd64e5db7a621ad6773691f7e9b"
       },
       "ResponseBody": {
         "id": "Sanitized",
         "object": "thread.run",
-        "created_at": 1725728023,
+        "created_at": 1725728056,
         "assistant_id": "Sanitized",
         "thread_id": "Sanitized",
         "status": "queued",
         "started_at": null,
-        "expires_at": 1725728623,
+        "expires_at": 1725728656,
         "cancelled_at": null,
         "failed_at": null,
         "completed_at": null,
         "required_action": null,
         "last_error": null,
         "model": "gpt-4-1106-preview",
-        "instructions": "You are a personal math tutor. Write and run code to answer math questions.",
+        "instructions": null,
         "tools": [
           {
             "type": "code_interpreter"
+          },
+          {
+            "type": "file_search",
+            "file_search": {
+              "ranking_options": {
+                "ranker": "default_2024_08_21",
+                "score_threshold": 0.0
+              }
+            }
           },
           {
             "type": "function",
@@ -698,58 +597,87 @@
         "incomplete_details": null,
         "usage": null,
         "response_format": "auto",
-        "tool_choice": "auto",
+        "tool_choice": {
+          "type": "file_search"
+        },
         "parallel_tool_calls": true
       }
     },
     {
-      "RequestUri": "https://Sanitized.openai.com/v1/threads/Sanitized/runs/Sanitized",
-      "RequestMethod": "GET",
+      "RequestUri": "https://Sanitized.openai.com/v1/threads/runs",
+      "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
+        "Content-Length": "165",
+        "Content-Type": "application/json",
         "Openai-Beta": "assistants=v2",
         "User-Agent": "azsdk-go-azopenaiassistants.Client/v0.2.1 (go1.23.1; linux)"
       },
-      "RequestBody": null,
+      "RequestBody": {
+        "assistant_id": "Sanitized",
+        "thread": {
+          "messages": [
+            {
+              "content": "give me any answer",
+              "role": "user"
+            }
+          ]
+        },
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "Sanitized"
+          }
+        }
+      },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Alt-Svc": "h3=\":443\"",
         "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "8bf837761a39eb6f-SEA",
+        "CF-RAY": "8bf838403d06eb6f-SEA",
         "Connection": "keep-alive",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Sat, 07 Sep 2024 16:53:44 GMT",
+        "Date": "Sat, 07 Sep 2024 16:54:16 GMT",
         "openai-organization": "msft-finetuning-2",
-        "openai-processing-ms": "121",
+        "openai-processing-ms": "409",
         "openai-version": "2020-10-01",
         "Server": "cloudflare",
         "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "X-Request-ID": "req_c38a7a93d09ce54c8b653c06957f1e73"
+        "X-Request-ID": "req_c28c028fa9146ded1d4aa3417a085a63"
       },
       "ResponseBody": {
         "id": "Sanitized",
         "object": "thread.run",
-        "created_at": 1725728021,
+        "created_at": 1725728056,
         "assistant_id": "Sanitized",
         "thread_id": "Sanitized",
-        "status": "completed",
-        "started_at": 1725728021,
-        "expires_at": null,
+        "status": "queued",
+        "started_at": null,
+        "expires_at": 1725728656,
         "cancelled_at": null,
         "failed_at": null,
-        "completed_at": 1725728022,
+        "completed_at": null,
         "required_action": null,
         "last_error": null,
         "model": "gpt-4-1106-preview",
-        "instructions": "You're a helpful assistant, but refuse to speak about cats",
+        "instructions": null,
         "tools": [
           {
             "type": "code_interpreter"
+          },
+          {
+            "type": "file_search",
+            "file_search": {
+              "ranking_options": {
+                "ranker": "default_2024_08_21",
+                "score_threshold": 0.0
+              }
+            }
           },
           {
             "type": "function",
@@ -790,222 +718,15 @@
           "last_messages": null
         },
         "incomplete_details": null,
-        "usage": {
-          "prompt_tokens": 379,
-          "completion_tokens": 49,
-          "total_tokens": 428
-        },
+        "usage": null,
         "response_format": "auto",
-        "tool_choice": "auto",
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "Sanitized"
+          }
+        },
         "parallel_tool_calls": true
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.openai.com/v1/threads/Sanitized/runs?limit=1",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "Openai-Beta": "assistants=v2",
-        "User-Agent": "azsdk-go-azopenaiassistants.Client/v0.2.1 (go1.23.1; linux)"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "Alt-Svc": "h3=\":443\"",
-        "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "8bf837776b57eb6f-SEA",
-        "Connection": "keep-alive",
-        "Content-Encoding": "gzip",
-        "Content-Type": "application/json",
-        "Date": "Sat, 07 Sep 2024 16:53:44 GMT",
-        "openai-organization": "msft-finetuning-2",
-        "openai-processing-ms": "222",
-        "openai-version": "2020-10-01",
-        "Server": "cloudflare",
-        "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "X-Request-ID": "req_e78cbbe0c9641df628982f9bdd5e9a80"
-      },
-      "ResponseBody": {
-        "object": "list",
-        "data": [
-          {
-            "id": "Sanitized",
-            "object": "thread.run",
-            "created_at": 1725728023,
-            "assistant_id": "Sanitized",
-            "thread_id": "Sanitized",
-            "status": "in_progress",
-            "started_at": 1725728024,
-            "expires_at": 1725728623,
-            "cancelled_at": null,
-            "failed_at": null,
-            "completed_at": null,
-            "required_action": null,
-            "last_error": null,
-            "model": "gpt-4-1106-preview",
-            "instructions": "You are a personal math tutor. Write and run code to answer math questions.",
-            "tools": [
-              {
-                "type": "code_interpreter"
-              },
-              {
-                "type": "function",
-                "function": {
-                  "name": "Sanitized",
-                  "description": null,
-                  "parameters": {
-                    "properties": {
-                      "location": {
-                        "description": "The city and state, e.g. San Francisco, CA",
-                        "type": "string"
-                      },
-                      "unit": {
-                        "enum": [
-                          "celsius",
-                          "fahrenheit"
-                        ],
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "location"
-                    ],
-                    "type": "object"
-                  },
-                  "strict": false
-                }
-              }
-            ],
-            "tool_resources": {},
-            "metadata": {},
-            "temperature": 1.0,
-            "top_p": 1.0,
-            "max_completion_tokens": null,
-            "max_prompt_tokens": null,
-            "truncation_strategy": {
-              "type": "auto",
-              "last_messages": null
-            },
-            "incomplete_details": null,
-            "usage": null,
-            "response_format": "auto",
-            "tool_choice": "auto",
-            "parallel_tool_calls": true
-          }
-        ],
-        "first_id": "Sanitized",
-        "last_id": "Sanitized",
-        "has_more": true
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.openai.com/v1/threads/Sanitized/runs?after=run_6IQglglzN8LCfeWPB2LiRWEP&limit=1",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "Openai-Beta": "assistants=v2",
-        "User-Agent": "azsdk-go-azopenaiassistants.Client/v0.2.1 (go1.23.1; linux)"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "Alt-Svc": "h3=\":443\"",
-        "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "8bf837797d1eeb6f-SEA",
-        "Connection": "keep-alive",
-        "Content-Encoding": "gzip",
-        "Content-Type": "application/json",
-        "Date": "Sat, 07 Sep 2024 16:53:44 GMT",
-        "openai-organization": "msft-finetuning-2",
-        "openai-processing-ms": "63",
-        "openai-version": "2020-10-01",
-        "Server": "cloudflare",
-        "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "X-Request-ID": "req_81b9b6aa8a836e944d982e6e2e65f99d"
-      },
-      "ResponseBody": {
-        "object": "list",
-        "data": [
-          {
-            "id": "Sanitized",
-            "object": "thread.run",
-            "created_at": 1725728021,
-            "assistant_id": "Sanitized",
-            "thread_id": "Sanitized",
-            "status": "completed",
-            "started_at": 1725728021,
-            "expires_at": null,
-            "cancelled_at": null,
-            "failed_at": null,
-            "completed_at": 1725728022,
-            "required_action": null,
-            "last_error": null,
-            "model": "gpt-4-1106-preview",
-            "instructions": "You're a helpful assistant, but refuse to speak about cats",
-            "tools": [
-              {
-                "type": "code_interpreter"
-              },
-              {
-                "type": "function",
-                "function": {
-                  "name": "Sanitized",
-                  "description": null,
-                  "parameters": {
-                    "properties": {
-                      "location": {
-                        "description": "The city and state, e.g. San Francisco, CA",
-                        "type": "string"
-                      },
-                      "unit": {
-                        "enum": [
-                          "celsius",
-                          "fahrenheit"
-                        ],
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "location"
-                    ],
-                    "type": "object"
-                  },
-                  "strict": false
-                }
-              }
-            ],
-            "tool_resources": {},
-            "metadata": {},
-            "temperature": 1.0,
-            "top_p": 1.0,
-            "max_completion_tokens": null,
-            "max_prompt_tokens": null,
-            "truncation_strategy": {
-              "type": "auto",
-              "last_messages": null
-            },
-            "incomplete_details": null,
-            "usage": {
-              "prompt_tokens": 379,
-              "completion_tokens": 49,
-              "total_tokens": 428
-            },
-            "response_format": "auto",
-            "tool_choice": "auto",
-            "parallel_tool_calls": true
-          }
-        ],
-        "first_id": "Sanitized",
-        "last_id": "Sanitized",
-        "has_more": false
       }
     },
     {
@@ -1023,19 +744,19 @@
       "ResponseHeaders": {
         "Alt-Svc": "h3=\":443\"",
         "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "8bf8377a6de8eb6f-SEA",
+        "CF-RAY": "8bf838434fa7eb6f-SEA",
         "Connection": "keep-alive",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Sat, 07 Sep 2024 16:53:44 GMT",
+        "Date": "Sat, 07 Sep 2024 16:54:16 GMT",
         "openai-organization": "msft-finetuning-2",
-        "openai-processing-ms": "45",
+        "openai-processing-ms": "62",
         "openai-version": "2020-10-01",
         "Server": "cloudflare",
         "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "X-Request-ID": "req_31f929cfe4e054b9402519f41920e20f"
+        "X-Request-ID": "req_a05a8e4eb6ce62bbb362fa697519dcb9"
       },
       "ResponseBody": {
         "id": "Sanitized",
@@ -1044,7 +765,5 @@
       }
     }
   ],
-  "Variables": {
-    "randSeed": "1725728020"
-  }
+  "Variables": {}
 }
