@@ -104,10 +104,12 @@ export interface TracingClient {
   /**
   * This method will create a span, call the methodToTrace, and end the span.
   * @param name - name of the span.
-  * @param args - arguments of the method to be traced.  Generally, you should pass in `arguments` reserve word.
+  * @param args - arguments for onStartTracing and onEndTracing.  Generally, you should pass in `arguments` reserve word.
   * @param methodToTrace - function pointer of the implementation.
   * @param onStartTracing - callback function to set attributes and events before calling methodTotrace.
   * @param onEndTracing - callback function to set attributes, events, and status before ending the span.
+  * @param options - options to set on the span.
+  * @param spanKind - kind of span that can be set to "client" | "server" | "producer" | "consumer" | "internal".
   * @returns - return back the return from methodToTrace.
   */
   trace<Arguments, Return>(
@@ -116,24 +118,28 @@ export interface TracingClient {
     methodToTrace: () => Return,
     onStartTracing?: (span: TracingSpan, args: Arguments) => void,
     onEndTracing?: (span: TracingSpan, args: Arguments, rt?: Return, error?: unknown) => void,
-    options?: OperationTracingOptions): Return;
+    options?: OperationTracingOptions,
+    spanKind?: TracingSpanKind): Return;
 
   /**
-   * Capture the arguments and return of a function and create a span.
-   * @param name - name of the span.
-   * @param args - arguments of the method to be traced.  Generally, you should pass in `arguments` reserve word.
-   * @param methodToTrace - function pointer of the implementation.
-   * @param paramAttributeMapper - mapping function to map the arguments to span's attributes.
-   * @param returnAttributeMapper - mapping function to map the return object to span's attributes.
-   * @returns - return back the return from methodToTrace.
-   */
+  * This method will create a span, call the methodToTrace, and end the span.
+  * @param name - name of the span.
+  * @param args - arguments of the method to be traced.  Generally, you should pass in `arguments` reserve word.
+  * @param methodToTrace - function pointer of the implementation.
+  * @param onStartTracing - callback function to set attributes and events before calling methodTotrace.
+  * @param onEndTracing - callback function to set attributes, events, and status before ending the span.
+  * @param options - options to set on the span.
+  * @param spanKind - kind of span that can be set to "client" | "server" | "producer" | "consumer" | "internal".
+  * @returns - return back the return from methodToTrace.
+  */
   traceAsync<Arguments, ResolvedReturn, PromiseReturn extends Promise<ResolvedReturn> | PromiseLike<ResolvedReturn>>(
     name: string,
     args: Arguments,
     methodToTrace: () => PromiseReturn,
     onStartTracing?: (span: TracingSpan, args: Arguments) => void,
     onEndTracing?: (span: TracingSpan, args: Arguments, rt?: ResolvedReturn, error?: unknown) => void,
-    options?: OperationTracingOptions): PromiseReturn;
+    options?: OperationTracingOptions,
+    spanKind?: TracingSpanKind): PromiseReturn;
 }
 
 /**

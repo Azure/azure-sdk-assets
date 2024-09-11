@@ -8,6 +8,7 @@ import { ChatRequestMessage } from "./models.js";
 import { ChatChoiceOutput } from "./outputModels.js";
 import { getErrorMessage, isError } from "@azure/core-util";
 import { logger } from "./logger.js";
+import { isUnexpected } from "./isUnexpected.js";
 
 
 function tryCreateTracingClient(): TracingClient | undefined {
@@ -92,6 +93,7 @@ function onStartTracing(span: TracingSpan, [request, operationName, url]: [Reque
   span.setAttribute(TracingAttributesEnum.Server_Port, port);
   span.setAttribute(TracingAttributesEnum.Operation_Name, operationName);
   span.setAttribute(TracingAttributesEnum.System, "az.ai.inference");
+  span.setAttribute("spanKind", (request as RequestParameterWithBodyType).body?.model);
 
   const body = (request as RequestParameterWithBodyType).body;
   if (!body) return;
@@ -112,29 +114,24 @@ function onStartTracing(span: TracingSpan, [request, operationName, url]: [Reque
 function onEndTracing(span: TracingSpan, _: [RequestParameters, string, string], response?: PathUncheckedResponse, error?: unknown) {
   let status: SpanStatus = { status: "unset" };
   if (error) {
-    span.setStatus(
-      {
-        status: "error",
-        error: isError(error) ? error : undefined
-      }
-    )
+    status = {
+      status: "error",
+      error: isError(error) ? error : undefined
+    };
   }
   if (response) {
     let body = response.body;
+    if (isUnexpected(response)) {
+      status = {
+        status: "error",
+        error: body.error ?? body.message // message is not in the schema of the response, but it can present if there is crediential error
+      };
+    }
     span.setAttribute(TracingAttributesEnum.Response_Id, body.id);
     span.setAttribute(TracingAttributesEnum.Response_Model, body.model);
     if (body.usage) {
       span.setAttribute(TracingAttributesEnum.Usage_Input_Tokens, body.usage.prompt_tokens);
       span.setAttribute(TracingAttributesEnum.Usage_Output_Tokens, body.usage.completion_tokens);
-    }
-    if (body.error) {
-      span.setAttribute(TracingAttributesEnum.Error_Type, body.error.code);
-      span.setStatus(
-        {
-          status: "error",
-          error: body.error.code
-        }
-      )
     }
     addResponseChatMessageEvent(span, response);
   }

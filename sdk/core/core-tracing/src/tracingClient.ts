@@ -9,6 +9,7 @@ import {
   TracingClientOptions,
   TracingContext,
   TracingSpan,
+  TracingSpanKind,
   TracingSpanOptions,
 } from "./interfaces.js";
 import { getInstrumenter } from "./instrumenter.js";
@@ -130,9 +131,10 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     methodToTrace: () => Return,
     onStartTracing?: (span: TracingSpan, args: Arguments) => void,
     onEndTracing?: (span: TracingSpan, args: Arguments, rt?: Return, error?: unknown) => void,
-    options?: OperationTracingOptions): Return {
+    options?: OperationTracingOptions,
+    spanKind?: TracingSpanKind): Return {
 
-    const { span, tracingContext } = tryCreateSpan(name, {}, options) ?? {};
+    const { span, tracingContext } = tryCreateSpan(name, { spanKind }, options) ?? {};
 
 
     if (!span || !tracingContext) {
@@ -169,9 +171,10 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
     methodToTrace: () => PromiseReturn,
     onStartTracing?: (span: TracingSpan, args: Arguments) => void,
     onEndTracing?: (span: TracingSpan, args: Arguments, rt?: ResolvedReturn, error?: unknown) => void,
-    options?: OperationTracingOptions): PromiseReturn {
+    options?: OperationTracingOptions,
+    spanKind?: TracingSpanKind): PromiseReturn {
 
-    const { span, tracingContext } = tryCreateSpan(name, {}, options) ?? {};
+    const { span, tracingContext } = tryCreateSpan(name, { spanKind }, options) ?? {};
 
     if (!span || !tracingContext) {
       return methodToTrace();
@@ -189,6 +192,9 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
         then((response) => {
           tryProcessReturn(span, args, response, undefined, onEndTracing);
           return response;
+        }, (error) => {
+          tryProcessReturn(span, args, undefined, error, onEndTracing);
+          throw error;
         }) as PromiseReturn;
     } catch (err) {
       tryProcessReturn(span, args, undefined, err, onEndTracing);
@@ -206,7 +212,6 @@ export function createTracingClient(options: TracingClientOptions): TracingClien
         spanName,
         { tracingOptions },
         {
-          spanKind: "client",
           spanAttributes,
         },
       );
