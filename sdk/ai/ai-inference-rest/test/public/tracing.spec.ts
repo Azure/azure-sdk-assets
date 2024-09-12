@@ -213,12 +213,10 @@ class MockSpan implements TracingSpan {
   }
 
   setStatus(status: SpanStatus): void {
-    console.log("setting status", status);
     this.status = status;
   }
 
   setAttribute(name: string, value: unknown): void {
-    console.log("setting attribute", name, value);
     this.spanAttributes[name] = value;
   }
 

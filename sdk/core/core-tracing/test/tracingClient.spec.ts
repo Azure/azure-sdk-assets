@@ -235,7 +235,6 @@ describe("TracingClient", () => {
         errorInOnEndTracing = error;
       };
       const rt = client.trace("name", arg, methodToTrace, onStartTracing, onEndTracing);
-      console.log(spanInOnStartTracing);
       assert.isDefined(spanInOnStartTracing);
       assert.isDefined(spanInOnEndTracing);
       assert.equal(returnInMethodToTrace, rt);
@@ -327,7 +326,6 @@ describe("TracingClient", () => {
         errorInOnEndTracing = error;
       };
       const rt = await client.traceAsync("name", arg, methodToTrace, onStartTracing, onEndTracing);
-      console.log(spanInOnStartTracing);
       assert.isDefined(spanInOnStartTracing);
       assert.isDefined(spanInOnEndTracing);
       assert.equal(returnInMethodToTrace, rt);

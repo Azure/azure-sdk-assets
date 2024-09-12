@@ -14,7 +14,7 @@ import { isUnexpected } from "./isUnexpected.js";
 function tryCreateTracingClient(): TracingClient | undefined {
   try {
     return createTracingClient({
-      namespace: "Micirsoft.CognitiveServices", packageName: "ai-inference-rest", packageVersion: "1.0.0"
+      namespace: "Microsoft.CognitiveServices", packageName: "ai-inference-rest", packageVersion: "1.0.0"
     });
   } catch (e: unknown) {
     logger.warning(`Error when creating the TracingClient: ${getErrorMessage(e)}`);
