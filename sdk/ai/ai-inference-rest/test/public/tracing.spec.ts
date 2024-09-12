@@ -122,7 +122,7 @@ describe("chat test suite", () => {
 
     const tracer = trace.getTracer('sample', '0.1.0');
 
-    const response = await tracer.startActiveSpan('main', async (span) => {
+    await tracer.startActiveSpan('main', async (span) => {
       return client.path("/chat/completions").post({
         body: {
           messages: [{ role: "user", content: "" }]
