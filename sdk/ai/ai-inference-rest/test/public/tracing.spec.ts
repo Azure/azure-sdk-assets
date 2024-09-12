@@ -8,7 +8,7 @@ import { trace, context } from "@opentelemetry/api";
 import { ChatCompletionsOutput, ModelClient } from "../../src/index.js";
 import { Instrumenter, InstrumenterSpanOptions, SpanStatus, TracingContext, TracingSpan, TracingSpanOptions, useInstrumenter } from "@azure/core-tracing";
 
-describe("chat test suite", () => {
+describe("tracing test suite", () => {
   let recorder: Recorder;
   let client: ModelClient;
   let instrumenter: MockInstrumenter;
@@ -80,7 +80,7 @@ describe("chat test suite", () => {
     const mockSpan = createdSpan;
     assert.isTrue(mockSpan.endCalled, "expected span to be ended");
     assert.equal(mockSpan.name, "chat");
-    assert.equal(mockSpan.getAttribute("az.namespace"), "Micirsoft.CognitiveServices");
+    assert.equal(mockSpan.getAttribute("az.namespace"), "Microsoft.CognitiveServices");
     assert.isTrue(mockSpan.getAttribute("server.address")?.toString().endsWith("azure.com"));
     assert.equal(mockSpan.getAttribute("server.port"), 443);
     assert.equal(mockSpan.getAttribute("gen_ai.operation.name"), "chat");
@@ -142,7 +142,7 @@ describe("chat test suite", () => {
     const mockSpan = createdSpan;
     assert.isTrue(mockSpan.endCalled, "expected span to be ended");
     assert.equal(mockSpan.name, "chat");
-    assert.equal(mockSpan.getAttribute("az.namespace"), "Micirsoft.CognitiveServices");
+    assert.equal(mockSpan.getAttribute("az.namespace"), "Microsoft.CognitiveServices");
     assert.isTrue(mockSpan.getAttribute("server.address")?.toString().endsWith("azure.com"));
     assert.equal(mockSpan.getAttribute("server.port"), 443);
     assert.equal(mockSpan.getAttribute("gen_ai.operation.name"), "chat");
