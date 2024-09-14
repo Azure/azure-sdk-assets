@@ -4,12 +4,15 @@
 import { PathUncheckedResponse, RequestParameters, StreamableMethod } from "@azure-rest/core-client";
 import { createTracingClient, SpanStatus, TracingClient, TracingSpan } from "@azure/core-tracing";
 import { GetChatCompletionsBodyParam, GetEmbeddingsBodyParam, GetImageEmbeddingsBodyParam } from "./parameters.js";
-import { ChatRequestMessage } from "./models.js";
-import { ChatChoiceOutput } from "./outputModels.js";
+import { ChatRequestAssistantMessage, ChatRequestMessage, ChatRequestSystemMessage, ChatRequestToolMessage } from "./models.js";
+import { ChatChoiceOutput, ChatCompletionsToolCallOutput } from "./outputModels.js";
 import { getErrorMessage, isError } from "@azure/core-util";
 import { logger } from "./logger.js";
 import { isUnexpected } from "./isUnexpected.js";
 
+
+const INFERENCE_GEN_AI_SYSTEM_NAME = "az.ai.inference";
+const isContentRecordingEnabled = () => Boolean(process.env["AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED"]);
 
 function tryCreateTracingClient(): TracingClient | undefined {
   try {
@@ -21,6 +24,8 @@ function tryCreateTracingClient(): TracingClient | undefined {
     return undefined;
   }
 }
+
+
 
 const traceClient = tryCreateTracingClient();
 
@@ -41,7 +46,7 @@ export function traceInference(
   const request = args as RequestParameterWithBodyType;
 
   /// TODO: the code for streaming needs to be clean up.   We will implement tracing for streaming later 
-  if (!traceClient || request.body?.stream == true || !Boolean(process.env["AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED"])) {
+  if (!traceClient || request.body?.stream == true) {
     return methodToTrace();
   }
   const operationName = getOperationName(routePath);
@@ -151,13 +156,44 @@ function onEndTracing(span: TracingSpan, _: [RequestParameters, string, string],
   },
 */
 function addRequestChatMessageEvent(span: TracingSpan, messages: Array<ChatRequestMessage>) {
-  messages.forEach((message) => {
-
+  messages.forEach((message: any) => {
     if (message.role) {
+
+      let content: { content?: string, tool_calls?: Array<ChatCompletionsToolCallOutput>, id?: string } = {};
+
+      const chatMsg = message as ChatRequestSystemMessage;
+      if (chatMsg.content) {
+        content.content = chatMsg.content;
+      }
+      if (!isContentRecordingEnabled()) {
+        content.content = "";
+      }
+
+      const assistantMsg = message as ChatRequestAssistantMessage;
+      if (assistantMsg.tool_calls) {
+        content.tool_calls = assistantMsg.tool_calls;
+        if (!isContentRecordingEnabled()) {
+          const toolCalls: Array<ChatCompletionsToolCallOutput> = JSON.parse(JSON.stringify(content.tool_calls));
+          toolCalls.forEach((toolCall) => {
+            if (toolCall.function.arguments) {
+              toolCall.function.arguments = "";
+            }
+            toolCall.function.name = "";
+          });
+          content.tool_calls = toolCalls;
+        }
+      }
+
+      const toolMsg: ChatRequestToolMessage = message
+      if (toolMsg.tool_call_id) {
+        content.id = toolMsg.tool_call_id;
+      }
+
       span.addEvent(`gen_ai.${message.role}.message`, {
-        "gen_ai.system": "INFERENCE_GEN_AI_SYSTEM_NAME", // Replace with actual system name
-        "gen_ai.event.content": JSON.stringify(message)
+        "gen_ai.system": INFERENCE_GEN_AI_SYSTEM_NAME,
+        "gen_ai.event.content": JSON.stringify(content)
       });
+
     }
 
   });
@@ -177,21 +213,38 @@ function addRequestChatMessageEvent(span: TracingSpan, messages: Array<ChatReque
 */
 function addResponseChatMessageEvent(span: TracingSpan, response: PathUncheckedResponse) {
   response.body?.choices?.forEach((choice: ChatChoiceOutput) => {
-    let response: any = {
-      "finish_reason": choice.finish_reason,
-      "index": choice.index,
-    };
+    let attributes;
+    let message: { content?: string, toolCalls?: Array<ChatCompletionsToolCallOutput> } = {};
 
-    let attributes: any = {
-      "gen_ai.system": "INFERENCE_GEN_AI_SYSTEM_NAME",
-    };
-
-    response = { ...response, message: { "content": choice.message.content } };
-    attributes = { ...attributes, "gen_ai.event.content": JSON.stringify(response) };
-
-    if (choice.message.tool_calls) {
-      response.message = { ...response, toolCalls: JSON.stringify(choice.message.tool_calls) };
+    if (choice.message.content) {
+      message.content = choice.message.content;
     }
+    if (choice.message.tool_calls) {
+      message.toolCalls = choice.message.tool_calls;
+    }
+
+    if (!isContentRecordingEnabled()) {
+      message = JSON.parse(JSON.stringify(message));
+      message.content = "";
+      if (message.toolCalls) {
+        message.toolCalls.forEach((toolCall) => {
+          if (toolCall.function.arguments) {
+            toolCall.function.arguments = "";
+          }
+          toolCall.function.name = "";
+        });
+      }
+    }
+
+    const response = {
+      finish_reason: choice.finish_reason,
+      index: choice.index,
+      message
+    };
+    attributes = {
+      "gen_ai.system": INFERENCE_GEN_AI_SYSTEM_NAME,
+      "gen_ai.event.content": JSON.stringify(response)
+    };
 
     span.addEvent("gen_ai.choice", attributes);
   });
