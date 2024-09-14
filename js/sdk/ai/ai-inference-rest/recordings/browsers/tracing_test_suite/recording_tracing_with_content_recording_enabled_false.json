@@ -8,7 +8,7 @@
         "Accept-Encoding": "gzip, deflate, br, zstd",
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
-        "Content-Length": "173",
+        "Content-Length": "414",
         "Content-Type": "application/json; charset=UTF-8",
         "Origin": "http://localhost:5173",
         "Referer": "http://localhost:5173/",
@@ -25,12 +25,36 @@
       "RequestBody": {
         "messages": [
           {
-            "role": "system",
-            "content": "You are a helpful assistant answering questions regarding length units."
-          },
-          {
             "role": "user",
-            "content": "How many feet are in a mile?"
+            "content": "What's the weather like in Boston?"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "Sanitized",
+              "description": "Get the current weather in a given location",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string",
+                    "description": "The city and state, e.g. San Francisco, CA"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "location"
+                ]
+              }
+            }
           }
         ]
       },
@@ -38,53 +62,46 @@
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id",
-        "apim-request-id": "49557f66-7e87-44e6-b601-16155472f8a2",
-        "azureml-model-session": "d063-20240813113152",
-        "Content-Length": "812",
+        "apim-request-id": "d818c31a-bebc-4aed-adce-db57f14bd541",
+        "azureml-model-session": "d089-20240815073451",
+        "Content-Length": "731",
         "Content-Type": "application/json",
-        "Date": "Sat, 14 Sep 2024 04:27:49 GMT",
+        "Date": "Sat, 14 Sep 2024 04:27:32 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "190",
+        "x-envoy-upstream-service-time": "248",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-rai-invoked": "true",
         "x-ms-region": "East US",
-        "x-ratelimit-remaining-requests": "8",
-        "x-ratelimit-remaining-tokens": "2103",
-        "X-Request-ID": "1eb69429-0a04-4040-b0d0-7902e0532056"
+        "x-ratelimit-remaining-requests": "7",
+        "x-ratelimit-remaining-tokens": "1439",
+        "X-Request-ID": "87bf6b5a-aadb-4785-8f36-5cf7021ae6be"
       },
       "ResponseBody": {
         "choices": [
           {
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            },
-            "finish_reason": "stop",
+            "content_filter_results": {},
+            "finish_reason": "tool_calls",
             "index": 0,
             "logprobs": null,
             "message": {
-              "content": "There are 5,280 feet in a mile.",
-              "role": "assistant"
+              "content": null,
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "function": {
+                    "arguments": "{\"location\":\"Boston, MA\"}",
+                    "name": "Sanitized"
+                  },
+                  "id": "Sanitized",
+                  "type": "function"
+                }
+              ]
             }
           }
         ],
-        "created": 1726288069,
+        "created": 1726288052,
         "id": "Sanitized",
         "model": "gpt-4o-2024-05-13",
         "object": "chat.completion",
@@ -113,9 +130,9 @@
         ],
         "system_fingerprint": "fp_80a1bad4c7",
         "usage": {
-          "completion_tokens": 11,
-          "prompt_tokens": 30,
-          "total_tokens": 41
+          "completion_tokens": 17,
+          "prompt_tokens": 79,
+          "total_tokens": 96
         }
       }
     },
@@ -127,7 +144,7 @@
         "Accept-Encoding": "gzip, deflate, br, zstd",
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
-        "Content-Length": "286",
+        "Content-Length": "727",
         "Content-Type": "application/json; charset=UTF-8",
         "Origin": "http://localhost:5173",
         "Referer": "http://localhost:5173/",
@@ -144,20 +161,56 @@
       "RequestBody": {
         "messages": [
           {
-            "role": "system",
-            "content": "You are a helpful assistant answering questions regarding length units."
-          },
-          {
             "role": "user",
-            "content": "How many feet are in a mile?"
+            "content": "What's the weather like in Boston?"
           },
           {
+            "content": null,
             "role": "assistant",
-            "content": "There are 5,280 feet in a mile."
+            "tool_calls": [
+              {
+                "function": {
+                  "arguments": "{\"location\":\"Boston, MA\"}",
+                  "name": "Sanitized"
+                },
+                "id": "Sanitized",
+                "type": "function"
+              }
+            ]
           },
           {
-            "role": "user",
-            "content": "and how many yards?"
+            "role": "tool",
+            "content": "The temperature in Boston, MA is 72 degrees fahrenheit",
+            "tool_call_id": "call_eywF2vFI4UCU3PfUL7WuItwm",
+            "name": "Sanitized"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "Sanitized",
+              "description": "Get the current weather in a given location",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string",
+                    "description": "The city and state, e.g. San Francisco, CA"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "location"
+                ]
+              }
+            }
           }
         ]
       },
@@ -165,21 +218,21 @@
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id",
-        "apim-request-id": "baff4283-0371-4faf-9848-5b6eec38afda",
-        "azureml-model-session": "d037-20240902101444",
-        "Content-Length": "813",
+        "apim-request-id": "6e12fe0b-54bd-49e3-80af-8d39396b9c37",
+        "azureml-model-session": "d080-20240814171801",
+        "Content-Length": "830",
         "Content-Type": "application/json",
-        "Date": "Sat, 14 Sep 2024 04:27:50 GMT",
+        "Date": "Sat, 14 Sep 2024 04:27:32 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "230",
+        "x-envoy-upstream-service-time": "212",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-rai-invoked": "true",
         "x-ms-region": "East US",
-        "x-ratelimit-remaining-requests": "7",
-        "x-ratelimit-remaining-tokens": "1424",
-        "X-Request-ID": "3b4a4a2b-2f7c-4e92-9a30-38e9aa8e94d7"
+        "x-ratelimit-remaining-requests": "5",
+        "x-ratelimit-remaining-tokens": "127",
+        "X-Request-ID": "c644de78-b4ff-44c9-8b74-9f262416d3f8"
       },
       "ResponseBody": {
         "choices": [
@@ -206,12 +259,12 @@
             "index": 0,
             "logprobs": null,
             "message": {
-              "content": "There are 1,760 yards in a mile.",
+              "content": "The current temperature in Boston, MA is 72°F.",
               "role": "assistant"
             }
           }
         ],
-        "created": 1726288070,
+        "created": 1726288053,
         "id": "Sanitized",
         "model": "gpt-4o-2024-05-13",
         "object": "chat.completion",
@@ -240,9 +293,9 @@
         ],
         "system_fingerprint": "fp_80a1bad4c7",
         "usage": {
-          "completion_tokens": 11,
-          "prompt_tokens": 54,
-          "total_tokens": 65
+          "completion_tokens": 13,
+          "prompt_tokens": 117,
+          "total_tokens": 130
         }
       }
     }
