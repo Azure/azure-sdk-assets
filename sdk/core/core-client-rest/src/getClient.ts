@@ -221,6 +221,7 @@ function buildOperation(
     },
   });
 
+  options = { ...options, tracingOptions: { tracingContext: options.tracingOptions?.tracingContext } };
   return tracer ?
     tracer(path, url, options, operation) :
     operation();
