@@ -8,7 +8,7 @@
         "Accept-Encoding": "gzip,deflate",
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
-        "Content-Length": "307",
+        "Content-Length": "708",
         "Content-Type": "application/json; charset=UTF-8",
         "User-Agent": "azsdk-js-ai-inference/1.0.0-beta.2 core-rest-pipeline/1.17.1 Node/18.20.4 OS/(x64-Windows_NT-10.0.22631)",
         "x-ms-client-request-id": "Sanitized"
@@ -17,41 +17,74 @@
         "messages": [
           {
             "role": "user",
-            "content": [
+            "content": "What's the weather like in Boston?"
+          },
+          {
+            "content": null,
+            "role": "assistant",
+            "tool_calls": [
               {
-                "type": "image_url",
-                "image_url": {
-                  "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
-                  "detail": "auto"
-                }
+                "function": {
+                  "arguments": "{\"location\":\"Boston, MA\"}",
+                  "name": "Sanitized"
+                },
+                "id": "Sanitized",
+                "type": "function"
               }
             ]
           },
           {
-            "role": "user",
-            "content": "describe the image"
+            "role": "tool",
+            "content": "The temperature in Boston, MA is 72 degrees fahrenheit",
+            "tool_call_id": "call_YZo4xi315MOSB4pt450S2nyR"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "Sanitized",
+              "description": "Get the current weather in a given location",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string",
+                    "description": "The city and state, e.g. San Francisco, CA"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "location"
+                ]
+              }
+            }
           }
         ]
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "api-supported-versions": "1",
-        "apim-request-id": "f5a58d7a-f431-4636-8c45-8c7f82e16b2b",
-        "azureml-model-session": "d057-20240903120756",
-        "Content-Length": "1413",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 19 Sep 2024 17:40:18 GMT",
-        "request-id": "f5a58d7a-f431-4636-8c45-8c7f82e16b2b",
+        "apim-request-id": "350008de-7c18-4989-95f9-31be4adb8952",
+        "azureml-model-session": "d035-20240902071737",
+        "Content-Length": "846",
+        "Content-Type": "application/json",
+        "Date": "Thu, 19 Sep 2024 17:40:02 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "5484",
+        "x-envoy-upstream-service-time": "297",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-rai-invoked": "true",
         "x-ms-region": "East US",
-        "x-ratelimit-remaining-requests": "6",
-        "x-ratelimit-remaining-tokens": "2422",
-        "X-Request-ID": "62b8ec7d-7b32-470c-a54e-1ed7e9fd4e05"
+        "x-ratelimit-remaining-requests": "9",
+        "x-ratelimit-remaining-tokens": "9337",
+        "X-Request-ID": "96fa8385-d0a9-4fbf-bb26-207a32db2588"
       },
       "ResponseBody": {
         "choices": [
@@ -78,27 +111,19 @@
             "index": 0,
             "logprobs": null,
             "message": {
-              "content": "The image depicts a beautiful outdoor scene dominated by a wooden pathway that stretches into the distance through a lush, green meadow. The pathway is bordered on both sides by tall grass, giving the scene a serene and natural feel. In the background, a clear blue sky with scattered clouds enhances the peaceful atmosphere. The horizon is outlined with trees and shrubs, adding depth and diversity to the landscape. The lighting suggests a sunny day, with vibrant colors that make the entire setting look inviting and tranquil.",
+              "content": "The current temperature in Boston, MA is 72 degrees Fahrenheit.",
               "role": "assistant"
             }
           }
         ],
-        "created": 1726767617,
+        "created": 1726767602,
         "id": "Sanitized",
         "model": "gpt-4o-2024-05-13",
         "object": "chat.completion",
         "prompt_filter_results": [
           {
             "prompt_index": 0,
-            "content_filter_result": {
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              },
+            "content_filter_results": {
               "hate": {
                 "filtered": false,
                 "severity": "safe"
@@ -107,22 +132,22 @@
                 "filtered": false,
                 "severity": "safe"
               },
-              "jailbreak": {
+              "sexual": {
                 "filtered": false,
-                "detected": false
+                "severity": "safe"
               },
-              "custom_blocklists": {
+              "violence": {
                 "filtered": false,
-                "details": []
+                "severity": "safe"
               }
             }
           }
         ],
         "system_fingerprint": "fp_80a1bad4c7",
         "usage": {
-          "completion_tokens": 97,
-          "prompt_tokens": 1119,
-          "total_tokens": 1216
+          "completion_tokens": 14,
+          "prompt_tokens": 117,
+          "total_tokens": 131
         }
       }
     }

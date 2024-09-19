@@ -8,7 +8,7 @@
         "Accept-Encoding": "gzip, deflate, br, zstd",
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
-        "Content-Length": "307",
+        "Content-Length": "708",
         "Content-Type": "application/json; charset=UTF-8",
         "Origin": "http://localhost:5173",
         "Referer": "http://localhost:5173/",
@@ -26,19 +26,54 @@
         "messages": [
           {
             "role": "user",
-            "content": [
+            "content": "What's the weather like in Boston?"
+          },
+          {
+            "content": null,
+            "role": "assistant",
+            "tool_calls": [
               {
-                "type": "image_url",
-                "image_url": {
-                  "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
-                  "detail": "auto"
-                }
+                "function": {
+                  "arguments": "{\"location\":\"Boston, MA\"}",
+                  "name": "Sanitized"
+                },
+                "id": "Sanitized",
+                "type": "function"
               }
             ]
           },
           {
-            "role": "user",
-            "content": "describe the image"
+            "role": "tool",
+            "content": "The temperature in Boston, MA is 72 degrees fahrenheit",
+            "tool_call_id": "call_YZo4xi315MOSB4pt450S2nyR"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "Sanitized",
+              "description": "Get the current weather in a given location",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string",
+                    "description": "The city and state, e.g. San Francisco, CA"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "location"
+                ]
+              }
+            }
           }
         ]
       },
@@ -46,23 +81,21 @@
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id",
-        "api-supported-versions": "1",
-        "apim-request-id": "39dcf0f9-dec5-41a7-b21b-680fa49e903d",
-        "azureml-model-session": "d045-20240902203542",
-        "Content-Length": "1346",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 19 Sep 2024 17:41:22 GMT",
-        "request-id": "39dcf0f9-dec5-41a7-b21b-680fa49e903d",
+        "apim-request-id": "a0be3de8-5bb3-41af-b4b9-e6e819a86267",
+        "azureml-model-session": "d071-20240814010256",
+        "Content-Length": "846",
+        "Content-Type": "application/json",
+        "Date": "Thu, 19 Sep 2024 17:41:08 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "4477",
+        "x-envoy-upstream-service-time": "570",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-rai-invoked": "true",
         "x-ms-region": "East US",
-        "x-ratelimit-remaining-requests": "5",
-        "x-ratelimit-remaining-tokens": "2722",
-        "X-Request-ID": "745ed5d1-4c6b-48a7-8a61-59edeb10b9c0"
+        "x-ratelimit-remaining-requests": "7",
+        "x-ratelimit-remaining-tokens": "4018",
+        "X-Request-ID": "7d88661a-4248-4ccc-9d4b-8cbcc1233e4a"
       },
       "ResponseBody": {
         "choices": [
@@ -89,27 +122,19 @@
             "index": 0,
             "logprobs": null,
             "message": {
-              "content": "The image depicts a tranquil and expansive natural landscape under a clear, blue sky filled with wispy clouds. A wooden boardwalk stretches into the distance, flanked on both sides by lush, green grass. The landscape is flat, with patches of bushes and clusters of trees scattered in the background. The bright and vibrant colors of the sky and greenery create a serene and inviting atmosphere, suggesting a peaceful and open space, perfect for a leisurely walk.",
+              "content": "The current temperature in Boston, MA is 72 degrees Fahrenheit.",
               "role": "assistant"
             }
           }
         ],
-        "created": 1726767681,
+        "created": 1726767668,
         "id": "Sanitized",
         "model": "gpt-4o-2024-05-13",
         "object": "chat.completion",
         "prompt_filter_results": [
           {
             "prompt_index": 0,
-            "content_filter_result": {
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              },
+            "content_filter_results": {
               "hate": {
                 "filtered": false,
                 "severity": "safe"
@@ -118,22 +143,22 @@
                 "filtered": false,
                 "severity": "safe"
               },
-              "jailbreak": {
+              "sexual": {
                 "filtered": false,
-                "detected": false
+                "severity": "safe"
               },
-              "custom_blocklists": {
+              "violence": {
                 "filtered": false,
-                "details": []
+                "severity": "safe"
               }
             }
           }
         ],
         "system_fingerprint": "fp_80a1bad4c7",
         "usage": {
-          "completion_tokens": 89,
-          "prompt_tokens": 1119,
-          "total_tokens": 1208
+          "completion_tokens": 14,
+          "prompt_tokens": 117,
+          "total_tokens": 131
         }
       }
     }
