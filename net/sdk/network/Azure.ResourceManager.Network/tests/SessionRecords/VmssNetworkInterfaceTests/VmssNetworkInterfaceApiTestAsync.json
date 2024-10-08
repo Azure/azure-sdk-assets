@@ -187,44 +187,44 @@
             },
             "variables": {
               "storageAccountType": "Standard_LRS",
-              "newStorageAccountName2": "[concat(parameters(\u0027newStorageAccountName\u0027), \u00272\u0027)]",
-              "location": "[parameters(\u0027location\u0027)]",
+              "newStorageAccountName2": "[concat(parameters('newStorageAccountName'), '2')]",
+              "location": "[parameters('location')]",
               "vnetName": "vnet1",
               "pipName": "pip1",
               "lbName": "lb1",
               "nsgName": "nsg1",
-              "pipID": "[resourceId(\u0027Microsoft.Network/publicIPAddresses\u0027,variables(\u0027pipName\u0027))]",
-              "lbID": "[resourceId(\u0027Microsoft.Network/loadBalancers\u0027,variables(\u0027lbName\u0027))]",
-              "vnetID": "[resourceId(\u0027Microsoft.Network/virtualNetworks\u0027,variables(\u0027vnetName\u0027))]",
-              "frontendIPConfigID": "[concat(variables(\u0027lbID\u0027),\u0027/frontendIPConfigurations/ip1\u0027)]",
-              "backendaddressPoolID": "[concat(variables(\u0027lbID\u0027),\u0027/backendAddressPools/addressPool1\u0027)]",
-              "inboundNatPoolID": "[concat(variables(\u0027lbID\u0027),\u0027/backendAddressPools/natPool1\u0027)]",
-              "subnetID": "[concat(variables(\u0027vnetID\u0027),\u0027/subnets/subnet1\u0027)]"
+              "pipID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('pipName'))]",
+              "lbID": "[resourceId('Microsoft.Network/loadBalancers',variables('lbName'))]",
+              "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetName'))]",
+              "frontendIPConfigID": "[concat(variables('lbID'),'/frontendIPConfigurations/ip1')]",
+              "backendaddressPoolID": "[concat(variables('lbID'),'/backendAddressPools/addressPool1')]",
+              "inboundNatPoolID": "[concat(variables('lbID'),'/backendAddressPools/natPool1')]",
+              "subnetID": "[concat(variables('vnetID'),'/subnets/subnet1')]"
             },
             "resources": [
               {
                 "type": "Microsoft.Storage/storageAccounts",
-                "name": "[parameters(\u0027newStorageAccountName\u0027)]",
+                "name": "[parameters('newStorageAccountName')]",
                 "apiVersion": "2015-06-15",
-                "location": "[parameters(\u0027storageLocation\u0027)]",
+                "location": "[parameters('storageLocation')]",
                 "properties": {
-                  "accountType": "[variables(\u0027storageAccountType\u0027)]"
+                  "accountType": "[variables('storageAccountType')]"
                 }
               },
               {
                 "type": "Microsoft.Storage/storageAccounts",
-                "name": "[variables(\u0027newStorageAccountName2\u0027)]",
+                "name": "[variables('newStorageAccountName2')]",
                 "apiVersion": "2015-06-15",
-                "location": "[parameters(\u0027storageLocation\u0027)]",
+                "location": "[parameters('storageLocation')]",
                 "properties": {
-                  "accountType": "[variables(\u0027storageAccountType\u0027)]"
+                  "accountType": "[variables('storageAccountType')]"
                 }
               },
               {
                 "apiVersion": "2015-06-15",
                 "type": "Microsoft.Network/publicIPAddresses",
-                "name": "[variables(\u0027pipName\u0027)]",
-                "location": "[variables(\u0027location\u0027)]",
+                "name": "[variables('pipName')]",
+                "location": "[variables('location')]",
                 "properties": {
                   "publicIPAllocationMethod": "Dynamic"
                 }
@@ -232,8 +232,8 @@
               {
                 "apiVersion": "2015-06-15",
                 "type": "Microsoft.Network/virtualNetworks",
-                "name": "[variables(\u0027vnetName\u0027)]",
-                "location": "[variables(\u0027location\u0027)]",
+                "name": "[variables('vnetName')]",
+                "location": "[variables('location')]",
                 "properties": {
                   "addressSpace": {
                     "addressPrefixes": [
@@ -252,11 +252,11 @@
               },
               {
                 "apiVersion": "2015-06-15",
-                "name": "[variables(\u0027lbName\u0027)]",
+                "name": "[variables('lbName')]",
                 "type": "Microsoft.Network/loadBalancers",
-                "location": "[variables(\u0027location\u0027)]",
+                "location": "[variables('location')]",
                 "dependsOn": [
-                  "[concat(\u0027Microsoft.Network/publicIPAddresses/\u0027, variables(\u0027pipName\u0027))]"
+                  "[concat('Microsoft.Network/publicIPAddresses/', variables('pipName'))]"
                 ],
                 "properties": {
                   "frontendIPConfigurations": [
@@ -264,7 +264,7 @@
                       "name": "ip1",
                       "properties": {
                         "publicIPAddress": {
-                          "id": "[variables(\u0027pipID\u0027)]"
+                          "id": "[variables('pipID')]"
                         }
                       }
                     }
@@ -279,10 +279,10 @@
                       "name": "lbrule1",
                       "properties": {
                         "frontendIPConfiguration": {
-                          "id": "[variables(\u0027frontendIPConfigID\u0027)]"
+                          "id": "[variables('frontendIPConfigID')]"
                         },
                         "backendaddressPool": {
-                          "id": "[variables(\u0027backendaddressPoolID\u0027)]"
+                          "id": "[variables('backendaddressPoolID')]"
                         },
                         "protocol": "tcp",
                         "frontendPort": 80,
@@ -295,7 +295,7 @@
                       "name": "natPool1",
                       "properties": {
                         "frontendIPConfiguration": {
-                          "id": "[variables(\u0027frontendIPConfigID\u0027)]"
+                          "id": "[variables('frontendIPConfigID')]"
                         },
                         "protocol": "tcp",
                         "frontendPortRangeStart": 3389,
@@ -308,9 +308,9 @@
               },
               {
                 "apiVersion": "2015-06-15",
-                "location": "[variables(\u0027location\u0027)]",
+                "location": "[variables('location')]",
                 "type": "Microsoft.Network/networkSecurityGroups",
-                "name": "[variables(\u0027nsgName\u0027)]",
+                "name": "[variables('nsgName')]",
                 "properties": {
                   "securityRules": [
                     {
@@ -331,7 +331,7 @@
                       "name": "swarm-listen-port",
                       "properties": {
                         "access": "Allow",
-                        "description": "Allow \u0027swarm join\u0027 ingress to manager node",
+                        "description": "Allow 'swarm join' ingress to manager node",
                         "destinationAddressPrefix": "10.0.0.0/24",
                         "destinationPortRange": "2377",
                         "direction": "Inbound",
@@ -417,22 +417,22 @@
               {
                 "type": "Microsoft.Compute/virtualMachineScaleSets",
                 "apiVersion": "2017-03-30",
-                "name": "[parameters(\u0027vmSSName\u0027)]",
-                "location": "[variables(\u0027location\u0027)]",
+                "name": "[parameters('vmSSName')]",
+                "location": "[variables('location')]",
                 "tags": {
                   "vmsstag1": "Myriad"
                 },
                 "dependsOn": [
-                  "[concat(\u0027Microsoft.Storage/storageAccounts/\u0027, parameters(\u0027newStorageAccountName\u0027))]",
-                  "[concat(\u0027Microsoft.Storage/storageAccounts/\u0027, variables(\u0027newStorageAccountName2\u0027))]",
-                  "[concat(\u0027Microsoft.Network/virtualNetworks/\u0027, variables(\u0027vnetName\u0027))]",
-                  "[concat(\u0027Microsoft.Network/loadBalancers/\u0027, variables(\u0027lbName\u0027))]",
-                  "[concat(\u0027Microsoft.Network/networkSecurityGroups/\u0027, variables(\u0027nsgName\u0027))]"
+                  "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+                  "[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName2'))]",
+                  "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
+                  "[concat('Microsoft.Network/loadBalancers/', variables('lbName'))]",
+                  "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]"
                 ],
                 "sku": {
                   "name": "Standard_A2",
                   "tier": "Standard",
-                  "capacity": "[parameters(\u0027instanceCount\u0027)]"
+                  "capacity": "[parameters('instanceCount')]"
                 },
                 "Properties": {
                   "upgradePolicy": {
@@ -442,23 +442,23 @@
                     "storageProfile": {
                       "osDisk": {
                         "vhdContainers": [
-                          "[concat(\u0027https://\u0027, parameters(\u0027newStorageAccountName\u0027), \u0027.blob.core.windows.net\u0027, \u0027/vmss1\u0027)]",
-                          "[concat(\u0027https://\u0027, variables(\u0027newStorageAccountName2\u0027), \u0027.blob.core.windows.net\u0027, \u0027/vmss2\u0027)]"
+                          "[concat('https://', parameters('newStorageAccountName'), '.blob.core.windows.net', '/vmss1')]",
+                          "[concat('https://', variables('newStorageAccountName2'), '.blob.core.windows.net', '/vmss2')]"
                         ],
                         "name": "vmssosdisk",
                         "caching": "ReadOnly",
                         "createOption": "FromImage"
                       },
                       "imageReference": {
-                        "publisher": "[parameters(\u0027imagePublisher\u0027)]",
-                        "offer": "[parameters(\u0027imageOffer\u0027)]",
-                        "sku": "[parameters(\u0027imageSKU\u0027)]",
+                        "publisher": "[parameters('imagePublisher')]",
+                        "offer": "[parameters('imageOffer')]",
+                        "sku": "[parameters('imageSKU')]",
                         "version": "latest"
                       }
                     },
                     "osProfile": {
-                      "computerNamePrefix": "[parameters(\u0027vmSSName\u0027)]",
-                      "adminUsername": "[parameters(\u0027adminUsername\u0027)]",
+                      "computerNamePrefix": "[parameters('vmSSName')]",
+                      "adminUsername": "[parameters('adminUsername')]",
                       "adminPassword": "Sanitized"
                     },
                     "networkProfile": {
@@ -477,32 +477,32 @@
                                 "name": "ip1",
                                 "properties": {
                                   "subnet": {
-                                    "id": "[concat(\u0027/subscriptions/\u0027, subscription().subscriptionId,\u0027/resourceGroups/\u0027, resourceGroup().name, \u0027/providers/Microsoft.Network/virtualNetworks/\u0027, variables(\u0027vnetName\u0027), \u0027/subnets/subnet1\u0027)]"
+                                    "id": "[concat('/subscriptions/', subscription().subscriptionId,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/virtualNetworks/', variables('vnetName'), '/subnets/subnet1')]"
                                   },
                                   "publicipaddressconfiguration": {
                                     "name": "pub1",
                                     "properties": {
                                       "idleTimeoutInMinutes": 10,
                                       "dnsSettings": {
-                                        "domainNameLabel": "[parameters(\u0027newDomainName\u0027)]"
+                                        "domainNameLabel": "[parameters('newDomainName')]"
                                       }
                                     }
                                   },
                                   "loadBalancerInboundNatPools": [
                                     {
-                                      "id": "[concat(\u0027/subscriptions/\u0027, subscription().subscriptionId,\u0027/resourceGroups/\u0027, resourceGroup().name, \u0027/providers/Microsoft.Network/loadBalancers/\u0027, variables(\u0027lbName\u0027), \u0027/inboundNatPools/natPool1\u0027)]"
+                                      "id": "[concat('/subscriptions/', subscription().subscriptionId,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/loadBalancers/', variables('lbName'), '/inboundNatPools/natPool1')]"
                                     }
                                   ],
                                   "loadBalancerBackendAddressPools": [
                                     {
-                                      "id": "[concat(\u0027/subscriptions/\u0027, subscription().subscriptionId,\u0027/resourceGroups/\u0027, resourceGroup().name, \u0027/providers/Microsoft.Network/loadBalancers/\u0027, variables(\u0027lbName\u0027), \u0027/backendAddressPools/addressPool1\u0027)]"
+                                      "id": "[concat('/subscriptions/', subscription().subscriptionId,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/loadBalancers/', variables('lbName'), '/backendAddressPools/addressPool1')]"
                                     }
                                   ]
                                 }
                               }
                             ],
                             "networkSecurityGroup": {
-                              "id": "[concat(\u0027/subscriptions/\u0027, subscription().subscriptionId,\u0027/resourceGroups/\u0027, resourceGroup().name, \u0027/providers/Microsoft.Network/networkSecurityGroups/\u0027, variables(\u0027nsgName\u0027))]"
+                              "id": "[concat('/subscriptions/', subscription().subscriptionId,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]"
                             }
                           }
                         }
@@ -1572,7 +1572,7 @@
           {
             "name": "pub1",
             "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/0/networkInterfaces/nic1/ipConfigurations/ip1/publicIPAddresses/pub1",
-            "etag": "W/\u0022c3a3bd38-3f06-4a47-a170-c01c2b16b835\u0022",
+            "etag": "W/\"c3a3bd38-3f06-4a47-a170-c01c2b16b835\"",
             "properties": {
               "provisioningState": "Succeeded",
               "resourceGuid": "c39a2cb4-b320-47aa-b177-c2eaa26c7595",
@@ -1596,7 +1596,7 @@
           {
             "name": "pub1",
             "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/1/networkInterfaces/nic1/ipConfigurations/ip1/publicIPAddresses/pub1",
-            "etag": "W/\u00221d5f078e-db1e-47bd-a130-851226d24eeb\u0022",
+            "etag": "W/\"1d5f078e-db1e-47bd-a130-851226d24eeb\"",
             "properties": {
               "provisioningState": "Succeeded",
               "resourceGuid": "7fd961a4-092c-4c96-b045-825e53981da4",
@@ -1619,7 +1619,7 @@
           {
             "name": "pub1",
             "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/2/networkInterfaces/nic1/ipConfigurations/ip1/publicIPAddresses/pub1",
-            "etag": "W/\u0022a5f75e1e-0fb7-4e7d-9f3d-d0063e0c6166\u0022",
+            "etag": "W/\"a5f75e1e-0fb7-4e7d-9f3d-d0063e0c6166\"",
             "properties": {
               "provisioningState": "Succeeded",
               "resourceGuid": "a718952d-1ca7-4bf6-839a-1c3c76886a40",
@@ -1643,7 +1643,7 @@
           {
             "name": "pub1",
             "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/3/networkInterfaces/nic1/ipConfigurations/ip1/publicIPAddresses/pub1",
-            "etag": "W/\u002213cce458-ac08-4480-b909-468eac5a684e\u0022",
+            "etag": "W/\"13cce458-ac08-4480-b909-468eac5a684e\"",
             "properties": {
               "provisioningState": "Succeeded",
               "resourceGuid": "7064263e-38ed-49b4-9494-91ed5b60fac6",
@@ -1703,7 +1703,7 @@
           {
             "name": "nic1",
             "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/0/networkInterfaces/nic1",
-            "etag": "W/\u00224715f480-c611-4949-adf7-98e31f31d607\u0022",
+            "etag": "W/\"4715f480-c611-4949-adf7-98e31f31d607\"",
             "properties": {
               "provisioningState": "Succeeded",
               "resourceGuid": "0a7f8179-050f-458b-ac8e-5ad509ddc178",
@@ -1711,7 +1711,7 @@
                 {
                   "name": "ip1",
                   "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/0/networkInterfaces/nic1/ipConfigurations/ip1",
-                  "etag": "W/\u00224715f480-c611-4949-adf7-98e31f31d607\u0022",
+                  "etag": "W/\"4715f480-c611-4949-adf7-98e31f31d607\"",
                   "properties": {
                     "provisioningState": "Succeeded",
                     "privateIPAddress": "10.0.0.4",
@@ -1764,7 +1764,7 @@
           {
             "name": "nic1",
             "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/1/networkInterfaces/nic1",
-            "etag": "W/\u0022c46be3c4-2387-4b39-877d-3d7ade1bdc98\u0022",
+            "etag": "W/\"c46be3c4-2387-4b39-877d-3d7ade1bdc98\"",
             "properties": {
               "provisioningState": "Succeeded",
               "resourceGuid": "73eae130-f7b5-44ba-b7b6-bde76eee1a83",
@@ -1772,7 +1772,7 @@
                 {
                   "name": "ip1",
                   "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/1/networkInterfaces/nic1/ipConfigurations/ip1",
-                  "etag": "W/\u0022c46be3c4-2387-4b39-877d-3d7ade1bdc98\u0022",
+                  "etag": "W/\"c46be3c4-2387-4b39-877d-3d7ade1bdc98\"",
                   "properties": {
                     "provisioningState": "Succeeded",
                     "privateIPAddress": "10.0.0.5",
@@ -1821,7 +1821,7 @@
           {
             "name": "nic1",
             "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/2/networkInterfaces/nic1",
-            "etag": "W/\u00222ac936de-a7be-4937-8afc-51a7bfaa2057\u0022",
+            "etag": "W/\"2ac936de-a7be-4937-8afc-51a7bfaa2057\"",
             "properties": {
               "provisioningState": "Succeeded",
               "resourceGuid": "308d1e7f-ce25-42c7-a8b4-317f0033c1be",
@@ -1829,7 +1829,7 @@
                 {
                   "name": "ip1",
                   "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/2/networkInterfaces/nic1/ipConfigurations/ip1",
-                  "etag": "W/\u00222ac936de-a7be-4937-8afc-51a7bfaa2057\u0022",
+                  "etag": "W/\"2ac936de-a7be-4937-8afc-51a7bfaa2057\"",
                   "properties": {
                     "provisioningState": "Succeeded",
                     "privateIPAddress": "10.0.0.6",
@@ -1882,7 +1882,7 @@
           {
             "name": "nic1",
             "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/3/networkInterfaces/nic1",
-            "etag": "W/\u00229e5525f4-2853-42f1-9ccf-0ba71704a635\u0022",
+            "etag": "W/\"9e5525f4-2853-42f1-9ccf-0ba71704a635\"",
             "properties": {
               "provisioningState": "Succeeded",
               "resourceGuid": "cb3508f2-e4fd-4baf-8142-eb79ae2f8f21",
@@ -1890,7 +1890,7 @@
                 {
                   "name": "ip1",
                   "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/3/networkInterfaces/nic1/ipConfigurations/ip1",
-                  "etag": "W/\u00229e5525f4-2853-42f1-9ccf-0ba71704a635\u0022",
+                  "etag": "W/\"9e5525f4-2853-42f1-9ccf-0ba71704a635\"",
                   "properties": {
                     "provisioningState": "Succeeded",
                     "privateIPAddress": "10.0.0.7",
@@ -1976,7 +1976,7 @@
           {
             "name": "nic1",
             "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/0/networkInterfaces/nic1",
-            "etag": "W/\u00224715f480-c611-4949-adf7-98e31f31d607\u0022",
+            "etag": "W/\"4715f480-c611-4949-adf7-98e31f31d607\"",
             "properties": {
               "provisioningState": "Succeeded",
               "resourceGuid": "0a7f8179-050f-458b-ac8e-5ad509ddc178",
@@ -1984,7 +1984,7 @@
                 {
                   "name": "ip1",
                   "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/0/networkInterfaces/nic1/ipConfigurations/ip1",
-                  "etag": "W/\u00224715f480-c611-4949-adf7-98e31f31d607\u0022",
+                  "etag": "W/\"4715f480-c611-4949-adf7-98e31f31d607\"",
                   "properties": {
                     "provisioningState": "Succeeded",
                     "privateIPAddress": "10.0.0.4",
@@ -2055,7 +2055,7 @@
         "Content-Length": "2882",
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Thu, 24 Aug 2023 06:39:49 GMT",
-        "ETag": "W/\u00224715f480-c611-4949-adf7-98e31f31d607\u0022",
+        "ETag": "W/\"4715f480-c611-4949-adf7-98e31f31d607\"",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": [
@@ -2074,7 +2074,7 @@
       "ResponseBody": {
         "name": "nic1",
         "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/0/networkInterfaces/nic1",
-        "etag": "W/\u00224715f480-c611-4949-adf7-98e31f31d607\u0022",
+        "etag": "W/\"4715f480-c611-4949-adf7-98e31f31d607\"",
         "properties": {
           "provisioningState": "Succeeded",
           "resourceGuid": "0a7f8179-050f-458b-ac8e-5ad509ddc178",
@@ -2082,7 +2082,7 @@
             {
               "name": "ip1",
               "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet6238/providers/Microsoft.Compute/virtualMachineScaleSets/vmssip/virtualMachines/0/networkInterfaces/nic1/ipConfigurations/ip1",
-              "etag": "W/\u00224715f480-c611-4949-adf7-98e31f31d607\u0022",
+              "etag": "W/\"4715f480-c611-4949-adf7-98e31f31d607\"",
               "properties": {
                 "provisioningState": "Succeeded",
                 "privateIPAddress": "10.0.0.4",
