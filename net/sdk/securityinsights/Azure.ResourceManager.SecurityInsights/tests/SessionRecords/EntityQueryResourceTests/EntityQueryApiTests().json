@@ -117,7 +117,6 @@
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
-        "tags": {},
         "location": "eastus",
         "properties": {
           "sku": {
@@ -179,8 +178,7 @@
         "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourcegroups/testrg-9270/providers/microsoft.operationalinsights/workspaces/testrg-9270-ws",
         "name": "testRG-9270-ws",
         "type": "Microsoft.OperationalInsights/workspaces",
-        "location": "eastus",
-        "tags": {}
+        "location": "eastus"
       }
     },
     {
@@ -245,8 +243,7 @@
         "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourcegroups/testrg-9270/providers/microsoft.operationalinsights/workspaces/testrg-9270-ws",
         "name": "testRG-9270-ws",
         "type": "Microsoft.OperationalInsights/workspaces",
-        "location": "eastus",
-        "tags": {}
+        "location": "eastus"
       }
     },
     {
@@ -316,9 +313,9 @@
         "properties": {
           "title": "The user consented to OAuth application",
           "content": "The user consented to the OAuth application named {{Target_CloudApplication_Name}} {{Count}} time(s)",
-          "description": "This activity lists user\u0027s consents to an OAuth applications.",
+          "description": "This activity lists user's consents to an OAuth applications.",
           "queryDefinitions": {
-            "query": "let UserConsentToApplication = (Account_Name:string, Account_UPNSuffix:string, Account_AadUserId:string){\nlet account_upn = iff(Account_Name != \u0022\u0022 and Account_UPNSuffix != \u0022\u0022\n, strcat(Account_Name,\u0022@\u0022,Account_UPNSuffix)\n,\u0022\u0022 );\nAuditLogs\n| where OperationName == \u0022Consent to application\u0022\n| extend Source_Account_UPNSuffix = tostring(todynamic(InitiatedBy) [\u0022user\u0022][\u0022userPrincipalName\u0022]), Source_Account_AadUserId = tostring(todynamic(InitiatedBy) [\u0022user\u0022][\u0022id\u0022])\n| where (account_upn != \u0022\u0022 and account_upn =~ Source_Account_UPNSuffix) \nor (Account_AadUserId != \u0022\u0022 and Account_AadUserId =~ Source_Account_AadUserId)\n| extend Target_CloudApplication_Name = tostring(todynamic(TargetResources)[0][\u0022displayName\u0022]), Target_CloudApplication_AppId = tostring(todynamic(TargetResources)[0][\u0022id\u0022])\n};\nUserConsentToApplication(\u0027{{Account_Name}}\u0027, \u0027{{Account_UPNSuffix}}\u0027, \u0027{{Account_AadUserId}}\u0027)  \n| project Target_CloudApplication_AppId, Target_CloudApplication_Name, TimeGenerated"
+            "query": "let UserConsentToApplication = (Account_Name:string, Account_UPNSuffix:string, Account_AadUserId:string){\nlet account_upn = iff(Account_Name != \"\" and Account_UPNSuffix != \"\"\n, strcat(Account_Name,\"@\",Account_UPNSuffix)\n,\"\" );\nAuditLogs\n| where OperationName == \"Consent to application\"\n| extend Source_Account_UPNSuffix = tostring(todynamic(InitiatedBy) [\"user\"][\"userPrincipalName\"]), Source_Account_AadUserId = tostring(todynamic(InitiatedBy) [\"user\"][\"id\"])\n| where (account_upn != \"\" and account_upn =~ Source_Account_UPNSuffix) \nor (Account_AadUserId != \"\" and Account_AadUserId =~ Source_Account_AadUserId)\n| extend Target_CloudApplication_Name = tostring(todynamic(TargetResources)[0][\"displayName\"]), Target_CloudApplication_AppId = tostring(todynamic(TargetResources)[0][\"id\"])\n};\nUserConsentToApplication('{{Account_Name}}', '{{Account_UPNSuffix}}', '{{Account_AadUserId}}')  \n| project Target_CloudApplication_AppId, Target_CloudApplication_Name, TimeGenerated"
           },
           "inputEntityType": "Account",
           "requiredInputFieldsSets": [
@@ -351,15 +348,15 @@
       "ResponseBody": {
         "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/testRG-9270/providers/Microsoft.OperationalInsights/workspaces/testRG-9270-ws/providers/Microsoft.SecurityInsights/entityQueries/6d37a904-d199-43ff-892b-53653b784122",
         "name": "6d37a904-d199-43ff-892b-53653b784122",
-        "etag": "\u00225b024e29-0000-0100-0000-635b8a8e0000\u0022",
+        "etag": "\"5b024e29-0000-0100-0000-635b8a8e0000\"",
         "type": "Microsoft.SecurityInsights/entityQueries",
         "kind": "Activity",
         "properties": {
           "title": "The user consented to OAuth application",
           "content": "The user consented to the OAuth application named {{Target_CloudApplication_Name}} {{Count}} time(s)",
-          "description": "This activity lists user\u0027s consents to an OAuth applications.",
+          "description": "This activity lists user's consents to an OAuth applications.",
           "queryDefinitions": {
-            "query": "let UserConsentToApplication = (Account_Name:string, Account_UPNSuffix:string, Account_AadUserId:string){\nlet account_upn = iff(Account_Name != \u0022\u0022 and Account_UPNSuffix != \u0022\u0022\n, strcat(Account_Name,\u0022@\u0022,Account_UPNSuffix)\n,\u0022\u0022 );\nAuditLogs\n| where OperationName == \u0022Consent to application\u0022\n| extend Source_Account_UPNSuffix = tostring(todynamic(InitiatedBy) [\u0022user\u0022][\u0022userPrincipalName\u0022]), Source_Account_AadUserId = tostring(todynamic(InitiatedBy) [\u0022user\u0022][\u0022id\u0022])\n| where (account_upn != \u0022\u0022 and account_upn =~ Source_Account_UPNSuffix) \nor (Account_AadUserId != \u0022\u0022 and Account_AadUserId =~ Source_Account_AadUserId)\n| extend Target_CloudApplication_Name = tostring(todynamic(TargetResources)[0][\u0022displayName\u0022]), Target_CloudApplication_AppId = tostring(todynamic(TargetResources)[0][\u0022id\u0022])\n};\nUserConsentToApplication(\u0027{{Account_Name}}\u0027, \u0027{{Account_UPNSuffix}}\u0027, \u0027{{Account_AadUserId}}\u0027)  \n| project Target_CloudApplication_AppId, Target_CloudApplication_Name, TimeGenerated"
+            "query": "let UserConsentToApplication = (Account_Name:string, Account_UPNSuffix:string, Account_AadUserId:string){\nlet account_upn = iff(Account_Name != \"\" and Account_UPNSuffix != \"\"\n, strcat(Account_Name,\"@\",Account_UPNSuffix)\n,\"\" );\nAuditLogs\n| where OperationName == \"Consent to application\"\n| extend Source_Account_UPNSuffix = tostring(todynamic(InitiatedBy) [\"user\"][\"userPrincipalName\"]), Source_Account_AadUserId = tostring(todynamic(InitiatedBy) [\"user\"][\"id\"])\n| where (account_upn != \"\" and account_upn =~ Source_Account_UPNSuffix) \nor (Account_AadUserId != \"\" and Account_AadUserId =~ Source_Account_AadUserId)\n| extend Target_CloudApplication_Name = tostring(todynamic(TargetResources)[0][\"displayName\"]), Target_CloudApplication_AppId = tostring(todynamic(TargetResources)[0][\"id\"])\n};\nUserConsentToApplication('{{Account_Name}}', '{{Account_UPNSuffix}}', '{{Account_AadUserId}}')  \n| project Target_CloudApplication_AppId, Target_CloudApplication_Name, TimeGenerated"
           },
           "requiredInputFieldsSets": [
             [
@@ -409,15 +406,15 @@
       "ResponseBody": {
         "id": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/testRG-9270/providers/Microsoft.OperationalInsights/workspaces/testRG-9270-ws/providers/Microsoft.SecurityInsights/entityQueries/6d37a904-d199-43ff-892b-53653b784122",
         "name": "6d37a904-d199-43ff-892b-53653b784122",
-        "etag": "\u00225b024e29-0000-0100-0000-635b8a8e0000\u0022",
+        "etag": "\"5b024e29-0000-0100-0000-635b8a8e0000\"",
         "type": "Microsoft.SecurityInsights/entityQueries",
         "kind": "Activity",
         "properties": {
           "title": "The user consented to OAuth application",
           "content": "The user consented to the OAuth application named {{Target_CloudApplication_Name}} {{Count}} time(s)",
-          "description": "This activity lists user\u0027s consents to an OAuth applications.",
+          "description": "This activity lists user's consents to an OAuth applications.",
           "queryDefinitions": {
-            "query": "let UserConsentToApplication = (Account_Name:string, Account_UPNSuffix:string, Account_AadUserId:string){\nlet account_upn = iff(Account_Name != \u0022\u0022 and Account_UPNSuffix != \u0022\u0022\n, strcat(Account_Name,\u0022@\u0022,Account_UPNSuffix)\n,\u0022\u0022 );\nAuditLogs\n| where OperationName == \u0022Consent to application\u0022\n| extend Source_Account_UPNSuffix = tostring(todynamic(InitiatedBy) [\u0022user\u0022][\u0022userPrincipalName\u0022]), Source_Account_AadUserId = tostring(todynamic(InitiatedBy) [\u0022user\u0022][\u0022id\u0022])\n| where (account_upn != \u0022\u0022 and account_upn =~ Source_Account_UPNSuffix) \nor (Account_AadUserId != \u0022\u0022 and Account_AadUserId =~ Source_Account_AadUserId)\n| extend Target_CloudApplication_Name = tostring(todynamic(TargetResources)[0][\u0022displayName\u0022]), Target_CloudApplication_AppId = tostring(todynamic(TargetResources)[0][\u0022id\u0022])\n};\nUserConsentToApplication(\u0027{{Account_Name}}\u0027, \u0027{{Account_UPNSuffix}}\u0027, \u0027{{Account_AadUserId}}\u0027)  \n| project Target_CloudApplication_AppId, Target_CloudApplication_Name, TimeGenerated"
+            "query": "let UserConsentToApplication = (Account_Name:string, Account_UPNSuffix:string, Account_AadUserId:string){\nlet account_upn = iff(Account_Name != \"\" and Account_UPNSuffix != \"\"\n, strcat(Account_Name,\"@\",Account_UPNSuffix)\n,\"\" );\nAuditLogs\n| where OperationName == \"Consent to application\"\n| extend Source_Account_UPNSuffix = tostring(todynamic(InitiatedBy) [\"user\"][\"userPrincipalName\"]), Source_Account_AadUserId = tostring(todynamic(InitiatedBy) [\"user\"][\"id\"])\n| where (account_upn != \"\" and account_upn =~ Source_Account_UPNSuffix) \nor (Account_AadUserId != \"\" and Account_AadUserId =~ Source_Account_AadUserId)\n| extend Target_CloudApplication_Name = tostring(todynamic(TargetResources)[0][\"displayName\"]), Target_CloudApplication_AppId = tostring(todynamic(TargetResources)[0][\"id\"])\n};\nUserConsentToApplication('{{Account_Name}}', '{{Account_UPNSuffix}}', '{{Account_AadUserId}}')  \n| project Target_CloudApplication_AppId, Target_CloudApplication_Name, TimeGenerated"
           },
           "requiredInputFieldsSets": [
             [
