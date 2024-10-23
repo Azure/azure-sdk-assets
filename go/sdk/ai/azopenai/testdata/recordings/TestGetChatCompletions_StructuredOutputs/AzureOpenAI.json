@@ -1,0 +1,195 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/gpt-4o-0806/chat/completions?api-version=2024-08-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Api-Key": "Sanitized",
+        "Content-Length": "1213",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azopenai.Client/v0.7.1 (go1.23.1; linux)"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "content": "You are a helpful assistant. The current date is August 6, 2024. You help users query for the data they are looking for by calling the query function.",
+            "role": "assistant"
+          },
+          {
+            "content": "look up all my orders in may of last year that were fulfilled but not delivered on time",
+            "role": "user"
+          }
+        ],
+        "model": "gpt-4o-0806",
+        "tools": [
+          {
+            "function": {
+              "name": "Sanitized",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "table_name": {
+                    "type": "string",
+                    "enum": [
+                      "orders"
+                    ]
+                  },
+                  "columns": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "id",
+                        "status",
+                        "expected_delivery_date",
+                        "delivered_at",
+                        "shipped_at",
+                        "ordered_at",
+                        "canceled_at"
+                      ]
+                    }
+                  },
+                  "conditions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "column": {
+                          "type": "string"
+                        },
+                        "operator": {
+                          "type": "string",
+                          "enum": [
+                            "=",
+                            ">",
+                            "<",
+                            ">=",
+                            "<=",
+                            "!="
+                          ]
+                        },
+                        "value": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "column_name": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "column_name"
+                              ],
+                              "additionalProperties": false
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "column",
+                        "operator",
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "order_by": {
+                    "type": "string",
+                    "enum": [
+                      "asc",
+                      "desc"
+                    ]
+                  }
+                },
+                "required": [
+                  "table_name",
+                  "columns",
+                  "conditions",
+                  "order_by"
+                ],
+                "additionalProperties": false
+              },
+              "strict": true
+            },
+            "type": "function"
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "d9083fb8-33f1-4357-9b00-6bc3df70a42e",
+        "azureml-model-session": "d083-20241016040322",
+        "Connection": "keep-alive",
+        "Content-Length": "1245",
+        "Content-Type": "application/json",
+        "Date": "Wed, 23 Oct 2024 23:25:06 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "1570",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-rai-invoked": "true",
+        "x-ms-region": "East US",
+        "x-ratelimit-remaining-requests": "4489",
+        "x-ratelimit-remaining-tokens": "448300",
+        "X-Request-ID": "4af2a6eb-ed6e-4c48-a071-238a45eac006"
+      },
+      "ResponseBody": {
+        "choices": [
+          {
+            "content_filter_results": {},
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": null,
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "function": {
+                    "arguments": "{\"table_name\": \"orders\", \"columns\": [\"id\", \"status\", \"expected_delivery_date\", \"delivered_at\"], \"conditions\": [{\"column\": \"ordered_at\", \"operator\": \">=\", \"value\": \"2023-05-01\"}, {\"column\": \"ordered_at\", \"operator\": \"<=\", \"value\": \"2023-05-31\"}, {\"column\": \"status\", \"operator\": \"=\", \"value\": \"fulfilled\"}], \"order_by\": \"asc\"}",
+                    "name": "Sanitized"
+                  },
+                  "id": "Sanitized",
+                  "type": "function"
+                },
+                {
+                  "function": {
+                    "arguments": "{\"table_name\": \"orders\", \"columns\": [\"id\", \"status\", \"expected_delivery_date\", \"delivered_at\"], \"conditions\": [{\"column\": \"delivered_at\", \"operator\": \">\", \"value\": {\"column_name\": \"expected_delivery_date\"}}], \"order_by\": \"asc\"}",
+                    "name": "Sanitized"
+                  },
+                  "id": "Sanitized",
+                  "type": "function"
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1729725905,
+        "id": "Sanitized",
+        "model": "gpt-4o-2024-08-06",
+        "object": "chat.completion",
+        "prompt_filter_results": [
+          {
+            "prompt_index": 0,
+            "content_filter_results": {}
+          }
+        ],
+        "system_fingerprint": "fp_d54531d9eb",
+        "usage": {
+          "completion_tokens": 161,
+          "prompt_tokens": 186,
+          "total_tokens": 347
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}
