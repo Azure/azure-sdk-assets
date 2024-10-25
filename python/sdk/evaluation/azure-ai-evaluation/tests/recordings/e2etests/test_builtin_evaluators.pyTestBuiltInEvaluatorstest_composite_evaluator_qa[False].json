@@ -43,88 +43,23 @@
         "temperature": 0.0,
         "top_p": 1.0
       },
-      "StatusCode": 429,
-      "ResponseHeaders": {
-        "apim-request-id": "c993cdbe-1384-454d-9ac6-02cf499a8780",
-        "Connection": "close",
-        "Content-Length": "341",
-        "Content-Type": "application/json",
-        "Date": "Fri, 25 Oct 2024 17:50:43 GMT",
-        "policy-id": "DeploymentRatelimit-Token",
-        "Retry-After": "19",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-region": "West US 3",
-        "x-ratelimit-remaining-requests": "9",
-        "x-ratelimit-reset-tokens": "19"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "429",
-          "message": "Requests to the ChatCompletions_Create Operation under Azure OpenAI API version 2024-08-01-preview have exceeded token rate limit of your current AIServices S0 pricing tier. Please retry after 19 seconds. Please contact Azure support service if you would like to further increase the default rate limit."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.cognitiveservices.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2024-08-01-preview",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate",
-        "api-key": "Sanitized",
-        "Connection": "close",
-        "Content-Length": "5797",
-        "Content-Type": "application/json",
-        "ms-azure-ai-promptflow-called-from": "promptflow-core",
-        "User-Agent": "AsyncAzureOpenAI/Python 1.51.2",
-        "x-ms-useragent": "azure-ai-evaluation/1.0.0b5",
-        "X-Stainless-Arch": "x64",
-        "X-Stainless-Async": "async:asyncio",
-        "X-Stainless-Lang": "python",
-        "X-Stainless-OS": "Other:XXX",
-        "X-Stainless-Package-Version": "vX.X.X",
-        "x-stainless-retry-count": "0",
-        "X-Stainless-Runtime": "CPython",
-        "X-Stainless-Runtime-Version": "3.X.X"
-      },
-      "RequestBody": {
-        "messages": [
-          {
-            "role": "system",
-            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include CONTEXT, QUERY, and RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
-          },
-          {
-            "role": "user",
-            "content": "# Definition\n**Groundedness** refers to how well an answer is anchored in the provided context, evaluating its relevance, accuracy, and completeness based exclusively on that context. It assesses the extent to which the answer directly and fully addresses the question without introducing unrelated or incorrect information. The scale ranges from 1 to 5, with higher numbers indicating greater groundedness.\n\n# Ratings\n## [Groundedness: 1] (Completely Unrelated Response)\n**Definition:** An answer that does not relate to the question or the context in any way. It fails to address the topic, provides irrelevant information, or introduces completely unrelated subjects.\n\n**Examples:**\n  **Context:** The company's annual meeting will be held next Thursday.\n  **Query:** When is the company's annual meeting?\n  **Response:** I enjoy hiking in the mountains during summer.\n\n  **Context:** The new policy aims to reduce carbon emissions by 20% over the next five years.\n  **Query:** What is the goal of the new policy?\n  **Response:** My favorite color is blue.\n\n## [Groundedness: 2] (Related Topic but Does Not Respond to the Query)\n**Definition:** An answer that relates to the general topic of the context but does not answer the specific question asked. It may mention concepts from the context but fails to provide a direct or relevant response.\n\n**Examples:**\n  **Context:** The museum will exhibit modern art pieces from various local artists.\n  **Query:** What kind of art will be exhibited at the museum?\n  **Response:** Museums are important cultural institutions.\n\n  **Context:** The new software update improves battery life and performance.\n  **Query:** What does the new software update improve?\n  **Response:** Software updates can sometimes fix bugs.\n\n## [Groundedness: 3] (Attempts to Respond but Contains Incorrect Information)\n**Definition:** An answer that attempts to respond to the question but includes incorrect information not supported by the context. It may misstate facts, misinterpret the context, or provide erroneous details.\n\n**Examples:**\n  **Context:** The festival starts on June 5th and features international musicians.\n  **Query:** When does the festival start?\n  **Response:** The festival starts on July 5th and features local artists.\n\n  **Context:** The recipe requires two eggs and one cup of milk.\n  **Query:** How many eggs are needed for the recipe?\n  **Response:** You need three eggs for the recipe.\n\n## [Groundedness: 4] (Partially Correct Response)\n**Definition:** An answer that provides a correct response to the question but is incomplete or lacks specific details mentioned in the context. It captures some of the necessary information but omits key elements needed for a full understanding.\n\n**Examples:**\n  **Context:** The bookstore offers a 15% discount to students and a 10% discount to senior citizens.\n  **Query:** What discount does the bookstore offer to students?\n  **Response:** Students get a discount at the bookstore.\n\n  **Context:** The company's headquarters are located in Berlin, Germany.\n  **Query:** Where are the company's headquarters?\n  **Response:** The company's headquarters are in Germany.\n\n## [Groundedness: 5] (Fully Correct and Complete Response)\n**Definition:** An answer that thoroughly and accurately responds to the question, including all relevant details from the context. It directly addresses the question with precise information, demonstrating complete understanding without adding extraneous information.\n\n**Examples:**\n  **Context:** The author released her latest novel, 'The Silent Echo', on September 1st.\n  **Query:** When was 'The Silent Echo' released?\n  **Response:** 'The Silent Echo' was released on September 1st.\n\n  **Context:** Participants must register by May 31st to be eligible for early bird pricing.\n  **Query:** By what date must participants register to receive early bird pricing?\n  **Response:** Participants must register by May 31st to receive early bird pricing.\n\n\n# Data\nCONTEXT: Tokyo is the capital of Japan.\nQUERY: Tokyo is the capital of which country?\nRESPONSE: Japan\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE in relation to the CONTEXT and QUERY based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
-          }
-        ],
-        "model": "aoai-deployment",
-        "frequency_penalty": 0,
-        "max_tokens": 800,
-        "presence_penalty": 0,
-        "response_format": {
-          "type": "text"
-        },
-        "temperature": 0.0,
-        "top_p": 1.0
-      },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "dffebd30-755a-471e-89cd-417a924aa1c3",
-        "azureml-model-session": "d037-20240925061038",
+        "apim-request-id": "9a5ddf08-c515-4531-8769-ae4c45e81a84",
+        "azureml-model-session": "d205-20241002110430",
         "Connection": "close",
-        "Content-Length": "1427",
+        "Content-Length": "1395",
         "Content-Type": "application/json",
-        "Date": "Fri, 25 Oct 2024 17:51:04 GMT",
+        "Date": "Fri, 25 Oct 2024 20:00:29 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "945",
+        "x-envoy-upstream-service-time": "1312",
         "x-ms-rai-invoked": "true",
         "x-ms-region": "West US 3",
         "x-ratelimit-remaining-requests": "9",
         "x-ratelimit-remaining-tokens": "7828",
-        "X-Request-ID": "70fddbe5-536e-4c23-bc60-24b7c70c23e5"
+        "X-Request-ID": "5ffc87c1-b97e-4f9f-bcc5-cdd4f734b30d"
       },
       "ResponseBody": {
         "choices": [
@@ -159,12 +94,12 @@
             "index": 0,
             "logprobs": null,
             "message": {
-              "content": "<S0>Let's think step by step: The context states that Tokyo is the capital of Japan. The query asks which country Tokyo is the capital of. The response is \"Japan.\" The response directly answers the query by providing the correct country, Japan, as stated in the context. There is no extraneous information, and the response is both accurate and complete.</S0>\n<S1>The response accurately and completely answers the query based on the provided context.</S1>\n<S2>5</S2>",
+              "content": "<S0>Let's think step by step: The context states that Tokyo is the capital of Japan. The query asks which country Tokyo is the capital of. The response is \"Japan,\" which directly answers the query by providing the correct country. The response is accurate, relevant, and complete based on the provided context.</S0> \n<S1>The response directly and accurately answers the query using the information given in the context.</S1> \n<S2>5</S2>",
               "role": "assistant"
             }
           }
         ],
-        "created": 1729878663,
+        "created": 1729886429,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -197,9 +132,9 @@
         ],
         "system_fingerprint": "fp_67802d9a6d",
         "usage": {
-          "completion_tokens": 103,
+          "completion_tokens": 97,
           "prompt_tokens": 1153,
-          "total_tokens": 1256
+          "total_tokens": 1250
         }
       }
     },
@@ -248,21 +183,21 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "59b4f585-fa82-46a1-bcde-6e92c061fdcb",
-        "azureml-model-session": "d037-20240925061038",
+        "apim-request-id": "4f02b936-0fe8-4ed6-9919-993668789c68",
+        "azureml-model-session": "d044-20240925161426",
         "Connection": "close",
-        "Content-Length": "1340",
+        "Content-Length": "1345",
         "Content-Type": "application/json",
-        "Date": "Fri, 25 Oct 2024 17:51:05 GMT",
+        "Date": "Fri, 25 Oct 2024 20:00:31 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "993",
+        "x-envoy-upstream-service-time": "1218",
         "x-ms-rai-invoked": "true",
         "x-ms-region": "West US 3",
         "x-ratelimit-remaining-requests": "8",
         "x-ratelimit-remaining-tokens": "5903",
-        "X-Request-ID": "805c382f-ef03-4340-aac0-c6f08cf6b9f5"
+        "X-Request-ID": "d3e7b7bd-8f8f-43cf-8caa-7a9569fd0676"
       },
       "ResponseBody": {
         "choices": [
@@ -297,12 +232,12 @@
             "index": 0,
             "logprobs": null,
             "message": {
-              "content": "<S0>Let's think step by step: The query asks for the country of which Tokyo is the capital. The response \"Japan\" directly answers this question. It is accurate and complete, providing the necessary information without any extraneous details.</S0> \n<S1>The response correctly identifies Japan as the country of which Tokyo is the capital, fully addressing the query.</S1> \n<S2>4</S2>",
+              "content": "<S0>Let's think step by step: The query asks for the country of which Tokyo is the capital. The response \"Japan\" directly answers this question. It is accurate and complete, as it provides the necessary information without any extraneous details.</S0> \n<S1>The response correctly identifies Japan as the country of which Tokyo is the capital, fully addressing the query.</S1> \n<S2>4</S2>",
               "role": "assistant"
             }
           }
         ],
-        "created": 1729878665,
+        "created": 1729886431,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -335,9 +270,9 @@
         ],
         "system_fingerprint": "fp_67802d9a6d",
         "usage": {
-          "completion_tokens": 86,
+          "completion_tokens": 88,
           "prompt_tokens": 921,
-          "total_tokens": 1007
+          "total_tokens": 1009
         }
       }
     },
@@ -386,21 +321,21 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "4666fca1-c48d-4c4f-957a-5917899ab1d0",
-        "azureml-model-session": "d211-20241002183344",
+        "apim-request-id": "6bf15c1a-61f9-4134-8c4f-73042cb40e75",
+        "azureml-model-session": "d040-20240925113252",
         "Connection": "close",
         "Content-Length": "1489",
         "Content-Type": "application/json",
-        "Date": "Fri, 25 Oct 2024 17:51:08 GMT",
+        "Date": "Fri, 25 Oct 2024 20:00:33 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "2331",
+        "x-envoy-upstream-service-time": "1060",
         "x-ms-rai-invoked": "true",
         "x-ms-region": "West US 3",
         "x-ratelimit-remaining-requests": "7",
         "x-ratelimit-remaining-tokens": "3481",
-        "X-Request-ID": "43f30820-10de-40fc-b93b-d409da1359ad"
+        "X-Request-ID": "678a113f-fa08-42eb-a156-3996e406cd6e"
       },
       "ResponseBody": {
         "choices": [
@@ -440,7 +375,7 @@
             }
           }
         ],
-        "created": 1729878666,
+        "created": 1729886432,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -524,21 +459,21 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "a187de1b-7c70-4cb8-b880-600f94a91582",
-        "azureml-model-session": "d039-20240925100005",
+        "apim-request-id": "4c0b023c-2a6d-481d-80d6-772780631807",
+        "azureml-model-session": "d040-20240925113252",
         "Connection": "close",
-        "Content-Length": "1574",
+        "Content-Length": "1548",
         "Content-Type": "application/json",
-        "Date": "Fri, 25 Oct 2024 17:51:10 GMT",
+        "Date": "Fri, 25 Oct 2024 20:00:34 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "1892",
+        "x-envoy-upstream-service-time": "1091",
         "x-ms-rai-invoked": "true",
         "x-ms-region": "West US 3",
         "x-ratelimit-remaining-requests": "6",
         "x-ratelimit-remaining-tokens": "1543",
-        "X-Request-ID": "6ee31c10-99ac-4ca7-9e31-afacf4158f07"
+        "X-Request-ID": "a3815ef7-2a5c-4b2a-b3e2-d69e46528737"
       },
       "ResponseBody": {
         "choices": [
@@ -573,12 +508,12 @@
             "index": 0,
             "logprobs": null,
             "message": {
-              "content": "<S0>Let's think step by step: The response \"Japan\" is a single word. It does not contain any grammatical errors because it is just one word, but it also does not provide any context, sentence structure, or vocabulary range. It is not a complete sentence and does not convey any ideas or information. Therefore, it lacks fluency in terms of sentence complexity, coherence, and overall readability.</S0>\n\n<S1>The response is a single word and does not demonstrate any command of language, sentence structure, or vocabulary. It is largely incomprehensible and does not convey any meaningful message.</S1>\n\n<S2>1</S2>",
+              "content": "<S0>Let's think step by step: The response \"Japan\" is a single word. It does not contain any grammatical errors, but it also does not provide any context, sentence structure, or vocabulary range. It is not a complete sentence and does not convey any ideas or information. Therefore, it lacks fluency in terms of sentence complexity, coherence, and overall readability.</S0>\n\n<S1>The response is a single word and does not demonstrate any command of language, sentence structure, or vocabulary. It is largely incomprehensible as it does not convey any meaningful message.</S1>\n\n<S2>1</S2>",
               "role": "assistant"
             }
           }
         ],
-        "created": 1729878669,
+        "created": 1729886433,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -611,9 +546,9 @@
         ],
         "system_fingerprint": "fp_67802d9a6d",
         "usage": {
-          "completion_tokens": 133,
+          "completion_tokens": 128,
           "prompt_tokens": 914,
-          "total_tokens": 1047
+          "total_tokens": 1042
         }
       }
     },
@@ -662,21 +597,21 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "fb1ae58b-7f3d-4a2e-a9ea-57037f6c11cc",
-        "azureml-model-session": "d222-20241003082122",
+        "apim-request-id": "6b95d300-1b0d-48d0-a6c0-b8ecf4200de4",
+        "azureml-model-session": "d045-20240925172519",
         "Connection": "close",
         "Content-Length": "955",
         "Content-Type": "application/json",
-        "Date": "Fri, 25 Oct 2024 17:51:10 GMT",
+        "Date": "Fri, 25 Oct 2024 20:00:35 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "153",
+        "x-envoy-upstream-service-time": "156",
         "x-ms-rai-invoked": "true",
         "x-ms-region": "West US 3",
         "x-ratelimit-remaining-requests": "5",
         "x-ratelimit-remaining-tokens": "482",
-        "X-Request-ID": "9337efbd-367b-44c1-98f7-f9d0083bb970"
+        "X-Request-ID": "2f52201f-5610-4df0-bf81-f8db71bd4253"
       },
       "ResponseBody": {
         "choices": [
@@ -716,7 +651,7 @@
             }
           }
         ],
-        "created": 1729878671,
+        "created": 1729886435,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
