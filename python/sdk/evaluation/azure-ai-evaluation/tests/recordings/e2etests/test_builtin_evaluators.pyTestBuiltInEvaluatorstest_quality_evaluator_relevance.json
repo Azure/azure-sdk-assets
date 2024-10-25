@@ -1,17 +1,17 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://Sanitized.api.cognitive.microsoft.com/openai/deployments/aoai-deployment/chat/completions?api-version=2024-04-01-preview",
+      "RequestUri": "https://Sanitized.cognitiveservices.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2024-08-01-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip, deflate",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "3508",
+        "Content-Length": "4817",
         "Content-Type": "application/json",
         "ms-azure-ai-promptflow-called-from": "promptflow-core",
-        "User-Agent": "AsyncAzureOpenAI/Python 1.50.2",
+        "User-Agent": "AsyncAzureOpenAI/Python 1.51.2",
         "x-ms-useragent": "azure-ai-evaluation/1.0.0b5",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
@@ -26,80 +26,16 @@
         "messages": [
           {
             "role": "system",
-            "content": "You are an AI assistant. You will be given the definition of an evaluation metric for assessing the quality of an answer in a question-answering task. Your job is to compute an accurate evaluation score using the provided evaluation metric. You should return a single integer value between 1 to 5 representing the evaluation metric. You will include no other text or information."
+            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include QUERY and RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
           },
           {
             "role": "user",
-            "content": "Relevance measures how well the answer addresses the main aspects of the question, based on the context. Consider whether all and only the important aspects are contained in the answer when evaluating relevance. Given the context and question, score the relevance of the answer between one to five stars using the following rating scale:\nOne star: the answer completely lacks relevance\nTwo stars: the answer mostly lacks relevance\nThree stars: the answer is partially relevant\nFour stars: the answer is mostly relevant\nFive stars: the answer has perfect relevance\n\nThis rating value should always be an integer between 1 and 5. So the rating produced should be 1 or 2 or 3 or 4 or 5.\n\ncontext: Marie Curie was a Polish-born physicist and chemist who pioneered research on radioactivity and was the first woman to win a Nobel Prize.\nquestion: What field did Marie Curie excel in?\nanswer: Marie Curie was a renowned painter who focused mainly on impressionist styles and techniques.\nstars: 1\n\ncontext: The Beatles were an English rock band formed in Liverpool in 1960, and they are widely regarded as the most influential music band in history.\nquestion: Where were The Beatles formed?\nanswer: The band The Beatles began their journey in London, England, and they changed the history of music.\nstars: 2\n\ncontext: The recent Mars rover, Perseverance, was launched in 2020 with the main goal of searching for signs of ancient life on Mars. The rover also carries an experiment called MOXIE, which aims to generate oxygen from the Martian atmosphere.\nquestion: What are the main goals of Perseverance Mars rover mission?\nanswer: The Perseverance Mars rover mission focuses on searching for signs of ancient life on Mars.\nstars: 3\n\ncontext: The Mediterranean diet is a commonly recommended dietary plan that emphasizes fruits, vegetables, whole grains, legumes, lean proteins, and healthy fats. Studies have shown that it offers numerous health benefits, including a reduced risk of heart disease and improved cognitive health.\nquestion: What are the main components of the Mediterranean diet?\nanswer: The Mediterranean diet primarily consists of fruits, vegetables, whole grains, and legumes.\nstars: 4\n\ncontext: The Queen's Royal Castle is a well-known tourist attraction in the United Kingdom. It spans over 500 acres and contains extensive gardens and parks. The castle was built in the 15th century and has been home to generations of royalty.\nquestion: What are the main attractions of the Queen's Royal Castle?\nanswer: The main attractions of the Queen's Royal Castle are its expansive 500-acre grounds, extensive gardens, parks, and the historical castle itself, which dates back to the 15th century and has housed generations of royalty.\nstars: 5\n\ncontext: Tokyo is Japan's capital.\nquestion: What is the capital of Japan?\nanswer: The capital of Japan is Tokyo.\nstars:"
+            "content": "# Definition\n**Relevance** refers to how effectively a response addresses a question. It assesses the accuracy, completeness, and direct relevance of the response based solely on the given information.\n\n# Ratings\n## [Relevance: 1] (Irrelevant Response)\n**Definition:** The response is unrelated to the question. It provides information that is off-topic and does not attempt to address the question posed.\n\n**Examples:**\n  **Query:** What is the team preparing for?\n  **Response:** I went grocery shopping yesterday evening.\n\n  **Query:** When will the company's new product line launch?\n  **Response:** International travel can be very rewarding and educational.\n\n## [Relevance: 2] (Incorrect Response)\n**Definition:** The response attempts to address the question but includes incorrect information. It provides a response that is factually wrong based on the provided information.\n\n**Examples:**\n  **Query:** When was the merger between the two firms finalized?\n  **Response:** The merger was finalized on April 10th.     \n\n  **Query:** Where and when will the solar eclipse be visible?\n  **Response:** The solar eclipse will be visible in Asia on December 14th.\n\n## [Relevance: 3] (Incomplete Response)\n**Definition:** The response addresses the question but omits key details necessary for a full understanding. It provides a partial response that lacks essential information.      \n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The restaurant offers Italian food like pasta.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy and climate change.\n\n## [Relevance: 4] (Complete Response)\n**Definition:** The response fully addresses the question with accurate and complete information. It includes all essential details required for a comprehensive understanding, without adding any extraneous information.\n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The new restaurant offers Italian cuisine, featuring dishes like pasta, pizza, and risotto.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy, climate change, and sustainability practices.\n\n## [Relevance: 5] (Comprehensive Response with Insights)    \n**Definition:** The response not only fully and accurately addresses the question but also includes additional relevant insights or elaboration. It may explain the significance, implications, or provide minor inferences that enhance understanding.\n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The new restaurant offers Italian cuisine, featuring dishes like pasta, pizza, and risotto, aiming to provide customers with an authentic Italian dining experience.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy, climate change, and sustainability practices, bringing together global experts to discuss these critical issues. \n\n\n\n# Data\nQUERY: What is the capital of Japan?\nRESPONSE: The capital of Japan is Tokyo.\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE in relation to the QUERY based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
           }
         ],
         "model": "aoai-deployment",
         "frequency_penalty": 0,
-        "max_tokens": 1,
-        "presence_penalty": 0,
-        "response_format": {
-          "type": "text"
-        },
-        "temperature": 0.0,
-        "top_p": 1.0
-      },
-      "StatusCode": 429,
-      "ResponseHeaders": {
-        "apim-request-id": "1b700c59-9bd3-482b-9e3b-2d9dd8a68fbc",
-        "Connection": "close",
-        "Content-Length": "347",
-        "Content-Type": "application/json",
-        "Date": "Thu, 24 Oct 2024 18:01:57 GMT",
-        "policy-id": "DeploymentRatelimit-Call",
-        "Retry-After": "4",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-region": "East US",
-        "x-ratelimit-reset-requests": "4"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "429",
-          "message": "Requests to the ChatCompletions_Create Operation under Azure OpenAI API version 2024-04-01-preview have exceeded call rate limit of your current OpenAI S0 pricing tier. Please retry after 4 seconds. Please go here: https://aka.ms/oai/quotaincrease if you would like to further increase the default rate limit."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.api.cognitive.microsoft.com/openai/deployments/aoai-deployment/chat/completions?api-version=2024-04-01-preview",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate",
-        "api-key": "Sanitized",
-        "Connection": "close",
-        "Content-Length": "3508",
-        "Content-Type": "application/json",
-        "ms-azure-ai-promptflow-called-from": "promptflow-core",
-        "User-Agent": "AsyncAzureOpenAI/Python 1.50.2",
-        "x-ms-useragent": "azure-ai-evaluation/1.0.0b5",
-        "X-Stainless-Arch": "x64",
-        "X-Stainless-Async": "async:asyncio",
-        "X-Stainless-Lang": "python",
-        "X-Stainless-OS": "Other:XXX",
-        "X-Stainless-Package-Version": "vX.X.X",
-        "x-stainless-retry-count": "0",
-        "X-Stainless-Runtime": "CPython",
-        "X-Stainless-Runtime-Version": "3.X.X"
-      },
-      "RequestBody": {
-        "messages": [
-          {
-            "role": "system",
-            "content": "You are an AI assistant. You will be given the definition of an evaluation metric for assessing the quality of an answer in a question-answering task. Your job is to compute an accurate evaluation score using the provided evaluation metric. You should return a single integer value between 1 to 5 representing the evaluation metric. You will include no other text or information."
-          },
-          {
-            "role": "user",
-            "content": "Relevance measures how well the answer addresses the main aspects of the question, based on the context. Consider whether all and only the important aspects are contained in the answer when evaluating relevance. Given the context and question, score the relevance of the answer between one to five stars using the following rating scale:\nOne star: the answer completely lacks relevance\nTwo stars: the answer mostly lacks relevance\nThree stars: the answer is partially relevant\nFour stars: the answer is mostly relevant\nFive stars: the answer has perfect relevance\n\nThis rating value should always be an integer between 1 and 5. So the rating produced should be 1 or 2 or 3 or 4 or 5.\n\ncontext: Marie Curie was a Polish-born physicist and chemist who pioneered research on radioactivity and was the first woman to win a Nobel Prize.\nquestion: What field did Marie Curie excel in?\nanswer: Marie Curie was a renowned painter who focused mainly on impressionist styles and techniques.\nstars: 1\n\ncontext: The Beatles were an English rock band formed in Liverpool in 1960, and they are widely regarded as the most influential music band in history.\nquestion: Where were The Beatles formed?\nanswer: The band The Beatles began their journey in London, England, and they changed the history of music.\nstars: 2\n\ncontext: The recent Mars rover, Perseverance, was launched in 2020 with the main goal of searching for signs of ancient life on Mars. The rover also carries an experiment called MOXIE, which aims to generate oxygen from the Martian atmosphere.\nquestion: What are the main goals of Perseverance Mars rover mission?\nanswer: The Perseverance Mars rover mission focuses on searching for signs of ancient life on Mars.\nstars: 3\n\ncontext: The Mediterranean diet is a commonly recommended dietary plan that emphasizes fruits, vegetables, whole grains, legumes, lean proteins, and healthy fats. Studies have shown that it offers numerous health benefits, including a reduced risk of heart disease and improved cognitive health.\nquestion: What are the main components of the Mediterranean diet?\nanswer: The Mediterranean diet primarily consists of fruits, vegetables, whole grains, and legumes.\nstars: 4\n\ncontext: The Queen's Royal Castle is a well-known tourist attraction in the United Kingdom. It spans over 500 acres and contains extensive gardens and parks. The castle was built in the 15th century and has been home to generations of royalty.\nquestion: What are the main attractions of the Queen's Royal Castle?\nanswer: The main attractions of the Queen's Royal Castle are its expansive 500-acre grounds, extensive gardens, parks, and the historical castle itself, which dates back to the 15th century and has housed generations of royalty.\nstars: 5\n\ncontext: Tokyo is Japan's capital.\nquestion: What is the capital of Japan?\nanswer: The capital of Japan is Tokyo.\nstars:"
-          }
-        ],
-        "model": "aoai-deployment",
-        "frequency_penalty": 0,
-        "max_tokens": 1,
+        "max_tokens": 800,
         "presence_penalty": 0,
         "response_format": {
           "type": "text"
@@ -109,25 +45,21 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Access-Control-Allow-Origin": "*",
-        "apim-request-id": "fdeccf7e-abd8-4b20-b884-dfc180119bc6",
-        "azureml-model-session": "d051-20240925115107",
-        "Cache-Control": "must-revalidate, no-cache",
-        "cmp-upstream-response-duration": "253",
+        "apim-request-id": "d2fc0f8f-e2da-477d-a8df-0758a52eda4f",
+        "azureml-model-session": "d189-20240927224653",
         "Connection": "close",
-        "Content-Length": "772",
+        "Content-Length": "1383",
         "Content-Type": "application/json",
-        "Date": "Thu, 24 Oct 2024 18:02:02 GMT",
-        "ms-azureml-model-time": "303",
+        "Date": "Fri, 25 Oct 2024 22:39:05 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "308",
+        "x-envoy-upstream-service-time": "1119",
         "x-ms-rai-invoked": "true",
-        "x-ms-region": "East US",
-        "x-ratelimit-remaining-requests": "0",
-        "x-ratelimit-remaining-tokens": "9989",
-        "X-Request-ID": "35ce005c-3697-4869-93a7-bc4c4e08a49d"
+        "x-ms-region": "West US 3",
+        "x-ratelimit-remaining-requests": "9",
+        "x-ratelimit-remaining-tokens": "8071",
+        "X-Request-ID": "cc6e439e-5ab0-43ac-841e-c1b7f1653f05"
       },
       "ResponseBody": {
         "choices": [
@@ -136,6 +68,14 @@
               "hate": {
                 "filtered": false,
                 "severity": "safe"
+              },
+              "protected_material_code": {
+                "filtered": false,
+                "detected": false
+              },
+              "protected_material_text": {
+                "filtered": false,
+                "detected": false
               },
               "self_harm": {
                 "filtered": false,
@@ -150,16 +90,16 @@
                 "severity": "safe"
               }
             },
-            "finish_reason": "length",
+            "finish_reason": "stop",
             "index": 0,
             "logprobs": null,
             "message": {
-              "content": "5",
+              "content": "<S0>Let's think step by step: The query asks for the capital of Japan. The response states that the capital of Japan is Tokyo. This directly answers the question with accurate and complete information. There are no additional insights or elaborations, but the response fully addresses the query.</S0>\n<S1>The response is accurate and complete, directly answering the question without any extraneous information.</S1>\n<S2>4</S2>",
               "role": "assistant"
             }
           }
         ],
-        "created": 1729792922,
+        "created": 1729895945,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -170,6 +110,10 @@
               "hate": {
                 "filtered": false,
                 "severity": "safe"
+              },
+              "jailbreak": {
+                "filtered": false,
+                "detected": false
               },
               "self_harm": {
                 "filtered": false,
@@ -186,26 +130,26 @@
             }
           }
         ],
-        "system_fingerprint": null,
+        "system_fingerprint": "fp_67802d9a6d",
         "usage": {
-          "completion_tokens": 1,
-          "prompt_tokens": 683,
-          "total_tokens": 684
+          "completion_tokens": 90,
+          "prompt_tokens": 925,
+          "total_tokens": 1015
         }
       }
     },
     {
-      "RequestUri": "https://Sanitized.api.cognitive.microsoft.com/openai/deployments/aoai-deployment/chat/completions?api-version=2024-04-01-preview",
+      "RequestUri": "https://Sanitized.cognitiveservices.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2024-08-01-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip, deflate",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "3614",
+        "Content-Length": "4793",
         "Content-Type": "application/json",
         "ms-azure-ai-promptflow-called-from": "promptflow-core",
-        "User-Agent": "AsyncAzureOpenAI/Python 1.50.2",
+        "User-Agent": "AsyncAzureOpenAI/Python 1.51.2",
         "x-ms-useragent": "azure-ai-evaluation/1.0.0b5",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
@@ -220,16 +164,16 @@
         "messages": [
           {
             "role": "system",
-            "content": "You are an AI assistant. You will be given the definition of an evaluation metric for assessing the quality of an answer in a question-answering task. Your job is to compute an accurate evaluation score using the provided evaluation metric. You should return a single integer value between 1 to 5 representing the evaluation metric. You will include no other text or information."
+            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include QUERY and RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
           },
           {
             "role": "user",
-            "content": "Relevance measures how well the answer addresses the main aspects of the question, based on the context. Consider whether all and only the important aspects are contained in the answer when evaluating relevance. Given the context and question, score the relevance of the answer between one to five stars using the following rating scale:\nOne star: the answer completely lacks relevance\nTwo stars: the answer mostly lacks relevance\nThree stars: the answer is partially relevant\nFour stars: the answer is mostly relevant\nFive stars: the answer has perfect relevance\n\nThis rating value should always be an integer between 1 and 5. So the rating produced should be 1 or 2 or 3 or 4 or 5.\n\ncontext: Marie Curie was a Polish-born physicist and chemist who pioneered research on radioactivity and was the first woman to win a Nobel Prize.\nquestion: What field did Marie Curie excel in?\nanswer: Marie Curie was a renowned painter who focused mainly on impressionist styles and techniques.\nstars: 1\n\ncontext: The Beatles were an English rock band formed in Liverpool in 1960, and they are widely regarded as the most influential music band in history.\nquestion: Where were The Beatles formed?\nanswer: The band The Beatles began their journey in London, England, and they changed the history of music.\nstars: 2\n\ncontext: The recent Mars rover, Perseverance, was launched in 2020 with the main goal of searching for signs of ancient life on Mars. The rover also carries an experiment called MOXIE, which aims to generate oxygen from the Martian atmosphere.\nquestion: What are the main goals of Perseverance Mars rover mission?\nanswer: The Perseverance Mars rover mission focuses on searching for signs of ancient life on Mars.\nstars: 3\n\ncontext: The Mediterranean diet is a commonly recommended dietary plan that emphasizes fruits, vegetables, whole grains, legumes, lean proteins, and healthy fats. Studies have shown that it offers numerous health benefits, including a reduced risk of heart disease and improved cognitive health.\nquestion: What are the main components of the Mediterranean diet?\nanswer: The Mediterranean diet primarily consists of fruits, vegetables, whole grains, and legumes.\nstars: 4\n\ncontext: The Queen's Royal Castle is a well-known tourist attraction in the United Kingdom. It spans over 500 acres and contains extensive gardens and parks. The castle was built in the 15th century and has been home to generations of royalty.\nquestion: What are the main attractions of the Queen's Royal Castle?\nanswer: The main attractions of the Queen's Royal Castle are its expansive 500-acre grounds, extensive gardens, parks, and the historical castle itself, which dates back to the 15th century and has housed generations of royalty.\nstars: 5\n\ncontext: {'global_context': 'Global context', 'query_context': 'Customer wants to know the capital of France', 'response_context': 'Paris is the capital of France'}\nquestion: What is the capital of France?\nanswer: Paris\nstars:"
+            "content": "# Definition\n**Relevance** refers to how effectively a response addresses a question. It assesses the accuracy, completeness, and direct relevance of the response based solely on the given information.\n\n# Ratings\n## [Relevance: 1] (Irrelevant Response)\n**Definition:** The response is unrelated to the question. It provides information that is off-topic and does not attempt to address the question posed.\n\n**Examples:**\n  **Query:** What is the team preparing for?\n  **Response:** I went grocery shopping yesterday evening.\n\n  **Query:** When will the company's new product line launch?\n  **Response:** International travel can be very rewarding and educational.\n\n## [Relevance: 2] (Incorrect Response)\n**Definition:** The response attempts to address the question but includes incorrect information. It provides a response that is factually wrong based on the provided information.\n\n**Examples:**\n  **Query:** When was the merger between the two firms finalized?\n  **Response:** The merger was finalized on April 10th.     \n\n  **Query:** Where and when will the solar eclipse be visible?\n  **Response:** The solar eclipse will be visible in Asia on December 14th.\n\n## [Relevance: 3] (Incomplete Response)\n**Definition:** The response addresses the question but omits key details necessary for a full understanding. It provides a partial response that lacks essential information.      \n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The restaurant offers Italian food like pasta.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy and climate change.\n\n## [Relevance: 4] (Complete Response)\n**Definition:** The response fully addresses the question with accurate and complete information. It includes all essential details required for a comprehensive understanding, without adding any extraneous information.\n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The new restaurant offers Italian cuisine, featuring dishes like pasta, pizza, and risotto.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy, climate change, and sustainability practices.\n\n## [Relevance: 5] (Comprehensive Response with Insights)    \n**Definition:** The response not only fully and accurately addresses the question but also includes additional relevant insights or elaboration. It may explain the significance, implications, or provide minor inferences that enhance understanding.\n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The new restaurant offers Italian cuisine, featuring dishes like pasta, pizza, and risotto, aiming to provide customers with an authentic Italian dining experience.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy, climate change, and sustainability practices, bringing together global experts to discuss these critical issues. \n\n\n\n# Data\nQUERY: What is the capital of France?\nRESPONSE: Paris\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE in relation to the QUERY based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
           }
         ],
         "model": "aoai-deployment",
         "frequency_penalty": 0,
-        "max_tokens": 1,
+        "max_tokens": 800,
         "presence_penalty": 0,
         "response_format": {
           "type": "text"
@@ -239,25 +183,21 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Access-Control-Allow-Origin": "*",
-        "apim-request-id": "b44a0098-9bea-4411-bec8-b548a6b1c150",
-        "azureml-model-session": "d051-20240925115107",
-        "Cache-Control": "must-revalidate, no-cache",
-        "cmp-upstream-response-duration": "170",
+        "apim-request-id": "34b78f42-2f6d-4961-aaef-f137ae4a6565",
+        "azureml-model-session": "d186-20240927163614",
         "Connection": "close",
-        "Content-Length": "772",
+        "Content-Length": "1357",
         "Content-Type": "application/json",
-        "Date": "Thu, 24 Oct 2024 18:02:02 GMT",
-        "ms-azureml-model-time": "212",
+        "Date": "Fri, 25 Oct 2024 22:39:07 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "216",
+        "x-envoy-upstream-service-time": "1014",
         "x-ms-rai-invoked": "true",
-        "x-ms-region": "East US",
-        "x-ratelimit-remaining-requests": "0",
-        "x-ratelimit-remaining-tokens": "9988",
-        "X-Request-ID": "ca1e0b2e-faf7-4d0f-b25e-19dac4f67a41"
+        "x-ms-region": "West US 3",
+        "x-ratelimit-remaining-requests": "8",
+        "x-ratelimit-remaining-tokens": "6148",
+        "X-Request-ID": "92b220e4-0ff8-4c3b-8f02-e8fa980013c1"
       },
       "ResponseBody": {
         "choices": [
@@ -266,6 +206,14 @@
               "hate": {
                 "filtered": false,
                 "severity": "safe"
+              },
+              "protected_material_code": {
+                "filtered": false,
+                "detected": false
+              },
+              "protected_material_text": {
+                "filtered": false,
+                "detected": false
               },
               "self_harm": {
                 "filtered": false,
@@ -280,16 +228,16 @@
                 "severity": "safe"
               }
             },
-            "finish_reason": "length",
+            "finish_reason": "stop",
             "index": 0,
             "logprobs": null,
             "message": {
-              "content": "5",
+              "content": "<S0>Let's think step by step: The query asks for the capital of France. The response is \"Paris.\" This directly answers the question with accurate and complete information. There are no additional insights or elaborations, but the response fully addresses the query.</S0> \n<S1>The response is accurate and complete, directly answering the question without any extraneous information.</S1> \n<S2>4</S2>",
               "role": "assistant"
             }
           }
         ],
-        "created": 1729792922,
+        "created": 1729895946,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -300,6 +248,10 @@
               "hate": {
                 "filtered": false,
                 "severity": "safe"
+              },
+              "jailbreak": {
+                "filtered": false,
+                "detected": false
               },
               "self_harm": {
                 "filtered": false,
@@ -316,26 +268,26 @@
             }
           }
         ],
-        "system_fingerprint": null,
+        "system_fingerprint": "fp_67802d9a6d",
         "usage": {
-          "completion_tokens": 1,
-          "prompt_tokens": 706,
-          "total_tokens": 707
+          "completion_tokens": 87,
+          "prompt_tokens": 920,
+          "total_tokens": 1007
         }
       }
     },
     {
-      "RequestUri": "https://Sanitized.api.cognitive.microsoft.com/openai/deployments/aoai-deployment/chat/completions?api-version=2024-04-01-preview",
+      "RequestUri": "https://Sanitized.cognitiveservices.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2024-08-01-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip, deflate",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "3620",
+        "Content-Length": "4796",
         "Content-Type": "application/json",
         "ms-azure-ai-promptflow-called-from": "promptflow-core",
-        "User-Agent": "AsyncAzureOpenAI/Python 1.50.2",
+        "User-Agent": "AsyncAzureOpenAI/Python 1.51.2",
         "x-ms-useragent": "azure-ai-evaluation/1.0.0b5",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
@@ -350,16 +302,16 @@
         "messages": [
           {
             "role": "system",
-            "content": "You are an AI assistant. You will be given the definition of an evaluation metric for assessing the quality of an answer in a question-answering task. Your job is to compute an accurate evaluation score using the provided evaluation metric. You should return a single integer value between 1 to 5 representing the evaluation metric. You will include no other text or information."
+            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include QUERY and RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
           },
           {
             "role": "user",
-            "content": "Relevance measures how well the answer addresses the main aspects of the question, based on the context. Consider whether all and only the important aspects are contained in the answer when evaluating relevance. Given the context and question, score the relevance of the answer between one to five stars using the following rating scale:\nOne star: the answer completely lacks relevance\nTwo stars: the answer mostly lacks relevance\nThree stars: the answer is partially relevant\nFour stars: the answer is mostly relevant\nFive stars: the answer has perfect relevance\n\nThis rating value should always be an integer between 1 and 5. So the rating produced should be 1 or 2 or 3 or 4 or 5.\n\ncontext: Marie Curie was a Polish-born physicist and chemist who pioneered research on radioactivity and was the first woman to win a Nobel Prize.\nquestion: What field did Marie Curie excel in?\nanswer: Marie Curie was a renowned painter who focused mainly on impressionist styles and techniques.\nstars: 1\n\ncontext: The Beatles were an English rock band formed in Liverpool in 1960, and they are widely regarded as the most influential music band in history.\nquestion: Where were The Beatles formed?\nanswer: The band The Beatles began their journey in London, England, and they changed the history of music.\nstars: 2\n\ncontext: The recent Mars rover, Perseverance, was launched in 2020 with the main goal of searching for signs of ancient life on Mars. The rover also carries an experiment called MOXIE, which aims to generate oxygen from the Martian atmosphere.\nquestion: What are the main goals of Perseverance Mars rover mission?\nanswer: The Perseverance Mars rover mission focuses on searching for signs of ancient life on Mars.\nstars: 3\n\ncontext: The Mediterranean diet is a commonly recommended dietary plan that emphasizes fruits, vegetables, whole grains, legumes, lean proteins, and healthy fats. Studies have shown that it offers numerous health benefits, including a reduced risk of heart disease and improved cognitive health.\nquestion: What are the main components of the Mediterranean diet?\nanswer: The Mediterranean diet primarily consists of fruits, vegetables, whole grains, and legumes.\nstars: 4\n\ncontext: The Queen's Royal Castle is a well-known tourist attraction in the United Kingdom. It spans over 500 acres and contains extensive gardens and parks. The castle was built in the 15th century and has been home to generations of royalty.\nquestion: What are the main attractions of the Queen's Royal Castle?\nanswer: The main attractions of the Queen's Royal Castle are its expansive 500-acre grounds, extensive gardens, parks, and the historical castle itself, which dates back to the 15th century and has housed generations of royalty.\nstars: 5\n\ncontext: {'global_context': 'Global context', 'query_context': 'Customer wants to know the capital of Hawaii', 'response_context': 'Honolulu is the capital of Hawaii'}\nquestion: What is the capital of Hawaii?\nanswer: Honolulu\nstars:"
+            "content": "# Definition\n**Relevance** refers to how effectively a response addresses a question. It assesses the accuracy, completeness, and direct relevance of the response based solely on the given information.\n\n# Ratings\n## [Relevance: 1] (Irrelevant Response)\n**Definition:** The response is unrelated to the question. It provides information that is off-topic and does not attempt to address the question posed.\n\n**Examples:**\n  **Query:** What is the team preparing for?\n  **Response:** I went grocery shopping yesterday evening.\n\n  **Query:** When will the company's new product line launch?\n  **Response:** International travel can be very rewarding and educational.\n\n## [Relevance: 2] (Incorrect Response)\n**Definition:** The response attempts to address the question but includes incorrect information. It provides a response that is factually wrong based on the provided information.\n\n**Examples:**\n  **Query:** When was the merger between the two firms finalized?\n  **Response:** The merger was finalized on April 10th.     \n\n  **Query:** Where and when will the solar eclipse be visible?\n  **Response:** The solar eclipse will be visible in Asia on December 14th.\n\n## [Relevance: 3] (Incomplete Response)\n**Definition:** The response addresses the question but omits key details necessary for a full understanding. It provides a partial response that lacks essential information.      \n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The restaurant offers Italian food like pasta.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy and climate change.\n\n## [Relevance: 4] (Complete Response)\n**Definition:** The response fully addresses the question with accurate and complete information. It includes all essential details required for a comprehensive understanding, without adding any extraneous information.\n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The new restaurant offers Italian cuisine, featuring dishes like pasta, pizza, and risotto.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy, climate change, and sustainability practices.\n\n## [Relevance: 5] (Comprehensive Response with Insights)    \n**Definition:** The response not only fully and accurately addresses the question but also includes additional relevant insights or elaboration. It may explain the significance, implications, or provide minor inferences that enhance understanding.\n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The new restaurant offers Italian cuisine, featuring dishes like pasta, pizza, and risotto, aiming to provide customers with an authentic Italian dining experience.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy, climate change, and sustainability practices, bringing together global experts to discuss these critical issues. \n\n\n\n# Data\nQUERY: What is the capital of Hawaii?\nRESPONSE: Honolulu\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE in relation to the QUERY based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
           }
         ],
         "model": "aoai-deployment",
         "frequency_penalty": 0,
-        "max_tokens": 1,
+        "max_tokens": 800,
         "presence_penalty": 0,
         "response_format": {
           "type": "text"
@@ -369,25 +321,21 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Access-Control-Allow-Origin": "*",
-        "apim-request-id": "204e1f0c-c38d-47bb-a49b-f7d1e07a50d3",
-        "azureml-model-session": "d051-20240925115107",
-        "Cache-Control": "must-revalidate, no-cache",
-        "cmp-upstream-response-duration": "166",
+        "apim-request-id": "1c167582-e38b-46e5-a84c-ce1739bf4d16",
+        "azureml-model-session": "d045-20240925172519",
         "Connection": "close",
-        "Content-Length": "772",
+        "Content-Length": "1503",
         "Content-Type": "application/json",
-        "Date": "Thu, 24 Oct 2024 18:02:03 GMT",
-        "ms-azureml-model-time": "215",
+        "Date": "Fri, 25 Oct 2024 22:39:08 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "219",
+        "x-envoy-upstream-service-time": "1312",
         "x-ms-rai-invoked": "true",
-        "x-ms-region": "East US",
-        "x-ratelimit-remaining-requests": "0",
-        "x-ratelimit-remaining-tokens": "9987",
-        "X-Request-ID": "07affa9c-f961-4daf-b557-64113da1c45a"
+        "x-ms-region": "West US 3",
+        "x-ratelimit-remaining-requests": "7",
+        "x-ratelimit-remaining-tokens": "4224",
+        "X-Request-ID": "6871d401-670a-4875-bac8-1a1a84926923"
       },
       "ResponseBody": {
         "choices": [
@@ -396,6 +344,14 @@
               "hate": {
                 "filtered": false,
                 "severity": "safe"
+              },
+              "protected_material_code": {
+                "filtered": false,
+                "detected": false
+              },
+              "protected_material_text": {
+                "filtered": false,
+                "detected": false
               },
               "self_harm": {
                 "filtered": false,
@@ -410,16 +366,16 @@
                 "severity": "safe"
               }
             },
-            "finish_reason": "length",
+            "finish_reason": "stop",
             "index": 0,
             "logprobs": null,
             "message": {
-              "content": "5",
+              "content": "<S0>Let's think step by step: The query asks for the capital of Hawaii. The response provided is \"Honolulu.\" We need to determine if this response is accurate, complete, and directly relevant to the question. The response \"Honolulu\" is indeed the capital of Hawaii, which means it is factually correct. The response is also directly relevant to the question and provides a complete answer without any extraneous information.</S0>\n\n<S1>The response accurately and completely answers the question about the capital of Hawaii.</S1>\n\n<S2>4</S2>",
               "role": "assistant"
             }
           }
         ],
-        "created": 1729792923,
+        "created": 1729895948,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -430,6 +386,10 @@
               "hate": {
                 "filtered": false,
                 "severity": "safe"
+              },
+              "jailbreak": {
+                "filtered": false,
+                "detected": false
               },
               "self_harm": {
                 "filtered": false,
@@ -446,11 +406,11 @@
             }
           }
         ],
-        "system_fingerprint": null,
+        "system_fingerprint": "fp_67802d9a6d",
         "usage": {
-          "completion_tokens": 1,
-          "prompt_tokens": 707,
-          "total_tokens": 708
+          "completion_tokens": 116,
+          "prompt_tokens": 920,
+          "total_tokens": 1036
         }
       }
     }
