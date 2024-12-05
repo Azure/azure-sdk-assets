@@ -4,7 +4,7 @@
 
 This repository is for the Azure SDK for JavaScript (Node.js & Browser). It contains libraries for the breadth of Azure services. Management libraries are packages that you would use to provision and manage Azure resources. Client libraries are packages that you would use to consume these resources and interact with them.
 
-## Getting started
+## Getting started test
 
 A few helpful resources to get started are:
 
