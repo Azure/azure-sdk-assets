@@ -80,35 +80,35 @@
             "resources": [
               {
                 "apiVersion": "2015-08-01",
-                "name": "[parameters(\u0027hostingPlanName\u0027)]",
+                "name": "[parameters('hostingPlanName')]",
                 "type": "Microsoft.Web/serverfarms",
                 "location": "[resourceGroup().location]",
                 "tags": {
                   "displayName": "HostingPlan"
                 },
                 "sku": {
-                  "name": "[parameters(\u0027skuName\u0027)]",
-                  "capacity": "[parameters(\u0027skuCapacity\u0027)]"
+                  "name": "[parameters('skuName')]",
+                  "capacity": "[parameters('skuCapacity')]"
                 },
                 "properties": {
-                  "name": "[parameters(\u0027hostingPlanName\u0027)]"
+                  "name": "[parameters('hostingPlanName')]"
                 }
               },
               {
                 "apiVersion": "2015-08-01",
-                "name": "[parameters(\u0027webSiteName\u0027)]",
+                "name": "[parameters('webSiteName')]",
                 "type": "Microsoft.Web/sites",
                 "location": "[resourceGroup().location]",
                 "tags": {
-                  "[concat(\u0027hidden-related:\u0027, resourceGroup().id, \u0027/providers/Microsoft.Web/serverfarms/\u0027, parameters(\u0027hostingPlanName\u0027))]": "Resource",
+                  "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]": "Resource",
                   "displayName": "Website"
                 },
                 "dependsOn": [
-                  "[concat(\u0027Microsoft.Web/serverfarms/\u0027, parameters(\u0027hostingPlanName\u0027))]"
+                  "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
                 ],
                 "properties": {
-                  "name": "[parameters(\u0027webSiteName\u0027)]",
-                  "serverFarmId": "[resourceId(\u0027Microsoft.Web/serverfarms\u0027, parameters(\u0027hostingPlanName\u0027))]"
+                  "name": "[parameters('webSiteName')]",
+                  "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]"
                 },
                 "resources": [
                   {
@@ -116,7 +116,7 @@
                     "name": "web",
                     "type": "config",
                     "dependsOn": [
-                      "[concat(\u0027Microsoft.Web/sites/\u0027, parameters(\u0027webSiteName\u0027))]"
+                      "[concat('Microsoft.Web/sites/', parameters('webSiteName'))]"
                     ],
                     "properties": {
                       "javaVersion": "1.8",
@@ -237,6 +237,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
+        "Content-Length": "0",
         "Date": "Thu, 27 Jul 2023 01:54:41 GMT",
         "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
         "x-ms-client-request-id": "c579b907-b258-46b3-a717-ff55a41c871c",
@@ -268,6 +269,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
+        "Content-Length": "0",
         "Date": "Thu, 27 Jul 2023 01:55:11 GMT",
         "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
         "x-ms-client-request-id": "ded16ac0-23ef-45d8-a1e5-1567a3b0f302",
@@ -299,6 +301,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
+        "Content-Length": "0",
         "Date": "Thu, 27 Jul 2023 01:55:12 GMT",
         "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
         "x-ms-client-request-id": "f2c428e6-9713-4ba8-b479-65a2a8dc5e81",

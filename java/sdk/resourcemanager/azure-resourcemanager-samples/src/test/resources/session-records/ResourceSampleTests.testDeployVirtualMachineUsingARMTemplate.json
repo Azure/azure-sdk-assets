@@ -102,8 +102,8 @@
               "vmName": "myVMDataDisk",
               "vmSize": "Standard_A1",
               "virtualNetworkName": "myvnet",
-              "vnetID": "[resourceId(\u0027Microsoft.Network/virtualNetworks\u0027,variables(\u0027virtualNetworkName\u0027))]",
-              "subnetRef": "[concat(variables(\u0027vnetID\u0027),\u0027/subnets/\u0027,variables(\u0027subnetName\u0027))]",
+              "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
+              "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
               "apiVersion": "2015-06-15",
               "computeResouresApiVersion": "2016-04-30-preview",
               "dnsLabelPrefix": "[toLower(resourceGroup().name)]"
@@ -111,32 +111,32 @@
             "resources": [
               {
                 "type": "Microsoft.Network/publicIPAddresses",
-                "name": "[variables(\u0027publicIPAddressName\u0027)]",
-                "apiVersion": "[variables(\u0027apiVersion\u0027)]",
-                "location": "[variables(\u0027location\u0027)]",
+                "name": "[variables('publicIPAddressName')]",
+                "apiVersion": "[variables('apiVersion')]",
+                "location": "[variables('location')]",
                 "properties": {
-                  "publicIPAllocationMethod": "[variables(\u0027publicIPAddressType\u0027)]",
+                  "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
                   "dnsSettings": {
-                    "domainNameLabel": "[variables(\u0027dnsLabelPrefix\u0027)]"
+                    "domainNameLabel": "[variables('dnsLabelPrefix')]"
                   }
                 }
               },
               {
                 "type": "Microsoft.Network/virtualNetworks",
-                "name": "[variables(\u0027virtualNetworkName\u0027)]",
-                "apiVersion": "[variables(\u0027apiVersion\u0027)]",
-                "location": "[variables(\u0027location\u0027)]",
+                "name": "[variables('virtualNetworkName')]",
+                "apiVersion": "[variables('apiVersion')]",
+                "location": "[variables('location')]",
                 "properties": {
                   "addressSpace": {
                     "addressPrefixes": [
-                      "[variables(\u0027addressPrefix\u0027)]"
+                      "[variables('addressPrefix')]"
                     ]
                   },
                   "subnets": [
                     {
-                      "name": "[variables(\u0027subnetName\u0027)]",
+                      "name": "[variables('subnetName')]",
                       "properties": {
-                        "addressPrefix": "[variables(\u0027subnetPrefix\u0027)]"
+                        "addressPrefix": "[variables('subnetPrefix')]"
                       }
                     }
                   ]
@@ -144,9 +144,9 @@
               },
               {
                 "type": "Microsoft.Network/networkInterfaces",
-                "name": "[variables(\u0027nicName\u0027)]",
-                "apiVersion": "[variables(\u0027apiVersion\u0027)]",
-                "location": "[variables(\u0027location\u0027)]",
+                "name": "[variables('nicName')]",
+                "apiVersion": "[variables('apiVersion')]",
+                "location": "[variables('location')]",
                 "properties": {
                   "ipConfigurations": [
                     {
@@ -154,65 +154,65 @@
                       "properties": {
                         "privateIPAllocationMethod": "Dynamic",
                         "publicIPAddress": {
-                          "id": "[resourceId(\u0027Microsoft.Network/publicIPAddresses\u0027,variables(\u0027publicIPAddressName\u0027))]"
+                          "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
                         },
                         "subnet": {
-                          "id": "[variables(\u0027subnetRef\u0027)]"
+                          "id": "[variables('subnetRef')]"
                         }
                       }
                     }
                   ]
                 },
                 "dependsOn": [
-                  "[concat(\u0027Microsoft.Network/publicIPAddresses/\u0027, variables(\u0027publicIPAddressName\u0027))]",
-                  "[concat(\u0027Microsoft.Network/virtualNetworks/\u0027, variables(\u0027virtualNetworkName\u0027))]"
+                  "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+                  "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
                 ]
               },
               {
                 "type": "Microsoft.Compute/disks",
                 "name": "myManagedDataDisk",
-                "apiVersion": "[variables(\u0027computeResouresApiVersion\u0027)]",
-                "location": "[variables(\u0027location\u0027)]",
+                "apiVersion": "[variables('computeResouresApiVersion')]",
+                "location": "[variables('location')]",
                 "properties": {
                   "creationData": {
                     "createOption": "Empty"
                   },
-                  "accountType": "[variables(\u0027storageAccountType\u0027)]",
+                  "accountType": "[variables('storageAccountType')]",
                   "diskSizeGB": 64
                 }
               },
               {
                 "type": "Microsoft.Compute/disks",
                 "name": "myManagedDataDisk1",
-                "apiVersion": "[variables(\u0027computeResouresApiVersion\u0027)]",
-                "location": "[variables(\u0027location\u0027)]",
+                "apiVersion": "[variables('computeResouresApiVersion')]",
+                "location": "[variables('location')]",
                 "properties": {
                   "creationData": {
                     "createOption": "Empty"
                   },
-                  "accountType": "[variables(\u0027storageAccountType\u0027)]",
+                  "accountType": "[variables('storageAccountType')]",
                   "diskSizeGB": 128
                 }
               },
               {
                 "type": "Microsoft.Compute/virtualMachines",
-                "name": "[variables(\u0027vmName\u0027)]",
-                "apiVersion": "[variables(\u0027computeResouresApiVersion\u0027)]",
-                "location": "[variables(\u0027location\u0027)]",
+                "name": "[variables('vmName')]",
+                "apiVersion": "[variables('computeResouresApiVersion')]",
+                "location": "[variables('location')]",
                 "properties": {
                   "hardwareProfile": {
-                    "vmSize": "[variables(\u0027vmSize\u0027)]"
+                    "vmSize": "[variables('vmSize')]"
                   },
                   "osProfile": {
-                    "computerName": "[variables(\u0027vmName\u0027)]",
-                    "adminUsername": "[parameters(\u0027adminUsername\u0027)]",
+                    "computerName": "[variables('vmName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "REDACTED"
                   },
                   "storageProfile": {
                     "imageReference": {
-                      "publisher": "[variables(\u0027imagePublisher\u0027)]",
-                      "offer": "[variables(\u0027imageOffer\u0027)]",
-                      "sku": "[parameters(\u0027windowsOSVersion\u0027)]",
+                      "publisher": "[variables('imagePublisher')]",
+                      "offer": "[variables('imageOffer')]",
+                      "sku": "[parameters('windowsOSVersion')]",
                       "version": "latest"
                     },
                     "osDisk": {
@@ -225,7 +225,7 @@
                         "name": "myManagedDataDisk",
                         "createOption": "attach",
                         "managedDisk": {
-                          "id": "[resourceId(\u0027Microsoft.Compute/disks\u0027, \u0027myManagedDataDisk\u0027)]"
+                          "id": "[resourceId('Microsoft.Compute/disks', 'myManagedDataDisk')]"
                         }
                       },
                       {
@@ -233,7 +233,7 @@
                         "name": "myManagedDataDisk1",
                         "createOption": "attach",
                         "managedDisk": {
-                          "id": "[resourceId(\u0027Microsoft.Compute/disks\u0027, \u0027myManagedDataDisk1\u0027)]"
+                          "id": "[resourceId('Microsoft.Compute/disks', 'myManagedDataDisk1')]"
                         }
                       }
                     ]
@@ -241,13 +241,13 @@
                   "networkProfile": {
                     "networkInterfaces": [
                       {
-                        "id": "[resourceId(\u0027Microsoft.Network/networkInterfaces\u0027,variables(\u0027nicName\u0027))]"
+                        "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
                       }
                     ]
                   }
                 },
                 "dependsOn": [
-                  "[concat(\u0027Microsoft.Network/networkInterfaces/\u0027, variables(\u0027nicName\u0027))]",
+                  "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]",
                   "Microsoft.Compute/disks/myManagedDataDisk"
                 ]
               }
@@ -389,6 +389,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
+        "Content-Length": "0",
         "Date": "Thu, 27 Jul 2023 01:56:19 GMT",
         "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
         "x-ms-client-request-id": "6afc3104-80c5-40fb-9635-56aac7a141ec",
@@ -420,6 +421,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
+        "Content-Length": "0",
         "Date": "Thu, 27 Jul 2023 01:56:49 GMT",
         "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
         "x-ms-client-request-id": "acbd1800-999d-4367-972a-8ba9963c4ecd",
@@ -451,6 +453,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
+        "Content-Length": "0",
         "Date": "Thu, 27 Jul 2023 01:57:20 GMT",
         "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
         "x-ms-client-request-id": "0b2e158e-98fd-4f0a-bec0-958ceaac87fc",
@@ -482,6 +485,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
+        "Content-Length": "0",
         "Date": "Thu, 27 Jul 2023 01:57:51 GMT",
         "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
         "x-ms-client-request-id": "77493ab5-22ff-46b6-bc3b-24729bd0f9c5",
@@ -513,6 +517,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
+        "Content-Length": "0",
         "Date": "Thu, 27 Jul 2023 01:58:21 GMT",
         "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
         "x-ms-client-request-id": "ca7da79f-4f32-47fb-8b92-2b281f3b6d51",
@@ -544,6 +549,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
+        "Content-Length": "0",
         "Date": "Thu, 27 Jul 2023 01:58:51 GMT",
         "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
         "x-ms-client-request-id": "a6ea6fee-d834-416c-829b-15dcafca1ea9",
@@ -575,6 +581,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
+        "Content-Length": "0",
         "Date": "Thu, 27 Jul 2023 01:58:52 GMT",
         "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17; Windows 10; 10.0)",
         "x-ms-client-request-id": "1ee44e35-1227-4435-8094-7d9a12505b7a",
