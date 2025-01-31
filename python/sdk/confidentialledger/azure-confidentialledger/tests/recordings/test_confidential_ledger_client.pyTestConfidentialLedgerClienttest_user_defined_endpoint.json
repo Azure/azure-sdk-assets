@@ -1,0 +1,125 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.confidential-ledger.core.azure.com/ledgerIdentity/fake?api-version=2024-08-22-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-python-confidentialledger-certificate/1.1.2 Python/3.13.1 (Windows-11-10.0.26100-SP0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 31 Jan 2025 17:22:59 GMT",
+        "Transfer-Encoding": "chunked",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "x-ms-correlation-request-id": "2a8743e4-5e92-464e-b789-a1fc0156b3a6",
+        "x-ms-image-tag": "1.0.02943.192-c216a8c095a69413276adbebdcab4675d63d713e",
+        "x-ms-machineName": "identityservice-5d75844c79-2rmcs"
+      },
+      "ResponseBody": {
+        "ledgerTlsCertificate": "-----BEGIN CERTIFICATE-----\nMIIBgTCCASagAwIBAgIQE/36W4/4puMU3Fx5bf5aNjAKBggqhkjOPQQDAjAWMRQw\nEgYDVQQDDAtDQ0YgU2VydmljZTAeFw0yNTAxMzEwMzM5NDRaFw0yNTA1MDEwMzM5\nNDNaMBYxFDASBgNVBAMMC0NDRiBTZXJ2aWNlMFkwEwYHKoZIzj0CAQYIKoZIzj0D\nAQcDQgAEmzYZ9Km4X8zeoB9xyUMsyIpIU5R8aXluRMZ+qu/ZxqP53J9pwLBHBj8f\ntNJ4bQneM6z3Mce/yKdygH/b8TrV3qNWMFQwEgYDVR0TAQH/BAgwBgEB/wIBATAd\nBgNVHQ4EFgQUZPBgeWMU5SOdpKJ+uVZ2pVlKa0MwHwYDVR0jBBgwFoAUZPBgeWMU\n5SOdpKJ+uVZ2pVlKa0MwCgYIKoZIzj0EAwIDSQAwRgIhAKxZWhMO97NWsqspBAaP\nUzhXDazak0LfquG4UoKvoLTcAiEA/eNkucOuXyoyBk8B9G7/ZMNkFgKlXVvCsVm3\nVbLf544=\n-----END CERTIFICATE-----\n",
+        "ledgerId": "fake"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.confidential-ledger.azure.com/app/userDefinedEndpoints?api-version=2024-08-22-preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "Content-Length": "821",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-python-confidentialledger/1.1.2 Python/3.13.1 (Windows-11-10.0.26100-SP0)"
+      },
+      "RequestBody": {
+        "metadata": {
+          "endpoints": {
+            "/content": {
+              "get": {
+                "js_module": "test.js",
+                "js_function": "content",
+                "forwarding_required": "never",
+                "redirection_strategy": "none",
+                "authn_policies": [
+                  "no_auth"
+                ],
+                "mode": "readonly",
+                "openapi": {}
+              }
+            }
+          }
+        },
+        "modules": [
+          {
+            "name": "Sanitized",
+            "module": "\n                    import { foo } from \"./bar/baz.js\";\n\n                    export function content(request) {\n                        return {\n                            statusCode: 200,\n                            body: {\n                                payload: foo(),\n                            },\n                        };\n                    }\n                    "
+          },
+          {
+            "name": "Sanitized",
+            "module": "\n                    export function foo() {\n                        return \"Test content\";\n                    }\n                    "
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "x-ms-ccf-transaction-id": "2.478"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://Sanitized.confidential-ledger.azure.com/app/userDefinedEndpoints?api-version=2024-08-22-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-python-confidentialledger/1.1.2 Python/3.13.1 (Windows-11-10.0.26100-SP0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "821",
+        "Content-Type": "application/json",
+        "x-ms-ccf-transaction-id": "2.478"
+      },
+      "ResponseBody": {
+        "metadata": {
+          "endpoints": {
+            "/content": {
+              "GET": {
+                "authn_policies": [
+                  "no_auth"
+                ],
+                "forwarding_required": "never",
+                "js_function": "content",
+                "js_module": "test.js",
+                "mode": "readonly",
+                "openapi": {},
+                "redirection_strategy": "none"
+              }
+            }
+          }
+        },
+        "modules": [
+          {
+            "module": "\n                    import { foo } from \"./bar/baz.js\";\n\n                    export function content(request) {\n                        return {\n                            statusCode: 200,\n                            body: {\n                                payload: foo(),\n                            },\n                        };\n                    }\n                    ",
+            "name": "Sanitized"
+          },
+          {
+            "module": "\n                    export function foo() {\n                        return \"Test content\";\n                    }\n                    ",
+            "name": "Sanitized"
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
+}
