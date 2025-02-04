@@ -14,12 +14,12 @@
       "ResponseHeaders": {
         "Connection": "keep-alive",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 04 Feb 2025 22:53:50 GMT",
+        "Date": "Tue, 04 Feb 2025 22:53:55 GMT",
         "Transfer-Encoding": "chunked",
         "x-azure-ref": "Sanitized",
         "X-Cache": "CONFIG_NOCACHE",
         "x-ms-client-request-id": "Sanitized",
-        "x-ms-correlation-request-id": "a5e007ba-c375-4ab8-8ecb-75a6c13ca1b1",
+        "x-ms-correlation-request-id": "7669f391-e916-4a0a-8ff6-e4bbac8838f3",
         "x-ms-image-tag": "1.0.02943.192-c216a8c095a69413276adbebdcab4675d63d713e",
         "x-ms-machineName": "identityservice-5d75844c79-nc2ks"
       },
@@ -29,34 +29,53 @@
       }
     },
     {
-      "RequestUri": "https://t8c7bfa9e146b8f4d.confidential-ledger.azure.com/app/transactions?api-version=2024-08-22-preview",
-      "RequestMethod": "POST",
+      "RequestUri": "https://t8c7bfa9e146b8f4d.confidential-ledger.azure.com/app/userDefinedEndpoints?api-version=2024-08-22-preview",
+      "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "23",
+        "Content-Length": "482",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-net-Security.ConfidentialLedger/1.4.1-alpha.20250204.1 (.NET Framework 4.8.9282.0; Microsoft Windows 10.0.26100 )",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
-        "contents": "test3083"
+        "metadata": {
+          "endpoints": {
+            "/content": {
+              "get": {
+                "js_module": "test",
+                "js_function": "content",
+                "forwarding_required": "never",
+                "redirection_strategy": "none",
+                "authn_policies": [
+                  "no_auth"
+                ],
+                "mode": "readonly",
+                "openapi": {}
+              }
+            }
+          }
+        },
+        "modules": [
+          {
+            "name": "test",
+            "module": "function foo() {\r\n    return \"Test content\";\r\n}\r\n\r\nexport function content(request) {\r\n    return {\r\n        statusCode: 200,\r\n        body: {\r\n            payload: foo(),\r\n        },\r\n    };\r\n}\r\n"
+          }
+        ]
       },
-      "StatusCode": 200,
+      "StatusCode": 201,
       "ResponseHeaders": {
-        "Content-Length": "30",
-        "Content-Type": "application/json",
-        "x-ms-ccf-transaction-id": "2.1219",
+        "Content-Length": "0",
+        "x-ms-ccf-transaction-id": "2.1221",
         "x-ms-client-request-id": "Sanitized",
-        "x-ms-request-id": "320748610"
+        "x-ms-request-id": "861413776"
       },
-      "ResponseBody": {
-        "collectionId": "subledger:0"
-      }
+      "ResponseBody": null
     },
     {
-      "RequestUri": "https://t8c7bfa9e146b8f4d.confidential-ledger.azure.com/app/transactions/2.1219/status?api-version=2024-08-22-preview",
+      "RequestUri": "https://t8c7bfa9e146b8f4d.confidential-ledger.azure.com/app/userDefinedEndpoints/modules?module_name=test&api-version=2024-08-22-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -68,45 +87,77 @@
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Content-Length": "44",
-        "Content-Type": "application/json",
-        "x-ms-ccf-transaction-id": "2.1219",
+        "Content-Length": "196",
+        "Content-Type": "text/javascript",
+        "x-ms-ccf-transaction-id": "2.1221",
         "x-ms-client-request-id": "Sanitized",
-        "x-ms-request-id": "199856687"
+        "x-ms-request-id": "2063569277"
       },
-      "ResponseBody": {
-        "state": "Pending",
-        "transactionId": "2.1219"
-      }
+      "ResponseBody": [
+        "function foo() {\r\n",
+        "    return \"Test content\";\r\n",
+        "}\r\n",
+        "\r\n",
+        "export function content(request) {\r\n",
+        "    return {\r\n",
+        "        statusCode: 200,\r\n",
+        "        body: {\r\n",
+        "            payload: foo(),\r\n",
+        "        },\r\n",
+        "    };\r\n",
+        "}\r\n"
+      ]
     },
     {
-      "RequestUri": "https://t8c7bfa9e146b8f4d.confidential-ledger.azure.com/app/transactions/2.1219/status?api-version=2024-08-22-preview",
-      "RequestMethod": "GET",
+      "RequestUri": "https://t8c7bfa9e146b8f4d.confidential-ledger.azure.com/app/userDefinedEndpoints?api-version=2024-08-22-preview",
+      "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
+        "Content-Length": "482",
+        "Content-Type": "application/json",
         "User-Agent": "azsdk-net-Security.ConfidentialLedger/1.4.1-alpha.20250204.1 (.NET Framework 4.8.9282.0; Microsoft Windows 10.0.26100 )",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "Content-Length": "46",
-        "Content-Type": "application/json",
-        "x-ms-ccf-transaction-id": "2.1220",
-        "x-ms-client-request-id": "Sanitized",
-        "x-ms-request-id": "777314231"
+      "RequestBody": {
+        "metadata": {
+          "endpoints": {
+            "/content": {
+              "get": {
+                "js_module": "test",
+                "js_function": "content",
+                "forwarding_required": "never",
+                "redirection_strategy": "none",
+                "authn_policies": [
+                  "no_auth"
+                ],
+                "mode": "readonly",
+                "openapi": {}
+              }
+            }
+          }
+        },
+        "modules": [
+          {
+            "name": "test",
+            "module": "function foo() {\r\n    return \"Test content\";\r\n}\r\n\r\nexport function content(request) {\r\n    return {\r\n        statusCode: 200,\r\n        body: {\r\n            payload: foo(),\r\n        },\r\n    };\r\n}\r\n"
+          }
+        ]
       },
-      "ResponseBody": {
-        "state": "Committed",
-        "transactionId": "2.1219"
-      }
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "x-ms-ccf-transaction-id": "2.1222",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-request-id": "596839608"
+      },
+      "ResponseBody": null
     }
   ],
   "Variables": {
     "CONFIDENTIALLEDGER_IDENTITY_URL": "https://identity.confidential-ledger.core.azure.com",
     "CONFIDENTIALLEDGER_URL": "https://t8c7bfa9e146b8f4d.confidential-ledger.azure.com",
-    "RandomSeed": "1158192053"
+    "RandomSeed": "1931123138"
   }
 }
