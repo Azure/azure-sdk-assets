@@ -1,0 +1,91 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/v1/chat/completions",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "242",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Feb 2025 14:43:32 GMT",
+        "User-Agent": "azsdk-java-azure-ai-openai/1.0.0-beta.14 (17.0.9; Mac OS X; 15.3.1)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Write a bash script that takes a matrix represented as a string with format '[1,2],[3,4],[5,6]' and prints the transpose in the same format."
+          }
+        ],
+        "store": true,
+        "reasoning_effort": "medium",
+        "model": "o3-mini"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "X-Request-ID",
+        "Alt-Svc": "h3=\":443\"",
+        "cf-cache-status": "DYNAMIC",
+        "CF-RAY": "914f45006e1dd201-FRA",
+        "Connection": "keep-alive",
+        "Content-Length": "4447",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Feb 2025 14:43:59 GMT",
+        "openai-organization": "msft-finetuning-2",
+        "openai-processing-ms": "26565",
+        "openai-version": "2020-10-01",
+        "Server": "cloudflare",
+        "Set-Cookie": [
+          "__cf_bm=4Mlqu3V00adv.LApWTR0d2uehkpA4MP8GO8plGx48NY-1740062639-1.0.1.1-H7BNAzXoXiONTOaupZUZwfLzh78LkWKxZHCdCKqY6HuLAe4PM5Pgl2donBjtuAbJw4oRnn2KUiJbJtqzsQE6sQ; path=/; expires=Thu, 20-Feb-25 15:13:59 GMT; domain=.api.openai.com; HttpOnly; Secure; SameSite=None",
+          "_cfuvid=GWzn2WWj3qhT8TUFrJdCNVbOPAlLkKsEiIexntd8ukk-1740062639284-0.0.1.1-604800000; path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-ratelimit-limit-requests": "30000",
+        "x-ratelimit-limit-tokens": "150000000",
+        "x-ratelimit-remaining-requests": "29999",
+        "x-ratelimit-remaining-tokens": "149999948",
+        "x-ratelimit-reset-requests": "2ms",
+        "x-ratelimit-reset-tokens": "0s",
+        "X-Request-ID": "req_340f5aa7958ad42bac4743bdc336e7fc"
+      },
+      "ResponseBody": {
+        "id": "chatcmpl-B323w9N92A5ZLagVZ9L30BV7lixvM",
+        "object": "chat.completion",
+        "created": 1740062612,
+        "model": "o3-mini-2025-01-31",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "Below is one acceptable solution. Save the script as, for example, transpose.sh, then run it with the matrix string as the argument. (Note that the script expects one argument of the form \"[1,2],[3,4],[5,6]\".)\n\n───────────────────────────── Begin Script ─────────────────────────────\n#!/bin/bash\n# This script accepts a matrix represented as a string in the format:\n#   [a1,a2,...,an],[b1,b2,...,bn],...\n# and prints the transpose in the same format.\n#\n# Example: Given \"[1,2],[3,4],[5,6]\" the matrix is:\n#    [ 1  2 ]\n#    [ 3  4 ]\n#    [ 5  6 ]\n# and its transpose will be:\n#    [ 1  3  5 ]\n#    [ 2  4  6 ]\n#\n# Usage:\n#   ./transpose.sh \"[1,2],[3,4],[5,6]\"\n\nif [ \"$#\" -ne 1 ]; then\n  echo \"Usage: $0 '[matrix_string]'\"\n  exit 1\nfi\n\nmatrix_str=\"$1\"\n\n# Step 1. Separate the rows.\n# The input has rows enclosed in square brackets and separated by \"],[\"\n# Replace the pattern \"],[\" with a newline so that each row is on its own line.\nrows=$(echo \"$matrix_str\" | sed 's/\\],\\[/]\\\n[/g')\n\n# Read the rows into an array (each element is a row like \"[1,2]\")\nreadarray -t row_lines <<< \"$rows\"\nnum_rows=${#row_lines[@]}\n\n# Step 2. Determine the number of columns.\n# (Assumes that all rows have the same number of comma-separated items.)\nfirst_row=\"${row_lines[0]}\"\n# Remove the leading '[' and trailing ']'\nfirst_row=${first_row#\\[}\nfirst_row=${first_row%\\]}\nIFS=',' read -ra cols_arr <<< \"$first_row\"\nnum_cols=${#cols_arr[@]}\n\n# Step 3. Parse the matrix into a one-dimensional array.\n# We will store element (i,j) at index ((i*num_cols+j)).\ndeclare -a matrix\nfor (( i = 0; i < num_rows; i++ )); do\n  row=\"${row_lines[i]}\"\n  # Remove the surrounding square brackets.\n  row=${row#\\[}\n  row=${row%\\]}\n  IFS=',' read -ra elements <<< \"$row\"\n  for (( j = 0; j < num_cols; j++ )); do\n    matrix[$(( i * num_cols + j ))]=\"${elements[j]}\"\n  done\ndone\n\n# Step 4. Compute the transpose.\n# The transposed matrix will have dimensions num_cols x num_rows.\noutput=\"\"\nfor (( i = 0; i < num_cols; i++ )); do\n  tmp=\"[\"\n  for (( j = 0; j < num_rows; j++ )); do\n    # In the original matrix, the element at row j and column i is at index (j*num_cols+i)\n    tmp+=\"${matrix[$(( j * num_cols + i ))]}\"\n    # Add a comma if not the last element in the current transposed row.\n    if [ \"$j\" -lt $(( num_rows - 1 )) ]; then\n      tmp+=\",\"\n    fi\n  done\n  tmp+=\"]\"\n  # Add a comma if not the last transposed row.\n  if [ \"$i\" -lt $(( num_cols - 1 )) ]; then\n    output+=\"${tmp},\"\n  else\n    output+=\"${tmp}\"\n  fi\ndone\n\n# Step 5. Output the transposed matrix.\necho \"$output\"\n\n────────────────────────────── End Script ─────────────────────────────\n\nHow It Works:\n\n1. The script first transforms the input string so that each row is on a separate line.\n2. It then removes the brackets from each row and splits the comma‐separated numbers into a bash array.\n3. The complete matrix is stored in a one‐dimensional array using row-major order.\n4. To compute the transpose, the script loops over what were originally columns and for each “new row” gathers the corresponding elements from each old row.\n5. Finally, it prints the resulting transposed matrix in the same \"[...],[...]\" format.\n\nYou can run it like this:\n\n   chmod +x transpose.sh\n   ./transpose.sh \"[1,2],[3,4],[5,6]\"\n\nThe output should be:\n\n   [1,3,5],[2,4,6]",
+              "refusal": null
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 42,
+          "completion_tokens": 2946,
+          "total_tokens": 2988,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "audio_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 1600,
+            "audio_tokens": 0,
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 0
+          }
+        },
+        "service_tier": "default",
+        "system_fingerprint": "fp_ef58bd3122"
+      }
+    }
+  ],
+  "Variables": {}
+}
