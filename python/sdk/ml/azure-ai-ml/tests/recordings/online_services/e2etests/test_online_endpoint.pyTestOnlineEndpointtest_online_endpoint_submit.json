@@ -1,0 +1,283 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000/resourcegroups/00000/providers/Microsoft.Resources/deployments/online-ept-a13fdc6807144ee?api-version=2020-06-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "Content-Length": "1655",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-python-mgmt-resource/15.0.0 Python/3.10.11 (Windows-10-10.0.26100-SP0)"
+      },
+      "RequestBody": {
+        "properties": {
+          "template": {
+            "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {
+              "workspaceName": {
+                "type": "string",
+                "defaultValue": "00000"
+              },
+              "location": {
+                "type": "string",
+                "defaultValue": "eastus2euap"
+              },
+              "onlineEndpointName": {
+                "type": "string",
+                "defaultValue": "online-ept-81bdf4c6cefe48f"
+              },
+              "onlineEndpointDescription": {
+                "defaultValue": "This is an online endpoint created by an ARM template",
+                "type": "string"
+              },
+              "identityType": {
+                "allowedValues": [
+                  "SystemAssigned",
+                  "UserAssigned",
+                  "SystemAssignedUserAssigned",
+                  "None"
+                ],
+                "type": "string",
+                "metadata": {
+                  "description": "The MSI Identity that is associated with this resource."
+                },
+                "defaultValue": "SystemAssigned"
+              },
+              "allowPublicAccess": {
+                "defaultValue": true,
+                "type": "bool",
+                "metadata": {
+                  "description": "Set to true for endpoints that should allow public access when Private Link is enabled."
+                }
+              },
+              "authMode": {
+                "defaultValue": "Key",
+                "allowedValues": [
+                  "AMLToken",
+                  "Key",
+                  "AADToken"
+                ],
+                "type": "string"
+              },
+              "onlineEndpointTags": {
+                "defaultValue": {
+                  "tag1": "value1",
+                  "tag2": "value2",
+                  "tag3": "value3"
+                },
+                "type": "object"
+              }
+            },
+            "resources": [
+              {
+                "type": "Microsoft.MachineLearningServices/workspaces/onlineEndpoints",
+                "apiVersion": "2022-05-01",
+                "name": "[concat(parameters('workspaceName'), '/', parameters('onlineEndpointName'))]",
+                "location": "[parameters('location')]",
+                "tags": "[parameters('onlineEndpointTags')]",
+                "identity": {
+                  "type": "[parameters('identityType')]"
+                },
+                "properties": {
+                  "authMode": "[parameters('authMode')]",
+                  "description": "[parameters('onlineEndpointDescription')]",
+                  "properties": {}
+                }
+              }
+            ]
+          },
+          "mode": "incremental"
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000/resourcegroups/00000/providers/Microsoft.Resources/deployments/online-ept-a13fdc6807144ee/operationStatuses/08584610323019004016?api-version=2020-06-01&t=638761713908978996&c=MIIHhzCCBm-gAwIBAgITfAahW1AM79KhMijZVgAABqFbUDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDUwHhcNMjUwMTI3MDc1NTUwWhcNMjUwNzI2MDc1NTUwWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAON48qlkk82sETfcSrPQVQEB3sgZ9agfyQmjl5ePiRD1gHBTI5GMItpc0UH0FD6BzcnSThVwUO3zZLiZ9HYryuk6Z4ho1swNS9WprxsKBTkiMinO7_Fv4al72Z65eb1z0fc99jaSXLcBxax81143g8xSgT1q2pKdnYdFgoZq8StARw97Xj7wJsgnjMGVXVckCV30AwyH-x_7cl_PZ8gqfzYBFhbCUQCbN2aV3MdeJNwsnSYqJzkv08mlGrALgXkVQFGaUtA2PRs7TkrkFLQ79gnmDju7vYUEjxXjsNdBwvfpZAF2hbTVaScwZ0E2dA98nZA-M3u0Ve63f_Ra99PafUECAwEAAaOCBHQwggRwMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFghfmRS4WsmTQCAWQCAQcwggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQ08xUEtJSU5UQ0EwMS5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNS5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0NPMVBLSUlOVENBMDEuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9DTzFQS0lJTlRDQTAxLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA1LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQ08xUEtJSU5UQ0EwMS5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNS5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0NPMVBLSUlOVENBMDEuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3J0MB0GA1UdDgQWBBRGhb3Uyd9HfU-JJaNxUCr6YIOXrDAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3JsMIGdBgNVHSAEgZUwgZIwDAYKKwYBBAGCN3sBATBmBgorBgEEAYI3ewICMFgwVgYIKwYBBQUHAgIwSh5IADMAMwBlADAAMQA5ADIAMQAtADQAZAA2ADQALQA0AGYAOABjAC0AYQAwADUANQAtADUAYgBkAGEAZgBmAGQANQBlADMAMwBkMAwGCisGAQQBgjd7AwIwDAYKKwYBBAGCN3sEAjAfBgNVHSMEGDAWgBR61hmFKHlscXYeYPjzS--iBUIWHTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAIO0wI6FWmcFoF567nd2Ex_Mz_eVq5TQvquyf90JVWY744uYtzRpss6MhJHFc1knuFCR1jH-I_-oF9qxFHI6gjtzJzR7JY0BYar2KuWc5biJaaHVqnHfvMByIekfPBRoUSCjPPRHn1ATrQiGCwVlkuOwTsJP9qqunfi_yhcjbLAh2ddm7cXhrbIXYCdHdXc76RaC1iZFGIrZddnwyBNT-D7MIgZwtEVm6vRXYRX6E81DWAM4Tbe3s3zXVNoelRUSf8DLQP1iCCtgEqsiW46Ic-HWdmrmDg1AxjwEsfkOQdrALD7z_d1Z02yiAirH2jVVWiCjbunDd_yz1Ia5f4GrGUY&s=Vc--9wcPU-7v_FlW-AEDhuUNRnOS4PKIc58RR4mXq3P9QJRr2_SKF7adzMx2eBgxNkC-bxBQQKLw7UwU8LG8lqsthJ3DjnTxXSmijzWFpErVZ7aioiE5Gc_1zS8wPUTxnKkGmI-BtMwO48qTwCToJRS4zXP0q3zkWMi9cAnyotvydpxShHHTrpP3cQ_07YtSJVyeOWP_pfkSb04Hm3x_-3F6ulmfwJZEU12JixfNHjAm_iIfG-REqE0GVXidIVTJ5-hT8j3-g1EN9ZN8pR69ZNvpJT_hX_eGWoBrmYtS1CtuC4B15rkkGqbMu0GzrFFlxr8-OcXx-MxiLipSaDIZJA&h=_hSJwg6O4n4HCuE-i7psUVnUNh_RSH3c4JFrdeSQPPc",
+        "Cache-Control": "no-cache",
+        "Content-Length": "1176",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 26 Feb 2025 12:56:30 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "6d00efad-94ee-41fd-a619-f460754a6892",
+        "x-ms-deployment-engine-version": "1.245.0",
+        "x-ms-ratelimit-remaining-subscription-global-writes": "12000",
+        "x-ms-ratelimit-remaining-subscription-writes": "800",
+        "x-ms-routing-request-id": "WESTINDIA:20250226T125630Z:6d00efad-94ee-41fd-a619-f460754a6892",
+        "X-MSEdge-Ref": "Ref A: 8E7D142DD7B74B5590413CBDCDD7C3AF Ref B: MAA201060516027 Ref C: 2025-02-26T12:56:21Z"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.Resources/deployments/online-ept-a13fdc6807144ee",
+        "name": "online-ept-a13fdc6807144ee",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "12148523883065125878",
+          "parameters": {
+            "workspaceName": {
+              "type": "String",
+              "value": "00000"
+            },
+            "location": {
+              "type": "String",
+              "value": "eastus2euap"
+            },
+            "onlineEndpointName": {
+              "type": "String",
+              "value": "online-ept-81bdf4c6cefe48f"
+            },
+            "onlineEndpointDescription": {
+              "type": "String",
+              "value": "This is an online endpoint created by an ARM template"
+            },
+            "identityType": {
+              "type": "String",
+              "value": "SystemAssigned"
+            },
+            "allowPublicAccess": {
+              "type": "Bool",
+              "value": true
+            },
+            "authMode": {
+              "type": "String",
+              "value": "Key"
+            },
+            "onlineEndpointTags": {
+              "type": "Object",
+              "value": {
+                "tag1": "value1",
+                "tag2": "value2",
+                "tag3": "value3"
+              }
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Accepted",
+          "timestamp": "2025-02-26T12:56:23.5697717Z",
+          "duration": "PT5.0057463S",
+          "correlationId": "6d00efad-94ee-41fd-a619-f460754a6892",
+          "providers": [
+            {
+              "namespace": "Microsoft.MachineLearningServices",
+              "resourceTypes": [
+                {
+                  "resourceType": "workspaces/onlineEndpoints",
+                  "locations": [
+                    "eastus2euap"
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": []
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000/resourcegroups/00000/providers/Microsoft.Resources/deployments/online-ept-a13fdc6807144ee/operationStatuses/08584610323019004016?api-version=2020-06-01&t=638761713908978996&c=MIIHhzCCBm-gAwIBAgITfAahW1AM79KhMijZVgAABqFbUDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDUwHhcNMjUwMTI3MDc1NTUwWhcNMjUwNzI2MDc1NTUwWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAON48qlkk82sETfcSrPQVQEB3sgZ9agfyQmjl5ePiRD1gHBTI5GMItpc0UH0FD6BzcnSThVwUO3zZLiZ9HYryuk6Z4ho1swNS9WprxsKBTkiMinO7_Fv4al72Z65eb1z0fc99jaSXLcBxax81143g8xSgT1q2pKdnYdFgoZq8StARw97Xj7wJsgnjMGVXVckCV30AwyH-x_7cl_PZ8gqfzYBFhbCUQCbN2aV3MdeJNwsnSYqJzkv08mlGrALgXkVQFGaUtA2PRs7TkrkFLQ79gnmDju7vYUEjxXjsNdBwvfpZAF2hbTVaScwZ0E2dA98nZA-M3u0Ve63f_Ra99PafUECAwEAAaOCBHQwggRwMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFghfmRS4WsmTQCAWQCAQcwggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQ08xUEtJSU5UQ0EwMS5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNS5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0NPMVBLSUlOVENBMDEuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9DTzFQS0lJTlRDQTAxLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA1LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQ08xUEtJSU5UQ0EwMS5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNS5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0NPMVBLSUlOVENBMDEuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3J0MB0GA1UdDgQWBBRGhb3Uyd9HfU-JJaNxUCr6YIOXrDAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDUuY3JsMIGdBgNVHSAEgZUwgZIwDAYKKwYBBAGCN3sBATBmBgorBgEEAYI3ewICMFgwVgYIKwYBBQUHAgIwSh5IADMAMwBlADAAMQA5ADIAMQAtADQAZAA2ADQALQA0AGYAOABjAC0AYQAwADUANQAtADUAYgBkAGEAZgBmAGQANQBlADMAMwBkMAwGCisGAQQBgjd7AwIwDAYKKwYBBAGCN3sEAjAfBgNVHSMEGDAWgBR61hmFKHlscXYeYPjzS--iBUIWHTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAIO0wI6FWmcFoF567nd2Ex_Mz_eVq5TQvquyf90JVWY744uYtzRpss6MhJHFc1knuFCR1jH-I_-oF9qxFHI6gjtzJzR7JY0BYar2KuWc5biJaaHVqnHfvMByIekfPBRoUSCjPPRHn1ATrQiGCwVlkuOwTsJP9qqunfi_yhcjbLAh2ddm7cXhrbIXYCdHdXc76RaC1iZFGIrZddnwyBNT-D7MIgZwtEVm6vRXYRX6E81DWAM4Tbe3s3zXVNoelRUSf8DLQP1iCCtgEqsiW46Ic-HWdmrmDg1AxjwEsfkOQdrALD7z_d1Z02yiAirH2jVVWiCjbunDd_yz1Ia5f4GrGUY&s=Vc--9wcPU-7v_FlW-AEDhuUNRnOS4PKIc58RR4mXq3P9QJRr2_SKF7adzMx2eBgxNkC-bxBQQKLw7UwU8LG8lqsthJ3DjnTxXSmijzWFpErVZ7aioiE5Gc_1zS8wPUTxnKkGmI-BtMwO48qTwCToJRS4zXP0q3zkWMi9cAnyotvydpxShHHTrpP3cQ_07YtSJVyeOWP_pfkSb04Hm3x_-3F6ulmfwJZEU12JixfNHjAm_iIfG-REqE0GVXidIVTJ5-hT8j3-g1EN9ZN8pR69ZNvpJT_hX_eGWoBrmYtS1CtuC4B15rkkGqbMu0GzrFFlxr8-OcXx-MxiLipSaDIZJA&h=_hSJwg6O4n4HCuE-i7psUVnUNh_RSH3c4JFrdeSQPPc",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-python-mgmt-resource/15.0.0 Python/3.10.11 (Windows-10-10.0.26100-SP0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1191",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 26 Feb 2025 13:01:10 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "a451f0f8-be19-42b8-97c2-b6ba2ee00bdf",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
+        "x-ms-ratelimit-remaining-subscription-reads": "1099",
+        "x-ms-routing-request-id": "WESTINDIA:20250226T130111Z:a451f0f8-be19-42b8-97c2-b6ba2ee00bdf",
+        "X-MSEdge-Ref": "Ref A: AC6C06D019DC458785A4D1B51EF8E171 Ref B: MAA201060516033 Ref C: 2025-02-26T13:01:10Z"
+      },
+      "ResponseBody": {
+        "status": "Failed",
+        "error": {
+          "code": "DeploymentFailed",
+          "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/arm-deployment-operations for usage details.",
+          "details": [
+            {
+              "code": "NotFound",
+              "message": "{\r\n  \"error\": {\r\n    \"code\": \"UserError\",\r\n    \"severity\": null,\r\n    \"message\": \"Workspace not found.\",\r\n    \"messageFormat\": \"Workspace not found.\",\r\n    \"messageParameters\": {},\r\n    \"referenceCode\": null,\r\n    \"detailsUri\": null,\r\n    \"target\": null,\r\n    \"details\": [],\r\n    \"innerError\": {\r\n      \"code\": \"NotFound\",\r\n      \"innerError\": {\r\n        \"code\": \"WorkspaceNotFound\",\r\n        \"innerError\": null\r\n      }\r\n    },\r\n    \"debugInfo\": null,\r\n    \"additionalInfo\": null\r\n  },\r\n  \"correlation\": {\r\n    \"operation\": \"7567df28e576f3563f04493d22685067\",\r\n    \"request\": \"06ce94bf1960fad6\"\r\n  },\r\n  \"environment\": \"eastus2euap\",\r\n  \"location\": \"eastus2euap\",\r\n  \"time\": \"2025-02-26T12:56:32.7652128+00:00\",\r\n  \"componentName\": \"managementfrontend\",\r\n  \"statusCode\": 404\r\n}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000/resourcegroups/00000/deployments/online-ept-a13fdc6807144ee/operations?api-version=2020-06-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-python-mgmt-resource/15.0.0 Python/3.10.11 (Windows-10-10.0.26100-SP0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "881",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 26 Feb 2025 13:03:08 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "e48b7465-b2d7-4e77-8e33-4aa1d37b56a8",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
+        "x-ms-ratelimit-remaining-subscription-reads": "1099",
+        "x-ms-routing-request-id": "WESTINDIA:20250226T130308Z:e48b7465-b2d7-4e77-8e33-4aa1d37b56a8",
+        "X-MSEdge-Ref": "Ref A: D1E48F44FEA94BBC8125EA27C047E5CF Ref B: MAA201060516047 Ref C: 2025-02-26T13:03:07Z"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.Resources/deployments/online-ept-a13fdc6807144ee/operations/1BFE0069A5885780",
+            "operationId": "1BFE0069A5885780",
+            "properties": {
+              "provisioningOperation": "Create",
+              "provisioningState": "Failed",
+              "timestamp": "2025-02-26T12:56:33.4597069Z",
+              "duration": "PT2.3285224S",
+              "trackingId": "21c9c3f5-9bc4-4c5f-9ac0-c60003e721ed",
+              "statusCode": "NotFound",
+              "statusMessage": {
+                "status": "Failed",
+                "error": {
+                  "code": "UserError",
+                  "message": "Workspace not found.",
+                  "details": []
+                }
+              },
+              "targetResource": {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/00000/onlineEndpoints/online-ept-81bdf4c6cefe48f",
+                "resourceType": "Microsoft.MachineLearningServices/workspaces/onlineEndpoints",
+                "resourceName": "00000/online-ept-81bdf4c6cefe48f"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {
+    "k8s-e2e-endpoint-": "online-ept-81bdf4c6cefe48f",
+    "test_submission_": "online-ept-a13fdc6807144ee"
+  }
+}
