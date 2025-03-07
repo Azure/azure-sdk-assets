@@ -10,7 +10,82 @@
         "Connection": "keep-alive",
         "Content-Length": "763",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-python-ai-inference/1.0.0b7 Python/3.12.8 (Windows-11-10.0.26100-SP0)"
+        "User-Agent": "azsdk-python-ai-inference/1.0.0b10 Python/3.11.9 (Windows-10-10.0.22631-SP0)"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are an assistant that helps users find weather information."
+          },
+          {
+            "role": "user",
+            "content": "what's the maximum temperature in Seattle two days from now?"
+          }
+        ],
+        "tools": [
+          {
+            "function": {
+              "name": "get_max_temperature",
+              "description": "A function that returns the forecasted maximum temperature IN a given city, a given few days from now, in Fahrenheit. It returns `unknown` if the forecast is not known.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string",
+                    "description": "The name of the city"
+                  },
+                  "days": {
+                    "type": "string",
+                    "description": "The number of days from now, starting from 0, where 0 represents today, 1 represents tomorrow, etc."
+                  }
+                },
+                "required": [
+                  "city",
+                  "days"
+                ]
+              }
+            },
+            "type": "function"
+          }
+        ]
+      },
+      "StatusCode": 503,
+      "ResponseHeaders": {
+        "azureml-destination-deployment": "dep-eus-mis-lar2411-241203232700",
+        "azureml-destination-endpoint": "mistral-eus-mislarge2411-sgl-ep",
+        "azureml-destination-model-group": "mistral-large-2411-scaleset-sgl",
+        "azureml-destination-region": "eastus",
+        "azureml-model-group": "mistral-large-2411-scaleset-sgl",
+        "azureml-model-session": "dep-eus-mis-lar2411-241203232700",
+        "Content-Length": "176",
+        "Content-Type": "application/json",
+        "Date": "Fri, 07 Mar 2025 22:23:09 GMT",
+        "ms-azureml-model-error-reason": "model_error",
+        "ms-azureml-model-error-statuscode": "503",
+        "Request-Context": "appId=cid-v1:b80100f5-1286-423d-967f-3517f665186d",
+        "x-ms-rai-invoked": "false",
+        "X-Request-ID": "6cd8fd27-9403-4fe4-80bb-ddc1896b56c5"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Service Unavailable",
+          "message": "{\"object\":\"Error\",\"message\":\"Model has no capacity.\",\"type\":\"invalid_request_error\",\"code\":3503}",
+          "status": 503
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.eastus2.models.ai.azure.com/chat/completions?api-version=2024-05-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "api-key": "Sanitized",
+        "Connection": "keep-alive",
+        "Content-Length": "763",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-python-ai-inference/1.0.0b10 Python/3.11.9 (Windows-10-10.0.22631-SP0)"
       },
       "RequestBody": {
         "messages": [
@@ -52,47 +127,51 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
+        "azureml-destination-deployment": "dep-eus-mis-lar2411-241203232705",
+        "azureml-destination-endpoint": "mistral-eus-mislarge2411-sgl-ep",
+        "azureml-destination-model-group": "mistral-large-2411-scaleset-sgl",
+        "azureml-destination-region": "eastus",
         "azureml-model-group": "mistral-large-2411-scaleset-sgl",
         "azureml-model-session": "dep-eus-mis-lar2411-241203232705",
         "Content-Length": "428",
         "Content-Type": "application/json",
-        "Date": "Thu, 09 Jan 2025 02:18:14 GMT",
+        "Date": "Fri, 07 Mar 2025 22:23:10 GMT",
         "prompt_token_len": "175",
         "Request-Context": "appId=cid-v1:b80100f5-1286-423d-967f-3517f665186d",
         "sampling_token_len": "31",
-        "x-ms-rai-invoked": "true",
-        "X-Request-ID": "c7eeaa86-a060-49c9-9701-6d1e0cc37615"
+        "x-ms-rai-invoked": "false",
+        "X-Request-ID": "9762b5d4-50f7-4ea8-9f63-261a1f732883"
       },
       "ResponseBody": {
+        "id": "Sanitized",
+        "object": "chat.completion",
+        "created": 1741386189,
+        "model": "mistral-large-2411",
         "choices": [
           {
-            "finish_reason": "tool_calls",
             "index": 0,
             "message": {
-              "content": "",
               "role": "assistant",
+              "content": "",
               "tool_calls": [
                 {
-                  "function": {
-                    "arguments": "{\"city\": \"Seattle\", \"days\": \"2\"}",
-                    "call_id": null,
-                    "name": "get_max_temperature"
-                  },
                   "id": "Sanitized",
-                  "type": "function"
+                  "type": "function",
+                  "function": {
+                    "name": "get_max_temperature",
+                    "arguments": "{\"city\": \"Seattle\", \"days\": \"2\"}",
+                    "call_id": null
+                  }
                 }
               ]
-            }
+            },
+            "finish_reason": "tool_calls"
           }
         ],
-        "created": 1736389093,
-        "id": "Sanitized",
-        "model": "mistral-large-2411",
-        "object": "chat.completion",
         "usage": {
-          "completion_tokens": 31,
           "prompt_tokens": 175,
-          "total_tokens": 206
+          "total_tokens": 206,
+          "completion_tokens": 31
         }
       }
     },
@@ -106,7 +185,7 @@
         "Connection": "keep-alive",
         "Content-Length": "973",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-python-ai-inference/1.0.0b7 Python/3.12.8 (Windows-11-10.0.26100-SP0)"
+        "User-Agent": "azsdk-python-ai-inference/1.0.0b10 Python/3.11.9 (Windows-10-10.0.22631-SP0)"
       },
       "RequestBody": {
         "messages": [
@@ -122,13 +201,107 @@
             "role": "assistant",
             "tool_calls": [
               {
-                "function": {
-                  "arguments": "{\"city\": \"Seattle\", \"days\": \"2\"}",
-                  "call_id": null,
-                  "name": "get_max_temperature"
-                },
                 "id": "Sanitized",
-                "type": "function"
+                "type": "function",
+                "function": {
+                  "name": "get_max_temperature",
+                  "arguments": "{\"city\": \"Seattle\", \"days\": \"2\"}",
+                  "call_id": null
+                }
+              }
+            ]
+          },
+          {
+            "role": "tool",
+            "content": "62",
+            "tool_call_id": "Sanitized"
+          }
+        ],
+        "tools": [
+          {
+            "function": {
+              "name": "get_max_temperature",
+              "description": "A function that returns the forecasted maximum temperature IN a given city, a given few days from now, in Fahrenheit. It returns `unknown` if the forecast is not known.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string",
+                    "description": "The name of the city"
+                  },
+                  "days": {
+                    "type": "string",
+                    "description": "The number of days from now, starting from 0, where 0 represents today, 1 represents tomorrow, etc."
+                  }
+                },
+                "required": [
+                  "city",
+                  "days"
+                ]
+              }
+            },
+            "type": "function"
+          }
+        ]
+      },
+      "StatusCode": 503,
+      "ResponseHeaders": {
+        "azureml-destination-deployment": "dep-eus-mis-lar2411-241203232700",
+        "azureml-destination-endpoint": "mistral-eus-mislarge2411-sgl-ep",
+        "azureml-destination-model-group": "mistral-large-2411-scaleset-sgl",
+        "azureml-destination-region": "eastus",
+        "azureml-model-group": "mistral-large-2411-scaleset-sgl",
+        "azureml-model-session": "dep-eus-mis-lar2411-241203232700",
+        "Content-Length": "176",
+        "Content-Type": "application/json",
+        "Date": "Fri, 07 Mar 2025 22:23:10 GMT",
+        "ms-azureml-model-error-reason": "model_error",
+        "ms-azureml-model-error-statuscode": "503",
+        "Request-Context": "appId=cid-v1:b80100f5-1286-423d-967f-3517f665186d",
+        "x-ms-rai-invoked": "false",
+        "X-Request-ID": "27e788a7-de3f-4114-9f3e-d181014449e7"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Service Unavailable",
+          "message": "{\"object\":\"Error\",\"message\":\"Model has no capacity.\",\"type\":\"invalid_request_error\",\"code\":3503}",
+          "status": 503
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.eastus2.models.ai.azure.com/chat/completions?api-version=2024-05-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "api-key": "Sanitized",
+        "Connection": "keep-alive",
+        "Content-Length": "973",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-python-ai-inference/1.0.0b10 Python/3.11.9 (Windows-10-10.0.22631-SP0)"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are an assistant that helps users find weather information."
+          },
+          {
+            "role": "user",
+            "content": "what's the maximum temperature in Seattle two days from now?"
+          },
+          {
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "id": "Sanitized",
+                "type": "function",
+                "function": {
+                  "name": "get_max_temperature",
+                  "arguments": "{\"city\": \"Seattle\", \"days\": \"2\"}",
+                  "call_id": null
+                }
               }
             ]
           },
@@ -167,37 +340,41 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
+        "azureml-destination-deployment": "dep-eus-mis-lar2411-241203232705",
+        "azureml-destination-endpoint": "mistral-eus-mislarge2411-sgl-ep",
+        "azureml-destination-model-group": "mistral-large-2411-scaleset-sgl",
+        "azureml-destination-region": "eastus",
         "azureml-model-group": "mistral-large-2411-scaleset-sgl",
-        "azureml-model-session": "dep-eus-mis-lar2411-241203232700",
-        "Content-Length": "353",
+        "azureml-model-session": "dep-eus-mis-lar2411-241203232705",
+        "Content-Length": "342",
         "Content-Type": "application/json",
-        "Date": "Thu, 09 Jan 2025 02:18:14 GMT",
-        "prompt_token_len": "232",
+        "Date": "Fri, 07 Mar 2025 22:23:11 GMT",
+        "prompt_token_len": "233",
         "Request-Context": "appId=cid-v1:b80100f5-1286-423d-967f-3517f665186d",
-        "sampling_token_len": "19",
-        "x-ms-rai-invoked": "true",
-        "X-Request-ID": "bd2518f8-753e-4b87-aa32-853238785a52"
+        "sampling_token_len": "17",
+        "x-ms-rai-invoked": "false",
+        "X-Request-ID": "3076be8b-6d15-48c7-b1f8-37d81cdae2e4"
       },
       "ResponseBody": {
+        "id": "Sanitized",
+        "object": "chat.completion",
+        "created": 1741386190,
+        "model": "mistral-large-2411",
         "choices": [
           {
-            "finish_reason": "stop",
             "index": 0,
             "message": {
-              "content": "The maximum temperature in Seattle two days from now is expected to be 62°F.",
               "role": "assistant",
+              "content": "The max temperature in Seattle two days from now is 62 Fahrenheit.",
               "tool_calls": null
-            }
+            },
+            "finish_reason": "stop"
           }
         ],
-        "created": 1736389094,
-        "id": "Sanitized",
-        "model": "mistral-large-2411",
-        "object": "chat.completion",
         "usage": {
-          "completion_tokens": 19,
-          "prompt_tokens": 232,
-          "total_tokens": 251
+          "prompt_tokens": 233,
+          "total_tokens": 250,
+          "completion_tokens": 17
         }
       }
     }
