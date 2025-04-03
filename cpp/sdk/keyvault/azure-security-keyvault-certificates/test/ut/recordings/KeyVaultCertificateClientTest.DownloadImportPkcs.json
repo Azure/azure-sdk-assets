@@ -4,10 +4,11 @@
       "RequestUri": "https://REDACTED.vault.azure.net/certificates/DownloadImportPkcs/create?api-version=7.5",
       "RequestMethod": "POST",
       "RequestHeaders": {
+        "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "382",
+        "Content-Length": "318",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-cpp-keyvault-certificates/4.3.0-beta.2 (Windows 10 Enterprise 6.3 22631 22621.1.amd64fre.ni_release.220506-1250)",
+        "User-Agent": "azsdk-cpp-security-keyvault-certificates/4.3.0-beta.3 (Windows 10 Enterprise 6.3 26100 26100.1.amd64fre.ge_release.240331-1435 Cpp/-1)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
@@ -21,7 +22,6 @@
           "issuer": {
             "name": "Sanitized"
           },
-          "key_props": null,
           "lifetime_actions": [
             {
               "action": {
@@ -36,11 +36,7 @@
             "contentType": "application/x-pkcs12"
           },
           "x509_props": {
-            "dns_names": [],
-            "ekus": [],
-            "emails": [],
             "subject": "CN=xyz",
-            "upns": [],
             "validity_months": 12
           }
         },
@@ -49,9 +45,9 @@
       "StatusCode": 202,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "1182",
+        "Content-Length": "1222",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 30 Apr 2024 16:42:18 GMT",
+        "Date": "Thu, 03 Apr 2025 21:04:44 GMT",
         "Expires": "-1",
         "Location": "https://example.com",
         "Pragma": "no-cache",
@@ -59,9 +55,9 @@
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-client-request-id": "Sanitized",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=174.165.214.215;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=160.2.125.113;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus",
-        "x-ms-keyvault-service-version": "1.9.1430.6",
+        "x-ms-keyvault-service-version": "1.9.2228.1",
         "x-ms-request-id": "Sanitized"
       },
       "ResponseBody": {
@@ -69,38 +65,38 @@
         "issuer": {
           "name": "Sanitized"
         },
-        "csr": "MIICfzCCAWcCAQAwDjEMMAoGA1UEAxMDeHl6MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4vplBFvjZt/8t6scl40k+nY3bU9ZUYj5bxNMPhuO7srHBaofgISTkT85O9RRCoJ9YppIYyrIN9ylQXX8jOdV99zcD4ZaPoSJuV43fPVhIvcM+yKSNnbxy7UhSNXK7aFTbEDyTOXgS/vanm8/qeiEjxgjQ8H2hH700ELKjIGm99z4LoKXSZEJ7PxDtY+KzU1ovxIT7bge6Au8a2IiA20POEFcO68EEwe6GnFsfab7gY5mN4vwXoOQLokOZ87wiFRI26yonMfeypNz7jzPNluMdBN6/K2L/u1XkzWggXK78pNwEJYwdOYoB+iNhm6+QhqYrl8oJWCRYOHMSfJtiZBufQIDAQABoCwwKgYJKoZIhvcNAQkOMR0wGzAOBgNVHQ8BAf8EBAMCBaAwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAPopLx1ft+ZXrh4VEdv82mANXVBF8sqgEJa/wNRKv11SC0RK8MQNskssKNyHQmP2ry6TA4+8bknYbMpta/DzCu3rGFTRnvvU1Y3IJSXUhQA8ux22OuyPQyLM6ma3oD4SsxnO72GGEM+wR66f9zMDDh1HCJKgeVejDDiY0V8JboNN4Rqa+dEA5NbIxmn6xJn2MIFPcejcZ+VLZpAnggp/3XaAOf9UnuFePJjWnfGwy5O2YqSx+jXBWaPRMVfovD9SkU2p3x9PZNq142vDgAofe4fu86Or828Pve/neuKmnn35bkKtlNjvmE0WnOxjIfWr8q5Qrmn48rZQgNlEiMZF0/A==",
+        "csr": "MIICnjCCAYYCAQAwDjEMMAoGA1UEAxMDeHl6MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtl0D9OQq5d2jO57XezAibHmxF9ypaORifbuXZKqLDk2Pop3pwckAlIA4wcYNDRzCBI3m3K3Tu2gHuDAj/wnV2rwjYQbbLZBjPPWx5O+IuYo1G1Rj5BGMJaLHMHMAi/6Urst280ix8S+O9GkI32heVjg6pv9k+nv9WSUMWc0rkru9E3P28yqXPlBf8Pv8P1G6ozpTPAOExMeYfcgYlUEq84YTi1K0teBl8RD/8Gwp/3k0jmdiU6gbHn6qQ0QABJIiOuaAxJdLXuNfc9D2HbpqO0rHOABVq690PDEqcbDmlewMnFGpH/MmWBRT2bW/zQ6+y72vChsKB3ghOuWzuVQXjQIDAQABoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwDQYJKoZIhvcNAQELBQADggEBAGC67xouR1wt5TXmi1KuJ4hFd/uixyq8yh2RXNzfsYt3sZ57HlS89s2s/UiTkIJaHDINguiK4QsEpknvI0zljS33DDWWh3ddXzbOJUbEzOto5Y/1FRnuRcTCMKpQIcOcJ2OLB6P2xekysyjmvfnyjWApEOKohYh8yesVxDDdoBVRh/9vFDJhiXZu2g3raH7VVrDh+nOl5qqI7basbqggbl7EkduS0w59XXWSbvuHU7SsRsxJpdhf5VNrsuKCE3WdNId0Dvd5EEjMzHSms1X+LYa0qG0GAUYwqCt7ls5rIrC10eO7iBvc3KkGll+x0JtJUJ3lHNxy0u2Ejsb90zvpn6g=",
         "cancellation_requested": false,
         "status": "inProgress",
         "status_details": "Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.",
-        "request_id": "39e1fc285e52459b8ea8e8c9c00a3ce7"
+        "request_id": "9e2777a792db430d970712bed89c9080"
       }
     },
     {
       "RequestUri": "https://REDACTED.vault.azure.net/certificates/DownloadImportPkcs/pending?api-version=7.5",
       "RequestMethod": "GET",
       "RequestHeaders": {
+        "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Type": "application/json",
-        "User-Agent": "azsdk-cpp-keyvault-certificates/4.3.0-beta.2 (Windows 10 Enterprise 6.3 22631 22621.1.amd64fre.ni_release.220506-1250)",
+        "User-Agent": "azsdk-cpp-security-keyvault-certificates/4.3.0-beta.3 (Windows 10 Enterprise 6.3 26100 26100.1.amd64fre.ge_release.240331-1435 Cpp/-1)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "1182",
+        "Content-Length": "1222",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 30 Apr 2024 16:42:18 GMT",
+        "Date": "Thu, 03 Apr 2025 21:04:45 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Retry-After": "10",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-client-request-id": "Sanitized",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=174.165.214.215;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=160.2.125.113;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus",
-        "x-ms-keyvault-service-version": "1.9.1430.6",
+        "x-ms-keyvault-service-version": "1.9.2228.1",
         "x-ms-request-id": "Sanitized"
       },
       "ResponseBody": {
@@ -108,37 +104,37 @@
         "issuer": {
           "name": "Sanitized"
         },
-        "csr": "MIICfzCCAWcCAQAwDjEMMAoGA1UEAxMDeHl6MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4vplBFvjZt/8t6scl40k+nY3bU9ZUYj5bxNMPhuO7srHBaofgISTkT85O9RRCoJ9YppIYyrIN9ylQXX8jOdV99zcD4ZaPoSJuV43fPVhIvcM+yKSNnbxy7UhSNXK7aFTbEDyTOXgS/vanm8/qeiEjxgjQ8H2hH700ELKjIGm99z4LoKXSZEJ7PxDtY+KzU1ovxIT7bge6Au8a2IiA20POEFcO68EEwe6GnFsfab7gY5mN4vwXoOQLokOZ87wiFRI26yonMfeypNz7jzPNluMdBN6/K2L/u1XkzWggXK78pNwEJYwdOYoB+iNhm6+QhqYrl8oJWCRYOHMSfJtiZBufQIDAQABoCwwKgYJKoZIhvcNAQkOMR0wGzAOBgNVHQ8BAf8EBAMCBaAwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAPopLx1ft+ZXrh4VEdv82mANXVBF8sqgEJa/wNRKv11SC0RK8MQNskssKNyHQmP2ry6TA4+8bknYbMpta/DzCu3rGFTRnvvU1Y3IJSXUhQA8ux22OuyPQyLM6ma3oD4SsxnO72GGEM+wR66f9zMDDh1HCJKgeVejDDiY0V8JboNN4Rqa+dEA5NbIxmn6xJn2MIFPcejcZ+VLZpAnggp/3XaAOf9UnuFePJjWnfGwy5O2YqSx+jXBWaPRMVfovD9SkU2p3x9PZNq142vDgAofe4fu86Or828Pve/neuKmnn35bkKtlNjvmE0WnOxjIfWr8q5Qrmn48rZQgNlEiMZF0/A==",
+        "csr": "MIICnjCCAYYCAQAwDjEMMAoGA1UEAxMDeHl6MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtl0D9OQq5d2jO57XezAibHmxF9ypaORifbuXZKqLDk2Pop3pwckAlIA4wcYNDRzCBI3m3K3Tu2gHuDAj/wnV2rwjYQbbLZBjPPWx5O+IuYo1G1Rj5BGMJaLHMHMAi/6Urst280ix8S+O9GkI32heVjg6pv9k+nv9WSUMWc0rkru9E3P28yqXPlBf8Pv8P1G6ozpTPAOExMeYfcgYlUEq84YTi1K0teBl8RD/8Gwp/3k0jmdiU6gbHn6qQ0QABJIiOuaAxJdLXuNfc9D2HbpqO0rHOABVq690PDEqcbDmlewMnFGpH/MmWBRT2bW/zQ6+y72vChsKB3ghOuWzuVQXjQIDAQABoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwDQYJKoZIhvcNAQELBQADggEBAGC67xouR1wt5TXmi1KuJ4hFd/uixyq8yh2RXNzfsYt3sZ57HlS89s2s/UiTkIJaHDINguiK4QsEpknvI0zljS33DDWWh3ddXzbOJUbEzOto5Y/1FRnuRcTCMKpQIcOcJ2OLB6P2xekysyjmvfnyjWApEOKohYh8yesVxDDdoBVRh/9vFDJhiXZu2g3raH7VVrDh+nOl5qqI7basbqggbl7EkduS0w59XXWSbvuHU7SsRsxJpdhf5VNrsuKCE3WdNId0Dvd5EEjMzHSms1X+LYa0qG0GAUYwqCt7ls5rIrC10eO7iBvc3KkGll+x0JtJUJ3lHNxy0u2Ejsb90zvpn6g=",
         "cancellation_requested": false,
         "status": "inProgress",
         "status_details": "Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.",
-        "request_id": "39e1fc285e52459b8ea8e8c9c00a3ce7"
+        "request_id": "9e2777a792db430d970712bed89c9080"
       }
     },
     {
       "RequestUri": "https://REDACTED.vault.azure.net/certificates/DownloadImportPkcs/pending?api-version=7.5",
       "RequestMethod": "GET",
       "RequestHeaders": {
+        "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Type": "application/json",
-        "User-Agent": "azsdk-cpp-keyvault-certificates/4.3.0-beta.2 (Windows 10 Enterprise 6.3 22631 22621.1.amd64fre.ni_release.220506-1250)",
+        "User-Agent": "azsdk-cpp-security-keyvault-certificates/4.3.0-beta.3 (Windows 10 Enterprise 6.3 26100 26100.1.amd64fre.ge_release.240331-1435 Cpp/-1)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "1102",
+        "Content-Length": "1142",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 30 Apr 2024 16:42:39 GMT",
+        "Date": "Thu, 03 Apr 2025 21:05:05 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-client-request-id": "Sanitized",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=174.165.214.215;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=160.2.125.113;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus",
-        "x-ms-keyvault-service-version": "1.9.1430.6",
+        "x-ms-keyvault-service-version": "1.9.2228.1",
         "x-ms-request-id": "Sanitized"
       },
       "ResponseBody": {
@@ -146,51 +142,51 @@
         "issuer": {
           "name": "Sanitized"
         },
-        "csr": "MIICfzCCAWcCAQAwDjEMMAoGA1UEAxMDeHl6MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4vplBFvjZt/8t6scl40k+nY3bU9ZUYj5bxNMPhuO7srHBaofgISTkT85O9RRCoJ9YppIYyrIN9ylQXX8jOdV99zcD4ZaPoSJuV43fPVhIvcM+yKSNnbxy7UhSNXK7aFTbEDyTOXgS/vanm8/qeiEjxgjQ8H2hH700ELKjIGm99z4LoKXSZEJ7PxDtY+KzU1ovxIT7bge6Au8a2IiA20POEFcO68EEwe6GnFsfab7gY5mN4vwXoOQLokOZ87wiFRI26yonMfeypNz7jzPNluMdBN6/K2L/u1XkzWggXK78pNwEJYwdOYoB+iNhm6+QhqYrl8oJWCRYOHMSfJtiZBufQIDAQABoCwwKgYJKoZIhvcNAQkOMR0wGzAOBgNVHQ8BAf8EBAMCBaAwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAPopLx1ft+ZXrh4VEdv82mANXVBF8sqgEJa/wNRKv11SC0RK8MQNskssKNyHQmP2ry6TA4+8bknYbMpta/DzCu3rGFTRnvvU1Y3IJSXUhQA8ux22OuyPQyLM6ma3oD4SsxnO72GGEM+wR66f9zMDDh1HCJKgeVejDDiY0V8JboNN4Rqa+dEA5NbIxmn6xJn2MIFPcejcZ+VLZpAnggp/3XaAOf9UnuFePJjWnfGwy5O2YqSx+jXBWaPRMVfovD9SkU2p3x9PZNq142vDgAofe4fu86Or828Pve/neuKmnn35bkKtlNjvmE0WnOxjIfWr8q5Qrmn48rZQgNlEiMZF0/A==",
+        "csr": "MIICnjCCAYYCAQAwDjEMMAoGA1UEAxMDeHl6MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtl0D9OQq5d2jO57XezAibHmxF9ypaORifbuXZKqLDk2Pop3pwckAlIA4wcYNDRzCBI3m3K3Tu2gHuDAj/wnV2rwjYQbbLZBjPPWx5O+IuYo1G1Rj5BGMJaLHMHMAi/6Urst280ix8S+O9GkI32heVjg6pv9k+nv9WSUMWc0rkru9E3P28yqXPlBf8Pv8P1G6ozpTPAOExMeYfcgYlUEq84YTi1K0teBl8RD/8Gwp/3k0jmdiU6gbHn6qQ0QABJIiOuaAxJdLXuNfc9D2HbpqO0rHOABVq690PDEqcbDmlewMnFGpH/MmWBRT2bW/zQ6+y72vChsKB3ghOuWzuVQXjQIDAQABoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwDQYJKoZIhvcNAQELBQADggEBAGC67xouR1wt5TXmi1KuJ4hFd/uixyq8yh2RXNzfsYt3sZ57HlS89s2s/UiTkIJaHDINguiK4QsEpknvI0zljS33DDWWh3ddXzbOJUbEzOto5Y/1FRnuRcTCMKpQIcOcJ2OLB6P2xekysyjmvfnyjWApEOKohYh8yesVxDDdoBVRh/9vFDJhiXZu2g3raH7VVrDh+nOl5qqI7basbqggbl7EkduS0w59XXWSbvuHU7SsRsxJpdhf5VNrsuKCE3WdNId0Dvd5EEjMzHSms1X+LYa0qG0GAUYwqCt7ls5rIrC10eO7iBvc3KkGll+x0JtJUJ3lHNxy0u2Ejsb90zvpn6g=",
         "cancellation_requested": false,
         "status": "completed",
         "target": "https://t74b68ef3acc1f78c.vault.azure.net/certificates/DownloadImportPkcs",
-        "request_id": "39e1fc285e52459b8ea8e8c9c00a3ce7"
+        "request_id": "9e2777a792db430d970712bed89c9080"
       }
     },
     {
       "RequestUri": "https://REDACTED.vault.azure.net/certificates/DownloadImportPkcs?api-version=7.5",
       "RequestMethod": "GET",
       "RequestHeaders": {
+        "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Type": "application/json",
-        "User-Agent": "azsdk-cpp-keyvault-certificates/4.3.0-beta.2 (Windows 10 Enterprise 6.3 22631 22621.1.amd64fre.ni_release.220506-1250)",
+        "User-Agent": "azsdk-cpp-security-keyvault-certificates/4.3.0-beta.3 (Windows 10 Enterprise 6.3 26100 26100.1.amd64fre.ge_release.240331-1435 Cpp/-1)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2030",
+        "Content-Length": "2109",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 30 Apr 2024 16:42:39 GMT",
+        "Date": "Thu, 03 Apr 2025 21:05:05 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-client-request-id": "Sanitized",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=174.165.214.215;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=160.2.125.113;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus",
-        "x-ms-keyvault-service-version": "1.9.1430.6",
+        "x-ms-keyvault-service-version": "1.9.2228.1",
         "x-ms-request-id": "Sanitized"
       },
       "ResponseBody": {
         "id": "Sanitized",
-        "kid": "https://t74b68ef3acc1f78c.vault.azure.net/keys/DownloadImportPkcs/2857535eaa434c1abc43dd86d0e470eb",
-        "sid": "https://t74b68ef3acc1f78c.vault.azure.net/secrets/DownloadImportPkcs/2857535eaa434c1abc43dd86d0e470eb",
-        "x5t": "sARNxylv91iNstsUV7132wctqcs",
-        "cer": "MIIDAzCCAeugAwIBAgIQCa+WnF8lTBqW1E0i76d13zANBgkqhkiG9w0BAQsFADAOMQwwCgYDVQQDEwN4eXowHhcNMjQwNDMwMTYzMjIzWhcNMjUwNDMwMTY0MjIzWjAOMQwwCgYDVQQDEwN4eXowggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDi+mUEW+Nm3/y3qxyXjST6djdtT1lRiPlvE0w+G47uyscFqh+AhJORPzk71FEKgn1imkhjKsg33KVBdfyM51X33NwPhlo+hIm5Xjd89WEi9wz7IpI2dvHLtSFI1crtoVNsQPJM5eBL+9qebz+p6ISPGCNDwfaEfvTQQsqMgab33PgugpdJkQns/EO1j4rNTWi/EhPtuB7oC7xrYiIDbQ84QVw7rwQTB7oacWx9pvuBjmY3i/Beg5AuiQ5nzvCIVEjbrKicx97Kk3PuPM82W4x0E3r8rYv+7VeTNaCBcrvyk3AQljB05igH6I2Gbr5CGpiuXyglYJFg4cxJ8m2JkG59AgMBAAGjXTBbMA4GA1UdDwEB/wQEAwIFoDAJBgNVHRMEAjAAMB8GA1UdIwQYMBaAFIcMgqTplvRUAwwWwJraa8FIUUxAMB0GA1UdDgQWBBSHDIKk6Zb0VAMMFsCa2mvBSFFMQDANBgkqhkiG9w0BAQsFAAOCAQEAtEGnbIhA4xvmVXh4O1QO/xs550vMjp9fYrNnd388y47ZjyDFURAr9bCKHEt06DR9YbtLx+YlNCFyKqkBz7QcKaOk4AdUlFUtPtb4GGM96Z3DS8mZBE5s47YtXSuLzPu6m+DBwHpC36ebq6ukI5d8Yy0I4mnA92wLBU/+piv8pzH2uvDApY7D5qfYQ4xgAS5u14UigBiRwKs4u72doEMI1P2W52zU9198+GlsnaYRxdopRXIRoUUmPyy1TaUmCleXFJF8XLtwSQE2jKWOepNvbhTxLg8aYVRM0xSxlp39i/j7tmQxvylYPvTYM1TpXAKLS3jM1PUWwFA0RzryszuHew==",
+        "kid": "https://t74b68ef3acc1f78c.vault.azure.net/keys/DownloadImportPkcs/17eeb1bb67624d7cbd739116b7b758e8",
+        "sid": "https://t74b68ef3acc1f78c.vault.azure.net/secrets/DownloadImportPkcs/17eeb1bb67624d7cbd739116b7b758e8",
+        "x5t": "OOIBIILBchv9m_ZEiXFhXEdLRZI",
+        "cer": "MIIDIjCCAgqgAwIBAgIQb7GI9m+iTviEYAQCfdkuhTANBgkqhkiG9w0BAQsFADAOMQwwCgYDVQQDEwN4eXowHhcNMjUwNDAzMjA1NDQ2WhcNMjYwNDAzMjEwNDQ2WjAOMQwwCgYDVQQDEwN4eXowggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC2XQP05Crl3aM7ntd7MCJsebEX3Klo5GJ9u5dkqosOTY+inenByQCUgDjBxg0NHMIEjebcrdO7aAe4MCP/CdXavCNhBtstkGM89bHk74i5ijUbVGPkEYwloscwcwCL/pSuy3bzSLHxL470aQjfaF5WODqm/2T6e/1ZJQxZzSuSu70Tc/bzKpc+UF/w+/w/UbqjOlM8A4TEx5h9yBiVQSrzhhOLUrS14GXxEP/wbCn/eTSOZ2JTqBsefqpDRAAEkiI65oDEl0te419z0PYdumo7Ssc4AFWrr3Q8MSpxsOaV7AycUakf8yZYFFPZtb/NDr7Lva8KGwoHeCE65bO5VBeNAgMBAAGjfDB6MA4GA1UdDwEB/wQEAwIFoDAJBgNVHRMEAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAfBgNVHSMEGDAWgBQzd3fMNuuEB3yuHCHuyiD11gvPJDAdBgNVHQ4EFgQUM3d3zDbrhAd8rhwh7sog9dYLzyQwDQYJKoZIhvcNAQELBQADggEBABvDNjdYot3/keSeINxnED4tU8MzU23Zb1s00eCxrFS09cUH6+Vap3WdNdVknEgCH0oxaSinNmixiGuAYNrQUjh2i3UDZczM1QUURb5yNtkLzLS2rWClKvwRQbKJXXtdXhMjoeMCWWlNIcJa3QF9zzCAaYtViATWj0I7kUgxHh0YEY+iF6vdRu/aBgvgbFHzSd7RKTOxr/LludKABok/3yxvRkyKPq2j2USgMrKAKOF4SUyWhFCp1gEyvqC3Igr13feH1tqljJK3iy3Ue4yQ6YxIU/SpA/HalCvr+aFjxUpC77iYZf1z/ViPwuXi3faCT3ZzHebw+QNpENdUaP4Xynk=",
         "attributes": {
           "enabled": true,
-          "nbf": 1714494743,
-          "exp": 1746031343,
-          "created": 1714495343,
-          "updated": 1714495343,
+          "nbf": 1743713686,
+          "exp": 1775250286,
+          "created": 1743714286,
+          "updated": 1743714286,
           "recoveryLevel": "Recoverable+Purgeable",
           "recoverableDays": 90
         },
@@ -208,7 +204,10 @@
           },
           "x509_props": {
             "subject": "CN=xyz",
-            "ekus": [],
+            "ekus": [
+              "1.3.6.1.5.5.7.3.1",
+              "1.3.6.1.5.5.7.3.2"
+            ],
             "key_usage": [
               "digitalSignature",
               "keyEncipherment"
@@ -233,8 +232,8 @@
           },
           "attributes": {
             "enabled": true,
-            "created": 1714495283,
-            "updated": 1714495339
+            "created": 1743714285,
+            "updated": 1743714285
           }
         },
         "pending": {
@@ -246,40 +245,40 @@
       "RequestUri": "https://REDACTED.vault.azure.net/certificates/DownloadImportPkcs?api-version=7.5",
       "RequestMethod": "GET",
       "RequestHeaders": {
+        "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Type": "application/json",
-        "User-Agent": "azsdk-cpp-keyvault-certificates/4.3.0-beta.2 (Windows 10 Enterprise 6.3 22631 22621.1.amd64fre.ni_release.220506-1250)",
+        "User-Agent": "azsdk-cpp-security-keyvault-certificates/4.3.0-beta.3 (Windows 10 Enterprise 6.3 26100 26100.1.amd64fre.ge_release.240331-1435 Cpp/-1)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2030",
+        "Content-Length": "2109",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 30 Apr 2024 16:42:39 GMT",
+        "Date": "Thu, 03 Apr 2025 21:05:05 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-client-request-id": "Sanitized",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=174.165.214.215;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=160.2.125.113;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus",
-        "x-ms-keyvault-service-version": "1.9.1430.6",
+        "x-ms-keyvault-service-version": "1.9.2228.1",
         "x-ms-request-id": "Sanitized"
       },
       "ResponseBody": {
         "id": "Sanitized",
-        "kid": "https://t74b68ef3acc1f78c.vault.azure.net/keys/DownloadImportPkcs/2857535eaa434c1abc43dd86d0e470eb",
-        "sid": "https://t74b68ef3acc1f78c.vault.azure.net/secrets/DownloadImportPkcs/2857535eaa434c1abc43dd86d0e470eb",
-        "x5t": "sARNxylv91iNstsUV7132wctqcs",
-        "cer": "MIIDAzCCAeugAwIBAgIQCa+WnF8lTBqW1E0i76d13zANBgkqhkiG9w0BAQsFADAOMQwwCgYDVQQDEwN4eXowHhcNMjQwNDMwMTYzMjIzWhcNMjUwNDMwMTY0MjIzWjAOMQwwCgYDVQQDEwN4eXowggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDi+mUEW+Nm3/y3qxyXjST6djdtT1lRiPlvE0w+G47uyscFqh+AhJORPzk71FEKgn1imkhjKsg33KVBdfyM51X33NwPhlo+hIm5Xjd89WEi9wz7IpI2dvHLtSFI1crtoVNsQPJM5eBL+9qebz+p6ISPGCNDwfaEfvTQQsqMgab33PgugpdJkQns/EO1j4rNTWi/EhPtuB7oC7xrYiIDbQ84QVw7rwQTB7oacWx9pvuBjmY3i/Beg5AuiQ5nzvCIVEjbrKicx97Kk3PuPM82W4x0E3r8rYv+7VeTNaCBcrvyk3AQljB05igH6I2Gbr5CGpiuXyglYJFg4cxJ8m2JkG59AgMBAAGjXTBbMA4GA1UdDwEB/wQEAwIFoDAJBgNVHRMEAjAAMB8GA1UdIwQYMBaAFIcMgqTplvRUAwwWwJraa8FIUUxAMB0GA1UdDgQWBBSHDIKk6Zb0VAMMFsCa2mvBSFFMQDANBgkqhkiG9w0BAQsFAAOCAQEAtEGnbIhA4xvmVXh4O1QO/xs550vMjp9fYrNnd388y47ZjyDFURAr9bCKHEt06DR9YbtLx+YlNCFyKqkBz7QcKaOk4AdUlFUtPtb4GGM96Z3DS8mZBE5s47YtXSuLzPu6m+DBwHpC36ebq6ukI5d8Yy0I4mnA92wLBU/+piv8pzH2uvDApY7D5qfYQ4xgAS5u14UigBiRwKs4u72doEMI1P2W52zU9198+GlsnaYRxdopRXIRoUUmPyy1TaUmCleXFJF8XLtwSQE2jKWOepNvbhTxLg8aYVRM0xSxlp39i/j7tmQxvylYPvTYM1TpXAKLS3jM1PUWwFA0RzryszuHew==",
+        "kid": "https://t74b68ef3acc1f78c.vault.azure.net/keys/DownloadImportPkcs/17eeb1bb67624d7cbd739116b7b758e8",
+        "sid": "https://t74b68ef3acc1f78c.vault.azure.net/secrets/DownloadImportPkcs/17eeb1bb67624d7cbd739116b7b758e8",
+        "x5t": "OOIBIILBchv9m_ZEiXFhXEdLRZI",
+        "cer": "MIIDIjCCAgqgAwIBAgIQb7GI9m+iTviEYAQCfdkuhTANBgkqhkiG9w0BAQsFADAOMQwwCgYDVQQDEwN4eXowHhcNMjUwNDAzMjA1NDQ2WhcNMjYwNDAzMjEwNDQ2WjAOMQwwCgYDVQQDEwN4eXowggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC2XQP05Crl3aM7ntd7MCJsebEX3Klo5GJ9u5dkqosOTY+inenByQCUgDjBxg0NHMIEjebcrdO7aAe4MCP/CdXavCNhBtstkGM89bHk74i5ijUbVGPkEYwloscwcwCL/pSuy3bzSLHxL470aQjfaF5WODqm/2T6e/1ZJQxZzSuSu70Tc/bzKpc+UF/w+/w/UbqjOlM8A4TEx5h9yBiVQSrzhhOLUrS14GXxEP/wbCn/eTSOZ2JTqBsefqpDRAAEkiI65oDEl0te419z0PYdumo7Ssc4AFWrr3Q8MSpxsOaV7AycUakf8yZYFFPZtb/NDr7Lva8KGwoHeCE65bO5VBeNAgMBAAGjfDB6MA4GA1UdDwEB/wQEAwIFoDAJBgNVHRMEAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAfBgNVHSMEGDAWgBQzd3fMNuuEB3yuHCHuyiD11gvPJDAdBgNVHQ4EFgQUM3d3zDbrhAd8rhwh7sog9dYLzyQwDQYJKoZIhvcNAQELBQADggEBABvDNjdYot3/keSeINxnED4tU8MzU23Zb1s00eCxrFS09cUH6+Vap3WdNdVknEgCH0oxaSinNmixiGuAYNrQUjh2i3UDZczM1QUURb5yNtkLzLS2rWClKvwRQbKJXXtdXhMjoeMCWWlNIcJa3QF9zzCAaYtViATWj0I7kUgxHh0YEY+iF6vdRu/aBgvgbFHzSd7RKTOxr/LludKABok/3yxvRkyKPq2j2USgMrKAKOF4SUyWhFCp1gEyvqC3Igr13feH1tqljJK3iy3Ue4yQ6YxIU/SpA/HalCvr+aFjxUpC77iYZf1z/ViPwuXi3faCT3ZzHebw+QNpENdUaP4Xynk=",
         "attributes": {
           "enabled": true,
-          "nbf": 1714494743,
-          "exp": 1746031343,
-          "created": 1714495343,
-          "updated": 1714495343,
+          "nbf": 1743713686,
+          "exp": 1775250286,
+          "created": 1743714286,
+          "updated": 1743714286,
           "recoveryLevel": "Recoverable+Purgeable",
           "recoverableDays": 90
         },
@@ -297,7 +296,10 @@
           },
           "x509_props": {
             "subject": "CN=xyz",
-            "ekus": [],
+            "ekus": [
+              "1.3.6.1.5.5.7.3.1",
+              "1.3.6.1.5.5.7.3.2"
+            ],
             "key_usage": [
               "digitalSignature",
               "keyEncipherment"
@@ -322,8 +324,8 @@
           },
           "attributes": {
             "enabled": true,
-            "created": 1714495283,
-            "updated": 1714495339
+            "created": 1743714285,
+            "updated": 1743714285
           }
         },
         "pending": {
@@ -332,118 +334,107 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED.vault.azure.net/secrets/DownloadImportPkcs/2857535eaa434c1abc43dd86d0e470eb?api-version=7.5",
+      "RequestUri": "https://REDACTED.vault.azure.net/secrets/DownloadImportPkcs/%2F?api-version=7.6-preview.2",
       "RequestMethod": "GET",
       "RequestHeaders": {
+        "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Type": "application/json",
-        "User-Agent": "azsdk-cpp-keyvault-certificates/4.3.0-beta.2 (Windows 10 Enterprise 6.3 22631 22621.1.amd64fre.ni_release.220506-1250)",
+        "User-Agent": "azsdk-cpp-security-keyvault-secrets/1.0.0-beta.1 (Windows 10 Enterprise 6.3 26100 26100.1.amd64fre.ge_release.240331-1435 Cpp/-1)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "3805",
+        "Content-Length": "3849",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 30 Apr 2024 16:42:39 GMT",
+        "Date": "Thu, 03 Apr 2025 21:05:05 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-client-request-id": "Sanitized",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=174.165.214.215;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=160.2.125.113;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus",
-        "x-ms-keyvault-service-version": "1.9.1430.6",
+        "x-ms-keyvault-service-version": "1.9.2228.1",
         "x-ms-request-id": "Sanitized"
       },
       "ResponseBody": {
-        "value": "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",
+        "id": "Sanitized",
+        "value": "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",
         "contentType": "application/x-pkcs12",
-        "id": "Sanitized",
         "managed": true,
         "attributes": {
           "enabled": true,
-          "nbf": 1714494743,
-          "exp": 1746031343,
-          "created": 1714495343,
-          "updated": 1714495343,
+          "nbf": 1743713686,
+          "exp": 1775250286,
+          "created": 1743714286,
+          "updated": 1743714286,
           "recoveryLevel": "Recoverable+Purgeable",
           "recoverableDays": 90
         },
         "tags": {},
-        "kid": "https://t74b68ef3acc1f78c.vault.azure.net/keys/DownloadImportPkcs/2857535eaa434c1abc43dd86d0e470eb"
+        "kid": "https://t74b68ef3acc1f78c.vault.azure.net/keys/DownloadImportPkcs/17eeb1bb67624d7cbd739116b7b758e8"
       }
     },
     {
       "RequestUri": "https://REDACTED.vault.azure.net/certificates/DownloadImportPkcs2/import?api-version=7.5",
       "RequestMethod": "POST",
       "RequestHeaders": {
+        "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "3746",
+        "Content-Length": "3651",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-cpp-keyvault-certificates/4.3.0-beta.2 (Windows 10 Enterprise 6.3 22631 22621.1.amd64fre.ni_release.220506-1250)",
+        "User-Agent": "azsdk-cpp-security-keyvault-certificates/4.3.0-beta.3 (Windows 10 Enterprise 6.3 26100 26100.1.amd64fre.ge_release.240331-1435 Cpp/-1)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
-        "attributes": null,
         "policy": {
           "attributes": {
             "enabled": true
           },
-          "issuer": null,
           "key_props": {
             "exportable": true,
             "key_size": 2048,
             "kty": "RSA"
           },
-          "lifetime_actions": [],
           "secret_props": {
             "contentType": "application/x-pkcs12"
-          },
-          "x509_props": {
-            "dns_names": [],
-            "ekus": [],
-            "emails": [],
-            "subject": "",
-            "upns": []
           }
         },
-        "tags": {},
-        "value": "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"
+        "value": "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"
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "1928",
+        "Content-Length": "2076",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 30 Apr 2024 16:42:39 GMT",
+        "Date": "Thu, 03 Apr 2025 21:05:05 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-client-request-id": "Sanitized",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=174.165.214.215;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=160.2.125.113;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus",
-        "x-ms-keyvault-service-version": "1.9.1430.6",
+        "x-ms-keyvault-service-version": "1.9.2228.1",
         "x-ms-request-id": "Sanitized"
       },
       "ResponseBody": {
         "id": "Sanitized",
-        "kid": "https://t74b68ef3acc1f78c.vault.azure.net/keys/DownloadImportPkcs2/34a2a9ec10144ed1a57ecd7c5181dee1",
-        "sid": "https://t74b68ef3acc1f78c.vault.azure.net/secrets/DownloadImportPkcs2/34a2a9ec10144ed1a57ecd7c5181dee1",
-        "x5t": "sARNxylv91iNstsUV7132wctqcs",
-        "cer": "MIIDAzCCAeugAwIBAgIQCa+WnF8lTBqW1E0i76d13zANBgkqhkiG9w0BAQsFADAOMQwwCgYDVQQDEwN4eXowHhcNMjQwNDMwMTYzMjIzWhcNMjUwNDMwMTY0MjIzWjAOMQwwCgYDVQQDEwN4eXowggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDi+mUEW+Nm3/y3qxyXjST6djdtT1lRiPlvE0w+G47uyscFqh+AhJORPzk71FEKgn1imkhjKsg33KVBdfyM51X33NwPhlo+hIm5Xjd89WEi9wz7IpI2dvHLtSFI1crtoVNsQPJM5eBL+9qebz+p6ISPGCNDwfaEfvTQQsqMgab33PgugpdJkQns/EO1j4rNTWi/EhPtuB7oC7xrYiIDbQ84QVw7rwQTB7oacWx9pvuBjmY3i/Beg5AuiQ5nzvCIVEjbrKicx97Kk3PuPM82W4x0E3r8rYv+7VeTNaCBcrvyk3AQljB05igH6I2Gbr5CGpiuXyglYJFg4cxJ8m2JkG59AgMBAAGjXTBbMA4GA1UdDwEB/wQEAwIFoDAJBgNVHRMEAjAAMB8GA1UdIwQYMBaAFIcMgqTplvRUAwwWwJraa8FIUUxAMB0GA1UdDgQWBBSHDIKk6Zb0VAMMFsCa2mvBSFFMQDANBgkqhkiG9w0BAQsFAAOCAQEAtEGnbIhA4xvmVXh4O1QO/xs550vMjp9fYrNnd388y47ZjyDFURAr9bCKHEt06DR9YbtLx+YlNCFyKqkBz7QcKaOk4AdUlFUtPtb4GGM96Z3DS8mZBE5s47YtXSuLzPu6m+DBwHpC36ebq6ukI5d8Yy0I4mnA92wLBU/+piv8pzH2uvDApY7D5qfYQ4xgAS5u14UigBiRwKs4u72doEMI1P2W52zU9198+GlsnaYRxdopRXIRoUUmPyy1TaUmCleXFJF8XLtwSQE2jKWOepNvbhTxLg8aYVRM0xSxlp39i/j7tmQxvylYPvTYM1TpXAKLS3jM1PUWwFA0RzryszuHew==",
+        "kid": "https://t74b68ef3acc1f78c.vault.azure.net/keys/DownloadImportPkcs2/127d4b06d4184211a09f3ae860a953dd",
+        "sid": "https://t74b68ef3acc1f78c.vault.azure.net/secrets/DownloadImportPkcs2/127d4b06d4184211a09f3ae860a953dd",
+        "x5t": "OOIBIILBchv9m_ZEiXFhXEdLRZI",
+        "cer": "MIIDIjCCAgqgAwIBAgIQb7GI9m+iTviEYAQCfdkuhTANBgkqhkiG9w0BAQsFADAOMQwwCgYDVQQDEwN4eXowHhcNMjUwNDAzMjA1NDQ2WhcNMjYwNDAzMjEwNDQ2WjAOMQwwCgYDVQQDEwN4eXowggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC2XQP05Crl3aM7ntd7MCJsebEX3Klo5GJ9u5dkqosOTY+inenByQCUgDjBxg0NHMIEjebcrdO7aAe4MCP/CdXavCNhBtstkGM89bHk74i5ijUbVGPkEYwloscwcwCL/pSuy3bzSLHxL470aQjfaF5WODqm/2T6e/1ZJQxZzSuSu70Tc/bzKpc+UF/w+/w/UbqjOlM8A4TEx5h9yBiVQSrzhhOLUrS14GXxEP/wbCn/eTSOZ2JTqBsefqpDRAAEkiI65oDEl0te419z0PYdumo7Ssc4AFWrr3Q8MSpxsOaV7AycUakf8yZYFFPZtb/NDr7Lva8KGwoHeCE65bO5VBeNAgMBAAGjfDB6MA4GA1UdDwEB/wQEAwIFoDAJBgNVHRMEAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAfBgNVHSMEGDAWgBQzd3fMNuuEB3yuHCHuyiD11gvPJDAdBgNVHQ4EFgQUM3d3zDbrhAd8rhwh7sog9dYLzyQwDQYJKoZIhvcNAQELBQADggEBABvDNjdYot3/keSeINxnED4tU8MzU23Zb1s00eCxrFS09cUH6+Vap3WdNdVknEgCH0oxaSinNmixiGuAYNrQUjh2i3UDZczM1QUURb5yNtkLzLS2rWClKvwRQbKJXXtdXhMjoeMCWWlNIcJa3QF9zzCAaYtViATWj0I7kUgxHh0YEY+iF6vdRu/aBgvgbFHzSd7RKTOxr/LludKABok/3yxvRkyKPq2j2USgMrKAKOF4SUyWhFCp1gEyvqC3Igr13feH1tqljJK3iy3Ue4yQ6YxIU/SpA/HalCvr+aFjxUpC77iYZf1z/ViPwuXi3faCT3ZzHebw+QNpENdUaP4Xynk=",
         "attributes": {
           "enabled": true,
-          "nbf": 1714494743,
-          "exp": 1746031343,
-          "created": 1714495360,
-          "updated": 1714495360,
+          "nbf": 1743713686,
+          "exp": 1775250286,
+          "created": 1743714306,
+          "updated": 1743714306,
           "recoveryLevel": "Recoverable+Purgeable",
           "recoverableDays": 90
         },
-        "tags": {},
         "policy": {
           "id": "Sanitized",
           "key_props": {
@@ -457,24 +448,36 @@
           },
           "x509_props": {
             "subject": "CN=xyz",
-            "ekus": [],
+            "ekus": [
+              "1.3.6.1.5.5.7.3.1",
+              "1.3.6.1.5.5.7.3.2"
+            ],
             "key_usage": [
               "digitalSignature",
               "keyEncipherment"
             ],
-            "validity_months": 13,
+            "validity_months": 12,
             "basic_constraints": {
               "ca": false
             }
           },
-          "lifetime_actions": [],
+          "lifetime_actions": [
+            {
+              "trigger": {
+                "lifetime_percentage": 80
+              },
+              "action": {
+                "action_type": "EmailContacts"
+              }
+            }
+          ],
           "issuer": {
             "name": "Sanitized"
           },
           "attributes": {
             "enabled": true,
-            "created": 1714495304,
-            "updated": 1714495360
+            "created": 1743714306,
+            "updated": 1743714306
           }
         }
       }
