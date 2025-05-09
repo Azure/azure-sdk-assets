@@ -18,8 +18,8 @@
         "Connection": "keep-alive",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 09 May 2025 00:29:03 GMT",
-        "mise-correlation-id": "841dc22d-aa65-49e1-9483-256ababf3d12",
+        "Date": "Fri, 09 May 2025 16:11:26 GMT",
+        "mise-correlation-id": "fcd14c77-4f97-4f1d-b8e0-7e7c84c0e06a",
         "Request-Context": "appId=cid-v1:4ae78417-7f25-4068-bd96-557cb165ec62",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000",
@@ -35,6 +35,320 @@
       },
       "ResponseBody": {
         "value": [
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Decrease",
+            "id": "avg_genai_output_tokens",
+            "displayName": "Average GenAI usage output tokens",
+            "description": "The average tokens used on output (response) per GenAI call of any type - update.",
+            "categories": [
+              "GenAI",
+              "Cost",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "value": {
+                "eventName": "gen_ai.otel.span",
+                "eventProperty": "gen_ai.usage.output_tokens"
+              },
+              "type": "Average"
+            },
+            "eTag": "\"pkm0GqzhyhQ=\"",
+            "lastModifiedAt": "2025-05-08T20:14:24.7609806+00:00"
+          },
+          {
+            "lifecycle": "Inactive",
+            "desiredDirection": "Decrease",
+            "id": "p95_genai_tokens",
+            "displayName": "95th percentile GenAI usage tokens",
+            "description": "The 95th percentile usage tokens (both input and output) per GenAI call of any type. This gives an indication of the usage near the upper end of the distribution. Because percentile metrics can be less sensitive and more costly to compute, we mark this metric as 'Inactive' by default.",
+            "categories": [
+              "GenAI",
+              "Cost",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "value": {
+                "eventName": "gen_ai.otel.span",
+                "eventProperty": "gen_ai.usage.tokens"
+              },
+              "percentile": 95.0,
+              "type": "Percentile"
+            },
+            "eTag": "\"JvLpFdpUXKg=\"",
+            "lastModifiedAt": "2025-05-07T15:20:05.5798378+00:00"
+          },
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Decrease",
+            "id": "sum_genai_chat_tokens",
+            "displayName": "Total GenAI chat usage tokens",
+            "description": "The total usage tokens (both input and output) for GenAI chat calls. Assuming equal number of chat calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
+            "categories": [
+              "GenAI",
+              "Cost",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "value": {
+                "eventName": "gen_ai.otel.span",
+                "filter": "['gen_ai.operation.name'] == 'chat'",
+                "eventProperty": "gen_ai.usage.tokens"
+              },
+              "type": "Sum"
+            },
+            "eTag": "\"zf6wv8e1W7c=\"",
+            "lastModifiedAt": "2025-05-07T15:20:05.5860932+00:00"
+          },
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Decrease",
+            "id": "avg_genai_duration",
+            "displayName": "Average GenAI call duration [ms]",
+            "description": "The average duration in milliseconds per GenAI operation. Duration is measured by the DurationMs property of the span capturing GenAI call completion.",
+            "categories": [
+              "GenAI",
+              "Performance",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "value": {
+                "eventName": "gen_ai.otel.span",
+                "filter": "DurationMs > 0",
+                "eventProperty": "DurationMs"
+              },
+              "type": "Average"
+            },
+            "eTag": "\"LrHsloZ/Zd0=\"",
+            "lastModifiedAt": "2025-05-07T15:20:05.6302233+00:00"
+          },
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Decrease",
+            "id": "count_genai_with_error",
+            "displayName": "Number of GenAI operations that end in an error",
+            "description": "The number of GenAI calls that have a non-empty 'error.type' attribute.",
+            "categories": [
+              "GenAI",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "event": {
+                "eventName": "gen_ai.otel.span",
+                "filter": "['error.type'] != ''"
+              },
+              "type": "EventCount"
+            },
+            "eTag": "\"m+07+r1Co1I=\"",
+            "lastModifiedAt": "2025-05-07T15:20:05.7174234+00:00"
+          },
+          {
+            "lifecycle": "Inactive",
+            "desiredDirection": "Neutral",
+            "id": "count_genai_with_length_restriction",
+            "displayName": "Number of GenAI calls with length restriction finish reason",
+            "description": "The number of GenAI calls that listed 'length' among their finish reason. Note that while listing this is a recommended semantic convention, not all telemetry instrumenters do include it. Therefore this metric is marked as 'Inactive' by default. We recommend checking your logs to determine if your instrumentation provider does log in this fashion. If not, this metric may need to be edited or will always return '0' incorrectly.",
+            "categories": [
+              "GenAI",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "event": {
+                "eventName": "gen_ai.otel.span",
+                "filter": "['gen_ai.finish_reason.length'] == true"
+              },
+              "type": "EventCount"
+            },
+            "eTag": "\"ONh1OUTQeoI=\"",
+            "lastModifiedAt": "2025-05-07T15:20:05.7670825+00:00"
+          },
+          {
+            "lifecycle": "Inactive",
+            "desiredDirection": "Neutral",
+            "id": "count_genai_with_tool_calls",
+            "displayName": "Number of GenAI calls with tool call finish reason",
+            "description": "The number of GenAI calls that listed 'tool_calls' among their finish reason. Note that while listing this is a recommended semantic convention, not all telemetry instrumenters do include it. Therefore this metric is marked as 'Inactive' by default. We recommend checking your logs to determine if your instrumentation provider does log in this fashion. If not, this metric may need to be edited or will always return '0' incorrectly.",
+            "categories": [
+              "GenAI",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "event": {
+                "eventName": "gen_ai.otel.span",
+                "filter": "['gen_ai.finish_reason.tool_calls'] == true"
+              },
+              "type": "EventCount"
+            },
+            "eTag": "\"4KLGU9/SQwI=\"",
+            "lastModifiedAt": "2025-05-07T15:20:05.8641655+00:00"
+          },
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Decrease",
+            "id": "avg_genai_tokens",
+            "displayName": "Average GenAI usage tokens",
+            "description": "The average usage tokens (both input and output) per GenAI call of any type. Default desiredDirection is 'Decrease', appropriate for cases where cost reduction is a priority. If you are optimizing for user engagement regardless of cost, you may want to change this to 'Neutral'.",
+            "categories": [
+              "GenAI",
+              "Cost",
+              "Important",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "value": {
+                "eventName": "gen_ai.otel.span",
+                "eventProperty": "gen_ai.usage.tokens"
+              },
+              "type": "Average"
+            },
+            "eTag": "\"xxdST7qyqtU=\"",
+            "lastModifiedAt": "2025-05-07T15:20:05.9096212+00:00"
+          },
+          {
+            "lifecycle": "Inactive",
+            "desiredDirection": "Neutral",
+            "id": "count_genai_with_content_filter",
+            "displayName": "Number of GenAI calls with content filter finish reason",
+            "description": "The number of GenAI calls that listed 'content_filter' among their finish reason. Note that while listing this is a recommended semantic convention, not all telemetry instrumenters do include it. Therefore this metric is marked as 'Inactive' by default. We recommend checking your logs to determine if your instrumentation provider does log in this fashion. If not, this metric may need to be edited or will always return '0' incorrectly.",
+            "categories": [
+              "GenAI",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "event": {
+                "eventName": "gen_ai.otel.span",
+                "filter": "['gen_ai.finish_reason.content_filter'] == true"
+              },
+              "type": "EventCount"
+            },
+            "eTag": "\"P6HYdL0paLI=\"",
+            "lastModifiedAt": "2025-05-07T15:20:05.9815262+00:00"
+          },
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Increase",
+            "id": "count_genai_users",
+            "displayName": "Number of GenAI users",
+            "description": "The number of users producing at least one GenAI span. This metric measures discovery/adoption of your GenAI features. ",
+            "categories": [
+              "GenAI",
+              "Usage",
+              "Important",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "event": {
+                "eventName": "gen_ai.otel.span"
+              },
+              "type": "UserCount"
+            },
+            "eTag": "\"RYeJ9zRsS7Q=\"",
+            "lastModifiedAt": "2025-05-07T15:20:05.9771368+00:00"
+          },
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Decrease",
+            "id": "sum_genai_tokens",
+            "displayName": "Total GenAI usage tokens",
+            "description": "While average usage tokens gives an indication of per-call efficiency, your cost is based on the total token usage. This metric show total usage tokens (both input and output) for any type of GenAI calls. Assuming equal number of GenAI calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
+            "categories": [
+              "GenAI",
+              "Cost",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "value": {
+                "eventName": "gen_ai.otel.span",
+                "eventProperty": "gen_ai.usage.tokens"
+              },
+              "type": "Sum"
+            },
+            "eTag": "\"0zTFKPe9Zvk=\"",
+            "lastModifiedAt": "2025-05-07T15:20:05.986967+00:00"
+          },
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Decrease",
+            "id": "avg_genai_input_tokens",
+            "displayName": "Average GenAI usage input tokens",
+            "description": "The average tokens used on input (prompt) per GenAI call of any type.",
+            "categories": [
+              "GenAI",
+              "Cost",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "value": {
+                "eventName": "gen_ai.otel.span",
+                "eventProperty": "gen_ai.usage.input_tokens"
+              },
+              "type": "Average"
+            },
+            "eTag": "\"Sx2Xr1KlMxU=\"",
+            "lastModifiedAt": "2025-05-07T15:20:06.0108216+00:00"
+          },
+          {
+            "lifecycle": "Inactive",
+            "desiredDirection": "Decrease",
+            "id": "count_genai_with_timeout_error",
+            "displayName": "Number of GenAI operations that end in a timeout error",
+            "description": "The number of GenAI calls that have 'error.type' equal to 'timeout'. This is an example metric for how to customize GenAI error type metrics to particular error classes. It is set by default to 'Inactive' since different instrumentation libraries may use different error class descriptions.",
+            "categories": [
+              "GenAI",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "event": {
+                "eventName": "gen_ai.otel.span",
+                "filter": "['error.type'] == 'timeout'"
+              },
+              "type": "EventCount"
+            },
+            "eTag": "\"57D71ukHavA=\"",
+            "lastModifiedAt": "2025-05-07T15:20:06.0293431+00:00"
+          },
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Neutral",
+            "id": "count_genai_chats",
+            "displayName": "Number of GenAI chat calls",
+            "description": "The number of GenAI spans with gen_ai.operation.name =='chat'.",
+            "categories": [
+              "GenAI",
+              "Usage",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "event": {
+                "eventName": "gen_ai.otel.span",
+                "filter": "['gen_ai.operation.name'] == 'chat'"
+              },
+              "type": "EventCount"
+            },
+            "eTag": "\"3NToBJRjsE0=\"",
+            "lastModifiedAt": "2025-05-07T15:20:06.1116638+00:00"
+          },
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Neutral",
+            "id": "count_genai_chat_users",
+            "displayName": "Number of GenAI chat users",
+            "description": "The number of users with at least one GenAI span with gen_ai.operation.name =='chat'.",
+            "categories": [
+              "GenAI",
+              "Usage",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "event": {
+                "eventName": "gen_ai.otel.span",
+                "filter": "['gen_ai.operation.name'] == 'chat'"
+              },
+              "type": "UserCount"
+            },
+            "eTag": "\"qhsL+xL9oMA=\"",
+            "lastModifiedAt": "2025-05-07T15:20:06.1167163+00:00"
+          },
           {
             "lifecycle": "Active",
             "desiredDirection": "Neutral",
@@ -53,7 +367,25 @@
               "type": "EventCount"
             },
             "eTag": "\"0bnlMxxIu9M=\"",
-            "lastModifiedAt": "2025-05-07T05:25:03.6931742+00:00"
+            "lastModifiedAt": "2025-05-07T15:20:06.1260905+00:00"
+          },
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Increase",
+            "id": "eventcountforfeatureevaluation",
+            "displayName": "EventCountforFeatureEvaluation",
+            "description": "EventCountforFeatureEvaluation",
+            "categories": [
+              "Core"
+            ],
+            "definition": {
+              "event": {
+                "eventName": "FeatureEvaluation"
+              },
+              "type": "EventCount"
+            },
+            "eTag": "\"c4iH9rBJ9Tw=\"",
+            "lastModifiedAt": "2025-05-07T15:22:32.5617775+00:00"
           },
           {
             "lifecycle": "Active",
@@ -71,371 +403,7 @@
               "type": "EventCount"
             },
             "eTag": "\"5JFo/zmDvSA=\"",
-            "lastModifiedAt": "2025-05-07T15:54:55.1356203+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_update_existing_metric",
-            "displayName": "Updated Test Metric",
-            "description": "This metric was updated for testing purposes",
-            "categories": [
-              "Test",
-              "Updated"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"9RO3loXH9Ac=\"",
-            "lastModifiedAt": "2025-05-09T00:28:51.6285747+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_conditional_update_with_etag",
-            "displayName": "Test Metric test_conditional_update_with_etag",
-            "description": "This metric was updated with a conditional request",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"NJpCtEJxtuk=\"",
-            "lastModifiedAt": "2025-05-09T00:28:57.6741913+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_conditional_update_etag_mismatch",
-            "displayName": "Test Metric test_conditional_update_etag_mismatch",
-            "description": "A metric created for testing purposes (test_conditional_update_etag_mismatch)",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"q0vHADeX1Ic=\"",
-            "lastModifiedAt": "2025-05-07T15:55:10.8923569+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_retrieve_specific_metric",
-            "displayName": "Test Metric test_retrieve_specific_metric",
-            "description": "A metric created for testing purposes (test_retrieve_specific_metric)",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"1fpF7hA6JkU=\"",
-            "lastModifiedAt": "2025-05-07T15:55:20.14728+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_conditional_delete_etag_mismatch",
-            "displayName": "Test Metric test_conditional_delete_etag_mismatch",
-            "description": "A metric created for testing purposes (test_conditional_delete_etag_mismatch)",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"NBmxSGrfy1s=\"",
-            "lastModifiedAt": "2025-05-07T15:55:38.4121039+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_partial_update",
-            "displayName": "Updated Metric",
-            "description": "This metric has been updated with ETag condition",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"cu63FSzpG9k=\"",
-            "lastModifiedAt": "2025-05-07T23:21:00.3175016+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_retrieve",
-            "displayName": "Get Test Metric",
-            "description": "A metric to be retrieved",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"d80Gy5gw7IE=\"",
-            "lastModifiedAt": "2025-05-07T23:14:20.1009771+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_conditional_update",
-            "displayName": "Updated With ETag",
-            "description": "This metric has been updated with ETag condition",
-            "categories": [
-              "Test",
-              "Conditional"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "ConditionalUpdateEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"CZAWQM+lSHs=\"",
-            "lastModifiedAt": "2025-05-07T23:21:06.5988277+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_create_or_update",
-            "displayName": "New Test Metric",
-            "description": "A metric created for testing purposes",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"qOF7bCW8W7s=\"",
-            "lastModifiedAt": "2025-05-07T23:14:23.3708038+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_update_existing",
-            "displayName": "Updated Metric",
-            "description": "This metric has been updated",
-            "categories": [
-              "Test",
-              "Updated"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "UpdatedTestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"cyvztNL0w2g=\"",
-            "lastModifiedAt": "2025-05-07T23:21:09.7057484+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_list_0",
-            "displayName": "Metric 0",
-            "description": "Test metric for listing #0",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"LdAtdg0Cx6A=\"",
-            "lastModifiedAt": "2025-05-07T23:21:25.2593472+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_list_1",
-            "displayName": "Metric 1",
-            "description": "Test metric for listing #1",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"Ym64uPU+Z8I=\"",
-            "lastModifiedAt": "2025-05-07T23:21:25.541148+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_list_2",
-            "displayName": "Metric 2",
-            "description": "Test metric for listing #2",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"ilwe8ubl5dg=\"",
-            "lastModifiedAt": "2025-05-07T23:21:25.7053649+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_list_3",
-            "displayName": "Metric 3",
-            "description": "Test metric for testing top parameter #3",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"Y+o+rxxL6YM=\"",
-            "lastModifiedAt": "2025-05-07T23:14:32.0356226+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_list_4",
-            "displayName": "Metric 4",
-            "description": "Test metric for testing top parameter #4",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"Z74wFVPWjAE=\"",
-            "lastModifiedAt": "2025-05-07T23:14:32.2023461+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_if_match_fail",
-            "displayName": "Original Metric",
-            "description": "Initial description",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"ZoLwZJx4bQc=\"",
-            "lastModifiedAt": "2025-05-07T23:14:40.4009069+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_delete_fail",
-            "displayName": "Conditional Delete Fail Metric",
-            "description": "A metric with incorrect ETag for conditional delete",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"GVKg9FiVZN8=\"",
-            "lastModifiedAt": "2025-05-07T23:14:42.0194143+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_create_if_not_exists",
-            "displayName": "If-None-Match Test Metric",
-            "description": "A metric created with If-None-Match header",
-            "categories": [
-              "Test",
-              "Conditional"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "ConditionalCreateEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"NyoM+7py4jQ=\"",
-            "lastModifiedAt": "2025-05-07T23:21:16.7266795+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_create_fixed_id",
-            "displayName": "New Test Metric",
-            "description": "A metric created for testing purposes",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"4KbMe+V3cw8=\"",
-            "lastModifiedAt": "2025-05-08T00:08:49.6467416+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_metric_fixed_id",
-            "displayName": "Test Metric test_metric_fixed_id",
-            "description": "A metric created for testing purposes (test_metric_fixed_id)",
-            "categories": [
-              "Test"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"UeSbbGIPX0g=\"",
-            "lastModifiedAt": "2025-05-08T04:23:53.7274948+00:00"
+            "lastModifiedAt": "2025-05-09T16:11:07.9100098+00:00"
           },
           {
             "lifecycle": "Active",
@@ -454,7 +422,62 @@
               "type": "EventCount"
             },
             "eTag": "\"Z7GgLmCOJuk=\"",
-            "lastModifiedAt": "2025-05-09T00:28:48.1630704+00:00"
+            "lastModifiedAt": "2025-05-09T16:11:11.2765742+00:00"
+          },
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Increase",
+            "id": "test_update_existing_metric",
+            "displayName": "Updated Test Metric",
+            "description": "This metric was updated for testing purposes",
+            "categories": [
+              "Test",
+              "Updated"
+            ],
+            "definition": {
+              "event": {
+                "eventName": "TestEvent"
+              },
+              "type": "EventCount"
+            },
+            "eTag": "\"9RO3loXH9Ac=\"",
+            "lastModifiedAt": "2025-05-09T16:11:14.6876674+00:00"
+          },
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Increase",
+            "id": "test_conditional_update_with_etag",
+            "displayName": "Test Metric test_conditional_update_with_etag",
+            "description": "This metric was updated with a conditional request",
+            "categories": [
+              "Test"
+            ],
+            "definition": {
+              "event": {
+                "eventName": "TestEvent"
+              },
+              "type": "EventCount"
+            },
+            "eTag": "\"NJpCtEJxtuk=\"",
+            "lastModifiedAt": "2025-05-09T16:11:20.9266894+00:00"
+          },
+          {
+            "lifecycle": "Active",
+            "desiredDirection": "Increase",
+            "id": "test_conditional_update_etag_mismatch",
+            "displayName": "Test Metric test_conditional_update_etag_mismatch",
+            "description": "A metric created for testing purposes (test_conditional_update_etag_mismatch)",
+            "categories": [
+              "Test"
+            ],
+            "definition": {
+              "event": {
+                "eventName": "TestEvent"
+              },
+              "type": "EventCount"
+            },
+            "eTag": "\"q0vHADeX1Ic=\"",
+            "lastModifiedAt": "2025-05-09T16:11:23.8344621+00:00"
           }
         ]
       }

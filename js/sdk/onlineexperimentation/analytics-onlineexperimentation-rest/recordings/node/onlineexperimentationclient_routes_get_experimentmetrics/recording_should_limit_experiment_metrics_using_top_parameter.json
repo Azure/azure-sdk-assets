@@ -18,8 +18,8 @@
         "Connection": "keep-alive",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 09 May 2025 00:29:06 GMT",
-        "mise-correlation-id": "b78e9f44-2d83-4e7f-9a39-8b51275a6c48",
+        "Date": "Fri, 09 May 2025 16:11:30 GMT",
+        "mise-correlation-id": "c470e09f-542a-4b62-a540-7a0a141b2c80",
         "Request-Context": "appId=cid-v1:4ae78417-7f25-4068-bd96-557cb165ec62",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000",
@@ -37,60 +37,68 @@
         "value": [
           {
             "lifecycle": "Active",
-            "desiredDirection": "Neutral",
-            "id": "count_genai_spans",
-            "displayName": "Number of GenAI spans",
-            "description": "The number of GenAI spans. This is an approximation of the number of total GenAI requests made.",
+            "desiredDirection": "Decrease",
+            "id": "avg_genai_output_tokens",
+            "displayName": "Average GenAI usage output tokens",
+            "description": "The average tokens used on output (response) per GenAI call of any type - update.",
             "categories": [
               "GenAI",
-              "Usage",
+              "Cost",
               "Standard: genai operational"
             ],
             "definition": {
-              "event": {
-                "eventName": "gen_ai.otel.span"
+              "value": {
+                "eventName": "gen_ai.otel.span",
+                "eventProperty": "gen_ai.usage.output_tokens"
               },
-              "type": "EventCount"
+              "type": "Average"
             },
-            "eTag": "\"0bnlMxxIu9M=\"",
-            "lastModifiedAt": "2025-05-07T05:25:03.6931742+00:00"
+            "eTag": "\"pkm0GqzhyhQ=\"",
+            "lastModifiedAt": "2025-05-08T20:14:24.7609806+00:00"
+          },
+          {
+            "lifecycle": "Inactive",
+            "desiredDirection": "Decrease",
+            "id": "p95_genai_tokens",
+            "displayName": "95th percentile GenAI usage tokens",
+            "description": "The 95th percentile usage tokens (both input and output) per GenAI call of any type. This gives an indication of the usage near the upper end of the distribution. Because percentile metrics can be less sensitive and more costly to compute, we mark this metric as 'Inactive' by default.",
+            "categories": [
+              "GenAI",
+              "Cost",
+              "Standard: genai operational"
+            ],
+            "definition": {
+              "value": {
+                "eventName": "gen_ai.otel.span",
+                "eventProperty": "gen_ai.usage.tokens"
+              },
+              "percentile": 95.0,
+              "type": "Percentile"
+            },
+            "eTag": "\"JvLpFdpUXKg=\"",
+            "lastModifiedAt": "2025-05-07T15:20:05.5798378+00:00"
           },
           {
             "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_create_new_metric",
-            "displayName": "New Test Metric",
-            "description": "A metric created for testing purposes",
+            "desiredDirection": "Decrease",
+            "id": "sum_genai_chat_tokens",
+            "displayName": "Total GenAI chat usage tokens",
+            "description": "The total usage tokens (both input and output) for GenAI chat calls. Assuming equal number of chat calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
             "categories": [
-              "Test"
+              "GenAI",
+              "Cost",
+              "Standard: genai operational"
             ],
             "definition": {
-              "event": {
-                "eventName": "TestEvent"
+              "value": {
+                "eventName": "gen_ai.otel.span",
+                "filter": "['gen_ai.operation.name'] == 'chat'",
+                "eventProperty": "gen_ai.usage.tokens"
               },
-              "type": "EventCount"
+              "type": "Sum"
             },
-            "eTag": "\"5JFo/zmDvSA=\"",
-            "lastModifiedAt": "2025-05-07T15:54:55.1356203+00:00"
-          },
-          {
-            "lifecycle": "Active",
-            "desiredDirection": "Increase",
-            "id": "test_update_existing_metric",
-            "displayName": "Updated Test Metric",
-            "description": "This metric was updated for testing purposes",
-            "categories": [
-              "Test",
-              "Updated"
-            ],
-            "definition": {
-              "event": {
-                "eventName": "TestEvent"
-              },
-              "type": "EventCount"
-            },
-            "eTag": "\"9RO3loXH9Ac=\"",
-            "lastModifiedAt": "2025-05-09T00:28:51.6285747+00:00"
+            "eTag": "\"zf6wv8e1W7c=\"",
+            "lastModifiedAt": "2025-05-07T15:20:05.5860932+00:00"
           }
         ],
         "nextLink": "https://workspaceId.eastus2.exp.azure.net/experiment-metrics?top=3&api-version=2025-05-31-preview&skip=3"
