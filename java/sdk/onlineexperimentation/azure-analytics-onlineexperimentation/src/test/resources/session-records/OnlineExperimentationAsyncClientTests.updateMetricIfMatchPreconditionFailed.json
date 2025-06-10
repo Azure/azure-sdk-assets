@@ -1,21 +1,21 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/experiment-metrics/test_metric_retrieve?api-version=2025-05-31-preview",
+      "RequestUri": "https://REDACTED/experiment-metrics/test_metric_if_match_fail_async?api-version=2025-05-31-preview",
       "RequestMethod": "PATCH",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "216",
+        "Content-Length": "223",
         "Content-Type": "application/merge-patch+json",
-        "Date": "Tue, 10 Jun 2025 00:11:27 GMT",
+        "Date": "Tue, 10 Jun 2025 00:11:32 GMT",
         "User-Agent": "azsdk-java-azure-analytics-onlineexperimentation/1.0.0-beta.1 (11.0.26; Windows 11; 10.0)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
         "lifecycle": "Active",
-        "displayName": "Get Test Metric",
-        "description": "A metric to be retrieved",
+        "displayName": "Original Metric Async",
+        "description": "Initial description async",
         "categories": [
           "Test"
         ],
@@ -31,12 +31,12 @@
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-31-preview",
         "Connection": "keep-alive",
-        "Content-Length": "323",
+        "Content-Length": "341",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 10 Jun 2025 00:11:32 GMT",
-        "ETag": "\"d80Gy5gw7IE=\"",
-        "Last-Modified": "Mon, 12 May 2025 21:23:13 GMT",
-        "mise-correlation-id": "7d7932c7-f19d-457f-a016-a5159edd4c35",
+        "Date": "Tue, 10 Jun 2025 00:11:35 GMT",
+        "ETag": "\"xbLoVRWrQCQ=\"",
+        "Last-Modified": "Mon, 09 Jun 2025 23:37:37 GMT",
+        "mise-correlation-id": "8fb51f29-ab49-4419-9b58-4da0decf649c",
         "Request-Context": "appId=cid-v1:4ae78417-7f25-4068-bd96-557cb165ec62",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000",
@@ -51,9 +51,9 @@
       "ResponseBody": {
         "lifecycle": "Active",
         "desiredDirection": "Increase",
-        "id": "test_metric_retrieve",
-        "displayName": "Get Test Metric",
-        "description": "A metric to be retrieved",
+        "id": "test_metric_if_match_fail_async",
+        "displayName": "Original Metric Async",
+        "description": "Initial description async",
         "categories": [
           "Test"
         ],
@@ -63,32 +63,45 @@
           },
           "type": "EventCount"
         },
-        "eTag": "\"d80Gy5gw7IE=\"",
-        "lastModifiedAt": "2025-05-12T21:23:13.6792184+00:00"
+        "eTag": "\"xbLoVRWrQCQ=\"",
+        "lastModifiedAt": "2025-06-09T23:37:37.6834461+00:00"
       }
     },
     {
-      "RequestUri": "https://REDACTED/experiment-metrics/test_metric_retrieve?api-version=2025-05-31-preview",
-      "RequestMethod": "GET",
+      "RequestUri": "https://REDACTED/experiment-metrics/test_metric_if_match_fail_async?api-version=2025-05-31-preview",
+      "RequestMethod": "PATCH",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Tue, 10 Jun 2025 00:11:31 GMT",
+        "Content-Length": "255",
+        "Content-Type": "application/merge-patch+json",
+        "Date": "Tue, 10 Jun 2025 00:11:34 GMT",
+        "If-Match": "incorrect-etag-value",
         "User-Agent": "azsdk-java-azure-analytics-onlineexperimentation/1.0.0-beta.1 (11.0.26; Windows 11; 10.0)",
         "x-ms-client-request-id": "Sanitized"
       },
-      "RequestBody": null,
-      "StatusCode": 200,
+      "RequestBody": {
+        "lifecycle": "Active",
+        "displayName": "This Should Not Update Async",
+        "description": "This update should fail due to ETag mismatch async",
+        "categories": [
+          "Test"
+        ],
+        "desiredDirection": "Increase",
+        "definition": {
+          "type": "EventCount",
+          "event": {
+            "eventName": "TestEvent"
+          }
+        }
+      },
+      "StatusCode": 412,
       "ResponseHeaders": {
-        "api-supported-versions": "2025-05-31-preview",
         "Connection": "keep-alive",
-        "Content-Length": "323",
+        "Content-Length": "161",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 10 Jun 2025 00:11:32 GMT",
-        "ETag": "\"d80Gy5gw7IE=\"",
-        "Last-Modified": "Mon, 12 May 2025 21:23:13 GMT",
-        "mise-correlation-id": "341466e8-8d1c-445a-b241-ef7fdacc1c46",
+        "Date": "Tue, 10 Jun 2025 00:11:35 GMT",
+        "mise-correlation-id": "865fd765-469c-4dac-a2dd-c1f4b63d0c42",
         "Request-Context": "appId=cid-v1:4ae78417-7f25-4068-bd96-557cb165ec62",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000",
@@ -97,26 +110,18 @@
           "nosniff"
         ],
         "x-ms-client-request-id": "Sanitized",
+        "x-ms-error-code": "ConditionNotMet",
         "x-ms-request-id": "Sanitized",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "lifecycle": "Active",
-        "desiredDirection": "Increase",
-        "id": "test_metric_retrieve",
-        "displayName": "Get Test Metric",
-        "description": "A metric to be retrieved",
-        "categories": [
-          "Test"
-        ],
-        "definition": {
-          "event": {
-            "eventName": "TestEvent"
-          },
-          "type": "EventCount"
-        },
-        "eTag": "\"d80Gy5gw7IE=\"",
-        "lastModifiedAt": "2025-05-12T21:23:13.6792184+00:00"
+        "error": {
+          "code": "ConditionNotMet",
+          "message": "The condition specified in the If-Match request header was not met.",
+          "target": null,
+          "details": [],
+          "innerError": null
+        }
       }
     }
   ],
