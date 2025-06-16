@@ -1,0 +1,1213 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg57992?api-version=2025-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "22",
+        "Content-Type": "application/json",
+        "Date": "Mon, 16 Jun 2025 09:19:05 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.52.0-beta.1 (21.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "location": "westus2"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "226",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 16 Jun 2025 09:19:09 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "747f1c44-5621-4f80-a4e5-3ab015c04f64",
+        "x-ms-ratelimit-remaining-subscription-global-writes": "11999",
+        "x-ms-ratelimit-remaining-subscription-writes": "799",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "MALAYSIASOUTH:20250616T091910Z:747f1c44-5621-4f80-a4e5-3ab015c04f64",
+        "X-MSEdge-Ref": "Ref A: 169FB1A464A8493FB58FAFF67741F8D5 Ref B: MAA201060515023 Ref C: 2025-06-16T09:19:07Z"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992",
+        "name": "javacsmrg57992",
+        "type": "Microsoft.Resources/resourceGroups",
+        "location": "westus2",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg57992/providers/Microsoft.Resources/deployments/dp15453896c?api-version=2025-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "4088",
+        "Content-Type": "application/json",
+        "Date": "Mon, 16 Jun 2025 09:19:11 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.52.0-beta.1 (21.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "properties": {
+          "mode": "Incremental",
+          "template": {
+            "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {
+              "applicationSecurityGroupName": {
+                "type": "string",
+                "metadata": {
+                  "description": "Name of the Application Security Group"
+                }
+              },
+              "virtualNetworkName": {
+                "type": "string",
+                "metadata": {
+                  "description": "Name of the Virtual Network"
+                }
+              },
+              "networkInterfaceName": {
+                "type": "string",
+                "metadata": {
+                  "description": "Name of the Network Interface"
+                }
+              },
+              "networkSecurityGroupName": {
+                "type": "string",
+                "metadata": {
+                  "description": "Name of the Network Security Group"
+                }
+              },
+              "location": {
+                "type": "string",
+                "defaultValue": "[resourceGroup().location]",
+                "metadata": {
+                  "description": "Location for all resources"
+                }
+              },
+              "vnetAddressPrefix": {
+                "type": "string",
+                "defaultValue": "10.0.0.0/16",
+                "metadata": {
+                  "description": "Address prefix for the Virtual Network"
+                }
+              },
+              "subnetAddressPrefix": {
+                "type": "string",
+                "defaultValue": "10.0.1.0/24",
+                "metadata": {
+                  "description": "Address prefix for the subnet"
+                }
+              }
+            },
+            "variables": {
+              "subnetName": "default"
+            },
+            "resources": [
+              {
+                "type": "Microsoft.Network/applicationSecurityGroups",
+                "apiVersion": "2021-02-01",
+                "name": "[parameters('applicationSecurityGroupName')]",
+                "location": "[parameters('location')]",
+                "properties": {}
+              },
+              {
+                "type": "Microsoft.Network/networkSecurityGroups",
+                "apiVersion": "2021-02-01",
+                "name": "[parameters('networkSecurityGroupName')]",
+                "location": "[parameters('location')]",
+                "properties": {
+                  "securityRules": [
+                    {
+                      "name": "AllowSSH",
+                      "properties": {
+                        "description": "Allow SSH traffic",
+                        "protocol": "Tcp",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "22",
+                        "sourceAddressPrefix": "*",
+                        "destinationAddressPrefix": "*",
+                        "access": "Allow",
+                        "priority": 1000,
+                        "direction": "Inbound"
+                      }
+                    },
+                    {
+                      "name": "AllowHTTP",
+                      "properties": {
+                        "description": "Allow HTTP traffic",
+                        "protocol": "Tcp",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "80",
+                        "sourceAddressPrefix": "*",
+                        "destinationAddressPrefix": "*",
+                        "access": "Allow",
+                        "priority": 1010,
+                        "direction": "Inbound"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Microsoft.Network/virtualNetworks",
+                "apiVersion": "2021-02-01",
+                "name": "[parameters('virtualNetworkName')]",
+                "location": "[parameters('location')]",
+                "dependsOn": [
+                  "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]"
+                ],
+                "properties": {
+                  "addressSpace": {
+                    "addressPrefixes": [
+                      "[parameters('vnetAddressPrefix')]"
+                    ]
+                  },
+                  "subnets": [
+                    {
+                      "name": "[variables('subnetName')]",
+                      "properties": {
+                        "addressPrefix": "[parameters('subnetAddressPrefix')]",
+                        "networkSecurityGroup": {
+                          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Microsoft.Network/networkInterfaces",
+                "apiVersion": "2021-02-01",
+                "name": "[parameters('networkInterfaceName')]",
+                "location": "[parameters('location')]",
+                "dependsOn": [
+                  "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+                  "[resourceId('Microsoft.Network/applicationSecurityGroups', parameters('applicationSecurityGroupName'))]"
+                ],
+                "properties": {
+                  "ipConfigurations": [
+                    {
+                      "name": "ipconfig1",
+                      "properties": {
+                        "privateIPAllocationMethod": "Dynamic",
+                        "subnet": {
+                          "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), variables('subnetName'))]"
+                        },
+                        "applicationSecurityGroups": [
+                          {
+                            "id": "[resourceId('Microsoft.Network/applicationSecurityGroups', parameters('applicationSecurityGroupName'))]"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "outputs": {
+              "applicationSecurityGroupId": {
+                "type": "string",
+                "value": "[resourceId('Microsoft.Network/applicationSecurityGroups', parameters('applicationSecurityGroupName'))]"
+              },
+              "virtualNetworkId": {
+                "type": "string",
+                "value": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]"
+              },
+              "networkInterfaceId": {
+                "type": "string",
+                "value": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaceName'))]"
+              },
+              "networkSecurityGroupId": {
+                "type": "string",
+                "value": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]"
+              }
+            }
+          },
+          "parameters": {
+            "applicationSecurityGroupName": {
+              "value": "asg70463ec8"
+            },
+            "virtualNetworkName": {
+              "value": "vnet30531bca"
+            },
+            "networkInterfaceName": {
+              "value": "nic237724af"
+            },
+            "networkSecurityGroupName": {
+              "value": "nsg86939efe"
+            }
+          }
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourcegroups/javacsmrg57992/providers/Microsoft.Resources/deployments/dp15453896c/operationStatuses/08584515413317120471?api-version=2025-04-01&t=638856623604546175&c=MIIIFjCCBv6gAwIBAgITHgbhpaW5iuWBbhED7QAABuGlpTANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjUwNTA2MDUyMDExWhcNMjYwNTAxMDUyMDExWjCBjDELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAldBMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xPjA8BgNVBAMTNWFzeW5jb3BlcmF0aW9uc2lnbmluZ2NlcnRpZmljYXRlLm1hbmFnZW1lbnQuYXp1cmUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3SRJk3b3iziQHn8YEpnMwUqUAGJnNh2pRhW3S8aoyfPeVdGly0_oDOisytFka6Z8-VJnP7lwoWiUSRE0D0V6XwPpqfsdbtC9Ads1DrdXpr6hEWF-XeG6mljtgJPQ0A2OfGZqGhsHIbzfRmgikRfc390zXQ7lzROlhmfYqNS34mMxJIAIl3ro6a_QLc8tXbg8v1uamdCI_D68ZMhXAumDtngle0YpiZxvfQQMimtEkL8Uf5jnlefwITWamGGg3V76wo4h0lu0QK5SXIRLF9LJB_vHG_7_oWehO5Fd0ETqpEqtMOf0i2HYc1YqovqwGfhxqYrYGMDgqAeycLtdrAM8CQIDAQABo4IEtjCCBLIwJwYJKwYBBAGCNxUKBBowGDAKBggrBgEFBQcDATAKBggrBgEFBQcDAjA9BgkrBgEEAYI3FQcEMDAuBiYrBgEEAYI3FQiGkOMNhNW0eITxiz6Fm90Wzp0SgWCC9fYrg_LRIAIBZAIBCjCCAcsGCCsGAQUFBwEBBIIBvTCCAbkwYwYIKwYBBQUHMAKGV2h0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9wa2lpbmZyYS9DZXJ0cy9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDEuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwyLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMy5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDQuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwHQYDVR0OBBYEFKtuM-10nQy0wUgbvelxOOiOxnMEMA4GA1UdDwEB_wQEAwIFoDBABgNVHREEOTA3gjVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASYGA1UdHwSCAR0wggEZMIIBFaCCARGgggENhj9odHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ1JML0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwxLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwyLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwzLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmw0LmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmwwgZ0GA1UdIASBlTCBkjAMBgorBgEEAYI3ewEBMGYGCisGAQQBgjd7AgIwWDBWBggrBgEFBQcCAjBKHkgAMwAzAGUAMAAxADkAMgAxAC0ANABkADYANAAtADQAZgA4AGMALQBhADAANQA1AC0ANQBiAGQAYQBmAGYAZAA1AGUAMwAzAGQwDAYKKwYBBAGCN3sDAjAMBgorBgEEAYI3ewQCMB8GA1UdIwQYMBaAFPFGaMbxw_ArLX2LauGy-b41_NFBMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjANBgkqhkiG9w0BAQsFAAOCAQEANObh_8iTT2giHkUy7oTqapUGfJYZzQoF1Og4hdJIHVy2W1CrYNrYqLlmFuaIay5MX_81QaXcZNkPvtsYYyQ9AlKW8qd6s9xuoBgvUpJ7RKw40ZoTG7FRBIJiT2We0SyWsLxcz_4LCWZ1Cf5olYwLZ_8U3lO_nnvDDMrlFhb9W9eQ-D4UEw1G4mEX6PqJJSoKX1D0Lc7BdF7syPotMQen01hcULhmDYvFuGIUgyrYYg6PLvPFspMgezxrUgaezBqJeQrLz3hsgclzOfsFepuAEtspxpNim67_F7Uq9plRB5x0RCZz8RHSCgq9CKoj7w8558rFXFMW-4079DZdgG-niQ&s=fBMEF5OgdAXzWwpzzm5M33r_LoiC6Gab_xJzC05L0IgcOR5h0Vt5kiZ3J4rAxFnLnz3h-lXLyvDt4Gxn83r7zqJCIgr_S4H0Noa9o5N_pHyPJhDdQmE5nFlYbx5mSfuuM3POpKdWgBd7a4k8YFRiKsnrx7UJYlt500S1pdhWrYq-bM0DBxis5QLfqkn665ake9odSYx847hCNeWMIdd4Pi9zZ2TTzqwN5HG-fPqyBhrzVZa8u2wtmLpDqL0CuySTyfQ0q47UvGOUL-vR3stPnXQshiNan2zg3UGwYX8i8Xumv19NkrhnmUm57DYe-WBRNSrBy8_V9pG3vqVrKyCM0w&h=-Jga8PJpVCwoplc06pz_oW-WFttyPmuRksgrArE7Ocg",
+        "Cache-Control": "no-cache",
+        "Content-Length": "2422",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 16 Jun 2025 09:19:19 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "949fccc6-f718-4afc-87b2-5124b906700a",
+        "x-ms-deployment-engine-version": "1.363.0",
+        "x-ms-ratelimit-remaining-subscription-global-writes": "12000",
+        "x-ms-ratelimit-remaining-subscription-writes": "800",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "MALAYSIASOUTH:20250616T091920Z:949fccc6-f718-4afc-87b2-5124b906700a",
+        "X-MSEdge-Ref": "Ref A: B1FF2F8168F94049B100B6172ECA9405 Ref B: MAA201060515023 Ref C: 2025-06-16T09:19:10Z"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Resources/deployments/dp15453896c",
+        "name": "dp15453896c",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "14033873198337306976",
+          "parameters": {
+            "applicationSecurityGroupName": {
+              "type": "String",
+              "value": "asg70463ec8"
+            },
+            "virtualNetworkName": {
+              "type": "String",
+              "value": "vnet30531bca"
+            },
+            "networkInterfaceName": {
+              "type": "String",
+              "value": "nic237724af"
+            },
+            "networkSecurityGroupName": {
+              "type": "String",
+              "value": "nsg86939efe"
+            },
+            "location": {
+              "type": "String",
+              "value": "westus2"
+            },
+            "vnetAddressPrefix": {
+              "type": "String",
+              "value": "10.0.0.0/16"
+            },
+            "subnetAddressPrefix": {
+              "type": "String",
+              "value": "10.0.1.0/24"
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Accepted",
+          "timestamp": "2025-06-16T09:19:13.7514927Z",
+          "duration": "PT0.0008703S",
+          "correlationId": "949fccc6-f718-4afc-87b2-5124b906700a",
+          "providers": [
+            {
+              "namespace": "Microsoft.Network",
+              "resourceTypes": [
+                {
+                  "resourceType": "applicationSecurityGroups",
+                  "locations": [
+                    "westus2"
+                  ]
+                },
+                {
+                  "resourceType": "networkSecurityGroups",
+                  "locations": [
+                    "westus2"
+                  ]
+                },
+                {
+                  "resourceType": "virtualNetworks",
+                  "locations": [
+                    "westus2"
+                  ]
+                },
+                {
+                  "resourceType": "networkInterfaces",
+                  "locations": [
+                    "westus2"
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe",
+                  "resourceType": "Microsoft.Network/networkSecurityGroups",
+                  "resourceName": "nsg86939efe"
+                }
+              ],
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/virtualNetworks/vnet30531bca",
+              "resourceType": "Microsoft.Network/virtualNetworks",
+              "resourceName": "vnet30531bca"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/virtualNetworks/vnet30531bca",
+                  "resourceType": "Microsoft.Network/virtualNetworks",
+                  "resourceName": "vnet30531bca"
+                },
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/applicationSecurityGroups/asg70463ec8",
+                  "resourceType": "Microsoft.Network/applicationSecurityGroups",
+                  "resourceName": "asg70463ec8"
+                }
+              ],
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkInterfaces/nic237724af",
+              "resourceType": "Microsoft.Network/networkInterfaces",
+              "resourceName": "nic237724af"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg57992/providers/Microsoft.Resources/deployments/dp15453896c/operationStatuses/08584515413317120471?api-version=2025-04-01&t=638856623604546175&c=MIIIFjCCBv6gAwIBAgITHgbhpaW5iuWBbhED7QAABuGlpTANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjUwNTA2MDUyMDExWhcNMjYwNTAxMDUyMDExWjCBjDELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAldBMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xPjA8BgNVBAMTNWFzeW5jb3BlcmF0aW9uc2lnbmluZ2NlcnRpZmljYXRlLm1hbmFnZW1lbnQuYXp1cmUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3SRJk3b3iziQHn8YEpnMwUqUAGJnNh2pRhW3S8aoyfPeVdGly0_oDOisytFka6Z8-VJnP7lwoWiUSRE0D0V6XwPpqfsdbtC9Ads1DrdXpr6hEWF-XeG6mljtgJPQ0A2OfGZqGhsHIbzfRmgikRfc390zXQ7lzROlhmfYqNS34mMxJIAIl3ro6a_QLc8tXbg8v1uamdCI_D68ZMhXAumDtngle0YpiZxvfQQMimtEkL8Uf5jnlefwITWamGGg3V76wo4h0lu0QK5SXIRLF9LJB_vHG_7_oWehO5Fd0ETqpEqtMOf0i2HYc1YqovqwGfhxqYrYGMDgqAeycLtdrAM8CQIDAQABo4IEtjCCBLIwJwYJKwYBBAGCNxUKBBowGDAKBggrBgEFBQcDATAKBggrBgEFBQcDAjA9BgkrBgEEAYI3FQcEMDAuBiYrBgEEAYI3FQiGkOMNhNW0eITxiz6Fm90Wzp0SgWCC9fYrg_LRIAIBZAIBCjCCAcsGCCsGAQUFBwEBBIIBvTCCAbkwYwYIKwYBBQUHMAKGV2h0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9wa2lpbmZyYS9DZXJ0cy9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDEuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwyLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMy5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDQuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwHQYDVR0OBBYEFKtuM-10nQy0wUgbvelxOOiOxnMEMA4GA1UdDwEB_wQEAwIFoDBABgNVHREEOTA3gjVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASYGA1UdHwSCAR0wggEZMIIBFaCCARGgggENhj9odHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ1JML0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwxLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwyLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwzLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmw0LmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmwwgZ0GA1UdIASBlTCBkjAMBgorBgEEAYI3ewEBMGYGCisGAQQBgjd7AgIwWDBWBggrBgEFBQcCAjBKHkgAMwAzAGUAMAAxADkAMgAxAC0ANABkADYANAAtADQAZgA4AGMALQBhADAANQA1AC0ANQBiAGQAYQBmAGYAZAA1AGUAMwAzAGQwDAYKKwYBBAGCN3sDAjAMBgorBgEEAYI3ewQCMB8GA1UdIwQYMBaAFPFGaMbxw_ArLX2LauGy-b41_NFBMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjANBgkqhkiG9w0BAQsFAAOCAQEANObh_8iTT2giHkUy7oTqapUGfJYZzQoF1Og4hdJIHVy2W1CrYNrYqLlmFuaIay5MX_81QaXcZNkPvtsYYyQ9AlKW8qd6s9xuoBgvUpJ7RKw40ZoTG7FRBIJiT2We0SyWsLxcz_4LCWZ1Cf5olYwLZ_8U3lO_nnvDDMrlFhb9W9eQ-D4UEw1G4mEX6PqJJSoKX1D0Lc7BdF7syPotMQen01hcULhmDYvFuGIUgyrYYg6PLvPFspMgezxrUgaezBqJeQrLz3hsgclzOfsFepuAEtspxpNim67_F7Uq9plRB5x0RCZz8RHSCgq9CKoj7w8558rFXFMW-4079DZdgG-niQ&s=fBMEF5OgdAXzWwpzzm5M33r_LoiC6Gab_xJzC05L0IgcOR5h0Vt5kiZ3J4rAxFnLnz3h-lXLyvDt4Gxn83r7zqJCIgr_S4H0Noa9o5N_pHyPJhDdQmE5nFlYbx5mSfuuM3POpKdWgBd7a4k8YFRiKsnrx7UJYlt500S1pdhWrYq-bM0DBxis5QLfqkn665ake9odSYx847hCNeWMIdd4Pi9zZ2TTzqwN5HG-fPqyBhrzVZa8u2wtmLpDqL0CuySTyfQ0q47UvGOUL-vR3stPnXQshiNan2zg3UGwYX8i8Xumv19NkrhnmUm57DYe-WBRNSrBy8_V9pG3vqVrKyCM0w&h=-Jga8PJpVCwoplc06pz_oW-WFttyPmuRksgrArE7Ocg",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Mon, 16 Jun 2025 09:19:51 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (21.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "22",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 16 Jun 2025 09:19:50 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "688f2fc3-9fc6-48ae-9807-aecc0430d530",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
+        "x-ms-ratelimit-remaining-subscription-reads": "1099",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "MALAYSIASOUTH:20250616T091951Z:688f2fc3-9fc6-48ae-9807-aecc0430d530",
+        "X-MSEdge-Ref": "Ref A: 2A1C3557599A40D3AA480EC0D9E63140 Ref B: MAA201060515023 Ref C: 2025-06-16T09:19:50Z"
+      },
+      "ResponseBody": {
+        "status": "Succeeded"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg57992/providers/Microsoft.Resources/deployments/dp15453896c?api-version=2025-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Mon, 16 Jun 2025 09:19:51 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (21.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "3840",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 16 Jun 2025 09:19:51 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "8d4bd7c6-1ad6-4274-bec4-9f06b34e8d52",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
+        "x-ms-ratelimit-remaining-subscription-reads": "1099",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "MALAYSIASOUTH:20250616T091952Z:8d4bd7c6-1ad6-4274-bec4-9f06b34e8d52",
+        "X-MSEdge-Ref": "Ref A: C57ED7C2661345D9AC79129B2F874F61 Ref B: MAA201060515023 Ref C: 2025-06-16T09:19:51Z"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Resources/deployments/dp15453896c",
+        "name": "dp15453896c",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "templateHash": "14033873198337306976",
+          "parameters": {
+            "applicationSecurityGroupName": {
+              "type": "String",
+              "value": "asg70463ec8"
+            },
+            "virtualNetworkName": {
+              "type": "String",
+              "value": "vnet30531bca"
+            },
+            "networkInterfaceName": {
+              "type": "String",
+              "value": "nic237724af"
+            },
+            "networkSecurityGroupName": {
+              "type": "String",
+              "value": "nsg86939efe"
+            },
+            "location": {
+              "type": "String",
+              "value": "westus2"
+            },
+            "vnetAddressPrefix": {
+              "type": "String",
+              "value": "10.0.0.0/16"
+            },
+            "subnetAddressPrefix": {
+              "type": "String",
+              "value": "10.0.1.0/24"
+            }
+          },
+          "mode": "Incremental",
+          "provisioningState": "Succeeded",
+          "timestamp": "2025-06-16T09:19:47.5984551Z",
+          "duration": "PT33.8469624S",
+          "correlationId": "949fccc6-f718-4afc-87b2-5124b906700a",
+          "providers": [
+            {
+              "namespace": "Microsoft.Network",
+              "resourceTypes": [
+                {
+                  "resourceType": "applicationSecurityGroups",
+                  "locations": [
+                    "westus2"
+                  ]
+                },
+                {
+                  "resourceType": "networkSecurityGroups",
+                  "locations": [
+                    "westus2"
+                  ]
+                },
+                {
+                  "resourceType": "virtualNetworks",
+                  "locations": [
+                    "westus2"
+                  ]
+                },
+                {
+                  "resourceType": "networkInterfaces",
+                  "locations": [
+                    "westus2"
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe",
+                  "resourceType": "Microsoft.Network/networkSecurityGroups",
+                  "resourceName": "nsg86939efe"
+                }
+              ],
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/virtualNetworks/vnet30531bca",
+              "resourceType": "Microsoft.Network/virtualNetworks",
+              "resourceName": "vnet30531bca"
+            },
+            {
+              "dependsOn": [
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/virtualNetworks/vnet30531bca",
+                  "resourceType": "Microsoft.Network/virtualNetworks",
+                  "resourceName": "vnet30531bca"
+                },
+                {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/applicationSecurityGroups/asg70463ec8",
+                  "resourceType": "Microsoft.Network/applicationSecurityGroups",
+                  "resourceName": "asg70463ec8"
+                }
+              ],
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkInterfaces/nic237724af",
+              "resourceType": "Microsoft.Network/networkInterfaces",
+              "resourceName": "nic237724af"
+            }
+          ],
+          "outputs": {
+            "applicationSecurityGroupId": {
+              "type": "String",
+              "value": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/javacsmrg57992/providers/Microsoft.Network/applicationSecurityGroups/asg70463ec8"
+            },
+            "virtualNetworkId": {
+              "type": "String",
+              "value": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/javacsmrg57992/providers/Microsoft.Network/virtualNetworks/vnet30531bca"
+            },
+            "networkInterfaceId": {
+              "type": "String",
+              "value": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkInterfaces/nic237724af"
+            },
+            "networkSecurityGroupId": {
+              "type": "String",
+              "value": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe"
+            }
+          },
+          "outputResources": [
+            {
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/applicationSecurityGroups/asg70463ec8"
+            },
+            {
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkInterfaces/nic237724af"
+            },
+            {
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe"
+            },
+            {
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/virtualNetworks/vnet30531bca"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/applicationSecurityGroups/asg70463ec8?api-version=2024-07-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Mon, 16 Jun 2025 09:19:52 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.network/2.52.0-beta.1 (21.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "317",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 16 Jun 2025 09:19:52 GMT",
+        "ETag": "W/\"1310ec50-09b9-4289-b68a-56cf22a8d671\"",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-arm-service-request-id": "90e61019-e5b8-4dd4-b561-d6c0a2175de5",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-correlation-request-id": "4d327492-5f8a-4fc6-b63e-f73a4869073d",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "16498",
+        "x-ms-ratelimit-remaining-subscription-reads": "1098",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "MALAYSIASOUTH:20250616T091952Z:4d327492-5f8a-4fc6-b63e-f73a4869073d",
+        "X-MSEdge-Ref": "Ref A: 09DA98818DB44C62B7ABF03413699E5D Ref B: MAA201060515023 Ref C: 2025-06-16T09:19:52Z"
+      },
+      "ResponseBody": {
+        "name": "asg70463ec8",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/applicationSecurityGroups/asg70463ec8",
+        "etag": "Sanitized",
+        "type": "Microsoft.Network/applicationSecurityGroups",
+        "location": "westus2",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkInterfaces?api-version=2024-07-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Mon, 16 Jun 2025 09:19:53 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.network/2.52.0-beta.1 (21.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1642",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 16 Jun 2025 09:19:54 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-arm-service-request-id": "54e7f85f-8b6a-44a0-8555-ca47629b6d8e",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-correlation-request-id": "05c9d209-a068-4543-9f2b-45b31ead847f",
+        "x-ms-original-request-ids": "423cf56e-5bec-4751-92f8-998cbba201a3",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "16497",
+        "x-ms-ratelimit-remaining-subscription-reads": "1097",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "MALAYSIASOUTH:20250616T091955Z:05c9d209-a068-4543-9f2b-45b31ead847f",
+        "X-MSEdge-Ref": "Ref A: A2F3B88CA8274EA4B5FAAE6E344C98FC Ref B: MAA201060515023 Ref C: 2025-06-16T09:19:53Z"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "name": "nic237724af",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkInterfaces/nic237724af",
+            "etag": "Sanitized",
+            "properties": {
+              "provisioningState": "Succeeded",
+              "resourceGuid": "bb53fc5f-dc39-4505-8ed7-480c62c7e76e",
+              "ipConfigurations": [
+                {
+                  "name": "ipconfig1",
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkInterfaces/nic237724af/ipConfigurations/ipconfig1",
+                  "etag": "Sanitized",
+                  "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
+                  "properties": {
+                    "provisioningState": "Succeeded",
+                    "privateIPAddress": "10.0.1.4",
+                    "privateIPAllocationMethod": "Dynamic",
+                    "subnet": {
+                      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/virtualNetworks/vnet30531bca/subnets/default"
+                    },
+                    "primary": true,
+                    "privateIPAddressVersion": "IPv4",
+                    "applicationSecurityGroups": [
+                      {
+                        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/applicationSecurityGroups/asg70463ec8"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "dnsSettings": {
+                "dnsServers": [],
+                "appliedDnsServers": [],
+                "internalDomainNameSuffix": "1aa0daayhzue3lg0imrfliwjyb.xx.internal.cloudapp.net"
+              },
+              "enableAcceleratedNetworking": false,
+              "vnetEncryptionSupported": false,
+              "enableIPForwarding": false,
+              "disableTcpStateTracking": false,
+              "hostedWorkloads": [],
+              "tapConfigurations": [],
+              "nicType": "Standard",
+              "allowPort25Out": true,
+              "defaultOutboundConnectivityEnabled": false,
+              "auxiliaryMode": "None",
+              "auxiliarySku": "None"
+            },
+            "type": "Microsoft.Network/networkInterfaces",
+            "location": "westus2",
+            "kind": "Regular"
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe?api-version=2024-07-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Mon, 16 Jun 2025 09:19:55 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.network/2.52.0-beta.1 (21.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "6149",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 16 Jun 2025 09:19:55 GMT",
+        "ETag": "W/\"a0d1512c-6ed1-4670-bc25-7eed33239f05\"",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-arm-service-request-id": "15fcc982-2028-4a39-85bb-969e2fab8e31",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-correlation-request-id": "b613b14f-c6fd-4a38-9c54-7fd3a8324688",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
+        "x-ms-ratelimit-remaining-subscription-reads": "1099",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "MALAYSIASOUTH:20250616T091955Z:b613b14f-c6fd-4a38-9c54-7fd3a8324688",
+        "X-MSEdge-Ref": "Ref A: A8DBA998C7E641E9B018959D787EFF11 Ref B: MAA201060515023 Ref C: 2025-06-16T09:19:55Z"
+      },
+      "ResponseBody": {
+        "name": "nsg86939efe",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe",
+        "etag": "Sanitized",
+        "type": "Microsoft.Network/networkSecurityGroups",
+        "location": "westus2",
+        "properties": {
+          "provisioningState": "Succeeded",
+          "resourceGuid": "48bdc675-c163-4763-a668-d2e9b1891370",
+          "securityRules": [
+            {
+              "name": "AllowSSH",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe/securityRules/AllowSSH",
+              "etag": "Sanitized",
+              "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+              "properties": {
+                "provisioningState": "Succeeded",
+                "description": "Allow SSH traffic",
+                "protocol": "Tcp",
+                "sourcePortRange": "*",
+                "destinationPortRange": "22",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 1000,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+              }
+            },
+            {
+              "name": "AllowHTTP",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe/securityRules/AllowHTTP",
+              "etag": "Sanitized",
+              "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+              "properties": {
+                "provisioningState": "Succeeded",
+                "description": "Allow HTTP traffic",
+                "protocol": "Tcp",
+                "sourcePortRange": "*",
+                "destinationPortRange": "80",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 1010,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+              }
+            }
+          ],
+          "defaultSecurityRules": [
+            {
+              "name": "AllowVnetInBound",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe/defaultSecurityRules/AllowVnetInBound",
+              "etag": "Sanitized",
+              "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules",
+              "properties": {
+                "provisioningState": "Succeeded",
+                "description": "Allow inbound traffic from all VMs in VNET",
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "*",
+                "sourceAddressPrefix": "VirtualNetwork",
+                "destinationAddressPrefix": "VirtualNetwork",
+                "access": "Allow",
+                "priority": 65000,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+              }
+            },
+            {
+              "name": "AllowAzureLoadBalancerInBound",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe/defaultSecurityRules/AllowAzureLoadBalancerInBound",
+              "etag": "Sanitized",
+              "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules",
+              "properties": {
+                "provisioningState": "Succeeded",
+                "description": "Allow inbound traffic from azure load balancer",
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "*",
+                "sourceAddressPrefix": "AzureLoadBalancer",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 65001,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+              }
+            },
+            {
+              "name": "DenyAllInBound",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe/defaultSecurityRules/DenyAllInBound",
+              "etag": "Sanitized",
+              "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules",
+              "properties": {
+                "provisioningState": "Succeeded",
+                "description": "Deny all inbound traffic",
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "*",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Deny",
+                "priority": 65500,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+              }
+            },
+            {
+              "name": "AllowVnetOutBound",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe/defaultSecurityRules/AllowVnetOutBound",
+              "etag": "Sanitized",
+              "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules",
+              "properties": {
+                "provisioningState": "Succeeded",
+                "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "*",
+                "sourceAddressPrefix": "VirtualNetwork",
+                "destinationAddressPrefix": "VirtualNetwork",
+                "access": "Allow",
+                "priority": 65000,
+                "direction": "Outbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+              }
+            },
+            {
+              "name": "AllowInternetOutBound",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe/defaultSecurityRules/AllowInternetOutBound",
+              "etag": "Sanitized",
+              "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules",
+              "properties": {
+                "provisioningState": "Succeeded",
+                "description": "Allow outbound traffic from all VMs to Internet",
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "*",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "Internet",
+                "access": "Allow",
+                "priority": 65001,
+                "direction": "Outbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+              }
+            },
+            {
+              "name": "DenyAllOutBound",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe/defaultSecurityRules/DenyAllOutBound",
+              "etag": "Sanitized",
+              "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules",
+              "properties": {
+                "provisioningState": "Succeeded",
+                "description": "Deny all outbound traffic",
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "*",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Deny",
+                "priority": 65500,
+                "direction": "Outbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+              }
+            }
+          ],
+          "subnets": [
+            {
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/virtualNetworks/vnet30531bca/subnets/default"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/virtualNetworks/vnet30531bca?api-version=2024-07-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Mon, 16 Jun 2025 09:19:56 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.network/2.52.0-beta.1 (21.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1322",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 16 Jun 2025 09:19:55 GMT",
+        "ETag": "W/\"7aa4217a-e8e6-43a8-b644-73d16f3dfc5d\"",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-arm-service-request-id": "b69a8ff8-25b1-41d6-ba79-5250fb6fbf20",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-correlation-request-id": "8be0bc77-b3e4-4701-b644-8eeed0304d50",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "16496",
+        "x-ms-ratelimit-remaining-subscription-reads": "1096",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "MALAYSIASOUTH:20250616T091956Z:8be0bc77-b3e4-4701-b644-8eeed0304d50",
+        "X-MSEdge-Ref": "Ref A: E002B96FFB4B48C293630DD76222C05A Ref B: MAA201060515023 Ref C: 2025-06-16T09:19:56Z"
+      },
+      "ResponseBody": {
+        "name": "vnet30531bca",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/virtualNetworks/vnet30531bca",
+        "etag": "Sanitized",
+        "type": "Microsoft.Network/virtualNetworks",
+        "location": "westus2",
+        "properties": {
+          "provisioningState": "Succeeded",
+          "resourceGuid": "80a101d8-3e18-4e68-acda-432255a2c9c1",
+          "addressSpace": {
+            "addressPrefixes": [
+              "10.0.0.0/16"
+            ]
+          },
+          "privateEndpointVNetPolicies": "Disabled",
+          "subnets": [
+            {
+              "name": "default",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/virtualNetworks/vnet30531bca/subnets/default",
+              "etag": "Sanitized",
+              "properties": {
+                "provisioningState": "Succeeded",
+                "addressPrefix": "10.0.1.0/24",
+                "networkSecurityGroup": {
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/networkSecurityGroups/nsg86939efe"
+                },
+                "ipConfigurations": [
+                  {
+                    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/JAVACSMRG57992/providers/Microsoft.Network/networkInterfaces/NIC237724AF/ipConfigurations/IPCONFIG1"
+                  }
+                ],
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+              },
+              "type": "Microsoft.Network/virtualNetworks/subnets"
+            }
+          ],
+          "virtualNetworkPeerings": [],
+          "enableDdosProtection": false
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/applicationSecurityGroups/asg70463ec8?api-version=2024-07-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Mon, 16 Jun 2025 09:19:57 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.network/2.52.0-beta.1 (21.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "317",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 16 Jun 2025 09:19:56 GMT",
+        "ETag": "W/\"1310ec50-09b9-4289-b68a-56cf22a8d671\"",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-arm-service-request-id": "db4fa5d2-248d-4d58-ae21-af2ffed34a21",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-correlation-request-id": "07a66a8e-ba97-49cd-bd38-73aef676b185",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "16495",
+        "x-ms-ratelimit-remaining-subscription-reads": "1095",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "MALAYSIASOUTH:20250616T091957Z:07a66a8e-ba97-49cd-bd38-73aef676b185",
+        "X-MSEdge-Ref": "Ref A: 28AEADEE1F594A27821425FB5AEC0817 Ref B: MAA201060515023 Ref C: 2025-06-16T09:19:56Z"
+      },
+      "ResponseBody": {
+        "name": "asg70463ec8",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg57992/providers/Microsoft.Network/applicationSecurityGroups/asg70463ec8",
+        "etag": "Sanitized",
+        "type": "Microsoft.Network/applicationSecurityGroups",
+        "location": "westus2",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg57992/providers/Microsoft.Resources/deployments/dp15453896c?api-version=2025-04-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Mon, 16 Jun 2025 09:19:57 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.52.0-beta.1 (21.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Mon, 16 Jun 2025 09:20:02 GMT",
+        "Expires": "-1",
+        "Location": "https://REDACTED.azure.com/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/operationresults/eyJqb2JJZCI6IkRlcGxveW1lbnREZWxldGlvbkpvYi1KQVZBQ1NNUkc1Nzk5Mi1EUDE1NDUzODk2QyIsImpvYkxvY2F0aW9uIjoid2VzdHVzMiJ9?api-version=2025-04-01&t=638856624033669942&c=MIIIFjCCBv6gAwIBAgITHgbhpaW5iuWBbhED7QAABuGlpTANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjUwNTA2MDUyMDExWhcNMjYwNTAxMDUyMDExWjCBjDELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAldBMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xPjA8BgNVBAMTNWFzeW5jb3BlcmF0aW9uc2lnbmluZ2NlcnRpZmljYXRlLm1hbmFnZW1lbnQuYXp1cmUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3SRJk3b3iziQHn8YEpnMwUqUAGJnNh2pRhW3S8aoyfPeVdGly0_oDOisytFka6Z8-VJnP7lwoWiUSRE0D0V6XwPpqfsdbtC9Ads1DrdXpr6hEWF-XeG6mljtgJPQ0A2OfGZqGhsHIbzfRmgikRfc390zXQ7lzROlhmfYqNS34mMxJIAIl3ro6a_QLc8tXbg8v1uamdCI_D68ZMhXAumDtngle0YpiZxvfQQMimtEkL8Uf5jnlefwITWamGGg3V76wo4h0lu0QK5SXIRLF9LJB_vHG_7_oWehO5Fd0ETqpEqtMOf0i2HYc1YqovqwGfhxqYrYGMDgqAeycLtdrAM8CQIDAQABo4IEtjCCBLIwJwYJKwYBBAGCNxUKBBowGDAKBggrBgEFBQcDATAKBggrBgEFBQcDAjA9BgkrBgEEAYI3FQcEMDAuBiYrBgEEAYI3FQiGkOMNhNW0eITxiz6Fm90Wzp0SgWCC9fYrg_LRIAIBZAIBCjCCAcsGCCsGAQUFBwEBBIIBvTCCAbkwYwYIKwYBBQUHMAKGV2h0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9wa2lpbmZyYS9DZXJ0cy9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDEuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwyLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMy5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDQuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwHQYDVR0OBBYEFKtuM-10nQy0wUgbvelxOOiOxnMEMA4GA1UdDwEB_wQEAwIFoDBABgNVHREEOTA3gjVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASYGA1UdHwSCAR0wggEZMIIBFaCCARGgggENhj9odHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ1JML0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwxLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwyLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwzLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmw0LmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmwwgZ0GA1UdIASBlTCBkjAMBgorBgEEAYI3ewEBMGYGCisGAQQBgjd7AgIwWDBWBggrBgEFBQcCAjBKHkgAMwAzAGUAMAAxADkAMgAxAC0ANABkADYANAAtADQAZgA4AGMALQBhADAANQA1AC0ANQBiAGQAYQBmAGYAZAA1AGUAMwAzAGQwDAYKKwYBBAGCN3sDAjAMBgorBgEEAYI3ewQCMB8GA1UdIwQYMBaAFPFGaMbxw_ArLX2LauGy-b41_NFBMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjANBgkqhkiG9w0BAQsFAAOCAQEANObh_8iTT2giHkUy7oTqapUGfJYZzQoF1Og4hdJIHVy2W1CrYNrYqLlmFuaIay5MX_81QaXcZNkPvtsYYyQ9AlKW8qd6s9xuoBgvUpJ7RKw40ZoTG7FRBIJiT2We0SyWsLxcz_4LCWZ1Cf5olYwLZ_8U3lO_nnvDDMrlFhb9W9eQ-D4UEw1G4mEX6PqJJSoKX1D0Lc7BdF7syPotMQen01hcULhmDYvFuGIUgyrYYg6PLvPFspMgezxrUgaezBqJeQrLz3hsgclzOfsFepuAEtspxpNim67_F7Uq9plRB5x0RCZz8RHSCgq9CKoj7w8558rFXFMW-4079DZdgG-niQ&s=iGxi9Wfun3zSggdipYDI5a6pcXZNqQjVyoCe5LqwJ6jiuljHYVcOAqa5KWxojHT2EBWUSv_6sSM-G2BDWyY2M9df46YYDMQ7zZDD6-ZEVx8Lnu5_uNiB0mpv8QXWVnkypH61kJaQEauZeCaFGvd2PJBwabbwIXuh8CvFYHWaxqgd_g6fO34HTDXWMGW2OsSVJ5osxZ3imBU-W6SPpsJ1tbxNKgn_seJXGvqBhBvH3-e0il9QAVrF7jGDBJsqeCOqUEF4aFWj6Yl2fMdSbg-LiTflJSDgVZ6dT-wQMXPURi7HECroSeS3pRX9PvnGikMo7_F6iZoJKgmATIiF_FtreA&h=aC3-YJHfMeHi-_pz_lJnRwADmCKXdQM-VbEvK-SlOoU",
+        "Pragma": "no-cache",
+        "Retry-After": "0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "33242563-3a62-4da5-bb65-c4e1d8bfac91",
+        "x-ms-ratelimit-remaining-subscription-deletes": "799",
+        "x-ms-ratelimit-remaining-subscription-global-deletes": "11999",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "MALAYSIASOUTH:20250616T092003Z:33242563-3a62-4da5-bb65-c4e1d8bfac91",
+        "X-MSEdge-Ref": "Ref A: 45DE531A401D4A98859BF6169F693612 Ref B: MAA201060515023 Ref C: 2025-06-16T09:19:57Z"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IkRlcGxveW1lbnREZWxldGlvbkpvYi1KQVZBQ1NNUkc1Nzk5Mi1EUDE1NDUzODk2QyIsImpvYkxvY2F0aW9uIjoid2VzdHVzMiJ9?api-version=2025-04-01&t=638856624033669942&c=MIIIFjCCBv6gAwIBAgITHgbhpaW5iuWBbhED7QAABuGlpTANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjUwNTA2MDUyMDExWhcNMjYwNTAxMDUyMDExWjCBjDELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAldBMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xPjA8BgNVBAMTNWFzeW5jb3BlcmF0aW9uc2lnbmluZ2NlcnRpZmljYXRlLm1hbmFnZW1lbnQuYXp1cmUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3SRJk3b3iziQHn8YEpnMwUqUAGJnNh2pRhW3S8aoyfPeVdGly0_oDOisytFka6Z8-VJnP7lwoWiUSRE0D0V6XwPpqfsdbtC9Ads1DrdXpr6hEWF-XeG6mljtgJPQ0A2OfGZqGhsHIbzfRmgikRfc390zXQ7lzROlhmfYqNS34mMxJIAIl3ro6a_QLc8tXbg8v1uamdCI_D68ZMhXAumDtngle0YpiZxvfQQMimtEkL8Uf5jnlefwITWamGGg3V76wo4h0lu0QK5SXIRLF9LJB_vHG_7_oWehO5Fd0ETqpEqtMOf0i2HYc1YqovqwGfhxqYrYGMDgqAeycLtdrAM8CQIDAQABo4IEtjCCBLIwJwYJKwYBBAGCNxUKBBowGDAKBggrBgEFBQcDATAKBggrBgEFBQcDAjA9BgkrBgEEAYI3FQcEMDAuBiYrBgEEAYI3FQiGkOMNhNW0eITxiz6Fm90Wzp0SgWCC9fYrg_LRIAIBZAIBCjCCAcsGCCsGAQUFBwEBBIIBvTCCAbkwYwYIKwYBBQUHMAKGV2h0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9wa2lpbmZyYS9DZXJ0cy9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDEuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwyLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMy5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDQuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwHQYDVR0OBBYEFKtuM-10nQy0wUgbvelxOOiOxnMEMA4GA1UdDwEB_wQEAwIFoDBABgNVHREEOTA3gjVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASYGA1UdHwSCAR0wggEZMIIBFaCCARGgggENhj9odHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ1JML0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwxLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwyLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwzLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmw0LmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmwwgZ0GA1UdIASBlTCBkjAMBgorBgEEAYI3ewEBMGYGCisGAQQBgjd7AgIwWDBWBggrBgEFBQcCAjBKHkgAMwAzAGUAMAAxADkAMgAxAC0ANABkADYANAAtADQAZgA4AGMALQBhADAANQA1AC0ANQBiAGQAYQBmAGYAZAA1AGUAMwAzAGQwDAYKKwYBBAGCN3sDAjAMBgorBgEEAYI3ewQCMB8GA1UdIwQYMBaAFPFGaMbxw_ArLX2LauGy-b41_NFBMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjANBgkqhkiG9w0BAQsFAAOCAQEANObh_8iTT2giHkUy7oTqapUGfJYZzQoF1Og4hdJIHVy2W1CrYNrYqLlmFuaIay5MX_81QaXcZNkPvtsYYyQ9AlKW8qd6s9xuoBgvUpJ7RKw40ZoTG7FRBIJiT2We0SyWsLxcz_4LCWZ1Cf5olYwLZ_8U3lO_nnvDDMrlFhb9W9eQ-D4UEw1G4mEX6PqJJSoKX1D0Lc7BdF7syPotMQen01hcULhmDYvFuGIUgyrYYg6PLvPFspMgezxrUgaezBqJeQrLz3hsgclzOfsFepuAEtspxpNim67_F7Uq9plRB5x0RCZz8RHSCgq9CKoj7w8558rFXFMW-4079DZdgG-niQ&s=iGxi9Wfun3zSggdipYDI5a6pcXZNqQjVyoCe5LqwJ6jiuljHYVcOAqa5KWxojHT2EBWUSv_6sSM-G2BDWyY2M9df46YYDMQ7zZDD6-ZEVx8Lnu5_uNiB0mpv8QXWVnkypH61kJaQEauZeCaFGvd2PJBwabbwIXuh8CvFYHWaxqgd_g6fO34HTDXWMGW2OsSVJ5osxZ3imBU-W6SPpsJ1tbxNKgn_seJXGvqBhBvH3-e0il9QAVrF7jGDBJsqeCOqUEF4aFWj6Yl2fMdSbg-LiTflJSDgVZ6dT-wQMXPURi7HECroSeS3pRX9PvnGikMo7_F6iZoJKgmATIiF_FtreA&h=aC3-YJHfMeHi-_pz_lJnRwADmCKXdQM-VbEvK-SlOoU",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Mon, 16 Jun 2025 09:20:18 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (21.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Date": "Mon, 16 Jun 2025 09:20:18 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "9a794a2f-6ca3-4150-a17c-0dad7d55be10",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
+        "x-ms-ratelimit-remaining-subscription-reads": "1099",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "MALAYSIASOUTH:20250616T092019Z:9a794a2f-6ca3-4150-a17c-0dad7d55be10",
+        "X-MSEdge-Ref": "Ref A: E09DF807F5A84927B7B17D4F9411BEC7 Ref B: MAA201060515023 Ref C: 2025-06-16T09:20:18Z"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IkRlcGxveW1lbnREZWxldGlvbkpvYi1KQVZBQ1NNUkc1Nzk5Mi1EUDE1NDUzODk2QyIsImpvYkxvY2F0aW9uIjoid2VzdHVzMiJ9?api-version=2025-04-01&t=638856624033669942&c=MIIIFjCCBv6gAwIBAgITHgbhpaW5iuWBbhED7QAABuGlpTANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjUwNTA2MDUyMDExWhcNMjYwNTAxMDUyMDExWjCBjDELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAldBMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xPjA8BgNVBAMTNWFzeW5jb3BlcmF0aW9uc2lnbmluZ2NlcnRpZmljYXRlLm1hbmFnZW1lbnQuYXp1cmUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3SRJk3b3iziQHn8YEpnMwUqUAGJnNh2pRhW3S8aoyfPeVdGly0_oDOisytFka6Z8-VJnP7lwoWiUSRE0D0V6XwPpqfsdbtC9Ads1DrdXpr6hEWF-XeG6mljtgJPQ0A2OfGZqGhsHIbzfRmgikRfc390zXQ7lzROlhmfYqNS34mMxJIAIl3ro6a_QLc8tXbg8v1uamdCI_D68ZMhXAumDtngle0YpiZxvfQQMimtEkL8Uf5jnlefwITWamGGg3V76wo4h0lu0QK5SXIRLF9LJB_vHG_7_oWehO5Fd0ETqpEqtMOf0i2HYc1YqovqwGfhxqYrYGMDgqAeycLtdrAM8CQIDAQABo4IEtjCCBLIwJwYJKwYBBAGCNxUKBBowGDAKBggrBgEFBQcDATAKBggrBgEFBQcDAjA9BgkrBgEEAYI3FQcEMDAuBiYrBgEEAYI3FQiGkOMNhNW0eITxiz6Fm90Wzp0SgWCC9fYrg_LRIAIBZAIBCjCCAcsGCCsGAQUFBwEBBIIBvTCCAbkwYwYIKwYBBQUHMAKGV2h0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9wa2lpbmZyYS9DZXJ0cy9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDEuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwyLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMy5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDQuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwHQYDVR0OBBYEFKtuM-10nQy0wUgbvelxOOiOxnMEMA4GA1UdDwEB_wQEAwIFoDBABgNVHREEOTA3gjVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASYGA1UdHwSCAR0wggEZMIIBFaCCARGgggENhj9odHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ1JML0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwxLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwyLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwzLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmw0LmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmwwgZ0GA1UdIASBlTCBkjAMBgorBgEEAYI3ewEBMGYGCisGAQQBgjd7AgIwWDBWBggrBgEFBQcCAjBKHkgAMwAzAGUAMAAxADkAMgAxAC0ANABkADYANAAtADQAZgA4AGMALQBhADAANQA1AC0ANQBiAGQAYQBmAGYAZAA1AGUAMwAzAGQwDAYKKwYBBAGCN3sDAjAMBgorBgEEAYI3ewQCMB8GA1UdIwQYMBaAFPFGaMbxw_ArLX2LauGy-b41_NFBMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjANBgkqhkiG9w0BAQsFAAOCAQEANObh_8iTT2giHkUy7oTqapUGfJYZzQoF1Og4hdJIHVy2W1CrYNrYqLlmFuaIay5MX_81QaXcZNkPvtsYYyQ9AlKW8qd6s9xuoBgvUpJ7RKw40ZoTG7FRBIJiT2We0SyWsLxcz_4LCWZ1Cf5olYwLZ_8U3lO_nnvDDMrlFhb9W9eQ-D4UEw1G4mEX6PqJJSoKX1D0Lc7BdF7syPotMQen01hcULhmDYvFuGIUgyrYYg6PLvPFspMgezxrUgaezBqJeQrLz3hsgclzOfsFepuAEtspxpNim67_F7Uq9plRB5x0RCZz8RHSCgq9CKoj7w8558rFXFMW-4079DZdgG-niQ&s=iGxi9Wfun3zSggdipYDI5a6pcXZNqQjVyoCe5LqwJ6jiuljHYVcOAqa5KWxojHT2EBWUSv_6sSM-G2BDWyY2M9df46YYDMQ7zZDD6-ZEVx8Lnu5_uNiB0mpv8QXWVnkypH61kJaQEauZeCaFGvd2PJBwabbwIXuh8CvFYHWaxqgd_g6fO34HTDXWMGW2OsSVJ5osxZ3imBU-W6SPpsJ1tbxNKgn_seJXGvqBhBvH3-e0il9QAVrF7jGDBJsqeCOqUEF4aFWj6Yl2fMdSbg-LiTflJSDgVZ6dT-wQMXPURi7HECroSeS3pRX9PvnGikMo7_F6iZoJKgmATIiF_FtreA&h=aC3-YJHfMeHi-_pz_lJnRwADmCKXdQM-VbEvK-SlOoU",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Mon, 16 Jun 2025 09:20:19 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (21.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Date": "Mon, 16 Jun 2025 09:20:20 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "e3a2efcb-1421-4573-a1b8-14549de561aa",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
+        "x-ms-ratelimit-remaining-subscription-reads": "1099",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "MALAYSIASOUTH:20250616T092020Z:e3a2efcb-1421-4573-a1b8-14549de561aa",
+        "X-MSEdge-Ref": "Ref A: A90124E6B21E4C28B8980EA28E0B32C4 Ref B: MAA201060515023 Ref C: 2025-06-16T09:20:19Z"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg57992?api-version=2025-04-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Mon, 16 Jun 2025 09:20:21 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources/2.52.0-beta.1 (21.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Mon, 16 Jun 2025 09:20:30 GMT",
+        "Expires": "-1",
+        "Location": "https://REDACTED.azure.com/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQ1NNUkc1Nzk5Mi1XRVNUVVMyIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMyIn0?api-version=2025-04-01&t=638856624311887920&c=MIIIFjCCBv6gAwIBAgITHgbhpaW5iuWBbhED7QAABuGlpTANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjUwNTA2MDUyMDExWhcNMjYwNTAxMDUyMDExWjCBjDELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAldBMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xPjA8BgNVBAMTNWFzeW5jb3BlcmF0aW9uc2lnbmluZ2NlcnRpZmljYXRlLm1hbmFnZW1lbnQuYXp1cmUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3SRJk3b3iziQHn8YEpnMwUqUAGJnNh2pRhW3S8aoyfPeVdGly0_oDOisytFka6Z8-VJnP7lwoWiUSRE0D0V6XwPpqfsdbtC9Ads1DrdXpr6hEWF-XeG6mljtgJPQ0A2OfGZqGhsHIbzfRmgikRfc390zXQ7lzROlhmfYqNS34mMxJIAIl3ro6a_QLc8tXbg8v1uamdCI_D68ZMhXAumDtngle0YpiZxvfQQMimtEkL8Uf5jnlefwITWamGGg3V76wo4h0lu0QK5SXIRLF9LJB_vHG_7_oWehO5Fd0ETqpEqtMOf0i2HYc1YqovqwGfhxqYrYGMDgqAeycLtdrAM8CQIDAQABo4IEtjCCBLIwJwYJKwYBBAGCNxUKBBowGDAKBggrBgEFBQcDATAKBggrBgEFBQcDAjA9BgkrBgEEAYI3FQcEMDAuBiYrBgEEAYI3FQiGkOMNhNW0eITxiz6Fm90Wzp0SgWCC9fYrg_LRIAIBZAIBCjCCAcsGCCsGAQUFBwEBBIIBvTCCAbkwYwYIKwYBBQUHMAKGV2h0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9wa2lpbmZyYS9DZXJ0cy9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDEuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwyLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMy5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDQuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwHQYDVR0OBBYEFKtuM-10nQy0wUgbvelxOOiOxnMEMA4GA1UdDwEB_wQEAwIFoDBABgNVHREEOTA3gjVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASYGA1UdHwSCAR0wggEZMIIBFaCCARGgggENhj9odHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ1JML0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwxLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwyLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmwzLmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmyGMWh0dHA6Ly9jcmw0LmFtZS5nYmwvY3JsL0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcmwwgZ0GA1UdIASBlTCBkjAMBgorBgEEAYI3ewEBMGYGCisGAQQBgjd7AgIwWDBWBggrBgEFBQcCAjBKHkgAMwAzAGUAMAAxADkAMgAxAC0ANABkADYANAAtADQAZgA4AGMALQBhADAANQA1AC0ANQBiAGQAYQBmAGYAZAA1AGUAMwAzAGQwDAYKKwYBBAGCN3sDAjAMBgorBgEEAYI3ewQCMB8GA1UdIwQYMBaAFPFGaMbxw_ArLX2LauGy-b41_NFBMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjANBgkqhkiG9w0BAQsFAAOCAQEANObh_8iTT2giHkUy7oTqapUGfJYZzQoF1Og4hdJIHVy2W1CrYNrYqLlmFuaIay5MX_81QaXcZNkPvtsYYyQ9AlKW8qd6s9xuoBgvUpJ7RKw40ZoTG7FRBIJiT2We0SyWsLxcz_4LCWZ1Cf5olYwLZ_8U3lO_nnvDDMrlFhb9W9eQ-D4UEw1G4mEX6PqJJSoKX1D0Lc7BdF7syPotMQen01hcULhmDYvFuGIUgyrYYg6PLvPFspMgezxrUgaezBqJeQrLz3hsgclzOfsFepuAEtspxpNim67_F7Uq9plRB5x0RCZz8RHSCgq9CKoj7w8558rFXFMW-4079DZdgG-niQ&s=Wqvbppyf4D_u0UZ2JJLOhRT--wyLZtbEeZUSencIQa3Edg0ABt5hjsY7oX82yggHlh5Vg-f2Pw2qHGqmT3qp8vW4xEf-ES-wID8azyipyDQNhvt_bQuL2tYX8SCd1LSna-kzP2gthfpjYCyyxK6YORxcdCCmtxb2-2bnT_r-TWiZFnUxLxxwue0ICpSc75bwk4N3GVaHxRWF6Eeb6tgF1Gr7edAf3jMBo_Qq0oGVelOvU6oA2olqHINM6_UG0IquanOHuze2c7r8aRbxI-sH7q1EKQhFD8gMTh1t08UDxhIWluJBYwWSDw5XmDLcN6wTQ2zQIqV3JjGNu-86bjM9Ag&h=8_YmsN1ZusM76LR5IqnzIDHa1msA88gxHwOrObdFc3E",
+        "Pragma": "no-cache",
+        "Retry-After": "0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "d278150f-5c82-4054-86a8-234a1a2be062",
+        "x-ms-ratelimit-remaining-subscription-deletes": "800",
+        "x-ms-ratelimit-remaining-subscription-global-deletes": "12000",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "MALAYSIASOUTH:20250616T092031Z:d278150f-5c82-4054-86a8-234a1a2be062",
+        "X-MSEdge-Ref": "Ref A: A776E4F27ED94C81A5A9282EBC22B7EB Ref B: MAA201060515023 Ref C: 2025-06-16T09:20:20Z"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "javacsmrg57992",
+    "1": "dp15453896c",
+    "2": "nic237724af",
+    "3": "vnet30531bca",
+    "4": "nsg86939efe",
+    "5": "asg70463ec8"
+  }
+}
