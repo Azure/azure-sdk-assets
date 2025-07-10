@@ -1,449 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2024-12-01-preview",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate",
-        "api-key": "Sanitized",
-        "Connection": "close",
-        "Content-Length": "6592",
-        "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.10.0",
-        "X-Stainless-Arch": "x64",
-        "X-Stainless-Async": "async:asyncio",
-        "X-Stainless-Lang": "python",
-        "X-Stainless-OS": "Other:XXX",
-        "X-Stainless-Package-Version": "vX.X.X",
-        "X-Stainless-Runtime": "CPython",
-        "X-Stainless-Runtime-Version": "3.X.X"
-      },
-      "RequestBody": {
-        "messages": [
-          {
-            "role": "system",
-            "content": "You are a Relevance-Judge, an impartial evaluator that scores how well the RESPONSE addresses the QUERY using the definitions provided."
-          },
-          {
-            "role": "user",
-            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to a QUERY using the Relevance definitions provided.\n\nINPUT\n=====\nQUERY: Tokyo is the capital of which country?\nRESPONSE: Japan\n\nTASK\n====\nOutput a JSON object with:\n    1) a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the query.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n\nThe explanation should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"explanation\": \"<15-60 words>\",\n  \"score\": <1-5>\n}\n\n\nEVALUATION STEPS\n================\nA. Read the QUERY and RESPONSE carefully.\nB. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nC. Match the response to the best score from the rubric.\nD. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nQUERY: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"explanation\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1\n}\n\n\n**Example B**\nQUERY: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"explanation\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nQUERY: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"explanation\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2\n}\n\n**Example B**\nQUERY: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"explanation\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nQUERY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3\n}\n\n**Example B**\nQUERY: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"explanation\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nQUERY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4\n}\n\n**Example B**\nQUERY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"explanation\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nQUERY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"explanation\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5\n}\n\n**Example B**\nQUERY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"explanation\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5\n}"
-          }
-        ],
-        "model": "aoai-deployment",
-        "frequency_penalty": 0,
-        "max_tokens": 800,
-        "presence_penalty": 0,
-        "response_format": {
-          "type": "json_object"
-        },
-        "temperature": 0.0,
-        "top_p": 1.0
-      },
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "fb35424d-8497-48ef-a050-fa1b89bb1b8d",
-        "azureml-model-session": "d030-20250625212707",
-        "cmp-upstream-response-duration": "787",
-        "Connection": "close",
-        "Content-Length": "1300",
-        "Content-Type": "application/json",
-        "Date": "Thu, 10 Jul 2025 07:26:44 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "x-accel-buffering": "no",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-deployment-name": "gpt-4.1",
-        "x-ms-rai-invoked": "true",
-        "x-ms-region": "East US 2",
-        "x-ratelimit-limit-requests": "850",
-        "x-ratelimit-limit-tokens": "850000",
-        "x-ratelimit-remaining-requests": "841",
-        "x-ratelimit-remaining-tokens": "837139",
-        "X-Request-ID": "bf8afd6b-1282-4a24-baf8-f02355186380"
-      },
-      "ResponseBody": {
-        "choices": [
-          {
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            },
-            "finish_reason": "stop",
-            "index": 0,
-            "logprobs": null,
-            "message": {
-              "annotations": [],
-              "content": "{\n  \"explanation\": \"The response directly and accurately answers the query by naming Japan as the country of which Tokyo is the capital. It is concise, complete, and fully satisfies the request without omission or error.\",\n  \"score\": 4\n}",
-              "refusal": null,
-              "role": "assistant"
-            }
-          }
-        ],
-        "created": 1752132404,
-        "id": "Sanitized",
-        "model": "aoai-deployment",
-        "object": "chat.completion",
-        "prompt_filter_results": [
-          {
-            "prompt_index": 0,
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "jailbreak": {
-                "filtered": false,
-                "detected": false
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            }
-          }
-        ],
-        "system_fingerprint": "fp_07e970ab25",
-        "usage": {
-          "completion_tokens": 53,
-          "completion_tokens_details": {
-            "accepted_prediction_tokens": 0,
-            "audio_tokens": 0,
-            "reasoning_tokens": 0,
-            "rejected_prediction_tokens": 0
-          },
-          "prompt_tokens": 1271,
-          "prompt_tokens_details": {
-            "audio_tokens": 0,
-            "cached_tokens": 0
-          },
-          "total_tokens": 1324
-        }
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2024-12-01-preview",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate",
-        "api-key": "Sanitized",
-        "Connection": "close",
-        "Content-Length": "4840",
-        "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.10.0",
-        "X-Stainless-Arch": "x64",
-        "X-Stainless-Async": "async:asyncio",
-        "X-Stainless-Lang": "python",
-        "X-Stainless-OS": "Other:XXX",
-        "X-Stainless-Package-Version": "vX.X.X",
-        "X-Stainless-Runtime": "CPython",
-        "X-Stainless-Runtime-Version": "3.X.X"
-      },
-      "RequestBody": {
-        "messages": [
-          {
-            "role": "system",
-            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include a RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
-          },
-          {
-            "role": "user",
-            "content": "# Definition\n**Fluency** refers to the effectiveness and clarity of written communication, focusing on grammatical accuracy, vocabulary range, sentence complexity, coherence, and overall readability. It assesses how smoothly ideas are conveyed and how easily the text can be understood by the reader.\n\n# Ratings\n## [Fluency: 1] (Emergent Fluency)\n**Definition:** The response shows minimal command of the language. It contains pervasive grammatical errors, extremely limited vocabulary, and fragmented or incoherent sentences. The message is largely incomprehensible, making understanding very difficult.\n\n**Examples:**\n  **Response:** Free time I. Go park. Not fun. Alone.\n\n  **Response:** Like food pizza. Good cheese eat.\n\n## [Fluency: 2] (Basic Fluency)\n**Definition:** The response communicates simple ideas but has frequent grammatical errors and limited vocabulary. Sentences are short and may be improperly constructed, leading to partial understanding. Repetition and awkward phrasing are common.\n\n**Examples:**\n  **Response:** I like play soccer. I watch movie. It fun.\n\n  **Response:** My town small. Many people. We have market.\n\n## [Fluency: 3] (Competent Fluency)\n**Definition:** The response clearly conveys ideas with occasional grammatical errors. Vocabulary is adequate but not extensive. Sentences are generally correct but may lack complexity and variety. The text is coherent, and the message is easily understood with minimal effort.\n\n**Examples:**\n  **Response:** I'm planning to visit friends and maybe see a movie together.\n\n  **Response:** I try to eat healthy food and exercise regularly by jogging.\n\n## [Fluency: 4] (Proficient Fluency)\n**Definition:** The response is well-articulated with good control of grammar and a varied vocabulary. Sentences are complex and well-structured, demonstrating coherence and cohesion. Minor errors may occur but do not affect overall understanding. The text flows smoothly, and ideas are connected logically.\n\n**Examples:**\n  **Response:** My interest in mathematics and problem-solving inspired me to become an engineer, as I enjoy designing solutions that improve people's lives.\n\n  **Response:** Environmental conservation is crucial because it protects ecosystems, preserves biodiversity, and ensures natural resources are available for future generations.\n\n## [Fluency: 5] (Exceptional Fluency)\n**Definition:** The response demonstrates an exceptional command of language with sophisticated vocabulary and complex, varied sentence structures. It is coherent, cohesive, and engaging, with precise and nuanced expression. Grammar is flawless, and the text reflects a high level of eloquence and style.\n\n**Examples:**\n  **Response:** Globalization exerts a profound influence on cultural diversity by facilitating unprecedented cultural exchange while simultaneously risking the homogenization of distinct cultural identities, which can diminish the richness of global heritage.\n\n  **Response:** Technology revolutionizes modern education by providing interactive learning platforms, enabling personalized learning experiences, and connecting students worldwide, thereby transforming how knowledge is acquired and shared.\n\n\n# Data\nRESPONSE: Japan\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
-          }
-        ],
-        "model": "aoai-deployment",
-        "frequency_penalty": 0,
-        "max_tokens": 800,
-        "presence_penalty": 0,
-        "response_format": {
-          "type": "text"
-        },
-        "temperature": 0.0,
-        "top_p": 1.0
-      },
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "bf722ec9-dd56-49ee-8cf9-c0d81d8c4efd",
-        "azureml-model-session": "d116-20250604035425",
-        "cmp-upstream-response-duration": "1164",
-        "Connection": "close",
-        "Content-Length": "1641",
-        "Content-Type": "application/json",
-        "Date": "Thu, 10 Jul 2025 07:26:45 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "x-accel-buffering": "no",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-deployment-name": "gpt-4.1",
-        "x-ms-rai-invoked": "true",
-        "x-ms-region": "East US 2",
-        "x-ratelimit-limit-requests": "850",
-        "x-ratelimit-limit-tokens": "850000",
-        "x-ratelimit-remaining-requests": "841",
-        "x-ratelimit-remaining-tokens": "837534",
-        "X-Request-ID": "221ce9cd-9f4c-41aa-b18d-68a595a87660"
-      },
-      "ResponseBody": {
-        "choices": [
-          {
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "protected_material_code": {
-                "filtered": false,
-                "detected": false
-              },
-              "protected_material_text": {
-                "filtered": false,
-                "detected": false
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            },
-            "finish_reason": "stop",
-            "index": 0,
-            "logprobs": null,
-            "message": {
-              "annotations": [],
-              "content": "<S0>Let's think step by step: The response consists of a single word, \"Japan.\" It does not form a sentence, lacks grammar, vocabulary range, and sentence structure. There is no coherence or complexity, and the message is extremely limited and fragmented. According to the definitions, this aligns with the lowest level of fluency.</S0>\n<S1>The response is a single word and does not demonstrate any command of written communication or fluency.</S1>\n<S2>1</S2>",
-              "refusal": null,
-              "role": "assistant"
-            }
-          }
-        ],
-        "created": 1752132404,
-        "id": "Sanitized",
-        "model": "aoai-deployment",
-        "object": "chat.completion",
-        "prompt_filter_results": [
-          {
-            "prompt_index": 0,
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "jailbreak": {
-                "filtered": false,
-                "detected": false
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            }
-          }
-        ],
-        "system_fingerprint": "fp_07e970ab25",
-        "usage": {
-          "completion_tokens": 104,
-          "completion_tokens_details": {
-            "accepted_prediction_tokens": 0,
-            "audio_tokens": 0,
-            "reasoning_tokens": 0,
-            "rejected_prediction_tokens": 0
-          },
-          "prompt_tokens": 914,
-          "prompt_tokens_details": {
-            "audio_tokens": 0,
-            "cached_tokens": 0
-          },
-          "total_tokens": 1018
-        }
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2024-12-01-preview",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate",
-        "api-key": "Sanitized",
-        "Connection": "close",
-        "Content-Length": "5797",
-        "Content-Type": "application/json",
-        "User-Agent": "AsyncAzureOpenAI/Python 1.88.0",
-        "X-Stainless-Arch": "x64",
-        "X-Stainless-Async": "async:asyncio",
-        "X-Stainless-Lang": "python",
-        "X-Stainless-OS": "Other:XXX",
-        "X-Stainless-Package-Version": "vX.X.X",
-        "X-Stainless-Runtime": "CPython",
-        "X-Stainless-Runtime-Version": "3.X.X"
-      },
-      "RequestBody": {
-        "messages": [
-          {
-            "role": "system",
-            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include CONTEXT, QUERY, and RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
-          },
-          {
-            "role": "user",
-            "content": "# Definition\n**Groundedness** refers to how well an answer is anchored in the provided context, evaluating its relevance, accuracy, and completeness based exclusively on that context. It assesses the extent to which the answer directly and fully addresses the question without introducing unrelated or incorrect information. The scale ranges from 1 to 5, with higher numbers indicating greater groundedness.\n\n# Ratings\n## [Groundedness: 1] (Completely Unrelated Response)\n**Definition:** An answer that does not relate to the question or the context in any way. It fails to address the topic, provides irrelevant information, or introduces completely unrelated subjects.\n\n**Examples:**\n  **Context:** The company's annual meeting will be held next Thursday.\n  **Query:** When is the company's annual meeting?\n  **Response:** I enjoy hiking in the mountains during summer.\n\n  **Context:** The new policy aims to reduce carbon emissions by 20% over the next five years.\n  **Query:** What is the goal of the new policy?\n  **Response:** My favorite color is blue.\n\n## [Groundedness: 2] (Related Topic but Does Not Respond to the Query)\n**Definition:** An answer that relates to the general topic of the context but does not answer the specific question asked. It may mention concepts from the context but fails to provide a direct or relevant response.\n\n**Examples:**\n  **Context:** The museum will exhibit modern art pieces from various local artists.\n  **Query:** What kind of art will be exhibited at the museum?\n  **Response:** Museums are important cultural institutions.\n\n  **Context:** The new software update improves battery life and performance.\n  **Query:** What does the new software update improve?\n  **Response:** Software updates can sometimes fix bugs.\n\n## [Groundedness: 3] (Attempts to Respond but Contains Incorrect Information)\n**Definition:** An answer that attempts to respond to the question but includes incorrect information not supported by the context. It may misstate facts, misinterpret the context, or provide erroneous details.\n\n**Examples:**\n  **Context:** The festival starts on June 5th and features international musicians.\n  **Query:** When does the festival start?\n  **Response:** The festival starts on July 5th and features local artists.\n\n  **Context:** The recipe requires two eggs and one cup of milk.\n  **Query:** How many eggs are needed for the recipe?\n  **Response:** You need three eggs for the recipe.\n\n## [Groundedness: 4] (Partially Correct Response)\n**Definition:** An answer that provides a correct response to the question but is incomplete or lacks specific details mentioned in the context. It captures some of the necessary information but omits key elements needed for a full understanding.\n\n**Examples:**\n  **Context:** The bookstore offers a 15% discount to students and a 10% discount to senior citizens.\n  **Query:** What discount does the bookstore offer to students?\n  **Response:** Students get a discount at the bookstore.\n\n  **Context:** The company's headquarters are located in Berlin, Germany.\n  **Query:** Where are the company's headquarters?\n  **Response:** The company's headquarters are in Germany.\n\n## [Groundedness: 5] (Fully Correct and Complete Response)\n**Definition:** An answer that thoroughly and accurately responds to the question, including all relevant details from the context. It directly addresses the question with precise information, demonstrating complete understanding without adding extraneous information.\n\n**Examples:**\n  **Context:** The author released her latest novel, 'The Silent Echo', on September 1st.\n  **Query:** When was 'The Silent Echo' released?\n  **Response:** 'The Silent Echo' was released on September 1st.\n\n  **Context:** Participants must register by May 31st to be eligible for early bird pricing.\n  **Query:** By what date must participants register to receive early bird pricing?\n  **Response:** Participants must register by May 31st to receive early bird pricing.\n\n\n# Data\nCONTEXT: Tokyo is the capital of Japan.\nQUERY: Tokyo is the capital of which country?\nRESPONSE: Japan\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE in relation to the CONTEXT and QUERY based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
-          }
-        ],
-        "model": "aoai-deployment",
-        "frequency_penalty": 0,
-        "max_tokens": 800,
-        "presence_penalty": 0,
-        "response_format": {
-          "type": "text"
-        },
-        "temperature": 0.0,
-        "top_p": 1.0
-      },
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "efca2755-93f9-4f30-8113-cd49108b4dc0",
-        "azureml-model-session": "d161-20250626001847",
-        "cmp-upstream-response-duration": "1449",
-        "Connection": "close",
-        "Content-Length": "1652",
-        "Content-Type": "application/json",
-        "Date": "Thu, 10 Jul 2025 07:26:45 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "x-accel-buffering": "no",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-deployment-name": "gpt-4.1",
-        "x-ms-rai-invoked": "true",
-        "x-ms-region": "East US 2",
-        "x-ratelimit-limit-requests": "850",
-        "x-ratelimit-limit-tokens": "850000",
-        "x-ratelimit-remaining-requests": "840",
-        "x-ratelimit-remaining-tokens": "835678",
-        "X-Request-ID": "fd831f40-7bf5-4203-a736-212be1972eec"
-      },
-      "ResponseBody": {
-        "choices": [
-          {
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "protected_material_code": {
-                "filtered": false,
-                "detected": false
-              },
-              "protected_material_text": {
-                "filtered": false,
-                "detected": false
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            },
-            "finish_reason": "stop",
-            "index": 0,
-            "logprobs": null,
-            "message": {
-              "annotations": [],
-              "content": "<S0>Let's think step by step: The context states that Tokyo is the capital of Japan. The query asks, \"Tokyo is the capital of which country?\" The response is \"Japan,\" which directly and accurately answers the question using the information from the context. There is no missing or extraneous information, and the answer is fully grounded in the context provided.</S0>\n<S1>The response is fully correct, complete, and directly supported by the context.</S1>\n<S2>5</S2>",
-              "refusal": null,
-              "role": "assistant"
-            }
-          }
-        ],
-        "created": 1752132404,
-        "id": "Sanitized",
-        "model": "aoai-deployment",
-        "object": "chat.completion",
-        "prompt_filter_results": [
-          {
-            "prompt_index": 0,
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "jailbreak": {
-                "filtered": false,
-                "detected": false
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            }
-          }
-        ],
-        "system_fingerprint": "fp_07e970ab25",
-        "usage": {
-          "completion_tokens": 105,
-          "completion_tokens_details": {
-            "accepted_prediction_tokens": 0,
-            "audio_tokens": 0,
-            "reasoning_tokens": 0,
-            "rejected_prediction_tokens": 0
-          },
-          "prompt_tokens": 1153,
-          "prompt_tokens_details": {
-            "audio_tokens": 0,
-            "cached_tokens": 0
-          },
-          "total_tokens": 1258
-        }
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2024-12-01-preview",
+      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2023-12-01-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -484,13 +42,13 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "5359630a-d875-4d32-a33a-cc2d2bf46f42",
-        "azureml-model-session": "d094-20250625230958",
-        "cmp-upstream-response-duration": "349",
+        "apim-request-id": "58b709a0-5f10-4e02-9d90-89bb91a15b7d",
+        "azureml-model-session": "d036-20250625125031",
+        "cmp-upstream-response-duration": "548",
         "Connection": "close",
         "Content-Length": "1178",
         "Content-Type": "application/json",
-        "Date": "Thu, 10 Jul 2025 07:26:45 GMT",
+        "Date": "Thu, 10 Jul 2025 08:23:42 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
@@ -499,9 +57,9 @@
         "x-ms-region": "East US 2",
         "x-ratelimit-limit-requests": "850",
         "x-ratelimit-limit-tokens": "850000",
-        "x-ratelimit-remaining-requests": "837",
-        "x-ratelimit-remaining-tokens": "831947",
-        "X-Request-ID": "fc5042ad-fcc6-4bc3-b482-88465d5a4368"
+        "x-ratelimit-remaining-requests": "841",
+        "x-ratelimit-remaining-tokens": "837612",
+        "X-Request-ID": "30ea6519-46da-42b4-9a8f-3828636aef49"
       },
       "ResponseBody": {
         "choices": [
@@ -543,7 +101,7 @@
             }
           }
         ],
-        "created": 1752132405,
+        "created": 1752135823,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -593,7 +151,299 @@
       }
     },
     {
-      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2024-12-01-preview",
+      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2023-12-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "api-key": "Sanitized",
+        "Connection": "close",
+        "Content-Length": "6592",
+        "Content-Type": "application/json",
+        "User-Agent": "azure-ai-evaluation/1.10.0",
+        "X-Stainless-Arch": "x64",
+        "X-Stainless-Async": "async:asyncio",
+        "X-Stainless-Lang": "python",
+        "X-Stainless-OS": "Other:XXX",
+        "X-Stainless-Package-Version": "vX.X.X",
+        "X-Stainless-Runtime": "CPython",
+        "X-Stainless-Runtime-Version": "3.X.X"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a Relevance-Judge, an impartial evaluator that scores how well the RESPONSE addresses the QUERY using the definitions provided."
+          },
+          {
+            "role": "user",
+            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to a QUERY using the Relevance definitions provided.\n\nINPUT\n=====\nQUERY: Tokyo is the capital of which country?\nRESPONSE: Japan\n\nTASK\n====\nOutput a JSON object with:\n    1) a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the query.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n\nThe explanation should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"explanation\": \"<15-60 words>\",\n  \"score\": <1-5>\n}\n\n\nEVALUATION STEPS\n================\nA. Read the QUERY and RESPONSE carefully.\nB. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nC. Match the response to the best score from the rubric.\nD. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nQUERY: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"explanation\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1\n}\n\n\n**Example B**\nQUERY: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"explanation\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nQUERY: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"explanation\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2\n}\n\n**Example B**\nQUERY: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"explanation\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nQUERY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3\n}\n\n**Example B**\nQUERY: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"explanation\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nQUERY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4\n}\n\n**Example B**\nQUERY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"explanation\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nQUERY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"explanation\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5\n}\n\n**Example B**\nQUERY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"explanation\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5\n}"
+          }
+        ],
+        "model": "aoai-deployment",
+        "frequency_penalty": 0,
+        "max_tokens": 800,
+        "presence_penalty": 0,
+        "response_format": {
+          "type": "json_object"
+        },
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "c04aec24-4f32-4421-97ad-87a7f7c2ed38",
+        "azureml-model-session": "d036-20250703202601",
+        "cmp-upstream-response-duration": "712",
+        "Connection": "close",
+        "Content-Length": "1296",
+        "Content-Type": "application/json",
+        "Date": "Thu, 10 Jul 2025 08:23:42 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-accel-buffering": "no",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-deployment-name": "gpt-4.1",
+        "x-ms-rai-invoked": "true",
+        "x-ms-region": "East US 2",
+        "x-ratelimit-limit-requests": "850",
+        "x-ratelimit-limit-tokens": "850000",
+        "x-ratelimit-remaining-requests": "840",
+        "x-ratelimit-remaining-tokens": "836079",
+        "X-Request-ID": "83fba79c-f256-443f-8b18-d74ab1fab9ab"
+      },
+      "ResponseBody": {
+        "choices": [
+          {
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            },
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "annotations": [],
+              "content": "{\n  \"explanation\": \"The response directly and accurately answers the query by naming Japan as the country of which Tokyo is the capital. It is concise, complete, and fully satisfies the request without any omissions.\",\n  \"score\": 4\n}",
+              "refusal": null,
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1752135823,
+        "id": "Sanitized",
+        "model": "aoai-deployment",
+        "object": "chat.completion",
+        "prompt_filter_results": [
+          {
+            "prompt_index": 0,
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "jailbreak": {
+                "filtered": false,
+                "detected": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
+          }
+        ],
+        "system_fingerprint": "fp_07e970ab25",
+        "usage": {
+          "completion_tokens": 52,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": 0
+          },
+          "prompt_tokens": 1271,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0
+          },
+          "total_tokens": 1323
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2023-12-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "api-key": "Sanitized",
+        "Connection": "close",
+        "Content-Length": "5797",
+        "Content-Type": "application/json",
+        "User-Agent": "AsyncAzureOpenAI/Python 1.88.0",
+        "X-Stainless-Arch": "x64",
+        "X-Stainless-Async": "async:asyncio",
+        "X-Stainless-Lang": "python",
+        "X-Stainless-OS": "Other:XXX",
+        "X-Stainless-Package-Version": "vX.X.X",
+        "X-Stainless-Runtime": "CPython",
+        "X-Stainless-Runtime-Version": "3.X.X"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include CONTEXT, QUERY, and RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
+          },
+          {
+            "role": "user",
+            "content": "# Definition\n**Groundedness** refers to how well an answer is anchored in the provided context, evaluating its relevance, accuracy, and completeness based exclusively on that context. It assesses the extent to which the answer directly and fully addresses the question without introducing unrelated or incorrect information. The scale ranges from 1 to 5, with higher numbers indicating greater groundedness.\n\n# Ratings\n## [Groundedness: 1] (Completely Unrelated Response)\n**Definition:** An answer that does not relate to the question or the context in any way. It fails to address the topic, provides irrelevant information, or introduces completely unrelated subjects.\n\n**Examples:**\n  **Context:** The company's annual meeting will be held next Thursday.\n  **Query:** When is the company's annual meeting?\n  **Response:** I enjoy hiking in the mountains during summer.\n\n  **Context:** The new policy aims to reduce carbon emissions by 20% over the next five years.\n  **Query:** What is the goal of the new policy?\n  **Response:** My favorite color is blue.\n\n## [Groundedness: 2] (Related Topic but Does Not Respond to the Query)\n**Definition:** An answer that relates to the general topic of the context but does not answer the specific question asked. It may mention concepts from the context but fails to provide a direct or relevant response.\n\n**Examples:**\n  **Context:** The museum will exhibit modern art pieces from various local artists.\n  **Query:** What kind of art will be exhibited at the museum?\n  **Response:** Museums are important cultural institutions.\n\n  **Context:** The new software update improves battery life and performance.\n  **Query:** What does the new software update improve?\n  **Response:** Software updates can sometimes fix bugs.\n\n## [Groundedness: 3] (Attempts to Respond but Contains Incorrect Information)\n**Definition:** An answer that attempts to respond to the question but includes incorrect information not supported by the context. It may misstate facts, misinterpret the context, or provide erroneous details.\n\n**Examples:**\n  **Context:** The festival starts on June 5th and features international musicians.\n  **Query:** When does the festival start?\n  **Response:** The festival starts on July 5th and features local artists.\n\n  **Context:** The recipe requires two eggs and one cup of milk.\n  **Query:** How many eggs are needed for the recipe?\n  **Response:** You need three eggs for the recipe.\n\n## [Groundedness: 4] (Partially Correct Response)\n**Definition:** An answer that provides a correct response to the question but is incomplete or lacks specific details mentioned in the context. It captures some of the necessary information but omits key elements needed for a full understanding.\n\n**Examples:**\n  **Context:** The bookstore offers a 15% discount to students and a 10% discount to senior citizens.\n  **Query:** What discount does the bookstore offer to students?\n  **Response:** Students get a discount at the bookstore.\n\n  **Context:** The company's headquarters are located in Berlin, Germany.\n  **Query:** Where are the company's headquarters?\n  **Response:** The company's headquarters are in Germany.\n\n## [Groundedness: 5] (Fully Correct and Complete Response)\n**Definition:** An answer that thoroughly and accurately responds to the question, including all relevant details from the context. It directly addresses the question with precise information, demonstrating complete understanding without adding extraneous information.\n\n**Examples:**\n  **Context:** The author released her latest novel, 'The Silent Echo', on September 1st.\n  **Query:** When was 'The Silent Echo' released?\n  **Response:** 'The Silent Echo' was released on September 1st.\n\n  **Context:** Participants must register by May 31st to be eligible for early bird pricing.\n  **Query:** By what date must participants register to receive early bird pricing?\n  **Response:** Participants must register by May 31st to receive early bird pricing.\n\n\n# Data\nCONTEXT: Tokyo is the capital of Japan.\nQUERY: Tokyo is the capital of which country?\nRESPONSE: Japan\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE in relation to the CONTEXT and QUERY based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
+          }
+        ],
+        "model": "aoai-deployment",
+        "frequency_penalty": 0,
+        "max_tokens": 800,
+        "presence_penalty": 0,
+        "response_format": {
+          "type": "text"
+        },
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "378c4f02-4155-4fc4-8b84-04ecb9e3879e",
+        "azureml-model-session": "d161-20250626001847",
+        "cmp-upstream-response-duration": "951",
+        "Connection": "close",
+        "Content-Length": "1652",
+        "Content-Type": "application/json",
+        "Date": "Thu, 10 Jul 2025 08:23:43 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-accel-buffering": "no",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-deployment-name": "gpt-4.1",
+        "x-ms-rai-invoked": "true",
+        "x-ms-region": "East US 2",
+        "x-ratelimit-limit-requests": "850",
+        "x-ratelimit-limit-tokens": "850000",
+        "x-ratelimit-remaining-requests": "841",
+        "x-ratelimit-remaining-tokens": "837300",
+        "X-Request-ID": "48a38ab0-52ad-4e9b-9fe9-1b1384a9a3aa"
+      },
+      "ResponseBody": {
+        "choices": [
+          {
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "protected_material_code": {
+                "filtered": false,
+                "detected": false
+              },
+              "protected_material_text": {
+                "filtered": false,
+                "detected": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            },
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "annotations": [],
+              "content": "<S0>Let's think step by step: The context states that Tokyo is the capital of Japan. The query asks, \"Tokyo is the capital of which country?\" The response is \"Japan,\" which directly and accurately answers the question using the information from the context. There is no missing or extraneous information, and the answer is fully grounded in the context provided.</S0>\n<S1>The response is fully correct, complete, and directly supported by the context.</S1>\n<S2>5</S2>",
+              "refusal": null,
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1752135823,
+        "id": "Sanitized",
+        "model": "aoai-deployment",
+        "object": "chat.completion",
+        "prompt_filter_results": [
+          {
+            "prompt_index": 0,
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "jailbreak": {
+                "filtered": false,
+                "detected": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
+          }
+        ],
+        "system_fingerprint": "fp_07e970ab25",
+        "usage": {
+          "completion_tokens": 105,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": 0
+          },
+          "prompt_tokens": 1153,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0
+          },
+          "total_tokens": 1258
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2023-12-01-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -634,13 +484,13 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "18c81b56-b863-4b01-a3b1-eeea6efd6202",
-        "azureml-model-session": "d044-20250625154358",
-        "cmp-upstream-response-duration": "2162",
+        "apim-request-id": "b38b0881-2d3d-4916-8d3a-8692ab487eff",
+        "azureml-model-session": "d177-20250626061000",
+        "cmp-upstream-response-duration": "1214",
         "Connection": "close",
-        "Content-Length": "1795",
+        "Content-Length": "1806",
         "Content-Type": "application/json",
-        "Date": "Thu, 10 Jul 2025 07:26:46 GMT",
+        "Date": "Thu, 10 Jul 2025 08:23:44 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
@@ -649,9 +499,9 @@
         "x-ms-region": "East US 2",
         "x-ratelimit-limit-requests": "850",
         "x-ratelimit-limit-tokens": "850000",
-        "x-ratelimit-remaining-requests": "841",
-        "x-ratelimit-remaining-tokens": "837050",
-        "X-Request-ID": "68e6741a-8caa-4f58-9617-c2ad2ce63c7d"
+        "x-ratelimit-remaining-requests": "840",
+        "x-ratelimit-remaining-tokens": "835990",
+        "X-Request-ID": "c3e7a833-16f9-4e67-aa48-e4fac9c4602e"
       },
       "ResponseBody": {
         "choices": [
@@ -687,13 +537,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "<S0>Let's think step by step: The query asks a direct factual question: \"Tokyo is the capital of which country?\" The response is a single word, \"Japan,\" which is the correct answer. While the response is accurate and directly addresses the question, it does not require or demonstrate logical organization, transitions, or flow, as it is a one-word factual answer. However, it is fully coherent for the context of the question, as no further elaboration is necessary.</S0>\n<S1>The response is fully coherent for a direct factual question, providing a clear and logical answer without ambiguity.</S1>\n<S2>4</S2>",
+              "content": "<S0>Let's think step by step: The query asks a direct factual question: \"Tokyo is the capital of which country?\" The response is a single word, \"Japan,\" which is the correct answer. While the response is accurate and directly addresses the question, it does not require or demonstrate logical organization, transitions, or flow, as it is a one-word factual answer. However, it is not incoherent or fragmented; it is simply concise and fully understandable.</S0>\n<S1>The response is fully coherent for the type of question asked, as it directly and clearly answers the query without ambiguity or confusion.</S1>\n<S2>4</S2>",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1752132404,
+        "created": 1752135823,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -726,7 +576,7 @@
         ],
         "system_fingerprint": "fp_07e970ab25",
         "usage": {
-          "completion_tokens": 134,
+          "completion_tokens": 136,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
@@ -738,7 +588,157 @@
             "audio_tokens": 0,
             "cached_tokens": 0
           },
-          "total_tokens": 1394
+          "total_tokens": 1396
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2023-12-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "api-key": "Sanitized",
+        "Connection": "close",
+        "Content-Length": "4840",
+        "Content-Type": "application/json",
+        "User-Agent": "azure-ai-evaluation/1.10.0",
+        "X-Stainless-Arch": "x64",
+        "X-Stainless-Async": "async:asyncio",
+        "X-Stainless-Lang": "python",
+        "X-Stainless-OS": "Other:XXX",
+        "X-Stainless-Package-Version": "vX.X.X",
+        "X-Stainless-Runtime": "CPython",
+        "X-Stainless-Runtime-Version": "3.X.X"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include a RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
+          },
+          {
+            "role": "user",
+            "content": "# Definition\n**Fluency** refers to the effectiveness and clarity of written communication, focusing on grammatical accuracy, vocabulary range, sentence complexity, coherence, and overall readability. It assesses how smoothly ideas are conveyed and how easily the text can be understood by the reader.\n\n# Ratings\n## [Fluency: 1] (Emergent Fluency)\n**Definition:** The response shows minimal command of the language. It contains pervasive grammatical errors, extremely limited vocabulary, and fragmented or incoherent sentences. The message is largely incomprehensible, making understanding very difficult.\n\n**Examples:**\n  **Response:** Free time I. Go park. Not fun. Alone.\n\n  **Response:** Like food pizza. Good cheese eat.\n\n## [Fluency: 2] (Basic Fluency)\n**Definition:** The response communicates simple ideas but has frequent grammatical errors and limited vocabulary. Sentences are short and may be improperly constructed, leading to partial understanding. Repetition and awkward phrasing are common.\n\n**Examples:**\n  **Response:** I like play soccer. I watch movie. It fun.\n\n  **Response:** My town small. Many people. We have market.\n\n## [Fluency: 3] (Competent Fluency)\n**Definition:** The response clearly conveys ideas with occasional grammatical errors. Vocabulary is adequate but not extensive. Sentences are generally correct but may lack complexity and variety. The text is coherent, and the message is easily understood with minimal effort.\n\n**Examples:**\n  **Response:** I'm planning to visit friends and maybe see a movie together.\n\n  **Response:** I try to eat healthy food and exercise regularly by jogging.\n\n## [Fluency: 4] (Proficient Fluency)\n**Definition:** The response is well-articulated with good control of grammar and a varied vocabulary. Sentences are complex and well-structured, demonstrating coherence and cohesion. Minor errors may occur but do not affect overall understanding. The text flows smoothly, and ideas are connected logically.\n\n**Examples:**\n  **Response:** My interest in mathematics and problem-solving inspired me to become an engineer, as I enjoy designing solutions that improve people's lives.\n\n  **Response:** Environmental conservation is crucial because it protects ecosystems, preserves biodiversity, and ensures natural resources are available for future generations.\n\n## [Fluency: 5] (Exceptional Fluency)\n**Definition:** The response demonstrates an exceptional command of language with sophisticated vocabulary and complex, varied sentence structures. It is coherent, cohesive, and engaging, with precise and nuanced expression. Grammar is flawless, and the text reflects a high level of eloquence and style.\n\n**Examples:**\n  **Response:** Globalization exerts a profound influence on cultural diversity by facilitating unprecedented cultural exchange while simultaneously risking the homogenization of distinct cultural identities, which can diminish the richness of global heritage.\n\n  **Response:** Technology revolutionizes modern education by providing interactive learning platforms, enabling personalized learning experiences, and connecting students worldwide, thereby transforming how knowledge is acquired and shared.\n\n\n# Data\nRESPONSE: Japan\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
+          }
+        ],
+        "model": "aoai-deployment",
+        "frequency_penalty": 0,
+        "max_tokens": 800,
+        "presence_penalty": 0,
+        "response_format": {
+          "type": "text"
+        },
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "7ae2d422-caea-4cb7-9120-eb3622f3e860",
+        "azureml-model-session": "d042-20250625230031",
+        "cmp-upstream-response-duration": "1729",
+        "Connection": "close",
+        "Content-Length": "1569",
+        "Content-Type": "application/json",
+        "Date": "Thu, 10 Jul 2025 08:23:44 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-accel-buffering": "no",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-deployment-name": "gpt-4.1",
+        "x-ms-rai-invoked": "true",
+        "x-ms-region": "East US 2",
+        "x-ratelimit-limit-requests": "850",
+        "x-ratelimit-limit-tokens": "850000",
+        "x-ratelimit-remaining-requests": "839",
+        "x-ratelimit-remaining-tokens": "834941",
+        "X-Request-ID": "ca6be05e-649a-4fcb-8251-93284b0b48fc"
+      },
+      "ResponseBody": {
+        "choices": [
+          {
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "protected_material_code": {
+                "filtered": false,
+                "detected": false
+              },
+              "protected_material_text": {
+                "filtered": false,
+                "detected": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            },
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "annotations": [],
+              "content": "<S0>Let's think step by step: The response consists of a single word, \"Japan.\" It does not form a sentence, contains no grammar or vocabulary beyond a proper noun, and does not convey any ideas or message. There is no structure, coherence, or readability to assess.</S0>\n<S1>The response is just a single word and does not demonstrate any fluency in written communication.</S1>\n<S2>1</S2>",
+              "refusal": null,
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1752135823,
+        "id": "Sanitized",
+        "model": "aoai-deployment",
+        "object": "chat.completion",
+        "prompt_filter_results": [
+          {
+            "prompt_index": 0,
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "jailbreak": {
+                "filtered": false,
+                "detected": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
+          }
+        ],
+        "system_fingerprint": "fp_07e970ab25",
+        "usage": {
+          "completion_tokens": 93,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": 0
+          },
+          "prompt_tokens": 914,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0
+          },
+          "total_tokens": 1007
         }
       }
     }
