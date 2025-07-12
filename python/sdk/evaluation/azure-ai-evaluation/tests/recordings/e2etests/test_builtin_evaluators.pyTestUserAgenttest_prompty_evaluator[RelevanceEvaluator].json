@@ -8,7 +8,7 @@
         "Accept-Encoding": "gzip, deflate",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "4806",
+        "Content-Length": "6597",
         "Content-Type": "application/json",
         "User-Agent": "azure-ai-evaluation/1.10.0 test/1.0.0",
         "X-Stainless-Arch": "x64",
@@ -23,11 +23,11 @@
         "messages": [
           {
             "role": "system",
-            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include QUERY and RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
+            "content": "You are a Relevance-Judge, an impartial evaluator that scores how well the RESPONSE addresses the QUERY using the definitions provided."
           },
           {
             "role": "user",
-            "content": "# Definition\n**Relevance** refers to how effectively a response addresses a question. It assesses the accuracy, completeness, and direct relevance of the response based solely on the given information.\n\n# Ratings\n## [Relevance: 1] (Irrelevant Response)\n**Definition:** The response is unrelated to the question. It provides information that is off-topic and does not attempt to address the question posed.\n\n**Examples:**\n  **Query:** What is the team preparing for?\n  **Response:** I went grocery shopping yesterday evening.\n\n  **Query:** When will the company's new product line launch?\n  **Response:** International travel can be very rewarding and educational.\n\n## [Relevance: 2] (Incorrect Response)\n**Definition:** The response attempts to address the question but includes incorrect information. It provides a response that is factually wrong based on the provided information.\n\n**Examples:**\n  **Query:** When was the merger between the two firms finalized?\n  **Response:** The merger was finalized on April 10th.     \n\n  **Query:** Where and when will the solar eclipse be visible?\n  **Response:** The solar eclipse will be visible in Asia on December 14th.\n\n## [Relevance: 3] (Incomplete Response)\n**Definition:** The response addresses the question but omits key details necessary for a full understanding. It provides a partial response that lacks essential information.      \n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The restaurant offers Italian food like pasta.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy and climate change.\n\n## [Relevance: 4] (Complete Response)\n**Definition:** The response fully addresses the question with accurate and complete information. It includes all essential details required for a comprehensive understanding, without adding any extraneous information.\n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The new restaurant offers Italian cuisine, featuring dishes like pasta, pizza, and risotto.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy, climate change, and sustainability practices.\n\n## [Relevance: 5] (Comprehensive Response with Insights)    \n**Definition:** The response not only fully and accurately addresses the question but also includes additional relevant insights or elaboration. It may explain the significance, implications, or provide minor inferences that enhance understanding.\n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The new restaurant offers Italian cuisine, featuring dishes like pasta, pizza, and risotto, aiming to provide customers with an authentic Italian dining experience.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy, climate change, and sustainability practices, bringing together global experts to discuss these critical issues. \n\n\n\n# Data\nQUERY: What is the capital of France?`''\"</>{}{{]\nRESPONSE: Paris\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE in relation to the QUERY based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
+            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to a QUERY using the Relevance definitions provided.\n\nINPUT\n=====\nQUERY: What is the capital of France?`''\"</>{}{{]\nRESPONSE: Paris\n\nTASK\n====\nOutput a JSON object with:\n    1) a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the query.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n\nThe explanation should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"explanation\": \"<15-60 words>\",\n  \"score\": <1-5>\n}\n\n\nEVALUATION STEPS\n================\nA. Read the QUERY and RESPONSE carefully.\nB. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nC. Match the response to the best score from the rubric.\nD. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nQUERY: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"explanation\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1\n}\n\n\n**Example B**\nQUERY: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"explanation\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nQUERY: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"explanation\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2\n}\n\n**Example B**\nQUERY: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"explanation\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nQUERY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3\n}\n\n**Example B**\nQUERY: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"explanation\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nQUERY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4\n}\n\n**Example B**\nQUERY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"explanation\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nQUERY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"explanation\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5\n}\n\n**Example B**\nQUERY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"explanation\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5\n}"
           }
         ],
         "model": "aoai-deployment",
@@ -35,65 +35,111 @@
         "max_tokens": 800,
         "presence_penalty": 0,
         "response_format": {
-          "type": "text"
+          "type": "json_object"
         },
         "temperature": 0.0,
         "top_p": 1.0
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "7ed6024e-cb14-4ee1-abf3-2580fc28b1e6",
-        "azureml-model-session": "d560-20250514004147",
+        "apim-request-id": "dbdc334b-7ed6-4853-992a-96c606c25715",
+        "azureml-model-session": "d067-20250513201751",
+        "cmp-upstream-response-duration": "560",
         "Connection": "close",
+        "Content-Length": "1234",
         "Content-Type": "application/json",
-        "Date": "Thu, 10 Jul 2025 19:20:19 GMT",
+        "Date": "Fri, 11 Jul 2025 23:16:45 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
         "x-ms-deployment-name": "gpt-4o",
-        "x-ms-rai-invoked": "false",
-        "x-ms-region": "Sweden Central",
-        "x-ratelimit-limit-requests": "150",
-        "x-ratelimit-limit-tokens": "150000",
-        "x-ratelimit-remaining-requests": "149",
-        "x-ratelimit-remaining-tokens": "148874",
-        "X-Request-ID": "01f8bc3b-266d-42df-b8e8-08e6b4a4580f"
+        "x-ms-rai-invoked": "true",
+        "x-ms-region": "East US 2",
+        "x-ratelimit-limit-requests": "160",
+        "x-ratelimit-limit-tokens": "160000",
+        "x-ratelimit-remaining-requests": "145",
+        "x-ratelimit-remaining-tokens": "133716",
+        "X-Request-ID": "01a3cd6e-0349-48d5-adb5-4d70f92baaaf"
       },
       "ResponseBody": {
-        "id": "Sanitized",
-        "object": "chat.completion",
-        "created": 1752175217,
-        "model": "aoai-deployment",
         "choices": [
           {
-            "index": 0,
-            "message": {
-              "role": "assistant",
-              "content": "<S0>Let's think step by step: The query asks for the capital of France, which is a straightforward question. The response \"Paris\" directly answers the question with accurate information. The response is complete as it provides the exact answer needed without any additional information. According to the definitions, a complete response that fully addresses the question with accurate information should be rated as a 4.</S0> <S1>The response accurately and completely answers the query by providing the correct capital of France, which is Paris.</S1> <S2>4</S2>",
-              "refusal": null,
-              "annotations": []
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
             },
+            "finish_reason": "stop",
+            "index": 0,
             "logprobs": null,
-            "finish_reason": "stop"
+            "message": {
+              "annotations": [],
+              "content": "{\n  \"explanation\": \"The response directly answers the query by providing the name of the capital city of France, Paris, which is accurate and complete.\",\n  \"score\": 4\n}",
+              "refusal": null,
+              "role": "assistant"
+            }
           }
         ],
-        "usage": {
-          "prompt_tokens": 927,
-          "completion_tokens": 116,
-          "total_tokens": 1043,
-          "prompt_tokens_details": {
-            "cached_tokens": 0,
-            "audio_tokens": 0
-          },
-          "completion_tokens_details": {
-            "reasoning_tokens": 0,
-            "audio_tokens": 0,
-            "accepted_prediction_tokens": 0,
-            "rejected_prediction_tokens": 0
+        "created": 1752275805,
+        "id": "Sanitized",
+        "model": "aoai-deployment",
+        "object": "chat.completion",
+        "prompt_filter_results": [
+          {
+            "prompt_index": 0,
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "jailbreak": {
+                "filtered": false,
+                "detected": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
           }
-        },
-        "system_fingerprint": "fp_ee1d74bde0"
+        ],
+        "system_fingerprint": "fp_ee1d74bde0",
+        "usage": {
+          "completion_tokens": 41,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": 0
+          },
+          "prompt_tokens": 1277,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 1152
+          },
+          "total_tokens": 1318
+        }
       }
     },
     {
@@ -104,7 +150,7 @@
         "Accept-Encoding": "gzip, deflate",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "4796",
+        "Content-Length": "6587",
         "Content-Type": "application/json",
         "User-Agent": "azure-ai-evaluation/1.10.0 test/1.0.0",
         "X-Stainless-Arch": "x64",
@@ -119,11 +165,11 @@
         "messages": [
           {
             "role": "system",
-            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include QUERY and RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
+            "content": "You are a Relevance-Judge, an impartial evaluator that scores how well the RESPONSE addresses the QUERY using the definitions provided."
           },
           {
             "role": "user",
-            "content": "# Definition\n**Relevance** refers to how effectively a response addresses a question. It assesses the accuracy, completeness, and direct relevance of the response based solely on the given information.\n\n# Ratings\n## [Relevance: 1] (Irrelevant Response)\n**Definition:** The response is unrelated to the question. It provides information that is off-topic and does not attempt to address the question posed.\n\n**Examples:**\n  **Query:** What is the team preparing for?\n  **Response:** I went grocery shopping yesterday evening.\n\n  **Query:** When will the company's new product line launch?\n  **Response:** International travel can be very rewarding and educational.\n\n## [Relevance: 2] (Incorrect Response)\n**Definition:** The response attempts to address the question but includes incorrect information. It provides a response that is factually wrong based on the provided information.\n\n**Examples:**\n  **Query:** When was the merger between the two firms finalized?\n  **Response:** The merger was finalized on April 10th.     \n\n  **Query:** Where and when will the solar eclipse be visible?\n  **Response:** The solar eclipse will be visible in Asia on December 14th.\n\n## [Relevance: 3] (Incomplete Response)\n**Definition:** The response addresses the question but omits key details necessary for a full understanding. It provides a partial response that lacks essential information.      \n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The restaurant offers Italian food like pasta.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy and climate change.\n\n## [Relevance: 4] (Complete Response)\n**Definition:** The response fully addresses the question with accurate and complete information. It includes all essential details required for a comprehensive understanding, without adding any extraneous information.\n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The new restaurant offers Italian cuisine, featuring dishes like pasta, pizza, and risotto.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy, climate change, and sustainability practices.\n\n## [Relevance: 5] (Comprehensive Response with Insights)    \n**Definition:** The response not only fully and accurately addresses the question but also includes additional relevant insights or elaboration. It may explain the significance, implications, or provide minor inferences that enhance understanding.\n\n**Examples:**\n  **Query:** What type of food does the new restaurant offer?\n  **Response:** The new restaurant offers Italian cuisine, featuring dishes like pasta, pizza, and risotto, aiming to provide customers with an authentic Italian dining experience.\n\n  **Query:** What topics will the conference cover?\n  **Response:** The conference will cover renewable energy, climate change, and sustainability practices, bringing together global experts to discuss these critical issues. \n\n\n\n# Data\nQUERY: What is the capital of Hawaii?\nRESPONSE: Honolulu\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE in relation to the QUERY based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
+            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to a QUERY using the Relevance definitions provided.\n\nINPUT\n=====\nQUERY: What is the capital of Hawaii?\nRESPONSE: Honolulu\n\nTASK\n====\nOutput a JSON object with:\n    1) a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the query.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n\nThe explanation should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"explanation\": \"<15-60 words>\",\n  \"score\": <1-5>\n}\n\n\nEVALUATION STEPS\n================\nA. Read the QUERY and RESPONSE carefully.\nB. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nC. Match the response to the best score from the rubric.\nD. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nQUERY: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"explanation\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1\n}\n\n\n**Example B**\nQUERY: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"explanation\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nQUERY: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"explanation\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2\n}\n\n**Example B**\nQUERY: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"explanation\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nQUERY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3\n}\n\n**Example B**\nQUERY: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"explanation\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nQUERY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4\n}\n\n**Example B**\nQUERY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"explanation\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nQUERY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"explanation\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5\n}\n\n**Example B**\nQUERY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"explanation\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5\n}"
           }
         ],
         "model": "aoai-deployment",
@@ -131,65 +177,111 @@
         "max_tokens": 800,
         "presence_penalty": 0,
         "response_format": {
-          "type": "text"
+          "type": "json_object"
         },
         "temperature": 0.0,
         "top_p": 1.0
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "1e9168a7-71a3-48b5-a792-64101b9d3edd",
-        "azureml-model-session": "d560-20250514004147",
+        "apim-request-id": "afde4c95-3eca-4743-b429-4692e70b953d",
+        "azureml-model-session": "d227-20250513073719",
+        "cmp-upstream-response-duration": "329",
         "Connection": "close",
+        "Content-Length": "1227",
         "Content-Type": "application/json",
-        "Date": "Thu, 10 Jul 2025 19:20:22 GMT",
+        "Date": "Fri, 11 Jul 2025 23:16:46 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
         "x-ms-deployment-name": "gpt-4o",
-        "x-ms-rai-invoked": "false",
-        "x-ms-region": "Sweden Central",
-        "x-ratelimit-limit-requests": "150",
-        "x-ratelimit-limit-tokens": "150000",
-        "x-ratelimit-remaining-requests": "148",
-        "x-ratelimit-remaining-tokens": "147750",
-        "X-Request-ID": "e44acb5f-bbbc-4e63-911d-20fe109e5696"
+        "x-ms-rai-invoked": "true",
+        "x-ms-region": "East US 2",
+        "x-ratelimit-limit-requests": "160",
+        "x-ratelimit-limit-tokens": "160000",
+        "x-ratelimit-remaining-requests": "145",
+        "x-ratelimit-remaining-tokens": "132184",
+        "X-Request-ID": "bbc3838c-d3ea-4aee-8039-be43c6c1e2ff"
       },
       "ResponseBody": {
-        "id": "Sanitized",
-        "object": "chat.completion",
-        "created": 1752175220,
-        "model": "aoai-deployment",
         "choices": [
           {
-            "index": 0,
-            "message": {
-              "role": "assistant",
-              "content": "<S0>Let's think step by step: The query asks for the capital of Hawaii. The response is \"Honolulu,\" which is the correct and complete answer to the question. The response directly addresses the query without omitting any details or adding extraneous information. Therefore, it fits the definition of a complete response.</S0> <S1>The response accurately and completely answers the question about the capital of Hawaii.</S1> <S2>4</S2>",
-              "refusal": null,
-              "annotations": []
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
             },
+            "finish_reason": "stop",
+            "index": 0,
             "logprobs": null,
-            "finish_reason": "stop"
+            "message": {
+              "annotations": [],
+              "content": "{\n  \"explanation\": \"The response directly answers the query by providing the name of Hawaii's capital, Honolulu, which is accurate and complete.\",\n  \"score\": 4\n}",
+              "refusal": null,
+              "role": "assistant"
+            }
           }
         ],
-        "usage": {
-          "prompt_tokens": 920,
-          "completion_tokens": 97,
-          "total_tokens": 1017,
-          "prompt_tokens_details": {
-            "cached_tokens": 0,
-            "audio_tokens": 0
-          },
-          "completion_tokens_details": {
-            "reasoning_tokens": 0,
-            "audio_tokens": 0,
-            "accepted_prediction_tokens": 0,
-            "rejected_prediction_tokens": 0
+        "created": 1752275806,
+        "id": "Sanitized",
+        "model": "aoai-deployment",
+        "object": "chat.completion",
+        "prompt_filter_results": [
+          {
+            "prompt_index": 0,
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "jailbreak": {
+                "filtered": false,
+                "detected": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
           }
-        },
-        "system_fingerprint": "fp_ee1d74bde0"
+        ],
+        "system_fingerprint": "fp_ee1d74bde0",
+        "usage": {
+          "completion_tokens": 39,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": 0
+          },
+          "prompt_tokens": 1270,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 1152
+          },
+          "total_tokens": 1309
+        }
       }
     }
   ],
