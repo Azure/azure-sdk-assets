@@ -1,13 +1,15 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://endpoint/sip?api-version=2024-11-15-preview&expand=trunks%2Fhealth",
-      "RequestMethod": "GET",
+      "RequestUri": "https://endpoint/sip:testRoutesWithNumber?api-version=2024-11-15-preview&targetPhoneNumber=%2B1234567890",
+      "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip, deflate, br, zstd",
         "Authorization": "Sanitized",
         "Connection": "keep-alive",
+        "Content-Length": "140",
+        "Content-Type": "application/json",
         "Referer": "http://localhost:63315/",
         "sec-ch-ua": "\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"",
         "sec-ch-ua-mobile": "?0",
@@ -19,44 +21,56 @@
         "x-ms-client-request-id": "Sanitized",
         "x-ms-useragent": "fake-useragent"
       },
-      "RequestBody": null,
+      "RequestBody": {
+        "routes": [
+          {
+            "name": "route1",
+            "numberPattern": "^.123.*"
+          },
+          {
+            "name": "route2",
+            "numberPattern": "^.987.*"
+          },
+          {
+            "name": "route3",
+            "numberPattern": "^.*"
+          }
+        ]
+      },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Accept-Ranges": "bytes",
-        "api-supported-versions": "2023-03-01, 2023-04-01-preview, 2024-11-15-preview",
+        "api-supported-versions": "2023-04-01-preview, 2024-11-15-preview",
         "Connection": "keep-alive",
-        "Content-Length": "221",
+        "Content-Length": "218",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 28 Apr 2025 13:47:25 GMT",
+        "Date": "Mon, 28 Apr 2025 13:45:10 GMT",
         "MS-CV": "Sanitized",
         "Request-Context": "appId=",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "x-azure-ref": "Sanitized",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "230ms"
+        "X-Processing-Time": "9ms"
       },
       "ResponseBody": {
-        "domains": {
-          "acs-pstn-sandbox.com": {
-            "enabled": true
+        "matchingRoutes": [
+          {
+            "description": null,
+            "name": "route1",
+            "numberPattern": "^.123.*",
+            "callerIdOverride": null,
+            "trunks": null
           },
-          "7b67b232c6f14172b8ba02c933762d71.sanitized.sbc.test": {
-            "enabled": false
-          },
-          "d13d668490c94419a16cb19ada5bb2c5.sanitized.sbc.test": {
-            "enabled": false
+          {
+            "description": null,
+            "name": "route3",
+            "numberPattern": "^.*",
+            "callerIdOverride": null,
+            "trunks": null
           }
-        },
-        "trunks": {},
-        "routes": []
+        ]
       }
     }
   ],
-  "Variables": {
-    "fqdn-1": "testd2648d8e94f34c2e94f304a7683705f8.acs-pstn-sandbox.com",
-    "fqdn-2": "test2edb22d2fd20400889a187238f495288.acs-pstn-sandbox.com",
-    "fqdn-3": "testc3b6a9a57134485482100f6cab9717be.acs-pstn-sandbox.com",
-    "fqdn-4": "test38f2391127e947d1a89058cdfbd57967.acs-pstn-sandbox.com",
-    "verified-domain": "acs-pstn-sandbox.com"
-  }
+  "Variables": {}
 }
