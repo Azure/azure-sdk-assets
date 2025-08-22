@@ -1,0 +1,2095 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/assistants?api-version=2025-05-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "1104",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "model": "gpt-4o",
+        "name": "cs_e2e_tests_client",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              },
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "dbf0b5e1-f42c-452f-82d0-62ea6806ee10",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "1760",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:19 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "749",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "44eb76ea-a642-4fa5-a254-d163378c9860",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "592b041356a8e4b86930e42e55761fd7",
+        "x-request-time": "1.345"
+      },
+      "ResponseBody": {
+        "id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "object": "assistant",
+        "created_at": 1755220879,
+        "name": "cs_e2e_tests_client",
+        "description": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "top_p": 1.0,
+        "temperature": 1.0,
+        "tool_resources": {},
+        "metadata": {},
+        "response_format": "auto"
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/runs?api-version=2025-05-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "172",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread": {
+          "messages": [
+            {
+              "role": "user",
+              "content": "What is the most prevalent element in the universe? What would foo say?"
+            }
+          ]
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "43944129-f23c-4cc3-a547-34b5d646cddf",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2238",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:22 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "1375",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "e2a92a3c-4de9-4274-8f9a-8595074bd15b",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "a236338f0363de0440161b24b4bbd6a8",
+        "x-request-time": "2.705"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "queued",
+        "started_at": null,
+        "expires_at": 1755222682,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": null,
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "b3478c9f-c484-4c3a-9157-db163870219b",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2249",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:23 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "122",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "51db58d3-42d6-458c-a86e-bf9b2a462317",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "bc2873a194e800fd1339866af3253d2e",
+        "x-request-time": "0.387"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "in_progress",
+        "started_at": 1755220884,
+        "expires_at": 1755222682,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": null,
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "657dba1a-9264-4344-ac93-c0e12187802c",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2249",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:24 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "277",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "9cd93963-cf2c-4cce-bd7b-eabf9fbdbd49",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "a5dbbcf57c852c480aae056aac917cf3",
+        "x-request-time": "0.515"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "in_progress",
+        "started_at": 1755220884,
+        "expires_at": 1755222682,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": null,
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "b16b14ed-3452-45c3-b0bc-3902afb92cdf",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2720",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:25 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "197",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "fb72dbd8-8d50-4c02-9000-7379a45a4da6",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "2f684f842939c46d80307d3cccff198c",
+        "x-request-time": "0.414"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "requires_action",
+        "started_at": 1755220884,
+        "expires_at": 1755256882,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": {
+          "type": "submit_tool_outputs",
+          "submit_tool_outputs": {
+            "tool_calls": [
+              {
+                "id": "call_7gLByL0hHWQBt4w7nF6TKCPU",
+                "type": "azure_function",
+                "azure_function": {
+                  "name": "foo",
+                  "arguments": "{\"query\":\"What is the most prevalent element in the universe?\",\"outputqueueuri\":\"https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output\"}"
+                }
+              }
+            ]
+          }
+        },
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "6aa59370-1c70-4108-9cf6-16ed56ea571d",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2720",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:26 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "171",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "0a51a3b9-5e5f-4a17-b41a-c18b08321f0c",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "0cbe8091fa890f86208454e8b37d7f86",
+        "x-request-time": "0.356"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "requires_action",
+        "started_at": 1755220884,
+        "expires_at": 1755256882,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": {
+          "type": "submit_tool_outputs",
+          "submit_tool_outputs": {
+            "tool_calls": [
+              {
+                "id": "call_7gLByL0hHWQBt4w7nF6TKCPU",
+                "type": "azure_function",
+                "azure_function": {
+                  "name": "foo",
+                  "arguments": "{\"query\":\"What is the most prevalent element in the universe?\",\"outputqueueuri\":\"https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output\"}"
+                }
+              }
+            ]
+          }
+        },
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "c3ac0a1b-af7b-4b29-987d-e9bff6205d30",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2720",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:27 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "222",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "31f5941e-0503-4dbd-921d-ab72b62742c7",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "71958ba6abd4df0e3ad87dfeff30d1df",
+        "x-request-time": "0.423"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "requires_action",
+        "started_at": 1755220884,
+        "expires_at": 1755256882,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": {
+          "type": "submit_tool_outputs",
+          "submit_tool_outputs": {
+            "tool_calls": [
+              {
+                "id": "call_7gLByL0hHWQBt4w7nF6TKCPU",
+                "type": "azure_function",
+                "azure_function": {
+                  "name": "foo",
+                  "arguments": "{\"query\":\"What is the most prevalent element in the universe?\",\"outputqueueuri\":\"https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output\"}"
+                }
+              }
+            ]
+          }
+        },
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "3b85f8ab-cdd5-470c-aa65-fd1386e64136",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2720",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:28 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "311",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "e4b8c864-221c-4d02-b7a0-617285bc8cdc",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "733db68dbc66dddd893f220630fd346e",
+        "x-request-time": "0.521"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "requires_action",
+        "started_at": 1755220884,
+        "expires_at": 1755256882,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": {
+          "type": "submit_tool_outputs",
+          "submit_tool_outputs": {
+            "tool_calls": [
+              {
+                "id": "call_7gLByL0hHWQBt4w7nF6TKCPU",
+                "type": "azure_function",
+                "azure_function": {
+                  "name": "foo",
+                  "arguments": "{\"query\":\"What is the most prevalent element in the universe?\",\"outputqueueuri\":\"https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output\"}"
+                }
+              }
+            ]
+          }
+        },
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "d45256c5-d400-4822-8fed-ac86212ea9f0",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2720",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:29 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "163",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "00c741a3-b7d8-49d6-8c0b-55d56e4fdc34",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "4a42645ff9df90277449f4ce5423cafb",
+        "x-request-time": "0.348"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "requires_action",
+        "started_at": 1755220884,
+        "expires_at": 1755256882,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": {
+          "type": "submit_tool_outputs",
+          "submit_tool_outputs": {
+            "tool_calls": [
+              {
+                "id": "call_7gLByL0hHWQBt4w7nF6TKCPU",
+                "type": "azure_function",
+                "azure_function": {
+                  "name": "foo",
+                  "arguments": "{\"query\":\"What is the most prevalent element in the universe?\",\"outputqueueuri\":\"https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output\"}"
+                }
+              }
+            ]
+          }
+        },
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "f15f4e14-457c-4b93-8e14-0f41a28f827f",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2720",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:30 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "201",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "65868e3a-0e34-4d8f-9ef1-3eb48f5b8319",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "b99897fb3189aac6572ff1b83aa52412",
+        "x-request-time": "0.393"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "requires_action",
+        "started_at": 1755220884,
+        "expires_at": 1755256882,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": {
+          "type": "submit_tool_outputs",
+          "submit_tool_outputs": {
+            "tool_calls": [
+              {
+                "id": "call_7gLByL0hHWQBt4w7nF6TKCPU",
+                "type": "azure_function",
+                "azure_function": {
+                  "name": "foo",
+                  "arguments": "{\"query\":\"What is the most prevalent element in the universe?\",\"outputqueueuri\":\"https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output\"}"
+                }
+              }
+            ]
+          }
+        },
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "d400eacd-4f90-4688-af8f-962dfa2cd5fc",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2720",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:30 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "169",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "1af3905d-7da0-45b9-8188-9a08ba30fc91",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "bd1bc5fbaf366a24c23e92f8dce126d8",
+        "x-request-time": "0.345"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "requires_action",
+        "started_at": 1755220884,
+        "expires_at": 1755256882,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": {
+          "type": "submit_tool_outputs",
+          "submit_tool_outputs": {
+            "tool_calls": [
+              {
+                "id": "call_7gLByL0hHWQBt4w7nF6TKCPU",
+                "type": "azure_function",
+                "azure_function": {
+                  "name": "foo",
+                  "arguments": "{\"query\":\"What is the most prevalent element in the universe?\",\"outputqueueuri\":\"https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output\"}"
+                }
+              }
+            ]
+          }
+        },
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "fb92a45f-a3ed-4903-a17d-0e22a271ad94",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2720",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:31 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "174",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "39bbb5b2-5668-42ea-acdf-75f927e6a035",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "6f32b89eb0c07bcb1cfe64532e08346f",
+        "x-request-time": "0.384"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "requires_action",
+        "started_at": 1755220884,
+        "expires_at": 1755256882,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": {
+          "type": "submit_tool_outputs",
+          "submit_tool_outputs": {
+            "tool_calls": [
+              {
+                "id": "call_7gLByL0hHWQBt4w7nF6TKCPU",
+                "type": "azure_function",
+                "azure_function": {
+                  "name": "foo",
+                  "arguments": "{\"query\":\"What is the most prevalent element in the universe?\",\"outputqueueuri\":\"https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output\"}"
+                }
+              }
+            ]
+          }
+        },
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "4b5bc241-ea8b-4650-b19e-37335ce3c2ce",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2720",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:32 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "170",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "b670c48c-91a9-48f5-b460-d4e6631dba6d",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "81296c3316b75f8a1d189389da7cd8c2",
+        "x-request-time": "0.403"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "requires_action",
+        "started_at": 1755220884,
+        "expires_at": 1755256882,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": {
+          "type": "submit_tool_outputs",
+          "submit_tool_outputs": {
+            "tool_calls": [
+              {
+                "id": "call_7gLByL0hHWQBt4w7nF6TKCPU",
+                "type": "azure_function",
+                "azure_function": {
+                  "name": "foo",
+                  "arguments": "{\"query\":\"What is the most prevalent element in the universe?\",\"outputqueueuri\":\"https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output\"}"
+                }
+              }
+            ]
+          }
+        },
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "4f61fb7c-ae83-462b-aa9e-01e04ac75dad",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2720",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:33 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "162",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "565b9c96-eaa0-4177-87af-9e76d7a58c21",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "94e3ebc7e571fb3d2e8e1f44bc540ee7",
+        "x-request-time": "0.325"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "requires_action",
+        "started_at": 1755220884,
+        "expires_at": 1755256882,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": {
+          "type": "submit_tool_outputs",
+          "submit_tool_outputs": {
+            "tool_calls": [
+              {
+                "id": "call_7gLByL0hHWQBt4w7nF6TKCPU",
+                "type": "azure_function",
+                "azure_function": {
+                  "name": "foo",
+                  "arguments": "{\"query\":\"What is the most prevalent element in the universe?\",\"outputqueueuri\":\"https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output\"}"
+                }
+              }
+            ]
+          }
+        },
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "9dd863ee-792d-4c78-acb5-620cecb3e0e9",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2244",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:34 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "171",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "be47e9d5-88dd-40f4-9cdc-34dd468b9733",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "a10e86d06b5b3fdd5e16030954129eae",
+        "x-request-time": "0.353"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "queued",
+        "started_at": 1755220884,
+        "expires_at": 1755256882,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": null,
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "3133f7f2-bd79-406a-82f3-cd1e18678778",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2249",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:35 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "154",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "9b070d7c-67b4-4eb7-aa24-b3f05e252801",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "43b803b762cb53a1625094860e300f29",
+        "x-request-time": "0.345"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "in_progress",
+        "started_at": 1755220895,
+        "expires_at": 1755256882,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": null,
+        "required_action": null,
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": null,
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG?api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "c51569b9-0c70-42c8-9146-ac1daaa393cb",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2389",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:36 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "160",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "c7fbf30f-35da-4ec8-a17a-287e694eb652",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "50675adb76093786469d7d7bc5f5e9c3",
+        "x-request-time": "0.361"
+      },
+      "ResponseBody": {
+        "id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+        "object": "thread.run",
+        "created_at": 1755220882,
+        "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+        "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+        "status": "completed",
+        "started_at": 1755220895,
+        "expires_at": null,
+        "cancelled_at": null,
+        "failed_at": null,
+        "completed_at": 1755220896,
+        "required_action": null,
+        "last_error": null,
+        "model": "gpt-4o",
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://nirovinsstorage.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              },
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    },
+                    "outputqueueuri": {
+                      "type": "string",
+                      "description": "The full output queue uri."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "tool_resources": {},
+        "metadata": {},
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "truncation_strategy": {
+          "type": "auto",
+          "last_messages": null
+        },
+        "incomplete_details": null,
+        "usage": {
+          "prompt_tokens": 439,
+          "completion_tokens": 50,
+          "total_tokens": 489,
+          "prompt_token_details": {
+            "cached_tokens": 0
+          }
+        },
+        "response_format": "auto",
+        "tool_choice": "auto",
+        "parallel_tool_calls": true
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/messages?run_id=run_AXAm6FaYE00Bs7zrPBJtBbcG&api-version=2025-05-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "4bc5e388-dcff-44a0-9dda-9bd5b1b7d39b",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "677",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:36 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "112",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "50b7fa60-2077-4027-a677-9676d2028e65",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "3057cf69ed91af66614ff1688f5f177e",
+        "x-request-time": "0.378"
+      },
+      "ResponseBody": {
+        "object": "list",
+        "data": [
+          {
+            "id": "msg_YuXMc2RLZXP2CdWtdduo884M",
+            "object": "thread.message",
+            "created_at": 1755220896,
+            "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+            "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+            "run_id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": {
+                  "value": "Foo says Bar.",
+                  "annotations": []
+                }
+              }
+            ],
+            "attachments": [],
+            "metadata": {}
+          }
+        ],
+        "first_id": "msg_YuXMc2RLZXP2CdWtdduo884M",
+        "last_id": "msg_YuXMc2RLZXP2CdWtdduo884M",
+        "has_more": false
+      }
+    },
+    {
+      "RequestUri": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb/threads/thread_6dsXmzSYWI6fRqNaHn4J8vsi/runs/run_AXAm6FaYE00Bs7zrPBJtBbcG/steps?api-version=2025-05-15-preview&order=asc",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-net-AI.Agents.Persistent/1.2.0-alpha.20250814.1 (.NET 8.0.19; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "eab07681-4b39-40fa-8511-9c6a25eb4828",
+        "azureml-served-by-cluster": "vienna-westus-01",
+        "Content-Length": "2167",
+        "Content-Type": "application/json",
+        "Date": "Fri, 15 Aug 2025 01:21:38 GMT",
+        "openai-organization": "cb9727c486de4b1ca13cbe1a48f2d59a",
+        "openai-processing-ms": "194",
+        "openai-version": "2020-10-01",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "77922e31-2701-417b-a7e1-b28e76a4696d",
+        "x-ms-region": "West US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "dea68f3f9e0124affc81d355c79acb4e",
+        "x-request-time": "0.398"
+      },
+      "ResponseBody": {
+        "object": "list",
+        "data": [
+          {
+            "id": "step_CU9EZH4Ri0BC3qn0VJL5Hah8",
+            "object": "thread.run.step",
+            "created_at": 1755220884,
+            "run_id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+            "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+            "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+            "type": "tool_calls",
+            "status": "completed",
+            "cancelled_at": null,
+            "completed_at": 1755220895,
+            "expires_at": null,
+            "failed_at": null,
+            "last_error": null,
+            "step_details": {
+              "type": "tool_calls",
+              "tool_calls": [
+                {
+                  "id": "call_7gLByL0hHWQBt4w7nF6TKCPU",
+                  "type": "azure_function",
+                  "azure_function": {
+                    "name": "foo",
+                    "arguments": "{\"query\":\"What is the most prevalent element in the universe?\",\"outputqueueuri\":\"https://nirovinsstorage.queue.core.windows.net/azure-function-tool-output\"}",
+                    "output": "Bar"
+                  }
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 193,
+              "completion_tokens": 44,
+              "total_tokens": 237,
+              "prompt_token_details": {
+                "cached_tokens": 0
+              }
+            }
+          },
+          {
+            "id": "step_xC3nMvcRIcSR4kja3mUiKLig",
+            "object": "thread.run.step",
+            "created_at": 1755220896,
+            "run_id": "run_AXAm6FaYE00Bs7zrPBJtBbcG",
+            "assistant_id": "asst_mG7nxDeOsK0ACzUPUIr2kJ8l",
+            "thread_id": "thread_6dsXmzSYWI6fRqNaHn4J8vsi",
+            "type": "message_creation",
+            "status": "completed",
+            "cancelled_at": null,
+            "completed_at": 1755220896,
+            "expires_at": null,
+            "failed_at": null,
+            "last_error": null,
+            "step_details": {
+              "type": "message_creation",
+              "message_creation": {
+                "message_id": "msg_YuXMc2RLZXP2CdWtdduo884M"
+              }
+            },
+            "usage": {
+              "prompt_tokens": 246,
+              "completion_tokens": 6,
+              "total_tokens": 252,
+              "prompt_token_details": {
+                "cached_tokens": 0
+              }
+            }
+          }
+        ],
+        "first_id": "step_CU9EZH4Ri0BC3qn0VJL5Hah8",
+        "last_id": "step_xC3nMvcRIcSR4kja3mUiKLig",
+        "has_more": false
+      }
+    }
+  ],
+  "Variables": {
+    "PROJECT_CONNECTION_STRING": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb",
+    "PROJECT_ENDPOINT": "https://westus-projxkmb.services.ai.azure.com/api/projects/projectxkmb",
+    "RandomSeed": "788876133",
+    "STORAGE_QUEUE_URI": "https://nirovinsstorage.queue.core.windows.net"
+  }
+}
