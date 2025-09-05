@@ -1,25 +1,22 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://azs-net-shivangitest.search.windows.net/skillsets?api-version=2025-05-01-preview",
+      "RequestUri": "https://azs-net-shivangisearch.search.windows.net/skillsets?api-version=2025-08-01-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
         "api-key": "Sanitized",
         "Content-Length": "3700",
         "Content-Type": "application/json",
-        "traceparent": "00-d8b5f88624feea01872ccb70c9f3efe3-c94e70da5d3f7a3b-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.7.0-alpha.20250523.1 (.NET 9.0.5; Microsoft Windows 10.0.26100)",
+        "traceparent": "00-687a0c1ec50c9f6bb4d1672b46c2b7ce-0503920d20e19431-00",
+        "User-Agent": "azsdk-net-Search.Documents/11.7.0-alpha.20250905.1 (.NET 9.0.8; Microsoft Windows 10.0.26100)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
-        "name": "dfgtdott",
+        "name": "ofnffbsd",
         "skills": [
           {
-            "defaultLanguageCode": "en",
-            "textSplitMode": "pages",
-            "maximumPageLength": 5000,
             "@odata.type": "#Microsoft.Skills.Text.SplitSkill",
             "context": "/document/reviews_text",
             "inputs": [
@@ -37,10 +34,12 @@
                 "name": "textItems",
                 "targetName": "pages"
               }
-            ]
+            ],
+            "defaultLanguageCode": "en",
+            "textSplitMode": "pages",
+            "maximumPageLength": 5000
           },
           {
-            "defaultLanguageCode": "en",
             "@odata.type": "#Microsoft.Skills.Text.V3.SentimentSkill",
             "context": "/document/reviews_text/pages/*",
             "inputs": [
@@ -58,7 +57,8 @@
                 "name": "confidenceScores",
                 "targetName": "Sentiment"
               }
-            ]
+            ],
+            "defaultLanguageCode": "en"
           },
           {
             "@odata.type": "#Microsoft.Skills.Text.LanguageDetectionSkill",
@@ -77,7 +77,6 @@
             ]
           },
           {
-            "defaultLanguageCode": "en",
             "@odata.type": "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
             "context": "/document/reviews_text/pages/*",
             "inputs": [
@@ -95,7 +94,8 @@
                 "name": "keyPhrases",
                 "targetName": "Keyphrases"
               }
-            ]
+            ],
+            "defaultLanguageCode": "en"
           },
           {
             "@odata.type": "#Microsoft.Skills.Util.ShaperSkill",
@@ -171,26 +171,25 @@
             {
               "tables": [
                 {
-                  "tableName": "hotelReviewsDocument",
                   "generatedKeyName": "Documentid",
-                  "source": "/document/tableprojection"
+                  "source": "/document/tableprojection",
+                  "tableName": "hotelReviewsDocument"
                 },
                 {
-                  "tableName": "hotelReviewsPages",
                   "generatedKeyName": "Pagesid",
-                  "source": "/document/tableprojection/pages/*"
+                  "source": "/document/tableprojection/pages/*",
+                  "tableName": "hotelReviewsPages"
                 },
                 {
-                  "tableName": "hotelReviewsKeyPhrases",
                   "generatedKeyName": "KeyPhrasesid",
-                  "source": "/document/tableprojection/pages/*/keyphrase/*"
+                  "source": "/document/tableprojection/pages/*/keyphrase/*",
+                  "tableName": "hotelReviewsKeyPhrases"
                 }
               ]
             },
             {
               "tables": [
                 {
-                  "tableName": "hotelReviewsInlineDocument",
                   "generatedKeyName": "Documentid",
                   "sourceContext": "/document",
                   "inputs": [
@@ -218,10 +217,10 @@
                       "name": "AzureSearch_DocumentKey",
                       "source": "/document/AzureSearch_DocumentKey"
                     }
-                  ]
+                  ],
+                  "tableName": "hotelReviewsInlineDocument"
                 },
                 {
-                  "tableName": "hotelReviewsInlinePages",
                   "generatedKeyName": "Pagesid",
                   "sourceContext": "/document/reviews_text/pages/*",
                   "inputs": [
@@ -237,10 +236,10 @@
                       "name": "Page",
                       "source": "/document/reviews_text/pages/*"
                     }
-                  ]
+                  ],
+                  "tableName": "hotelReviewsInlinePages"
                 },
                 {
-                  "tableName": "hotelReviewsInlineKeyPhrases",
                   "generatedKeyName": "kpidv2",
                   "sourceContext": "/document/reviews_text/pages/*/Keyphrases/*",
                   "inputs": [
@@ -248,7 +247,8 @@
                       "name": "Keyphrases",
                       "source": "/document/reviews_text/pages/*/Keyphrases/*"
                     }
-                  ]
+                  ],
+                  "tableName": "hotelReviewsInlineKeyPhrases"
                 }
               ]
             }
@@ -259,14 +259,13 @@
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Fri, 23 May 2025 21:15:58 GMT",
-        "elapsed-time": "107",
-        "ETag": "\"0x8DD9A3F03131BB6\"",
-        "Location": "https://azs-net-shivangitest.search.windows.net/skillsets('dfgtdott')?api-version=2025-05-01-preview",
+        "Date": "Fri, 05 Sep 2025 19:47:39 GMT",
+        "elapsed-time": "192",
+        "ETag": "\"0x8DDECB5128BAD15\"",
+        "Location": "https://azs-net-shivangisearch.search.windows.net/skillsets('ofnffbsd')?api-version=2025-08-01-preview",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "e66c8b32-8108-73ea-d3f7-29026ac976f6",
-        "Server": "Microsoft-IIS/10.0",
+        "request-id": "c0ebf987-664a-db26-f5fb-1977120bad80",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -275,9 +274,9 @@
         "x-ms-client-request-id": "Sanitized"
       },
       "ResponseBody": {
-        "@odata.context": "https://azs-net-shivangitest.search.windows.net/$metadata#skillsets/$entity",
-        "@odata.etag": "\"0x8DD9A3F03131BB6\"",
-        "name": "dfgtdott",
+        "@odata.context": "https://azs-net-shivangisearch.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\"0x8DDECB5128BAD15\"",
+        "name": "ofnffbsd",
         "description": null,
         "skills": [
           {
@@ -621,28 +620,25 @@
       }
     },
     {
-      "RequestUri": "https://azs-net-shivangitest.search.windows.net/skillsets('dfgtdott')?api-version=2025-05-01-preview",
+      "RequestUri": "https://azs-net-shivangisearch.search.windows.net/skillsets('ofnffbsd')?api-version=2025-08-01-preview",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
         "api-key": "Sanitized",
         "Content-Length": "4210",
         "Content-Type": "application/json",
-        "If-Match": "\"0x8DD9A3F03131BB6\"",
+        "If-Match": "\"0x8DDECB5128BAD15\"",
         "Prefer": "return=representation",
-        "traceparent": "00-7895b0cc4513d1fc20cea0d14c3975dd-6d34571652218781-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.7.0-alpha.20250523.1 (.NET 9.0.5; Microsoft Windows 10.0.26100)",
+        "traceparent": "00-c794b8786c003e3c3471984f8e01e588-c8e50392f6342a4c-00",
+        "User-Agent": "azsdk-net-Search.Documents/11.7.0-alpha.20250905.1 (.NET 9.0.8; Microsoft Windows 10.0.26100)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
-        "name": "dfgtdott",
+        "name": "ofnffbsd",
         "description": "Update description",
         "skills": [
           {
-            "defaultLanguageCode": "en",
-            "textSplitMode": "pages",
-            "maximumPageLength": 5000,
             "@odata.type": "#Microsoft.Skills.Text.SplitSkill",
             "context": "/document/reviews_text",
             "inputs": [
@@ -662,11 +658,12 @@
                 "name": "textItems",
                 "targetName": "pages"
               }
-            ]
+            ],
+            "defaultLanguageCode": "en",
+            "textSplitMode": "pages",
+            "maximumPageLength": 5000
           },
           {
-            "defaultLanguageCode": "en",
-            "includeOpinionMining": false,
             "@odata.type": "#Microsoft.Skills.Text.V3.SentimentSkill",
             "context": "/document/reviews_text/pages/*",
             "inputs": [
@@ -686,7 +683,9 @@
                 "name": "confidenceScores",
                 "targetName": "Sentiment"
               }
-            ]
+            ],
+            "defaultLanguageCode": "en",
+            "includeOpinionMining": false
           },
           {
             "@odata.type": "#Microsoft.Skills.Text.LanguageDetectionSkill",
@@ -706,7 +705,6 @@
             ]
           },
           {
-            "defaultLanguageCode": "en",
             "@odata.type": "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
             "context": "/document/reviews_text/pages/*",
             "inputs": [
@@ -726,7 +724,8 @@
                 "name": "keyPhrases",
                 "targetName": "Keyphrases"
               }
-            ]
+            ],
+            "defaultLanguageCode": "en"
           },
           {
             "@odata.type": "#Microsoft.Skills.Util.ShaperSkill",
@@ -812,22 +811,22 @@
             {
               "tables": [
                 {
-                  "tableName": "hotelReviewsDocument",
                   "generatedKeyName": "Documentid",
                   "source": "/document/tableprojection",
-                  "inputs": []
+                  "inputs": [],
+                  "tableName": "hotelReviewsDocument"
                 },
                 {
-                  "tableName": "hotelReviewsPages",
                   "generatedKeyName": "Pagesid",
                   "source": "/document/tableprojection/pages/*",
-                  "inputs": []
+                  "inputs": [],
+                  "tableName": "hotelReviewsPages"
                 },
                 {
-                  "tableName": "hotelReviewsKeyPhrases",
                   "generatedKeyName": "KeyPhrasesid",
                   "source": "/document/tableprojection/pages/*/keyphrase/*",
-                  "inputs": []
+                  "inputs": [],
+                  "tableName": "hotelReviewsKeyPhrases"
                 }
               ],
               "objects": [],
@@ -836,7 +835,6 @@
             {
               "tables": [
                 {
-                  "tableName": "hotelReviewsInlineDocument",
                   "generatedKeyName": "Documentid",
                   "sourceContext": "/document",
                   "inputs": [
@@ -870,10 +868,10 @@
                       "source": "/document/AzureSearch_DocumentKey",
                       "inputs": []
                     }
-                  ]
+                  ],
+                  "tableName": "hotelReviewsInlineDocument"
                 },
                 {
-                  "tableName": "hotelReviewsInlinePages",
                   "generatedKeyName": "Pagesid",
                   "sourceContext": "/document/reviews_text/pages/*",
                   "inputs": [
@@ -892,10 +890,10 @@
                       "source": "/document/reviews_text/pages/*",
                       "inputs": []
                     }
-                  ]
+                  ],
+                  "tableName": "hotelReviewsInlinePages"
                 },
                 {
-                  "tableName": "hotelReviewsInlineKeyPhrases",
                   "generatedKeyName": "kpidv2",
                   "sourceContext": "/document/reviews_text/pages/*/Keyphrases/*",
                   "inputs": [
@@ -904,7 +902,8 @@
                       "source": "/document/reviews_text/pages/*/Keyphrases/*",
                       "inputs": []
                     }
-                  ]
+                  ],
+                  "tableName": "hotelReviewsInlineKeyPhrases"
                 }
               ],
               "objects": [],
@@ -912,19 +911,18 @@
             }
           ]
         },
-        "@odata.etag": "\"0x8DD9A3F03131BB6\""
+        "@odata.etag": "\"0x8DDECB5128BAD15\""
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Fri, 23 May 2025 21:15:58 GMT",
-        "elapsed-time": "81",
-        "ETag": "\"0x8DD9A3F0327EBD0\"",
+        "Date": "Fri, 05 Sep 2025 19:47:39 GMT",
+        "elapsed-time": "142",
+        "ETag": "\"0x8DDECB512ACCB83\"",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "a1629745-cf9d-93b0-60e4-e95d5d03e18b",
-        "Server": "Microsoft-IIS/10.0",
+        "request-id": "8572947e-9127-06bd-29e4-035610f40c94",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -933,9 +931,9 @@
         "x-ms-client-request-id": "Sanitized"
       },
       "ResponseBody": {
-        "@odata.context": "https://azs-net-shivangitest.search.windows.net/$metadata#skillsets/$entity",
-        "@odata.etag": "\"0x8DD9A3F0327EBD0\"",
-        "name": "dfgtdott",
+        "@odata.context": "https://azs-net-shivangisearch.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\"0x8DDECB512ACCB83\"",
+        "name": "ofnffbsd",
         "description": "Update description",
         "skills": [
           {
@@ -1279,13 +1277,13 @@
       }
     },
     {
-      "RequestUri": "https://azs-net-shivangitest.search.windows.net/skillsets('dfgtdott')?api-version=2025-05-01-preview",
+      "RequestUri": "https://azs-net-shivangisearch.search.windows.net/skillsets('ofnffbsd')?api-version=2025-08-01-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
         "api-key": "Sanitized",
-        "traceparent": "00-113f5cc3d2392ed0a33d3ad1c8abb002-3368db4372929eb6-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.7.0-alpha.20250523.1 (.NET 9.0.5; Microsoft Windows 10.0.26100)",
+        "traceparent": "00-f0fc0a43725a95f6da48489b2363d145-b84cc37ff0b1f9cc-00",
+        "User-Agent": "azsdk-net-Search.Documents/11.7.0-alpha.20250905.1 (.NET 9.0.8; Microsoft Windows 10.0.26100)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
@@ -1294,13 +1292,12 @@
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Fri, 23 May 2025 21:15:58 GMT",
-        "elapsed-time": "22",
-        "ETag": "\"0x8DD9A3F0327EBD0\"",
+        "Date": "Fri, 05 Sep 2025 19:47:39 GMT",
+        "elapsed-time": "32",
+        "ETag": "\"0x8DDECB512ACCB83\"",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "3f59b628-d35f-d4a7-d329-2cdbb969e446",
-        "Server": "Microsoft-IIS/10.0",
+        "request-id": "f848a070-9341-e900-59c7-3537352f349f",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -1309,9 +1306,9 @@
         "x-ms-client-request-id": "Sanitized"
       },
       "ResponseBody": {
-        "@odata.context": "https://azs-net-shivangitest.search.windows.net/$metadata#skillsets/$entity",
-        "@odata.etag": "\"0x8DD9A3F0327EBD0\"",
-        "name": "dfgtdott",
+        "@odata.context": "https://azs-net-shivangisearch.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\"0x8DDECB512ACCB83\"",
+        "name": "ofnffbsd",
         "description": "Update description",
         "skills": [
           {
@@ -1521,7 +1518,7 @@
           "description": null
         },
         "knowledgeStore": {
-          "storageConnectionString": null,
+          "storageConnectionString": "Sanitized",
           "identity": null,
           "projections": [
             {
@@ -1657,14 +1654,14 @@
       }
     },
     {
-      "RequestUri": "https://azs-net-shivangitest.search.windows.net/skillsets('dfgtdott')?api-version=2025-05-01-preview",
+      "RequestUri": "https://azs-net-shivangisearch.search.windows.net/skillsets('ofnffbsd')?api-version=2025-08-01-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
         "api-key": "Sanitized",
-        "If-Match": "\"0x8DD9A3F0327EBD0\"",
-        "traceparent": "00-6062254bd856e2b9c04510f7b4e6ea41-b6ffc7db104a509e-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.7.0-alpha.20250523.1 (.NET 9.0.5; Microsoft Windows 10.0.26100)",
+        "If-Match": "\"0x8DDECB512ACCB83\"",
+        "traceparent": "00-12178092c41c3f26c59346957f21ec3b-c712c8f9c0a930a6-00",
+        "User-Agent": "azsdk-net-Search.Documents/11.7.0-alpha.20250905.1 (.NET 9.0.8; Microsoft Windows 10.0.26100)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
@@ -1672,11 +1669,10 @@
       "StatusCode": 204,
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
-        "Date": "Fri, 23 May 2025 21:15:58 GMT",
+        "Date": "Fri, 05 Sep 2025 19:47:39 GMT",
         "elapsed-time": "33",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "3eed755b-9ccb-620b-dbd9-8623988c16cf",
-        "Server": "Microsoft-IIS/10.0",
+        "request-id": "7401a66f-72ea-f511-3ce4-966662d0cb00",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -1686,13 +1682,13 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://azs-net-shivangitest.search.windows.net/skillsets?$select=name&api-version=2025-05-01-preview",
+      "RequestUri": "https://azs-net-shivangisearch.search.windows.net/skillsets?$select=name&api-version=2025-08-01-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
         "api-key": "Sanitized",
-        "traceparent": "00-171072a557db05596132cc64627b7ec2-1bcfa38da7900875-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.7.0-alpha.20250523.1 (.NET 9.0.5; Microsoft Windows 10.0.26100)",
+        "traceparent": "00-b8bd7d6e04ccd83e7934d112df35fe88-312fbbac03395289-00",
+        "User-Agent": "azsdk-net-Search.Documents/11.7.0-alpha.20250905.1 (.NET 9.0.8; Microsoft Windows 10.0.26100)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
@@ -1701,12 +1697,11 @@
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Fri, 23 May 2025 21:15:58 GMT",
-        "elapsed-time": "13",
+        "Date": "Fri, 05 Sep 2025 19:47:39 GMT",
+        "elapsed-time": "14",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "b4da9e15-3770-7197-f08d-cd74a3d4d9f6",
-        "Server": "Microsoft-IIS/10.0",
+        "request-id": "720784ee-b4c3-eb3f-9388-2c5f5c86d0f9",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -1715,25 +1710,18 @@
         "x-ms-client-request-id": "Sanitized"
       },
       "ResponseBody": {
-        "@odata.context": "https://azs-net-shivangitest.search.windows.net/$metadata#skillsets(name)",
-        "value": [
-          {
-            "name": "kandrkfp"
-          },
-          {
-            "name": "pspkkuhi"
-          }
-        ]
+        "@odata.context": "https://azs-net-shivangisearch.search.windows.net/$metadata#skillsets(name)",
+        "value": []
       }
     },
     {
-      "RequestUri": "https://azs-net-shivangitest.search.windows.net/indexes('oqmbkuai')?api-version=2025-05-01-preview",
+      "RequestUri": "https://azs-net-shivangisearch.search.windows.net/indexes('hfetudpy')?api-version=2025-08-01-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=minimal",
         "api-key": "Sanitized",
-        "traceparent": "00-b0b9c8e276779f84fc9d7b18ca2c2836-2a5bd2f6e674d063-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.7.0-alpha.20250523.1 (.NET 9.0.5; Microsoft Windows 10.0.26100)",
+        "traceparent": "00-4c84c535b3265037a3fbedf705bb4a3a-c7d40f427145a8e8-00",
+        "User-Agent": "azsdk-net-Search.Documents/11.7.0-alpha.20250905.1 (.NET 9.0.8; Microsoft Windows 10.0.26100)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
@@ -1741,11 +1729,10 @@
       "StatusCode": 204,
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
-        "Date": "Fri, 23 May 2025 21:15:58 GMT",
-        "elapsed-time": "164",
+        "Date": "Fri, 05 Sep 2025 19:47:39 GMT",
+        "elapsed-time": "202",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "e802a200-a315-8bc0-aaf6-64864c843c46",
-        "Server": "Microsoft-IIS/10.0",
+        "request-id": "69e764b0-98f3-fea9-8e52-bc5cfc9a8689",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -1756,14 +1743,14 @@
     }
   ],
   "Variables": {
-    "BlobContainerName": "mcxlmpqx",
-    "RandomSeed": "1247604390",
-    "SearchIndexName": "oqmbkuai",
+    "BlobContainerName": "hgueiuky",
+    "RandomSeed": "1008902202",
+    "SearchIndexName": "hfetudpy",
     "SEARCH_ADMIN_API_KEY": "Sanitized",
     "SEARCH_ENDPOINT_SUFFIX": "search.windows.net",
-    "SEARCH_SERVICE_NAME": "azs-net-shivangitest",
+    "SEARCH_SERVICE_NAME": "azs-net-shivangisearch",
     "SEARCH_STORAGE_KEY": "Sanitized",
-    "SEARCH_STORAGE_NAME": "shivangiteststg",
+    "SEARCH_STORAGE_NAME": "shivangisearchstg",
     "STORAGE_ENDPOINT_SUFFIX": "core.windows.net"
   }
 }
