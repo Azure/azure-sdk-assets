@@ -6,24 +6,46 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip, deflate",
-        "User-Agent": "azsdk-python-ai-contentunderstanding/0.5.0 Python/3.12.9 (Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35)"
+        "User-Agent": "azsdk-python-ai-contentunderstanding/1.0.0b1 Python/3.12.9 (Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-01-preview,2025-11-01",
-        "apim-request-id": "1db5d9fa-cbc9-415b-958e-aa1e5c09e8b0",
+        "apim-request-id": "ba7ea795-ab4c-4316-a85b-0c1aa5c0f9c5",
         "Content-Type": "application/json",
-        "Date": "Tue, 12 Aug 2025 19:14:32 GMT",
-        "request-id": "1db5d9fa-cbc9-415b-958e-aa1e5c09e8b0",
+        "Date": "Wed, 17 Sep 2025 15:06:43 GMT",
+        "request-id": "ba7ea795-ab4c-4316-a85b-0c1aa5c0f9c5",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "147",
+        "x-envoy-upstream-service-time": "237",
         "x-ms-region": "West US"
       },
       "ResponseBody": {
         "value": [
+          {
+            "analyzerId": "prebuilt-audioAnalyzer",
+            "description": "Transcribe conversations and extract summaries.",
+            "createdAt": "2025-05-01T00:00:00Z",
+            "config": {
+              "returnDetails": true,
+              "disableContentFiltering": false
+            },
+            "fieldSchema": {
+              "name": "Sanitized",
+              "fields": {
+                "Summary": {
+                  "type": "string",
+                  "description": "A one-paragraph summary of the conversation."
+                }
+              }
+            },
+            "warnings": [],
+            "status": "ready",
+            "processingLocation": "geography",
+            "mode": "standard"
+          },
           {
             "analyzerId": "prebuilt-callCenter",
             "description": "Analyze call center conversations to extract transcripts, summaries, sentiment, and more.",
@@ -108,19 +130,109 @@
             "mode": "standard"
           },
           {
-            "analyzerId": "prebuilt-audioAnalyzer",
-            "description": "Transcribe conversations and extract summaries.",
+            "analyzerId": "prebuilt-contract",
+            "description": "Extract contract document fields.",
             "createdAt": "2025-05-01T00:00:00Z",
             "config": {
               "returnDetails": true,
-              "disableContentFiltering": false
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "disableContentFiltering": false,
+              "estimateFieldSourceAndConfidence": true
             },
             "fieldSchema": {
               "name": "Sanitized",
+              "description": "Automated contract processing with customizable intelligence that supports field extraction and generation tailored to your business needs.",
               "fields": {
-                "Summary": {
+                "Title": {
                   "type": "string",
-                  "description": "A one-paragraph summary of the conversation."
+                  "method": "extract",
+                  "description": "Contract title"
+                },
+                "ContractId": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Contract identification code"
+                },
+                "Parties": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of legal parties",
+                  "items": {
+                    "type": "object",
+                    "method": "generate",
+                    "description": "Legal party",
+                    "properties": {
+                      "Name": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name of legal party"
+                      },
+                      "Address": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Address of legal party"
+                      },
+                      "ReferenceName": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name used throughout the contract as reference to the legal party"
+                      },
+                      "Clause": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Full description of the party"
+                      }
+                    }
+                  }
+                },
+                "ExecutionDate": {
+                  "type": "date",
+                  "method": "extract",
+                  "description": "Date when the agreement was fully signed and agreed upon by all parties"
+                },
+                "EffectiveDate": {
+                  "type": "date",
+                  "method": "extract",
+                  "description": "Date when the contract starts to be in effect"
+                },
+                "ExpirationDate": {
+                  "type": "date",
+                  "method": "extract",
+                  "description": "Date when the contract ends to be in effect"
+                },
+                "ContractDuration": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Contract terms"
+                },
+                "RenewalDate": {
+                  "type": "date",
+                  "method": "extract",
+                  "description": "Date when the contract needs to be renewed by"
+                },
+                "Jurisdictions": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of jurisdictions",
+                  "items": {
+                    "type": "object",
+                    "method": "generate",
+                    "description": "A location of the court agreed by both parties where any arising dispute out of or in connection with the agreement should be filed",
+                    "properties": {
+                      "Clause": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Full description of the jurisdiction"
+                      },
+                      "Region": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Court location"
+                      }
+                    }
+                  }
                 }
               }
             },
@@ -422,118 +534,6 @@
                       },
                       "Description": {
                         "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "warnings": [],
-            "status": "ready",
-            "processingLocation": "geography",
-            "mode": "standard"
-          },
-          {
-            "analyzerId": "prebuilt-contract",
-            "description": "Extract contract document fields.",
-            "createdAt": "2025-05-01T00:00:00Z",
-            "config": {
-              "returnDetails": true,
-              "enableOcr": true,
-              "enableLayout": true,
-              "enableFormula": false,
-              "disableContentFiltering": false,
-              "estimateFieldSourceAndConfidence": true
-            },
-            "fieldSchema": {
-              "name": "Sanitized",
-              "description": "Automated contract processing with customizable intelligence that supports field extraction and generation tailored to your business needs.",
-              "fields": {
-                "Title": {
-                  "type": "string",
-                  "method": "extract",
-                  "description": "Contract title"
-                },
-                "ContractId": {
-                  "type": "string",
-                  "method": "extract",
-                  "description": "Contract identification code"
-                },
-                "Parties": {
-                  "type": "array",
-                  "method": "generate",
-                  "description": "List of legal parties",
-                  "items": {
-                    "type": "object",
-                    "method": "generate",
-                    "description": "Legal party",
-                    "properties": {
-                      "Name": {
-                        "type": "string",
-                        "method": "extract",
-                        "description": "Name of legal party"
-                      },
-                      "Address": {
-                        "type": "string",
-                        "method": "extract",
-                        "description": "Address of legal party"
-                      },
-                      "ReferenceName": {
-                        "type": "string",
-                        "method": "extract",
-                        "description": "Name used throughout the contract as reference to the legal party"
-                      },
-                      "Clause": {
-                        "type": "string",
-                        "method": "extract",
-                        "description": "Full description of the party"
-                      }
-                    }
-                  }
-                },
-                "ExecutionDate": {
-                  "type": "date",
-                  "method": "extract",
-                  "description": "Date when the agreement was fully signed and agreed upon by all parties"
-                },
-                "EffectiveDate": {
-                  "type": "date",
-                  "method": "extract",
-                  "description": "Date when the contract starts to be in effect"
-                },
-                "ExpirationDate": {
-                  "type": "date",
-                  "method": "extract",
-                  "description": "Date when the contract ends to be in effect"
-                },
-                "ContractDuration": {
-                  "type": "string",
-                  "method": "extract",
-                  "description": "Contract terms"
-                },
-                "RenewalDate": {
-                  "type": "date",
-                  "method": "extract",
-                  "description": "Date when the contract needs to be renewed by"
-                },
-                "Jurisdictions": {
-                  "type": "array",
-                  "method": "generate",
-                  "description": "List of jurisdictions",
-                  "items": {
-                    "type": "object",
-                    "method": "generate",
-                    "description": "A location of the court agreed by both parties where any arising dispute out of or in connection with the agreement should be filed",
-                    "properties": {
-                      "Clause": {
-                        "type": "string",
-                        "method": "extract",
-                        "description": "Full description of the jurisdiction"
-                      },
-                      "Region": {
-                        "type": "string",
-                        "method": "extract",
-                        "description": "Court location"
                       }
                     }
                   }
