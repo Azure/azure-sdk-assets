@@ -8,9 +8,9 @@
         "Accept-Encoding": "gzip, deflate",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "5797",
+        "Content-Length": "6608",
         "Content-Type": "application/json",
-        "User-Agent": "AsyncAzureOpenAI/Python 1.86.0",
+        "User-Agent": "azure-ai-evaluation/1.12.0",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
         "X-Stainless-Lang": "python",
@@ -27,7 +27,7 @@
           },
           {
             "role": "user",
-            "content": "# Definition\n**Groundedness** refers to how well an answer is anchored in the provided context, evaluating its relevance, accuracy, and completeness based exclusively on that context. It assesses the extent to which the answer directly and fully addresses the question without introducing unrelated or incorrect information. The scale ranges from 1 to 5, with higher numbers indicating greater groundedness.\n\n# Ratings\n## [Groundedness: 1] (Completely Unrelated Response)\n**Definition:** An answer that does not relate to the question or the context in any way. It fails to address the topic, provides irrelevant information, or introduces completely unrelated subjects.\n\n**Examples:**\n  **Context:** The company's annual meeting will be held next Thursday.\n  **Query:** When is the company's annual meeting?\n  **Response:** I enjoy hiking in the mountains during summer.\n\n  **Context:** The new policy aims to reduce carbon emissions by 20% over the next five years.\n  **Query:** What is the goal of the new policy?\n  **Response:** My favorite color is blue.\n\n## [Groundedness: 2] (Related Topic but Does Not Respond to the Query)\n**Definition:** An answer that relates to the general topic of the context but does not answer the specific question asked. It may mention concepts from the context but fails to provide a direct or relevant response.\n\n**Examples:**\n  **Context:** The museum will exhibit modern art pieces from various local artists.\n  **Query:** What kind of art will be exhibited at the museum?\n  **Response:** Museums are important cultural institutions.\n\n  **Context:** The new software update improves battery life and performance.\n  **Query:** What does the new software update improve?\n  **Response:** Software updates can sometimes fix bugs.\n\n## [Groundedness: 3] (Attempts to Respond but Contains Incorrect Information)\n**Definition:** An answer that attempts to respond to the question but includes incorrect information not supported by the context. It may misstate facts, misinterpret the context, or provide erroneous details.\n\n**Examples:**\n  **Context:** The festival starts on June 5th and features international musicians.\n  **Query:** When does the festival start?\n  **Response:** The festival starts on July 5th and features local artists.\n\n  **Context:** The recipe requires two eggs and one cup of milk.\n  **Query:** How many eggs are needed for the recipe?\n  **Response:** You need three eggs for the recipe.\n\n## [Groundedness: 4] (Partially Correct Response)\n**Definition:** An answer that provides a correct response to the question but is incomplete or lacks specific details mentioned in the context. It captures some of the necessary information but omits key elements needed for a full understanding.\n\n**Examples:**\n  **Context:** The bookstore offers a 15% discount to students and a 10% discount to senior citizens.\n  **Query:** What discount does the bookstore offer to students?\n  **Response:** Students get a discount at the bookstore.\n\n  **Context:** The company's headquarters are located in Berlin, Germany.\n  **Query:** Where are the company's headquarters?\n  **Response:** The company's headquarters are in Germany.\n\n## [Groundedness: 5] (Fully Correct and Complete Response)\n**Definition:** An answer that thoroughly and accurately responds to the question, including all relevant details from the context. It directly addresses the question with precise information, demonstrating complete understanding without adding extraneous information.\n\n**Examples:**\n  **Context:** The author released her latest novel, 'The Silent Echo', on September 1st.\n  **Query:** When was 'The Silent Echo' released?\n  **Response:** 'The Silent Echo' was released on September 1st.\n\n  **Context:** Participants must register by May 31st to be eligible for early bird pricing.\n  **Query:** By what date must participants register to receive early bird pricing?\n  **Response:** Participants must register by May 31st to receive early bird pricing.\n\n\n# Data\nCONTEXT: Tokyo is the capital of Japan.\nQUERY: Tokyo is the capital of which country?\nRESPONSE: Japan\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE in relation to the CONTEXT and QUERY based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
+            "content": "# Definition\n**Groundedness** refers to how well an answer is anchored in the provided context, evaluating its relevance, accuracy, and completeness based exclusively on that context. It assesses the extent to which the answer directly and fully addresses the question without introducing unrelated or incorrect information.\n\n> Context is the source of truth for evaluating the response. If it's empty, rely on the tool results in the response and query.\n> Evaluate the groundedness of the response message, not the chat history.\n\n# Ratings\n## [Groundedness: 1] (Completely Unrelated Response)\n**Definition:** An answer that does not relate to the question or the context in any way.\n  - Does not relate to the question or context at all.\n  - Talks about the general topic but does not respond to the query.\n\n**Examples:**\n  **Context:** The company's annual meeting will be held next Thursday.\n  **Query:** When is the company's annual meeting?\n  **Response:** I enjoy hiking in the mountains during summer.\n\n  **Context:** The museum will exhibit modern art pieces from various local artists.\n  **Query:** What kind of art will be exhibited at the museum?\n  **Response:** Museums are important cultural institutions.\n\n## [Groundedness: 2] (Attempts to Respond but Contains Incorrect Information)\n**Definition:** An answer that attempts to respond to the question but includes incorrect information not supported by the context. It may misstate facts, misinterpret the context, or provide erroneous details. Even if some points are correct, the presence of inaccuracies makes the response unreliable.\n\n**Examples:**\n  **Context:** - The festival starts on June 5th and features international musicians.\n  **Query:** When does the festival start?\n  **Response:** The festival starts on July 5th and features local artists.\n\n  **Context:** bakery_menu.txt: - Croissant au Beurre — flaky, buttery croissant\n  **Query:** [{\"role\":\"user\",\"content\":\"Are there croissants?\"}]\n  **Response:** [{\"role\":\"assistant\",\"content\":\"Yes, Croissant au Beurre is on the menu, served with jam.\"}]\n\n## [Groundedness: 3] (Nothing to be Grounded)\nDefinition: An answer that does not provide any information that can be evaluated against the context. This includes responses that are asking for clarification, providing polite fillers, or follow-up questions.\n\n**Examples:**\n  **Context:**\n  **Query:** [{\"role\":\"user\",\"content\":\"How many eggs are needed for the recipe?\"}, {\"role\":\"tool\",\"content\":\"tool_result\": [{\"file_name\": \"recipe.txt\", \"content\": \"The recipe requires two eggs and one cup of milk.\"}]}, {\"role\":\"assistant\",\"content\":\"You need three eggs for the recipe.\"}, {\"role\":\"user\",\"content\":\"Thank you.\"}]\n  **Response:** [{\"role\":\"assistant\",\"content\":\"You're welcome, anything else I can help with?\"}]\n\n## [Groundedness: 4] (Partially Correct Response)\n**Definition:** An answer that provides a correct response to the question but is incomplete or lacks specific details mentioned in the context. It captures some of the necessary information but omits key elements needed for a full understanding.\n\n**Examples:**\n  **Context:** - store_details.txt: The bookstore offers a 15% discount to students and a 10% discount to senior citizens.\n  **Query:** [{\"role\":\"user\",\"content\":\"What discount does the bookstore offer to students, if any?\"}]\n  **Response:** [{\"role\":\"assistant\",\"content\":\"Yes, students get a discount at the bookstore.\"}]\n\n  **Context:** The company's headquarters are located in Berlin, Germany.\n  **Query:** Where are the company's headquarters?\n  **Response:** The company's headquarters are in Germany.\n\n## [Groundedness: 5] (Fully Correct and Complete Response)\n**Definition:** An answer that thoroughly and accurately responds to the question, including all relevant details from the context. It directly addresses the question with precise information, demonstrating complete understanding without adding extraneous information.\n\n**Examples:**\n  **CONTEXT:** The author released her latest novel, 'The Silent Echo', on September 1st.\n  **QUERY:** [{\"role\":\"user\",\"content\":\"When was 'The Silent Echo' released?\"}]\n  **RESPONSE:** [{\"role\":\"assistant\",\"content\":\"The 'Silent Echo' was released on September 1st.\"}]\n\n  **Context:** \n  **Query:** By what date must participants register to receive early bird pricing?\n  **Response:** [{\"role\":\"tool\",\"content\":\"tool_result\": [{\"file_name\": \"store_guidelines.txt\", \"content\": \"Participants registering before and including May 31st will be eligible for early bird pricing.\"}]}, {\"role\":\"assistant\",\"content\":\"Participants must register by May 31st to receive early bird pricing.\"}]\n\n\n# Data\nCONTEXT: Tokyo is the capital of Japan.\nQUERY: Tokyo is the capital of which country?\nRESPONSE: Japan\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE message in relation to the CONTEXT, QUERY and RESPONSE tools based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
           }
         ],
         "model": "aoai-deployment",
@@ -42,24 +42,23 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "84323c53-98a4-43a0-9690-49725bb799b6",
-        "azureml-model-session": "d076-20250514050955",
-        "cmp-upstream-response-duration": "3220",
+        "apim-request-id": "f1007b69-c0df-41f0-ba29-89c63dda9197",
+        "azureml-model-session": "d194-20251007104841",
         "Connection": "close",
-        "Content-Length": "1731",
+        "Content-Length": "1631",
         "Content-Type": "application/json",
-        "Date": "Fri, 11 Jul 2025 23:16:35 GMT",
+        "Date": "Wed, 08 Oct 2025 08:24:57 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-deployment-name": "gpt-4o",
+        "x-ms-deployment-name": "gpt-4.1",
         "x-ms-rai-invoked": "true",
-        "x-ms-region": "East US 2",
-        "x-ratelimit-limit-requests": "160",
-        "x-ratelimit-limit-tokens": "160000",
-        "x-ratelimit-remaining-requests": "156",
-        "x-ratelimit-remaining-tokens": "154025",
-        "X-Request-ID": "17cfd2fd-2854-4216-8d01-e47df65d9ed0"
+        "x-ms-region": "West US 3",
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "1000000",
+        "x-ratelimit-remaining-requests": "999",
+        "x-ratelimit-remaining-tokens": "998452",
+        "X-Request-ID": "f7498f2e-ca29-40de-a01d-e783631432fb"
       },
       "ResponseBody": {
         "choices": [
@@ -95,13 +94,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "<S0>Let's think step by step: The context states that Tokyo is the capital of Japan. The query asks which country Tokyo is the capital of. The response is \"Japan,\" which directly answers the query using the information provided in the context. The response is accurate, relevant, and complete, as it fully addresses the question without introducing any unrelated or incorrect information.</S0> <S1>The response accurately and completely answers the query using the information provided in the context, demonstrating full groundedness.</S1> <S2>5</S2>",
+              "content": "<S0>Let's think step by step: The context states that \"Tokyo is the capital of Japan.\" The query asks, \"Tokyo is the capital of which country?\" The response is \"Japan.\" The response directly and accurately answers the query using the information provided in the context, without omitting any relevant details or adding extraneous information.</S0>\n<S1>The response is fully correct and complete, directly grounded in the context.</S1>\n<S2>5</S2>",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1752275792,
+        "created": 1759911895,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -132,21 +131,21 @@
             }
           }
         ],
-        "system_fingerprint": "fp_ee1d74bde0",
+        "system_fingerprint": "fp_f99638a8d7",
         "usage": {
-          "completion_tokens": 114,
+          "completion_tokens": 99,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
             "reasoning_tokens": 0,
             "rejected_prediction_tokens": 0
           },
-          "prompt_tokens": 1153,
+          "prompt_tokens": 1340,
           "prompt_tokens_details": {
             "audio_tokens": 0,
             "cached_tokens": 0
           },
-          "total_tokens": 1267
+          "total_tokens": 1439
         }
       }
     },
@@ -160,7 +159,7 @@
         "Connection": "close",
         "Content-Length": "6592",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.10.0",
+        "User-Agent": "azure-ai-evaluation/1.12.0",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
         "X-Stainless-Lang": "python",
@@ -192,24 +191,23 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "68f2cfd4-190c-49d9-8c9b-4420c79756c1",
-        "azureml-model-session": "d130-20250407175805",
-        "cmp-upstream-response-duration": "478",
+        "apim-request-id": "2e1fd55e-066a-4f30-9ce2-b3b11609690c",
+        "azureml-model-session": "d194-20251007104841",
         "Connection": "close",
-        "Content-Length": "1241",
+        "Content-Length": "1384",
         "Content-Type": "application/json",
-        "Date": "Fri, 11 Jul 2025 23:16:35 GMT",
+        "Date": "Wed, 08 Oct 2025 08:25:00 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-deployment-name": "gpt-4o",
+        "x-ms-deployment-name": "gpt-4.1",
         "x-ms-rai-invoked": "true",
-        "x-ms-region": "East US 2",
-        "x-ratelimit-limit-requests": "160",
-        "x-ratelimit-limit-tokens": "160000",
-        "x-ratelimit-remaining-requests": "155",
-        "x-ratelimit-remaining-tokens": "152492",
-        "X-Request-ID": "7e395fac-7f19-48d6-8964-1ac0054ff279"
+        "x-ms-region": "West US 3",
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "1000000",
+        "x-ratelimit-remaining-requests": "998",
+        "x-ratelimit-remaining-tokens": "996913",
+        "X-Request-ID": "67b1dc70-a645-4c53-be98-3b3640f5de1c"
       },
       "ResponseBody": {
         "choices": [
@@ -218,6 +216,10 @@
               "hate": {
                 "filtered": false,
                 "severity": "safe"
+              },
+              "protected_material_text": {
+                "filtered": false,
+                "detected": false
               },
               "self_harm": {
                 "filtered": false,
@@ -237,13 +239,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "{\n  \"explanation\": \"The response directly answers the query by identifying Japan as the country of which Tokyo is the capital. It is complete and fully relevant.\",\n  \"score\": 4\n}",
+              "content": "{\n  \"explanation\": \"The response directly and accurately answers the query by naming Japan as the country of which Tokyo is the capital. It is complete and fully satisfies the request, though it does not provide additional context or insight.\",\n  \"score\": 4\n}",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1752275796,
+        "created": 1759911898,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -274,9 +276,9 @@
             }
           }
         ],
-        "system_fingerprint": "fp_ee1d74bde0",
+        "system_fingerprint": "fp_f99638a8d7",
         "usage": {
-          "completion_tokens": 42,
+          "completion_tokens": 56,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
@@ -288,7 +290,7 @@
             "audio_tokens": 0,
             "cached_tokens": 0
           },
-          "total_tokens": 1313
+          "total_tokens": 1327
         }
       }
     },
@@ -302,7 +304,7 @@
         "Connection": "close",
         "Content-Length": "6787",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.10.0",
+        "User-Agent": "azure-ai-evaluation/1.12.0",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
         "X-Stainless-Lang": "python",
@@ -334,24 +336,23 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "1dc66b34-9889-4b2a-a8be-e76d9b55e53b",
-        "azureml-model-session": "d227-20250513073719",
-        "cmp-upstream-response-duration": "996",
+        "apim-request-id": "94b6599a-d19c-4036-bfdc-2e1d7c97f305",
+        "azureml-model-session": "d047-20251006205945",
         "Connection": "close",
-        "Content-Length": "1853",
+        "Content-Length": "1658",
         "Content-Type": "application/json",
-        "Date": "Fri, 11 Jul 2025 23:16:37 GMT",
+        "Date": "Wed, 08 Oct 2025 08:25:03 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-deployment-name": "gpt-4o",
+        "x-ms-deployment-name": "gpt-4.1",
         "x-ms-rai-invoked": "true",
-        "x-ms-region": "East US 2",
-        "x-ratelimit-limit-requests": "160",
-        "x-ratelimit-limit-tokens": "160000",
-        "x-ratelimit-remaining-requests": "154",
-        "x-ratelimit-remaining-tokens": "150870",
-        "X-Request-ID": "e508e9d6-7ab5-411a-8034-0a3116b2d817"
+        "x-ms-region": "West US 3",
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "1000000",
+        "x-ratelimit-remaining-requests": "997",
+        "x-ratelimit-remaining-tokens": "995287",
+        "X-Request-ID": "92d6af43-0d4b-4901-af7c-6ab87d478447"
       },
       "ResponseBody": {
         "choices": [
@@ -387,13 +388,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "<S0>Let's think step by step: The query asks for the capital of a specific country, and the response directly provides the name of the country, Japan. The response is concise and directly answers the question without any unnecessary information. There is a clear and logical connection between the query and the response, as the response accurately identifies the country associated with Tokyo as its capital. The simplicity and directness of the response ensure coherence, as it is easy to follow and understand.</S0> <S1>The response is coherent because it directly answers the query with a clear and logical connection between the question and the answer.</S1> <S2>4</S2>",
+              "content": "<S0>Let's think step by step: The query asks for the country of which Tokyo is the capital. The response \"Japan\" is a direct and correct answer. While it is extremely brief, it is logically connected to the question and easy to follow. There are no disjointed or fragmented ideas, and the response is fully coherent for the context of a factual question.</S0>\n<S1>The response is fully coherent and directly answers the question in a logical and clear manner.</S1>\n<S2>4</S2>",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1752275797,
+        "created": 1759911901,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -424,9 +425,9 @@
             }
           }
         ],
-        "system_fingerprint": "fp_ee1d74bde0",
+        "system_fingerprint": "fp_f99638a8d7",
         "usage": {
-          "completion_tokens": 137,
+          "completion_tokens": 110,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
@@ -438,7 +439,7 @@
             "audio_tokens": 0,
             "cached_tokens": 0
           },
-          "total_tokens": 1397
+          "total_tokens": 1370
         }
       }
     },
@@ -452,7 +453,7 @@
         "Connection": "close",
         "Content-Length": "4840",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.10.0",
+        "User-Agent": "azure-ai-evaluation/1.12.0",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
         "X-Stainless-Lang": "python",
@@ -484,24 +485,23 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "f2a2e9cf-e227-4d87-838f-e0f334dc72cb",
-        "azureml-model-session": "d075-20250514041023",
-        "cmp-upstream-response-duration": "1133",
+        "apim-request-id": "30154bac-741c-4c9a-a595-65670b286419",
+        "azureml-model-session": "d047-20251006205945",
         "Connection": "close",
-        "Content-Length": "1790",
+        "Content-Length": "1554",
         "Content-Type": "application/json",
-        "Date": "Fri, 11 Jul 2025 23:16:39 GMT",
+        "Date": "Wed, 08 Oct 2025 08:25:06 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-deployment-name": "gpt-4o",
+        "x-ms-deployment-name": "gpt-4.1",
         "x-ms-rai-invoked": "true",
-        "x-ms-region": "East US 2",
-        "x-ratelimit-limit-requests": "160",
-        "x-ratelimit-limit-tokens": "160000",
-        "x-ratelimit-remaining-requests": "153",
-        "x-ratelimit-remaining-tokens": "149732",
-        "X-Request-ID": "df9cc029-e59a-4e6a-9fbf-f61e7749dce8"
+        "x-ms-region": "West US 3",
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "1000000",
+        "x-ratelimit-remaining-requests": "996",
+        "x-ratelimit-remaining-tokens": "994145",
+        "X-Request-ID": "0486dec5-1c91-4339-a306-063a1ddb7a75"
       },
       "ResponseBody": {
         "choices": [
@@ -537,13 +537,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "<S0>Let's think step by step: The RESPONSE \"Japan\" consists of a single word. It does not form a sentence, lacks grammatical structure, and does not convey any ideas or information. There is no vocabulary range, sentence complexity, coherence, or readability to assess. The RESPONSE is largely incomprehensible as it does not provide any context or meaning beyond the word itself.</S0> <S1>The input data is a single word, \"Japan,\" which does not demonstrate any fluency traits such as grammatical accuracy, vocabulary range, or sentence complexity. It is not a coherent or readable response.</S1> <S2>1</S2>",
+              "content": "<S0>Let's think step by step: The response consists of a single word, \"Japan.\" It does not form a sentence, lacks grammar, vocabulary range, and any structure. There is no coherence or readability, and the message is extremely limited and fragmented.</S0>\n<S1>The response is just a single word and does not demonstrate any fluency in written communication.</S1>\n<S2>1</S2>",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1752275798,
+        "created": 1759911904,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -574,9 +574,9 @@
             }
           }
         ],
-        "system_fingerprint": "fp_ee1d74bde0",
+        "system_fingerprint": "fp_f99638a8d7",
         "usage": {
-          "completion_tokens": 136,
+          "completion_tokens": 88,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
@@ -588,7 +588,7 @@
             "audio_tokens": 0,
             "cached_tokens": 0
           },
-          "total_tokens": 1050
+          "total_tokens": 1002
         }
       }
     },
@@ -602,7 +602,7 @@
         "Connection": "close",
         "Content-Length": "4497",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.10.0",
+        "User-Agent": "azure-ai-evaluation/1.12.0",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
         "X-Stainless-Lang": "python",
@@ -634,24 +634,23 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "606a6902-58b7-4d87-bf1f-faf4659bed9b",
-        "azureml-model-session": "d195-20250522144142",
-        "cmp-upstream-response-duration": "156",
+        "apim-request-id": "fb03848b-3713-4e99-bb2b-3a47c0e14b18",
+        "azureml-model-session": "d052-20251006215916",
         "Connection": "close",
         "Content-Length": "1178",
         "Content-Type": "application/json",
-        "Date": "Fri, 11 Jul 2025 23:16:39 GMT",
+        "Date": "Wed, 08 Oct 2025 08:25:08 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-deployment-name": "gpt-4o",
+        "x-ms-deployment-name": "gpt-4.1",
         "x-ms-rai-invoked": "true",
-        "x-ms-region": "East US 2",
-        "x-ratelimit-limit-requests": "160",
-        "x-ratelimit-limit-tokens": "160000",
-        "x-ratelimit-remaining-requests": "152",
-        "x-ratelimit-remaining-tokens": "148672",
-        "X-Request-ID": "b5e4e224-4ce1-4089-b672-957b0f9a05fd"
+        "x-ms-region": "West US 3",
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "1000000",
+        "x-ratelimit-remaining-requests": "995",
+        "x-ratelimit-remaining-tokens": "993081",
+        "X-Request-ID": "0c4bee12-b350-451b-9bd5-33a3addfe94d"
       },
       "ResponseBody": {
         "choices": [
@@ -693,7 +692,7 @@
             }
           }
         ],
-        "created": 1752275799,
+        "created": 1759911907,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -724,7 +723,7 @@
             }
           }
         ],
-        "system_fingerprint": "fp_ee1d74bde0",
+        "system_fingerprint": "fp_f99638a8d7",
         "usage": {
           "completion_tokens": 1,
           "completion_tokens_details": {
