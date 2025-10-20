@@ -5,7 +5,6 @@
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate",
         "api-key": "Sanitized",
         "Connection": "close",
         "Content-Length": "6608",
@@ -42,12 +41,12 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "0b8779ba-ba87-43a0-8162-f2e49dbf9665",
-        "azureml-model-session": "d047-20251006205945",
+        "apim-request-id": "3d81a685-a1d0-4234-be30-69e3926ab834",
+        "azureml-model-session": "d058-20251019172048",
         "Connection": "close",
-        "Content-Length": "1647",
+        "Content-Length": "1626",
         "Content-Type": "application/json",
-        "Date": "Wed, 15 Oct 2025 21:49:10 GMT",
+        "Date": "Mon, 20 Oct 2025 19:12:51 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
@@ -58,7 +57,7 @@
         "x-ratelimit-limit-tokens": "1000000",
         "x-ratelimit-remaining-requests": "999",
         "x-ratelimit-remaining-tokens": "998452",
-        "X-Request-ID": "ba7157d4-7592-4eb0-bc94-594089f7e8f6"
+        "X-Request-ID": "4081499c-23c9-4c2a-8e0b-ddae1ba54509"
       },
       "ResponseBody": {
         "choices": [
@@ -94,13 +93,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "<S0>Let's think step by step: The context states that \"Tokyo is the capital of Japan.\" The query asks, \"Tokyo is the capital of which country?\" The response is \"Japan.\" The response directly and accurately answers the query using the information provided in the context. There is no missing or extraneous information, and the answer is complete and correct.</S0>\n<S1>The response is fully correct and complete, directly grounded in the context.</S1>\n<S2>5</S2>",
+              "content": "<S0>Let's think step by step: The context states \"Tokyo is the capital of Japan.\" The query asks, \"Tokyo is the capital of which country?\" The response is \"Japan.\" The response directly and accurately answers the query using the information provided in the context, without omitting any relevant details or adding extraneous information.</S0>\n<S1>The response is fully correct and complete, directly grounded in the context.</S1>\n<S2>5</S2>",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1760564946,
+        "created": 1760987569,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -133,7 +132,7 @@
         ],
         "system_fingerprint": "fp_f99638a8d7",
         "usage": {
-          "completion_tokens": 104,
+          "completion_tokens": 98,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
@@ -145,7 +144,7 @@
             "audio_tokens": 0,
             "cached_tokens": 0
           },
-          "total_tokens": 1444
+          "total_tokens": 1438
         }
       }
     },
@@ -154,12 +153,11 @@
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "8181",
+        "Content-Length": "8243",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.12.0",
+        "User-Agent": "azure-ai-evaluation/1.13.0",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
         "X-Stainless-Lang": "python",
@@ -176,7 +174,7 @@
           },
           {
             "role": "user",
-            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to the CONVERSATION_HISTORY using the Relevance definitions provided.\n\nINPUT\n=====\nCONVERSATION_HISTORY: Tokyo is the capital of which country?\nRESPONSE: Japan\n\nCONVERSATION_HISTORY is the full dialogue between the user and the agent up to the user's latest message. For single-turn interactions, this will be just the user's query.\nRESPONSE is the agent's reply to the user's latest message.\n\nTASK\n====\nOutput a JSON object with:\n    1) a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the user's queries in the CONVERSATION_HISTORY.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n\nThe explanation should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"explanation\": \"<15-60 words>\",\n  \"score\": <1-5>\n}\n\n\nEVALUATION STEPS\n================\nA. Read the CONVERSATION_HISTORY and RESPONSE carefully.\nB. Identify the user's query from the latest message (use conversation history for context if needed).\nC. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the user's query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nD. Match the response to the best score from the rubric.\nE. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nCONVERSATION_HISTORY:\nUser: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"explanation\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1\n}\n\n\n**Example B**\nCONVERSATION_HISTORY:\nUser: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"explanation\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nCONVERSATION_HISTORY:\nUser: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"explanation\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2\n}\n\n**Example B**\nCONVERSATION_HISTORY:\nUser: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"explanation\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nCONVERSATION_HISTORY:\nUser: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3\n}\n\n**Example B**\nCONVERSATION_HISTORY:\nUser: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"explanation\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nCONVERSATION_HISTORY:\nUser: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4\n}\n\n**Example B**\nCONVERSATION_HISTORY:\nUser: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"explanation\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nCONVERSATION_HISTORY:\nUser: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"explanation\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5\n}\n\n**Example B**\nCONVERSATION_HISTORY:\nUser: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"explanation\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5\n}\n\n### Multi-turn Conversation Example\nWhen evaluating responses in a multi-turn conversation, consider the conversation context to understand the user's intent:\n\n**Example - Multi-turn Context**\nCONVERSATION_HISTORY:\nUser: I'm planning a vacation to Europe.\nAssistant: That sounds exciting! What time of year are you thinking of traveling?\nUser: Probably in July. What's the weather like then?\nRESPONSE: July is summer in Europe with generally warm and pleasant weather. Most countries have temperatures between 20-25°C (68-77°F). It's a popular travel time, so expect crowds at major tourist attractions and higher accommodation prices.\n\nExpected Output:\n{\n    \"explanation\": \"The response directly addresses the weather question while providing valuable context about crowds and pricing that's relevant to vacation planning established in the conversation.\",\n    \"score\": 5\n}"
+            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to the CONVERSATION_HISTORY using the Relevance definitions provided.\n\nINPUT\n=====\nCONVERSATION_HISTORY: Tokyo is the capital of which country?\nRESPONSE: Japan\n\nCONVERSATION_HISTORY is the full dialogue between the user and the agent up to the user's latest message. For single-turn interactions, this will be just the user's query.\nRESPONSE is the agent's reply to the user's latest message.\n\nTASK\n====\nOutput a JSON object with:\n    1) a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the user's queries in the CONVERSATION_HISTORY.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n\nThe explanation should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"explanation\": \"<15-60 words>\",\n  \"score\": <1-5>\n}\n\n\nEVALUATION STEPS\n================\nA. Read the CONVERSATION_HISTORY and RESPONSE carefully.\nB. Identify the user's query from the latest message (use conversation history for context if needed).\nC. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the user's query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nD. Match the response to the best score from the rubric.\nE. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nCONVERSATION_HISTORY: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"explanation\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1\n}\n\n\n**Example B**\nCONVERSATION_HISTORY: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"explanation\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nCONVERSATION_HISTORY: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"explanation\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2\n}\n\n**Example B**\nCONVERSATION_HISTORY: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"explanation\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"explanation\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"explanation\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"explanation\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"explanation\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5\n}\n\n### Multi-turn Conversation Example\nWhen evaluating responses in a multi-turn conversation, consider the conversation context to understand the user's intent:\n\n**Example - Multi-turn Context**\nCONVERSATION_HISTORY: [{\"role\":\"user\",\"content\":\"I'm planning a vacation to Europe.\"},{\"role\":\"assistant\",\"content\":\"That sounds exciting! What time of year are you thinking of traveling?\"},{\"role\":\"user\",\"content\":\"Probably in July. What's the weather like then?\"}]\nRESPONSE: [{\"role\":\"assistant\",\"content\":\"July is summer in Europe with generally warm and pleasant weather. Most countries have temperatures between 20-25°C (68-77°F). It's a popular travel time, so expect crowds at major tourist attractions and higher accommodation prices.\"}]\n\nExpected Output:\n{\n    \"explanation\": \"The response directly addresses the weather question while providing valuable context about crowds and pricing that's relevant to vacation planning established in the conversation.\",\n    \"score\": 5\n}"
           }
         ],
         "model": "aoai-deployment",
@@ -191,12 +189,12 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "d5776ad5-1295-492a-a758-ddccc6cf896b",
-        "azureml-model-session": "d049-20251006205945",
+        "apim-request-id": "cd228ed9-b50d-448d-8476-36337b0190cb",
+        "azureml-model-session": "d060-20251019182033",
         "Connection": "close",
-        "Content-Length": "1370",
+        "Content-Length": "1337",
         "Content-Type": "application/json",
-        "Date": "Wed, 15 Oct 2025 21:49:14 GMT",
+        "Date": "Mon, 20 Oct 2025 19:12:54 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
@@ -206,8 +204,8 @@
         "x-ratelimit-limit-requests": "1000",
         "x-ratelimit-limit-tokens": "1000000",
         "x-ratelimit-remaining-requests": "998",
-        "x-ratelimit-remaining-tokens": "996524",
-        "X-Request-ID": "1e786f01-92e4-420a-8d76-48728413f9fd"
+        "x-ratelimit-remaining-tokens": "996513",
+        "X-Request-ID": "1f18095e-3f3c-48fb-a022-ff82d4a4ad2f"
       },
       "ResponseBody": {
         "choices": [
@@ -239,13 +237,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "{\n  \"explanation\": \"The response 'Japan' directly and accurately answers the user's question about the country of which Tokyo is the capital. It is complete and fully relevant, though brief, with no need for further elaboration.\",\n  \"score\": 4\n}",
+              "content": "{\n  \"explanation\": \"The response 'Japan' directly and accurately answers the user's question about the country of which Tokyo is the capital. It is complete and fully relevant, with no omissions.\",\n  \"score\": 4\n}",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1760564951,
+        "created": 1760987572,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -278,19 +276,19 @@
         ],
         "system_fingerprint": "fp_f99638a8d7",
         "usage": {
-          "completion_tokens": 56,
+          "completion_tokens": 49,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
             "reasoning_tokens": 0,
             "rejected_prediction_tokens": 0
           },
-          "prompt_tokens": 1577,
+          "prompt_tokens": 1582,
           "prompt_tokens_details": {
             "audio_tokens": 0,
             "cached_tokens": 0
           },
-          "total_tokens": 1633
+          "total_tokens": 1631
         }
       }
     },
@@ -299,12 +297,11 @@
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate",
         "api-key": "Sanitized",
         "Connection": "close",
         "Content-Length": "6787",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.12.0",
+        "User-Agent": "azure-ai-evaluation/1.13.0",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
         "X-Stainless-Lang": "python",
@@ -336,12 +333,12 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "f6b5cd1b-c37f-4c00-a620-fc5f4a7103dd",
-        "azureml-model-session": "d048-20251006205945",
+        "apim-request-id": "769d04e4-3240-4a24-bf18-ed7b5a2295c5",
+        "azureml-model-session": "d059-20251019182033",
         "Connection": "close",
-        "Content-Length": "1829",
+        "Content-Length": "2033",
         "Content-Type": "application/json",
-        "Date": "Wed, 15 Oct 2025 21:49:25 GMT",
+        "Date": "Mon, 20 Oct 2025 19:13:05 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
@@ -351,8 +348,8 @@
         "x-ratelimit-limit-requests": "1000",
         "x-ratelimit-limit-tokens": "1000000",
         "x-ratelimit-remaining-requests": "997",
-        "x-ratelimit-remaining-tokens": "994898",
-        "X-Request-ID": "019a7595-7552-4f68-85a9-0db12276bb2f"
+        "x-ratelimit-remaining-tokens": "994887",
+        "X-Request-ID": "83a4f6a1-c0ed-471f-9fd5-40bca59134c9"
       },
       "ResponseBody": {
         "choices": [
@@ -388,13 +385,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "<S0>Let's think step by step: The query asks for the country of which Tokyo is the capital. The response is a single word, \"Japan,\" which is the correct answer. While the response is extremely brief, it is directly relevant and logically connected to the question. There are no disjointed or fragmented ideas; the answer is complete for the type of question asked. However, it does not demonstrate sophisticated organization or transitions, but for a fact-based query, this is sufficient.</S0>\n<S1>The response is coherent and directly answers the question in a logical and clear manner, appropriate for a simple factual query.</S1>\n<S2>4</S2>",
+              "content": "<S0>Let's think step by step: The query asks for the country of which Tokyo is the capital. The response is a single word, \"Japan,\" which is the correct answer. While the response is accurate and directly addresses the question, it does not present any logical sequence of ideas, transitions, or organization, as it is just a one-word answer. According to the definitions, coherence at level 4 and 5 requires organized ideas and transitions, which are not present here. However, the response is not incoherent or fragmented; it is simply minimal but fully relevant.</S0>\n<S1>The response is fully relevant and directly answers the question, but it lacks any organization or flow due to its brevity. It is coherent in the sense that it is understandable and correct, but it does not demonstrate the features of higher coherence levels.</S1>\n<S2>4</S2>",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1760564955,
+        "created": 1760987576,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -427,7 +424,7 @@
         ],
         "system_fingerprint": "fp_f99638a8d7",
         "usage": {
-          "completion_tokens": 139,
+          "completion_tokens": 183,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
@@ -437,9 +434,9 @@
           "prompt_tokens": 1260,
           "prompt_tokens_details": {
             "audio_tokens": 0,
-            "cached_tokens": 1024
+            "cached_tokens": 0
           },
-          "total_tokens": 1399
+          "total_tokens": 1443
         }
       }
     },
@@ -448,12 +445,11 @@
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate",
         "api-key": "Sanitized",
         "Connection": "close",
         "Content-Length": "4840",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.12.0",
+        "User-Agent": "azure-ai-evaluation/1.13.0",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
         "X-Stainless-Lang": "python",
@@ -485,12 +481,12 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "cc0e22b8-8669-4010-92ef-209faba2024b",
-        "azureml-model-session": "d199-20251007152426",
+        "apim-request-id": "26dd17c5-6f7e-4b55-8fa2-b6929840c947",
+        "azureml-model-session": "d439-20251020130405",
         "Connection": "close",
-        "Content-Length": "1554",
+        "Content-Length": "1691",
         "Content-Type": "application/json",
-        "Date": "Wed, 15 Oct 2025 21:49:30 GMT",
+        "Date": "Mon, 20 Oct 2025 19:13:13 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
@@ -500,8 +496,8 @@
         "x-ratelimit-limit-requests": "1000",
         "x-ratelimit-limit-tokens": "1000000",
         "x-ratelimit-remaining-requests": "996",
-        "x-ratelimit-remaining-tokens": "993756",
-        "X-Request-ID": "70098d60-0479-4aba-a01c-568da6824461"
+        "x-ratelimit-remaining-tokens": "993745",
+        "X-Request-ID": "9e966774-7d34-427c-b7a5-d123f15632e4"
       },
       "ResponseBody": {
         "choices": [
@@ -537,13 +533,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "<S0>Let's think step by step: The response consists of a single word, \"Japan.\" It does not form a sentence, lacks grammar, vocabulary range, and any structure. There is no coherence or readability, and the message is extremely limited and fragmented.</S0>\n<S1>The response is just a single word and does not demonstrate any fluency in written communication.</S1>\n<S2>1</S2>",
+              "content": "<S0>Let's think step by step: The response consists of a single word, \"Japan.\" There are no sentences, grammar, vocabulary range, or structure to evaluate. It does not communicate any idea or message beyond naming a country. According to the definitions, this falls below even the most basic level of fluency, as there is no attempt at sentence construction or communication of an idea.</S0>\n<S1>The response is just a single word and does not demonstrate any fluency in written communication.</S1>\n<S2>1</S2>",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1760564966,
+        "created": 1760987586,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -576,7 +572,7 @@
         ],
         "system_fingerprint": "fp_f99638a8d7",
         "usage": {
-          "completion_tokens": 88,
+          "completion_tokens": 114,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
@@ -588,7 +584,7 @@
             "audio_tokens": 0,
             "cached_tokens": 0
           },
-          "total_tokens": 1002
+          "total_tokens": 1028
         }
       }
     },
@@ -597,12 +593,11 @@
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate",
         "api-key": "Sanitized",
         "Connection": "close",
         "Content-Length": "4497",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.12.0",
+        "User-Agent": "azure-ai-evaluation/1.13.0",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
         "X-Stainless-Lang": "python",
@@ -634,12 +629,12 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "4667dae8-3b56-43f1-8fe6-f3b2f6d5171a",
-        "azureml-model-session": "d041-20251007013838",
+        "apim-request-id": "1a075fc9-45c5-4f9d-b52e-3a45938af3bd",
+        "azureml-model-session": "d059-20251019182033",
         "Connection": "close",
         "Content-Length": "1178",
         "Content-Type": "application/json",
-        "Date": "Wed, 15 Oct 2025 21:49:32 GMT",
+        "Date": "Mon, 20 Oct 2025 19:13:15 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
@@ -649,8 +644,8 @@
         "x-ratelimit-limit-requests": "1000",
         "x-ratelimit-limit-tokens": "1000000",
         "x-ratelimit-remaining-requests": "995",
-        "x-ratelimit-remaining-tokens": "992692",
-        "X-Request-ID": "daadcf48-b555-4c95-b02e-4a23f1c5cae7"
+        "x-ratelimit-remaining-tokens": "992681",
+        "X-Request-ID": "42feffaa-98f3-4c01-97e6-a57795c38fe3"
       },
       "ResponseBody": {
         "choices": [
@@ -692,7 +687,7 @@
             }
           }
         ],
-        "created": 1760564972,
+        "created": 1760987595,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
