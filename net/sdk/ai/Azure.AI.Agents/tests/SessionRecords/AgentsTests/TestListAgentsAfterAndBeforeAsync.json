@@ -1,0 +1,685 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents?api-version=2025-11-15-preview&limit=10&order=asc",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251024153106 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "3f42f76c-b27b-4931-a7e8-a2a5b49b3996",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 24 Oct 2025 22:33:39 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "165",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "36262175b06803690338a1f7a58e7ce1",
+        "x-request-time": "0.097"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "object": "agent",
+            "id": "TestImageBasedHostedAgentFromDotnet",
+            "name": "TestImageBasedHostedAgentFromDotnet",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "TestImageBasedHostedAgentFromDotnet:1",
+                "name": "TestImageBasedHostedAgentFromDotnet",
+                "version": "1",
+                "description": "A test container agent from the .NET library suite",
+                "metadata": {},
+                "created_at": 1758765119,
+                "definition": {
+                  "kind": "hosted",
+                  "container_protocol_versions": [
+                    {
+                      "protocol": "responses",
+                      "version": "v1"
+                    }
+                  ],
+                  "cpu": "1",
+                  "memory": "2Gi",
+                  "image": "ImageNameHere"
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestAgentForToolRepro",
+            "name": "TestAgentForToolRepro",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "TestAgentForToolRepro:1",
+                "name": "TestAgentForToolRepro",
+                "version": "1",
+                "description": "",
+                "metadata": {},
+                "created_at": 1758823035,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini",
+                  "tools": [
+                    {
+                      "type": "azure_ai_search",
+                      "azure_ai_search": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestWorkflowAgentFromCurl",
+            "name": "TestWorkflowAgentFromCurl",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "TestWorkflowAgentFromCurl:3",
+                "name": "TestWorkflowAgentFromCurl",
+                "version": "3",
+                "description": "foo",
+                "metadata": {
+                  "foo": "bar"
+                },
+                "created_at": 1758912321,
+                "definition": {
+                  "kind": "workflow",
+                  "trigger": {
+                    "kind": "OnActivity",
+                    "id": "activity1",
+                    "actions": [
+                      {
+                        "kind": "SetVariable",
+                        "id": "set_variable_input_task",
+                        "variable": "Workflow.InputTask",
+                        "value": "=System.LastMessage"
+                      },
+                      {
+                        "kind": "InvokeAzureAgent",
+                        "id": "student_agent",
+                        "description": "The student node",
+                        "agent": {
+                          "name": "StudentAgent"
+                        },
+                        "input": {
+                          "messages": "=Workflow.InputTask"
+                        }
+                      },
+                      {
+                        "kind": "ResetVariable",
+                        "id": "reset_variable_inputtask",
+                        "variable": "Workflow.InputTask"
+                      },
+                      {
+                        "kind": "InvokeAzureAgent",
+                        "id": "teacher_agent",
+                        "description": "The teacher node",
+                        "agent": {
+                          "name": "TeacherAgent"
+                        },
+                        "output": {
+                          "messages": "Workflow.TeacherReply"
+                        }
+                      },
+                      {
+                        "kind": "SetVariable",
+                        "id": "set_variable_turncount",
+                        "variable": "Workflow.TurnCount",
+                        "value": "=Workflow.TurnCount + 1"
+                      },
+                      {
+                        "kind": "ConditionGroup",
+                        "id": "completion_check",
+                        "conditions": [
+                          {
+                            "condition": "=!IsBlank(Find(\"[COMPLETE]\", Upper(Workflow.TeacherReply.Text))) || Workflow.TurnCount >= 10",
+                            "id": "check_done",
+                            "actions": [
+                              {
+                                "kind": "EndWorkflow",
+                                "id": "end_workflow"
+                              }
+                            ]
+                          }
+                        ],
+                        "elseActions": [
+                          {
+                            "kind": "GotoAction",
+                            "id": "goto_action_1",
+                            "actionId": "student_agent"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "cs_e2e_tests_client2",
+            "name": "cs_e2e_tests_client2",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "cs_e2e_tests_client2:1",
+                "name": "cs_e2e_tests_client2",
+                "version": "1",
+                "description": "",
+                "metadata": {},
+                "created_at": 1758919934,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini"
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestWorkflowAgent",
+            "name": "TestWorkflowAgent",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "TestWorkflowAgent:2",
+                "name": "TestWorkflowAgent",
+                "version": "2",
+                "description": "",
+                "metadata": {},
+                "created_at": 1758924744,
+                "definition": {
+                  "kind": "workflow",
+                  "model": "gpt-5-mini",
+                  "tools": [
+                    {
+                      "type": "azure_ai_search"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestPromptAgentFromCurlWithSearchTool",
+            "name": "TestPromptAgentFromCurlWithSearchTool",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "TestPromptAgentFromCurlWithSearchTool:1",
+                "name": "TestPromptAgentFromCurlWithSearchTool",
+                "version": "1",
+                "description": "",
+                "metadata": {},
+                "created_at": 1758924796,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini",
+                  "tools": [
+                    {
+                      "type": "azure_ai_search",
+                      "azure_ai_search": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestPromptAgent",
+            "name": "TestPromptAgent",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "TestPromptAgent:1",
+                "name": "TestPromptAgent",
+                "version": "1",
+                "description": "",
+                "metadata": {},
+                "created_at": 1758926402,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini",
+                  "instructions": "You are a helpful agent that happens to talk like a pirate. Arr!"
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestPromptAgentFromCurl",
+            "name": "TestPromptAgentFromCurl",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "TestPromptAgentFromCurl:1",
+                "name": "TestPromptAgentFromCurl",
+                "version": "1",
+                "description": "",
+                "metadata": {},
+                "created_at": 1758929330,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini",
+                  "tools": [
+                    {
+                      "type": "azure_ai_search",
+                      "azure_ai_search": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestPromptAgentFromDotnet",
+            "name": "TestPromptAgentFromDotnet",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "TestPromptAgentFromDotnet:3",
+                "name": "TestPromptAgentFromDotnet",
+                "version": "3",
+                "description": "",
+                "metadata": {},
+                "created_at": 1758930418,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini",
+                  "instructions": "You are a helpful agent that happens to always talk like a pirate. Arr!"
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "MyAgentName2",
+            "name": "MyAgentName2",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "MyAgentName2:1",
+                "name": "MyAgentName2",
+                "version": "1",
+                "description": "",
+                "metadata": {},
+                "created_at": 1758931355,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4o"
+                }
+              }
+            }
+          }
+        ],
+        "first_id": "TestImageBasedHostedAgentFromDotnet",
+        "last_id": "MyAgentName2",
+        "has_more": true,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents?api-version=2025-11-15-preview&limit=10&order=asc&after=MyAgentName2&before=TestImageBasedHostedAgentFromDotnet",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251024153106 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "d890c7c2-2eaf-4bee-a293-a3578a786f1e",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 24 Oct 2025 22:33:41 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "159",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "89d964d1eabfa7bd8eb721935506c358",
+        "x-request-time": "0.047"
+      },
+      "ResponseBody": {
+        "data": [],
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents?api-version=2025-11-15-preview&limit=2&order=asc&before=TestWorkflowAgent",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251024153106 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "0f84343b-013b-42c1-bb97-6233a296984a",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 24 Oct 2025 22:33:44 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "145",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "a35ef618f156e6fe7fea258c9a663627",
+        "x-request-time": "0.073"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "object": "agent",
+            "id": "TestImageBasedHostedAgentFromDotnet",
+            "name": "TestImageBasedHostedAgentFromDotnet",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "TestImageBasedHostedAgentFromDotnet:1",
+                "name": "TestImageBasedHostedAgentFromDotnet",
+                "version": "1",
+                "description": "A test container agent from the .NET library suite",
+                "metadata": {},
+                "created_at": 1758765119,
+                "definition": {
+                  "kind": "hosted",
+                  "container_protocol_versions": [
+                    {
+                      "protocol": "responses",
+                      "version": "v1"
+                    }
+                  ],
+                  "cpu": "1",
+                  "memory": "2Gi",
+                  "image": "ImageNameHere"
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestAgentForToolRepro",
+            "name": "TestAgentForToolRepro",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "TestAgentForToolRepro:1",
+                "name": "TestAgentForToolRepro",
+                "version": "1",
+                "description": "",
+                "metadata": {},
+                "created_at": 1758823035,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini",
+                  "tools": [
+                    {
+                      "type": "azure_ai_search",
+                      "azure_ai_search": null
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "first_id": "TestImageBasedHostedAgentFromDotnet",
+        "last_id": "TestAgentForToolRepro",
+        "has_more": true,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents?api-version=2025-11-15-preview&limit=2&order=asc&after=TestAgentForToolRepro&before=TestImageBasedHostedAgentFromDotnet",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251024153106 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "ff598a43-9427-44da-907e-db3b7d44822b",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 24 Oct 2025 22:33:46 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "147",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "75493437eb42d5f3438e8f2d6d3484f3",
+        "x-request-time": "0.049"
+      },
+      "ResponseBody": {
+        "data": [],
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents?api-version=2025-11-15-preview&limit=2&order=asc&after=TestAgentForToolRepro",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251024153106 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "95d36bc7-ae71-4672-a489-cad54c8ba6ca",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 24 Oct 2025 22:33:49 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "161",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "e4f2781b0ef3362329639ea1a4d21289",
+        "x-request-time": "0.044"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "object": "agent",
+            "id": "TestWorkflowAgentFromCurl",
+            "name": "TestWorkflowAgentFromCurl",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "TestWorkflowAgentFromCurl:3",
+                "name": "TestWorkflowAgentFromCurl",
+                "version": "3",
+                "description": "foo",
+                "metadata": {
+                  "foo": "bar"
+                },
+                "created_at": 1758912321,
+                "definition": {
+                  "kind": "workflow",
+                  "trigger": {
+                    "kind": "OnActivity",
+                    "id": "activity1",
+                    "actions": [
+                      {
+                        "kind": "SetVariable",
+                        "id": "set_variable_input_task",
+                        "variable": "Workflow.InputTask",
+                        "value": "=System.LastMessage"
+                      },
+                      {
+                        "kind": "InvokeAzureAgent",
+                        "id": "student_agent",
+                        "description": "The student node",
+                        "agent": {
+                          "name": "StudentAgent"
+                        },
+                        "input": {
+                          "messages": "=Workflow.InputTask"
+                        }
+                      },
+                      {
+                        "kind": "ResetVariable",
+                        "id": "reset_variable_inputtask",
+                        "variable": "Workflow.InputTask"
+                      },
+                      {
+                        "kind": "InvokeAzureAgent",
+                        "id": "teacher_agent",
+                        "description": "The teacher node",
+                        "agent": {
+                          "name": "TeacherAgent"
+                        },
+                        "output": {
+                          "messages": "Workflow.TeacherReply"
+                        }
+                      },
+                      {
+                        "kind": "SetVariable",
+                        "id": "set_variable_turncount",
+                        "variable": "Workflow.TurnCount",
+                        "value": "=Workflow.TurnCount + 1"
+                      },
+                      {
+                        "kind": "ConditionGroup",
+                        "id": "completion_check",
+                        "conditions": [
+                          {
+                            "condition": "=!IsBlank(Find(\"[COMPLETE]\", Upper(Workflow.TeacherReply.Text))) || Workflow.TurnCount >= 10",
+                            "id": "check_done",
+                            "actions": [
+                              {
+                                "kind": "EndWorkflow",
+                                "id": "end_workflow"
+                              }
+                            ]
+                          }
+                        ],
+                        "elseActions": [
+                          {
+                            "kind": "GotoAction",
+                            "id": "goto_action_1",
+                            "actionId": "student_agent"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "cs_e2e_tests_client2",
+            "name": "cs_e2e_tests_client2",
+            "versions": {
+              "latest": {
+                "object": "agent.version",
+                "id": "cs_e2e_tests_client2:1",
+                "name": "cs_e2e_tests_client2",
+                "version": "1",
+                "description": "",
+                "metadata": {},
+                "created_at": 1758919934,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini"
+                }
+              }
+            }
+          }
+        ],
+        "first_id": "TestWorkflowAgentFromCurl",
+        "last_id": "cs_e2e_tests_client2",
+        "has_more": true,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents?api-version=2025-11-15-preview&limit=2&order=asc&after=cs_e2e_tests_client2&before=TestWorkflowAgentFromCurl",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251024153106 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "1e6aea94-1777-4d46-abe5-4d99ff0a1346",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 24 Oct 2025 22:33:51 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "169",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "5780dd1f3e9b22a0488833ccf0295868",
+        "x-request-time": "0.032"
+      },
+      "ResponseBody": {
+        "data": [],
+        "has_more": false,
+        "object": "list"
+      }
+    }
+  ],
+  "Variables": {
+    "PROJECT_ENDPOINT": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project"
+  }
+}
