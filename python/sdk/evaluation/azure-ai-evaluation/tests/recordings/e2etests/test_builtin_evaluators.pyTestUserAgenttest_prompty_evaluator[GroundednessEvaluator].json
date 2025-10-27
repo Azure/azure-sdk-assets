@@ -5,12 +5,11 @@
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "5391",
+        "Content-Length": "5926",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.12.0 test/1.0.0",
+        "User-Agent": "azure-ai-evaluation/1.13.0 test/1.0.0",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
         "X-Stainless-Lang": "python",
@@ -27,7 +26,7 @@
           },
           {
             "role": "user",
-            "content": "# Definition\n**Groundedness** refers to how faithfully a response adheres to the information provided in the CONTEXT, ensuring that all content is directly supported by the context without introducing unsupported information or omitting critical details. It evaluates the fidelity and precision of the response in relation to the source material.\n\n# Ratings\n## [Groundedness: 1] (Completely Ungrounded Response)\n**Definition:** The response is entirely unrelated to the CONTEXT, introducing topics or information that have no connection to the provided material.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter.\n  **Response:** I enjoy playing soccer on weekends with my friends.\n\n  **Context:** The new smartphone model features a larger display and improved battery life.\n  **Response:** The history of ancient Egypt is fascinating and full of mysteries.\n\n## [Groundedness: 2] (Contradictory Response)\n**Definition:** The response directly contradicts or misrepresents the information provided in the CONTEXT.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter.\n  **Response:** The company's profits decreased by 20% in the last quarter.\n\n  **Context:** The new smartphone model features a larger display and improved battery life.\n  **Response:** The new smartphone model has a smaller display and shorter battery life.\n\n## [Groundedness: 3] (Accurate Response with Unsupported Additions)\n**Definition:** The response accurately includes information from the CONTEXT but adds details, opinions, or explanations that are not supported by the provided material.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter.\n  **Response:** The company's profits increased by 20% in the last quarter due to their aggressive marketing strategy.\n\n  **Context:** The new smartphone model features a larger display and improved battery life.\n  **Response:** The new smartphone model features a larger display, improved battery life, and comes with a free case.\n\n## [Groundedness: 4] (Incomplete Response Missing Critical Details)\n**Definition:** The response contains information from the CONTEXT but omits essential details that are necessary for a comprehensive understanding of the main point.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.      \n  **Response:** The company's profits increased by 20% in the last quarter.\n\n  **Context:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.        \n  **Response:** The new smartphone model features a larger display and improved battery life.\n\n## [Groundedness: 5] (Fully Grounded and Complete Response)\n**Definition:** The response is entirely based on the CONTEXT, accurately and thoroughly conveying all essential information without introducing unsupported details or omitting critical points.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.      \n  **Response:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.     \n\n  **Context:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.        \n  **Response:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.  \n\n\n# Data\nCONTEXT: {'global_context': 'Global context', 'query_context': 'Customer wants to know the capital of France', 'response_context': 'Paris is the capital of France'}\nRESPONSE: Paris\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE in relation to the CONTEXT based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
+            "content": "# Definition\n**Groundedness** refers to how well a response is anchored in the provided context, evaluating its relevance, accuracy, and completeness based exclusively on that context. It assesses the extent to which the response directly and fully addresses the information without introducing unrelated or incorrect information.\n\n> Context is the source of truth for evaluating the response. \n> Evaluate the groundedness of the response message based on the provided context.\n\n# Ratings\n## [Groundedness: 1] (Completely Unrelated Response)\n**Definition:** A response that does not relate to the context in any way.\n  - Does not relate to the context at all.\n  - Talks about the general topic but does not respond to the context.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter.\n  **Response:** I enjoy playing soccer on weekends with my friends.\n\n  **Context:** The new smartphone model features a larger display and improved battery life.\n  **Response:** The history of ancient Egypt is fascinating and full of mysteries.\n\n## [Groundedness: 2] (Attempts to Respond but Contains Incorrect Information)\n**Definition:** A response that attempts to relate to the context but includes incorrect information not supported by the context. It may misstate facts, misinterpret the context, or provide erroneous details. Even if some points are correct, the presence of inaccuracies makes the response unreliable.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter.\n  **Response:** The company's profits decreased by 20% in the last quarter.\n\n  **Context:** The new smartphone model features a larger display and improved battery life.\n  **Response:** The new smartphone model has a smaller display and shorter battery life.\n\n## [Groundedness: 3] (Accurate but Vague Response)\n**Definition:** A response that provides accurate information from the context but is overly generic or vague, not meaningfully engaging with the specific details in the context. The information is correct but lacks specificity and detail.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.\n  **Response:** The company is doing well financially.\n\n  **Context:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.\n  **Response:** The smartphone has some nice features.\n\n## [Groundedness: 4] (Partially Correct Response)\n**Definition:** A response that provides correct information from the context but is incomplete or lacks specific details mentioned in the context. It captures some of the necessary information but omits key elements needed for a full understanding.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.      \n  **Response:** The company's profits increased by 20% in the last quarter.\n\n  **Context:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.        \n  **Response:** The new smartphone model features a larger display and improved battery life.\n\n## [Groundedness: 5] (Fully Grounded and Complete Response)\n**Definition:** A response that thoroughly and accurately conveys information from the context, including all relevant details. It directly addresses the context with precise information, demonstrating complete understanding without adding extraneous information.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.      \n  **Response:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.     \n\n  **Context:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.        \n  **Response:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.  \n\n\n# Data\nCONTEXT: {'global_context': 'Global context', 'query_context': 'Customer wants to know the capital of France', 'response_context': 'Paris is the capital of France'}\nRESPONSE: Paris\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE in relation to the CONTEXT based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
           }
         ],
         "model": "aoai-deployment",
@@ -42,161 +41,12 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "172c08fa-c8a3-4754-96c7-036d491170fe",
-        "azureml-model-session": "d041-20250930121848",
+        "apim-request-id": "5033c12f-d169-4f0b-a632-6c1c5c23836e",
+        "azureml-model-session": "d446-20251020163826",
         "Connection": "close",
-        "Content-Length": "1765",
+        "Content-Length": "1722",
         "Content-Type": "application/json",
-        "Date": "Mon, 06 Oct 2025 18:11:05 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "x-accel-buffering": "no",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-deployment-name": "gpt-4.1",
-        "x-ms-rai-invoked": "true",
-        "x-ms-region": "West US 3",
-        "x-ratelimit-limit-requests": "1000",
-        "x-ratelimit-limit-tokens": "1000000",
-        "x-ratelimit-remaining-requests": "997",
-        "x-ratelimit-remaining-tokens": "995645",
-        "X-Request-ID": "efc5338d-7a25-4423-a27e-ec75baf23aaa"
-      },
-      "ResponseBody": {
-        "choices": [
-          {
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "protected_material_code": {
-                "filtered": false,
-                "detected": false
-              },
-              "protected_material_text": {
-                "filtered": false,
-                "detected": false
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            },
-            "finish_reason": "stop",
-            "index": 0,
-            "logprobs": null,
-            "message": {
-              "annotations": [],
-              "content": "<S0>Let's think step by step: The CONTEXT indicates that the customer wants to know the capital of France, and the response context states \"Paris is the capital of France.\" The RESPONSE is simply \"Paris.\" This directly answers the query and is fully supported by the context. There are no unsupported additions or omissions of critical details, as the essential information is the name of the capital.</S0>\n<S1>The response is fully grounded and complete, accurately reflecting the information provided in the context without adding or omitting anything essential.</S1>\n<S2>5</S2>",
-              "refusal": null,
-              "role": "assistant"
-            }
-          }
-        ],
-        "created": 1759774263,
-        "id": "Sanitized",
-        "model": "aoai-deployment",
-        "object": "chat.completion",
-        "prompt_filter_results": [
-          {
-            "prompt_index": 0,
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "jailbreak": {
-                "filtered": false,
-                "detected": false
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            }
-          }
-        ],
-        "system_fingerprint": "fp_4d7b201289",
-        "usage": {
-          "completion_tokens": 120,
-          "completion_tokens_details": {
-            "accepted_prediction_tokens": 0,
-            "audio_tokens": 0,
-            "reasoning_tokens": 0,
-            "rejected_prediction_tokens": 0
-          },
-          "prompt_tokens": 1051,
-          "prompt_tokens_details": {
-            "audio_tokens": 0,
-            "cached_tokens": 0
-          },
-          "total_tokens": 1171
-        }
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2023-07-01-preview",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate",
-        "api-key": "Sanitized",
-        "Connection": "close",
-        "Content-Length": "5397",
-        "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.12.0 test/1.0.0",
-        "X-Stainless-Arch": "x64",
-        "X-Stainless-Async": "async:asyncio",
-        "X-Stainless-Lang": "python",
-        "X-Stainless-OS": "Other:XXX",
-        "X-Stainless-Package-Version": "vX.X.X",
-        "X-Stainless-Runtime": "CPython",
-        "X-Stainless-Runtime-Version": "3.X.X"
-      },
-      "RequestBody": {
-        "messages": [
-          {
-            "role": "system",
-            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include CONTEXT and RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
-          },
-          {
-            "role": "user",
-            "content": "# Definition\n**Groundedness** refers to how faithfully a response adheres to the information provided in the CONTEXT, ensuring that all content is directly supported by the context without introducing unsupported information or omitting critical details. It evaluates the fidelity and precision of the response in relation to the source material.\n\n# Ratings\n## [Groundedness: 1] (Completely Ungrounded Response)\n**Definition:** The response is entirely unrelated to the CONTEXT, introducing topics or information that have no connection to the provided material.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter.\n  **Response:** I enjoy playing soccer on weekends with my friends.\n\n  **Context:** The new smartphone model features a larger display and improved battery life.\n  **Response:** The history of ancient Egypt is fascinating and full of mysteries.\n\n## [Groundedness: 2] (Contradictory Response)\n**Definition:** The response directly contradicts or misrepresents the information provided in the CONTEXT.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter.\n  **Response:** The company's profits decreased by 20% in the last quarter.\n\n  **Context:** The new smartphone model features a larger display and improved battery life.\n  **Response:** The new smartphone model has a smaller display and shorter battery life.\n\n## [Groundedness: 3] (Accurate Response with Unsupported Additions)\n**Definition:** The response accurately includes information from the CONTEXT but adds details, opinions, or explanations that are not supported by the provided material.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter.\n  **Response:** The company's profits increased by 20% in the last quarter due to their aggressive marketing strategy.\n\n  **Context:** The new smartphone model features a larger display and improved battery life.\n  **Response:** The new smartphone model features a larger display, improved battery life, and comes with a free case.\n\n## [Groundedness: 4] (Incomplete Response Missing Critical Details)\n**Definition:** The response contains information from the CONTEXT but omits essential details that are necessary for a comprehensive understanding of the main point.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.      \n  **Response:** The company's profits increased by 20% in the last quarter.\n\n  **Context:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.        \n  **Response:** The new smartphone model features a larger display and improved battery life.\n\n## [Groundedness: 5] (Fully Grounded and Complete Response)\n**Definition:** The response is entirely based on the CONTEXT, accurately and thoroughly conveying all essential information without introducing unsupported details or omitting critical points.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.      \n  **Response:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.     \n\n  **Context:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.        \n  **Response:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.  \n\n\n# Data\nCONTEXT: {'global_context': 'Global context', 'query_context': 'Customer wants to know the capital of Hawaii', 'response_context': 'Honolulu is the capital of Hawaii'}\nRESPONSE: Honolulu\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE in relation to the CONTEXT based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
-          }
-        ],
-        "model": "aoai-deployment",
-        "frequency_penalty": 0,
-        "max_tokens": 800,
-        "presence_penalty": 0,
-        "response_format": {
-          "type": "text"
-        },
-        "temperature": 0.0,
-        "top_p": 1.0
-      },
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "e4abcabd-ff38-4b4a-be67-2d5e1e5b6004",
-        "azureml-model-session": "d041-20250930121848",
-        "Connection": "close",
-        "Content-Length": "1717",
-        "Content-Type": "application/json",
-        "Date": "Mon, 06 Oct 2025 18:11:09 GMT",
+        "Date": "Mon, 27 Oct 2025 19:45:32 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
@@ -206,8 +56,8 @@
         "x-ratelimit-limit-requests": "1000",
         "x-ratelimit-limit-tokens": "1000000",
         "x-ratelimit-remaining-requests": "996",
-        "x-ratelimit-remaining-tokens": "994366",
-        "X-Request-ID": "0ef0f77d-5070-4ce3-a0c1-e36653117d23"
+        "x-ratelimit-remaining-tokens": "994385",
+        "X-Request-ID": "59763169-16f8-4358-b96b-047a0ee5b411"
       },
       "ResponseBody": {
         "choices": [
@@ -243,13 +93,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "<S0>Let's think step by step: The query context asks for the capital of Hawaii. The response context provides the answer: \"Honolulu is the capital of Hawaii.\" The RESPONSE is simply \"Honolulu,\" which is accurate and directly supported by the context. There are no unsupported additions, contradictions, or omissions of critical details, as the essential information required is just the name of the capital.</S0>\n<S1>The response is fully grounded, accurate, and complete for the query, matching the context exactly.</S1>\n<S2>5</S2>",
+              "content": "<S0>Let's think step by step: The query context is that the customer wants to know the capital of France. The response context confirms that \"Paris is the capital of France.\" The response given is \"Paris,\" which is accurate and directly answers the question. While it is brief, it is fully correct and directly grounded in the context, as the only relevant detail required is the name of the capital.</S0>\n<S1>The response is fully accurate and directly answers the query with the correct information from the context.</S1>\n<S2>5</S2>",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1759774267,
+        "created": 1761594317,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -280,21 +130,169 @@
             }
           }
         ],
-        "system_fingerprint": "fp_4d7b201289",
+        "system_fingerprint": "fp_f99638a8d7",
         "usage": {
-          "completion_tokens": 116,
+          "completion_tokens": 117,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
             "reasoning_tokens": 0,
             "rejected_prediction_tokens": 0
           },
-          "prompt_tokens": 1052,
+          "prompt_tokens": 1148,
           "prompt_tokens_details": {
             "audio_tokens": 0,
-            "cached_tokens": 0
+            "cached_tokens": 1024
           },
-          "total_tokens": 1168
+          "total_tokens": 1265
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2023-07-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "api-key": "Sanitized",
+        "Connection": "close",
+        "Content-Length": "5932",
+        "Content-Type": "application/json",
+        "User-Agent": "azure-ai-evaluation/1.13.0 test/1.0.0",
+        "X-Stainless-Arch": "x64",
+        "X-Stainless-Async": "async:asyncio",
+        "X-Stainless-Lang": "python",
+        "X-Stainless-OS": "Other:XXX",
+        "X-Stainless-Package-Version": "vX.X.X",
+        "X-Stainless-Runtime": "CPython",
+        "X-Stainless-Runtime-Version": "3.X.X"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include CONTEXT and RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
+          },
+          {
+            "role": "user",
+            "content": "# Definition\n**Groundedness** refers to how well a response is anchored in the provided context, evaluating its relevance, accuracy, and completeness based exclusively on that context. It assesses the extent to which the response directly and fully addresses the information without introducing unrelated or incorrect information.\n\n> Context is the source of truth for evaluating the response. \n> Evaluate the groundedness of the response message based on the provided context.\n\n# Ratings\n## [Groundedness: 1] (Completely Unrelated Response)\n**Definition:** A response that does not relate to the context in any way.\n  - Does not relate to the context at all.\n  - Talks about the general topic but does not respond to the context.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter.\n  **Response:** I enjoy playing soccer on weekends with my friends.\n\n  **Context:** The new smartphone model features a larger display and improved battery life.\n  **Response:** The history of ancient Egypt is fascinating and full of mysteries.\n\n## [Groundedness: 2] (Attempts to Respond but Contains Incorrect Information)\n**Definition:** A response that attempts to relate to the context but includes incorrect information not supported by the context. It may misstate facts, misinterpret the context, or provide erroneous details. Even if some points are correct, the presence of inaccuracies makes the response unreliable.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter.\n  **Response:** The company's profits decreased by 20% in the last quarter.\n\n  **Context:** The new smartphone model features a larger display and improved battery life.\n  **Response:** The new smartphone model has a smaller display and shorter battery life.\n\n## [Groundedness: 3] (Accurate but Vague Response)\n**Definition:** A response that provides accurate information from the context but is overly generic or vague, not meaningfully engaging with the specific details in the context. The information is correct but lacks specificity and detail.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.\n  **Response:** The company is doing well financially.\n\n  **Context:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.\n  **Response:** The smartphone has some nice features.\n\n## [Groundedness: 4] (Partially Correct Response)\n**Definition:** A response that provides correct information from the context but is incomplete or lacks specific details mentioned in the context. It captures some of the necessary information but omits key elements needed for a full understanding.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.      \n  **Response:** The company's profits increased by 20% in the last quarter.\n\n  **Context:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.        \n  **Response:** The new smartphone model features a larger display and improved battery life.\n\n## [Groundedness: 5] (Fully Grounded and Complete Response)\n**Definition:** A response that thoroughly and accurately conveys information from the context, including all relevant details. It directly addresses the context with precise information, demonstrating complete understanding without adding extraneous information.\n\n**Examples:**\n  **Context:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.      \n  **Response:** The company's profits increased by 20% in the last quarter, marking the highest growth rate in its history.     \n\n  **Context:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.        \n  **Response:** The new smartphone model features a larger display, improved battery life, and an upgraded camera system.  \n\n\n# Data\nCONTEXT: {'global_context': 'Global context', 'query_context': 'Customer wants to know the capital of Hawaii', 'response_context': 'Honolulu is the capital of Hawaii'}\nRESPONSE: Honolulu\n\n\n# Tasks\n## Please provide your assessment Score for the previous RESPONSE in relation to the CONTEXT based on the Definitions above. Your output should include the following information:\n- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with \"Let's think step by step:\".\n- **Explanation**: a very short explanation of why you think the input Data should get that Score.\n- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., \"1\", \"2\"...) based on the levels of the definitions.\n\n\n## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.\n# Output"
+          }
+        ],
+        "model": "aoai-deployment",
+        "frequency_penalty": 0,
+        "max_tokens": 800,
+        "presence_penalty": 0,
+        "response_format": {
+          "type": "text"
+        },
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "bbfc2bc8-1e68-4cc1-902c-cfb91ebdac7d",
+        "azureml-model-session": "d446-20251020163826",
+        "Connection": "close",
+        "Content-Length": "1929",
+        "Content-Type": "application/json",
+        "Date": "Mon, 27 Oct 2025 19:45:37 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-accel-buffering": "no",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-deployment-name": "gpt-4.1",
+        "x-ms-rai-invoked": "true",
+        "x-ms-region": "West US 3",
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "1000000",
+        "x-ratelimit-remaining-requests": "998",
+        "x-ratelimit-remaining-tokens": "997179",
+        "X-Request-ID": "da0f596d-efcf-40d4-878b-3cb8cba60616"
+      },
+      "ResponseBody": {
+        "choices": [
+          {
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "protected_material_code": {
+                "filtered": false,
+                "detected": false
+              },
+              "protected_material_text": {
+                "filtered": false,
+                "detected": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            },
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "annotations": [],
+              "content": "<S0>Let's think step by step: The query context is that the customer wants to know the capital of Hawaii. The response context provides the answer: \"Honolulu is the capital of Hawaii.\" The response given is simply \"Honolulu.\" This is accurate and directly answers the question, but it is somewhat minimal and omits the full sentence provided in the response context. According to the definitions, a fully grounded and complete response would include all relevant details, which in this case is the full sentence. The response is correct but lacks the completeness of the context.</S0>\n<S1>The response is accurate but omits the full detail (\"is the capital of Hawaii\") provided in the context, making it partially complete.</S1>\n<S2>4</S2>",
+              "refusal": null,
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1761594333,
+        "id": "Sanitized",
+        "model": "aoai-deployment",
+        "object": "chat.completion",
+        "prompt_filter_results": [
+          {
+            "prompt_index": 0,
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "jailbreak": {
+                "filtered": false,
+                "detected": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
+          }
+        ],
+        "system_fingerprint": "fp_f99638a8d7",
+        "usage": {
+          "completion_tokens": 157,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": 0
+          },
+          "prompt_tokens": 1149,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 1024
+          },
+          "total_tokens": 1306
         }
       }
     }
