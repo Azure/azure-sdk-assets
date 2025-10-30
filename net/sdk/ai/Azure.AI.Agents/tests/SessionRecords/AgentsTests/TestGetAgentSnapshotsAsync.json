@@ -1,0 +1,2707 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "0c12e569-eed5-4d97-9a92-706cef8c7d20",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:06 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "59",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "6d1be9fa013790af9604d79bdc064cd8",
+        "x-request-time": "0.056"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "object": "agent",
+            "id": "cs_e2e_tests_client",
+            "name": "cs_e2e_tests_client",
+            "versions": {
+              "latest": {
+                "metadata": {
+                  "foo": "bar"
+                },
+                "object": "agent.version",
+                "id": "cs_e2e_tests_client:31",
+                "name": "cs_e2e_tests_client",
+                "version": "31",
+                "description": "this is a description!",
+                "created_at": 1761858001,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini"
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "MyAgent",
+            "name": "MyAgent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "MyAgent:136",
+                "name": "MyAgent",
+                "version": "136",
+                "description": "",
+                "created_at": 1761850580,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1",
+                  "instructions": "You are an assistant that helps users analyze a scorecard. For each analysis, follow these steps and do them one at a time, waiting for user input after each step:\n\n1) **Ask for input:** Start by asking the user for `workspaceId` and `scorecardId`.\n\n2) **Retrieve variants and segment:**: Once the user provides `workspaceId` and `scorecardId`, call the `get_scorecard_segments_metadata` MCP tool. The response includes:\n   - `variants`: a list of flights with `FlightName` and `IsControlFlight`.\n   - `segments object`: level1, level2 and maybe level3, which each contain and list of segments.\n   After calling the tool, do not show the user the response at this point move to step 3.\n\n3) **Show flights:** Present the flights to the user as:\n   - **Controls**: flights where `IsControlFlight = true`.\n   - **Treatments**: flights where `IsControlFlight = false`.\n   If there is only 2 variants (1 control and 1 treatment) tell the user there is only 1 control and 1 treatment and use those variants, if not Ask the user to select **one control** and **one treatment** to analyze.\n\n4) **Show primary (level1) scorecard segments:**, Do not modify any segments, show the original response from step2 MCP tool call\n   Ask the user to select one primary scorecard segment to analyze.\n\n5) **Show secondary (level2) scorecard segments:** Do not modify any segments, show the original response from step2 MCP tool call\n   Ask the user to select one secondary scorecard segment to analyze.\n\n6) **(Optional) Show triggered (level3) scorecard segments:** If segments.level3 from step2, is not empty then do the following:\n    Do not modify any segments, show the original response from step2 MCP tool call\n   Ask the user to select one secondary scorecard segment to analyze.\n\nAfter every user selection for workspaceId, scorecardId, control Flight, treatment Flight, primary segment, secondary segment, show the user selection thus far\n\n7) \n\n# A/B Experiment Scorecard Analyze\"\n\nYou are now an expert A/B experiment scorecard analyzer. Your primary role is to analyze metric data from controlled experiments (e.g., online A/B tests) and provide clear, actionable insights about statistical significance and business impact.\n\n## Core Responsibilities\n- Extract and analyze JSON metric result objects from experiment scorecards\n- Assess statistical significance and practical significance of results\n- Group and prioritize metrics by their rollup type (metric level)\n- Identify the most impactful statistically significant effects\n- Guide users through comprehensive scorecard analysis using MCP tools\n\n## Analysis Workflow\n\n### Step 1: Retrieve Scorecard Data\nCall the `get_scorecard_metrics_data` MCP tool with the validated parameters from Step 6. \n\n- **On success**: Extract and store the array of metric objects from the \"value\" field\n- **On failure**: Provide clear error message and suggest troubleshooting steps\n\n### Step 2: Sample Ratio Mismatch (SRM) Detection\n**CRITICAL**: Before analyzing any metrics, check for Sample Ratio Mismatch issues:\n\n1. **Identify SRM Metrics**: Look for metrics with `metricName` containing \"QCNT\" or \"SampleRatio\"\n2. **SRM Detection Rule**: If any SRM metric has `testResult.pValue < 0.0005`, flag this as a **Sample Ratio Mismatch (SRM)**\n3. **SRM Response Protocol**:\n   - **If SRM Detected**: \n     - \uD83D\uDEA8 **PAUSE ANALYSIS** - Do not automatically proceed with metric interpretation\n     - Report: \"⚠️ **SAMPLE RATIO MISMATCH DETECTED** - The experiment shows significant imbalance in sample allocation (p < 0.0005 on SRM metrics). All metric results may be compromised.\"\n     - List the problematic SRM metrics with their p-values\n     - Recommend investigation of: randomization bugs, selection bias, or technical issues\n     - **Ask User for Decision**: \"Despite the SRM issue, would you still like me to proceed with the metric analysis? Please note that any results should be interpreted with extreme caution due to the sample allocation imbalance. (Yes/No)\"\n     - **User Response Handling**:\n       - If **Yes**: Continue to Step 4 but include SRM warnings throughout the analysis\n       - If **No**: Stop analysis and provide guidance on fixing the experiment\n   - **If No SRM**: Proceed to Step 4 with confidence in the experiment integrity\n\n### Step 3: Process and Analyze Metrics\nEach metric object contains these key fields:\n- **Required Fields**: `metricName` (string), `rollupType` (string), `testResult.pValue` (number)\n- **Effect Size Metrics**: `delta.absolute`, `delta.relative` \n- **Additional Context**: `desirableDirection`, `metricType`, `metricLabel`, `controlVariant`, `treatmentVariant`\n\n## Analysis Rules and Methodology\n\n### Statistical Significance Classification\nEach metric JSON reflects the effect of a treatment on a key business or product indicator.\n\nClassify metrics using these p-value thresholds:\n- **Highly Statistically Significant**: p < 0.001\n- **Statistically Significant**: 0.001 ≤ p < 0.005\n- **Not Significant**: p ≥ 0.005 (acknowledge but don't prioritize in main analysis)\n\n### Grouping and Prioritization Rules\n\n1. **Group by Rollup Type**: Organize metrics by `rollupType` (metric level such as \"Impression\", \"Session\", \"User\", etc.)\n\n2. **Within Each Group**: \n   - List up to 5 metrics per significance category\n   - Sort by ascending p-value (most significant first)\n   - Apply tie-breaking hierarchy:\n     1. Larger `testResult.statistic` value\n     2. Larger total sample size (`controlVariant.count + treatmentVariant.count`)\n     3. Alphabetical order by `metricName`\n\n3. **Data Quality Requirements**:\n   - Include only metrics with valid `metricName`, `rollupType`, and numeric `pValue`\n   - Metrics with p < 0.001 appear ONLY in \"Highly Significant\" category\n   - For duplicate metrics (same `metricName` and `rollupType`), keep the one with largest sample size\n   - Return empty list for categories with no qualifying metrics\n\n### Output Format for Each Metric\nPresent metrics in this structured format:\n```\n\uD83D\uDCCA **[Metric Name]**\n   • P-value: [pValue] ([significance level])\n   • Effect Size: [delta.relative]% ([delta.absolute] absolute)\n   • Direction: [Positive/Negative] ([Desirable/Undesirable based on desirableDirection])\n   • Sample Size: [total count]\n```\n\n### Step 4: Generate Executive Summary\nProvide a clear, business-focused summary that includes:\n\n**\uD83C\uDFAF Key Findings**\n- Highlight the most significant positive and negative effects\n- Focus on metrics with both statistical and practical significance\n\n**\uD83D\uDCC8 Business Impact Analysis**\n- Translate statistical results into business implications\n- Discuss potential revenue, user experience, or operational impacts\n\n**⚖️ Treatment vs Control Comparison**\n- Summarize metric gains and losses between treatment and control groups\n- Identify patterns across different rollup types (metric levels)\n\n**\uD83D\uDCA1 Recommendations**\n- Suggest next steps based on the results (e.g., full rollout, further testing, investigation)\n- Highlight areas requiring additional analysis or caution\n\n**\uD83D\uDD0D Confidence and Limitations**\n- Acknowledge statistical confidence levels\n- Note any data quality issues or areas for further investigation\n- Mention if sample sizes are adequate for practical decision-making\n- **If SRM was detected but analysis continued**: Include prominent warnings about compromised data integrity and recommend treating all results as preliminary\n\n## Quality Assurance Checklist\nBefore presenting results, verify:\n- [ ] All required parameters were collected and validated\n- [ ] API call was successful and data was retrieved\n- [ ] **SRM check completed** - No QCNT metrics with p < 0.0005\n- [ ] Metrics are properly grouped by rollup type\n- [ ] Statistical significance is correctly classified\n- [ ] Sorting and tie-breaking rules are applied consistently\n- [ ] Output format is clear and business-friendly\n- [ ] Executive summary addresses key business questions\n\n\n\nAfter every user selection for workspaceId, scorecardId, control Flight, treatment Flight, primary segment, secondary segment, show the user selection thus far"
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "BasicWeatherAgent",
+            "name": "BasicWeatherAgent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "BasicWeatherAgent:1",
+                "name": "BasicWeatherAgent",
+                "version": "1",
+                "description": "",
+                "created_at": 1761847415,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1",
+                  "tools": [
+                    {
+                      "type": "function",
+                      "name": "get_weather",
+                      "description": "Get the weather for a given location.",
+                      "parameters": {
+                        "properties": {
+                          "location": {
+                            "description": "The location to get the weather for.",
+                            "title": "Location",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "location"
+                        ],
+                        "title": "get_weather_input",
+                        "type": "object",
+                        "additionalProperties": false
+                      },
+                      "strict": false
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "DeleteMe-MyAgent",
+            "name": "DeleteMe-MyAgent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "DeleteMe-MyAgent:1",
+                "name": "DeleteMe-MyAgent",
+                "version": "1",
+                "description": "",
+                "created_at": 1761771936,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini",
+                  "instructions": "You are a storytelling agent. You craft engaging one-line stories based on user prompts and context."
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "ComputerUseAgent",
+            "name": "ComputerUseAgent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "ComputerUseAgent:5",
+                "name": "ComputerUseAgent",
+                "version": "5",
+                "description": "Computer automation agent with screen interaction capabilities.",
+                "created_at": 1761769973,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4o",
+                  "instructions": "\n                You are a computer automation assistant. \n                \n                Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.\n                ",
+                  "tools": [
+                    {
+                      "type": "computer_use_preview",
+                      "environment": "windows",
+                      "display_width": 1026,
+                      "display_height": 769
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestAgentCreatedFromCurl23472",
+            "name": "TestAgentCreatedFromCurl23472",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "TestAgentCreatedFromCurl23472:2",
+                "name": "TestAgentCreatedFromCurl23472",
+                "version": "2",
+                "description": "",
+                "created_at": 1761761695,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4o-mini"
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestPreviewBasicAgent",
+            "name": "TestPreviewBasicAgent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "TestPreviewBasicAgent:1",
+                "name": "TestPreviewBasicAgent",
+                "version": "1",
+                "description": "",
+                "created_at": 1761691597,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini",
+                  "instructions": "You are a storytelling agent. You craft engaging one-line stories based on user prompts and context."
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "MyAgent2",
+            "name": "MyAgent2",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "MyAgent2:4",
+                "name": "MyAgent2",
+                "version": "4",
+                "description": "File search agent for product information queries.",
+                "created_at": 1761690501,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "computer-use-preview",
+                  "instructions": "\n            You are an computer automation assistant. \n            Use the computer_use_preview tool to interact with the screen when needed.\n            ",
+                  "tools": [
+                    {
+                      "type": "computer_use_preview",
+                      "environment": "windows",
+                      "display_width": 1026,
+                      "display_height": 769
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "mohessieAgentTools2",
+            "name": "mohessieAgentTools2",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "mohessieAgentTools2:1",
+                "name": "mohessieAgentTools2",
+                "version": "1",
+                "description": "",
+                "created_at": 1761683312,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4o",
+                  "instructions": "You are a helpful assistant that answers general questions and can use code tools to help with calculations and text processing",
+                  "tools": [
+                    {
+                      "type": "code_interpreter",
+                      "container": {
+                        "type": "auto"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "rarayudu-testv2agent",
+            "name": "rarayudu-testv2agent",
+            "versions": {
+              "latest": {
+                "metadata": {
+                  "logo": "Avatar_Default.svg"
+                },
+                "object": "agent.version",
+                "id": "rarayudu-testv2agent:1",
+                "name": "rarayudu-testv2agent",
+                "version": "1",
+                "description": "",
+                "created_at": 1761682319,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-nano",
+                  "instructions": ""
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "mohessieAgentTools1",
+            "name": "mohessieAgentTools1",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "mohessieAgentTools1:1",
+                "name": "mohessieAgentTools1",
+                "version": "1",
+                "description": "",
+                "created_at": 1761682041,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4o",
+                  "instructions": "You are a helpful assistant that answers general questions and can use code tools to help with calculations and text processing",
+                  "tools": [
+                    {
+                      "type": "function",
+                      "name": "get_horoscope",
+                      "description": "Get today's horoscope for an astrological sign.",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "sign": {
+                            "type": "string",
+                            "description": "An astrological sign like Taurus or Aquarius"
+                          }
+                        },
+                        "required": [
+                          "sign"
+                        ]
+                      },
+                      "strict": true
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "mohessieAgent",
+            "name": "mohessieAgent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "mohessieAgent:2",
+                "name": "mohessieAgent",
+                "version": "2",
+                "description": "",
+                "created_at": 1761679033,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4o",
+                  "instructions": "You are a helpful assistant that answers general questions and can use tools to help with calculations and text processing",
+                  "tools": [
+                    {
+                      "type": "function",
+                      "name": "calculate",
+                      "description": "Performs basic arithmetic operations like addition, subtraction, multiplication, and division",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "operation": {
+                            "type": "string",
+                            "enum": [
+                              "add",
+                              "subtract",
+                              "multiply",
+                              "divide"
+                            ],
+                            "description": "The arithmetic operation to perform"
+                          },
+                          "x": {
+                            "type": "number",
+                            "description": "The first number"
+                          },
+                          "y": {
+                            "type": "number",
+                            "description": "The second number"
+                          }
+                        },
+                        "required": [
+                          "operation",
+                          "x",
+                          "y"
+                        ]
+                      },
+                      "strict": true
+                    },
+                    {
+                      "type": "function",
+                      "name": "text_utility",
+                      "description": "Performs simple text operations like counting characters, words, or converting case",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "text": {
+                            "type": "string",
+                            "description": "The input text to process"
+                          },
+                          "operation": {
+                            "type": "string",
+                            "enum": [
+                              "count_chars",
+                              "count_words",
+                              "uppercase",
+                              "lowercase",
+                              "reverse"
+                            ],
+                            "description": "The text operation to perform"
+                          }
+                        },
+                        "required": [
+                          "text",
+                          "operation"
+                        ]
+                      },
+                      "strict": true
+                    },
+                    {
+                      "type": "code_interpreter",
+                      "container": {
+                        "type": "auto"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "Agent2222",
+            "name": "Agent2222",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "Agent2222:1",
+                "name": "Agent2222",
+                "version": "1",
+                "description": "",
+                "created_at": 1761601630,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-nano",
+                  "instructions": "You are a helpful assistant that answers general questions"
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestPiratePromptAgentWithToolsFromDotnetTests",
+            "name": "TestPiratePromptAgentWithToolsFromDotnetTests",
+            "versions": {
+              "latest": {
+                "metadata": {
+                  "can_delete_this": "true"
+                },
+                "object": "agent.version",
+                "id": "TestPiratePromptAgentWithToolsFromDotnetTests:1",
+                "name": "TestPiratePromptAgentWithToolsFromDotnetTests",
+                "version": "1",
+                "description": "",
+                "created_at": 1761600246,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini",
+                  "instructions": "You are a helpful agent that happens to always talk like a pirate.",
+                  "tools": [
+                    {
+                      "type": "function",
+                      "name": "get_user_name",
+                      "description": "Gets the user's name, as used for friendly address.",
+                      "parameters": {},
+                      "strict": false
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestAgent-gpt5-mini",
+            "name": "TestAgent-gpt5-mini",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "TestAgent-gpt5-mini:1",
+                "name": "TestAgent-gpt5-mini",
+                "version": "1",
+                "description": "",
+                "created_at": 1761594374,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini"
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestPiratePromptAgentWithToolsFromDotnetSamples",
+            "name": "TestPiratePromptAgentWithToolsFromDotnetSamples",
+            "versions": {
+              "latest": {
+                "metadata": {
+                  "can_delete_this": "true"
+                },
+                "object": "agent.version",
+                "id": "TestPiratePromptAgentWithToolsFromDotnetSamples:1",
+                "name": "TestPiratePromptAgentWithToolsFromDotnetSamples",
+                "version": "1",
+                "description": "",
+                "created_at": 1761594330,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5-mini",
+                  "instructions": "You are a helpful agent that happens to always talk like a pirate.",
+                  "tools": [
+                    {
+                      "type": "function",
+                      "name": "get_user_name",
+                      "description": "Gets the user's name, as used for friendly address.",
+                      "parameters": {},
+                      "strict": false
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "TestAgent-gpt5",
+            "name": "TestAgent-gpt5",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "TestAgent-gpt5:1",
+                "name": "TestAgent-gpt5",
+                "version": "1",
+                "description": "",
+                "created_at": 1761594313,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-5"
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "aprilk_agent_test",
+            "name": "aprilk_agent_test",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "aprilk_agent_test:1",
+                "name": "aprilk_agent_test",
+                "version": "1",
+                "description": "",
+                "created_at": 1761538372,
+                "definition": {
+                  "kind": "Prompt",
+                  "model": "gpt-4o-mini",
+                  "Instructions": "You are a helpful test agent",
+                  "temperature": "0.1f"
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "MyAgent123",
+            "name": "MyAgent123",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "MyAgent123:3",
+                "name": "MyAgent123",
+                "version": "3",
+                "description": "",
+                "created_at": 1761537138,
+                "definition": {
+                  "kind": "Prompt",
+                  "model": "gpt-4o",
+                  "Instructions": "You are a helpful test agent",
+                  "temperature": "0.1f",
+                  "tools": [
+                    {
+                      "type": "web_search"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "selshafey",
+            "name": "selshafey",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "selshafey:1",
+                "name": "selshafey",
+                "version": "1",
+                "description": "",
+                "created_at": 1761495654,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4o",
+                  "instructions": "You are a helpful assistant that answers general questions"
+                }
+              }
+            }
+          }
+        ],
+        "first_id": "cs_e2e_tests_client",
+        "last_id": "selshafey",
+        "has_more": true,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/cs_e2e_tests_client/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "a1ad332a-28bf-4ac1-8e04-c2ea838a5936",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:08 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "53",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "6b75d74f3719ae25d976c15e9bf76ebd",
+        "x-request-time": "0.061"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:31",
+            "name": "cs_e2e_tests_client",
+            "version": "31",
+            "description": "this is a description!",
+            "created_at": 1761858001,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:29",
+            "name": "cs_e2e_tests_client",
+            "version": "29",
+            "description": "this is a description!",
+            "created_at": 1761857948,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:27",
+            "name": "cs_e2e_tests_client",
+            "version": "27",
+            "description": "",
+            "created_at": 1761851737,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini",
+              "instructions": "You are helpful agent.",
+              "tools": [
+                {
+                  "type": "code_interpreter",
+                  "container": {
+                    "type": "auto",
+                    "file_ids": [
+                      "assistant-FdDibMzi2G5R7KCLidJKf1"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:26",
+            "name": "cs_e2e_tests_client",
+            "version": "26",
+            "description": "this is a description!",
+            "created_at": 1761762644,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:24",
+            "name": "cs_e2e_tests_client",
+            "version": "24",
+            "description": "this is a description!",
+            "created_at": 1761762419,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:22",
+            "name": "cs_e2e_tests_client",
+            "version": "22",
+            "description": "this is a description!",
+            "created_at": 1761761752,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:20",
+            "name": "cs_e2e_tests_client",
+            "version": "20",
+            "description": "this is a description!",
+            "created_at": 1761761510,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:18",
+            "name": "cs_e2e_tests_client",
+            "version": "18",
+            "description": "this is a description!",
+            "created_at": 1761759773,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:16",
+            "name": "cs_e2e_tests_client",
+            "version": "16",
+            "description": "this is a description!",
+            "created_at": 1761759429,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:14",
+            "name": "cs_e2e_tests_client",
+            "version": "14",
+            "description": "this is a description!",
+            "created_at": 1761758607,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:12",
+            "name": "cs_e2e_tests_client",
+            "version": "12",
+            "description": "this is a description!",
+            "created_at": 1761345391,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:10",
+            "name": "cs_e2e_tests_client",
+            "version": "10",
+            "description": "this is a description!",
+            "created_at": 1761345146,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:8",
+            "name": "cs_e2e_tests_client",
+            "version": "8",
+            "description": "this is a description!",
+            "created_at": 1761179858,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:6",
+            "name": "cs_e2e_tests_client",
+            "version": "6",
+            "description": "this is a description!",
+            "created_at": 1761179835,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:4",
+            "name": "cs_e2e_tests_client",
+            "version": "4",
+            "description": "this is a description!",
+            "created_at": 1760549323,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          },
+          {
+            "metadata": {
+              "foo": "bar"
+            },
+            "object": "agent.version",
+            "id": "cs_e2e_tests_client:2",
+            "name": "cs_e2e_tests_client",
+            "version": "2",
+            "description": "this is a description!",
+            "created_at": 1760548551,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          }
+        ],
+        "first_id": "cs_e2e_tests_client:31",
+        "last_id": "cs_e2e_tests_client:2",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/MyAgent/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "c826e400-4b9b-435f-b7c9-2b7ba77f836c",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:09 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "65",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "2b4a60c6f369de5ff2ed9515191667ae",
+        "x-request-time": "0.031"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:136",
+            "name": "MyAgent",
+            "version": "136",
+            "description": "",
+            "created_at": 1761850580,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4.1",
+              "instructions": "You are an assistant that helps users analyze a scorecard. For each analysis, follow these steps and do them one at a time, waiting for user input after each step:\n\n1) **Ask for input:** Start by asking the user for `workspaceId` and `scorecardId`.\n\n2) **Retrieve variants and segment:**: Once the user provides `workspaceId` and `scorecardId`, call the `get_scorecard_segments_metadata` MCP tool. The response includes:\n   - `variants`: a list of flights with `FlightName` and `IsControlFlight`.\n   - `segments object`: level1, level2 and maybe level3, which each contain and list of segments.\n   After calling the tool, do not show the user the response at this point move to step 3.\n\n3) **Show flights:** Present the flights to the user as:\n   - **Controls**: flights where `IsControlFlight = true`.\n   - **Treatments**: flights where `IsControlFlight = false`.\n   If there is only 2 variants (1 control and 1 treatment) tell the user there is only 1 control and 1 treatment and use those variants, if not Ask the user to select **one control** and **one treatment** to analyze.\n\n4) **Show primary (level1) scorecard segments:**, Do not modify any segments, show the original response from step2 MCP tool call\n   Ask the user to select one primary scorecard segment to analyze.\n\n5) **Show secondary (level2) scorecard segments:** Do not modify any segments, show the original response from step2 MCP tool call\n   Ask the user to select one secondary scorecard segment to analyze.\n\n6) **(Optional) Show triggered (level3) scorecard segments:** If segments.level3 from step2, is not empty then do the following:\n    Do not modify any segments, show the original response from step2 MCP tool call\n   Ask the user to select one secondary scorecard segment to analyze.\n\nAfter every user selection for workspaceId, scorecardId, control Flight, treatment Flight, primary segment, secondary segment, show the user selection thus far\n\n7) \n\n# A/B Experiment Scorecard Analyze\"\n\nYou are now an expert A/B experiment scorecard analyzer. Your primary role is to analyze metric data from controlled experiments (e.g., online A/B tests) and provide clear, actionable insights about statistical significance and business impact.\n\n## Core Responsibilities\n- Extract and analyze JSON metric result objects from experiment scorecards\n- Assess statistical significance and practical significance of results\n- Group and prioritize metrics by their rollup type (metric level)\n- Identify the most impactful statistically significant effects\n- Guide users through comprehensive scorecard analysis using MCP tools\n\n## Analysis Workflow\n\n### Step 1: Retrieve Scorecard Data\nCall the `get_scorecard_metrics_data` MCP tool with the validated parameters from Step 6. \n\n- **On success**: Extract and store the array of metric objects from the \"value\" field\n- **On failure**: Provide clear error message and suggest troubleshooting steps\n\n### Step 2: Sample Ratio Mismatch (SRM) Detection\n**CRITICAL**: Before analyzing any metrics, check for Sample Ratio Mismatch issues:\n\n1. **Identify SRM Metrics**: Look for metrics with `metricName` containing \"QCNT\" or \"SampleRatio\"\n2. **SRM Detection Rule**: If any SRM metric has `testResult.pValue < 0.0005`, flag this as a **Sample Ratio Mismatch (SRM)**\n3. **SRM Response Protocol**:\n   - **If SRM Detected**: \n     - \uD83D\uDEA8 **PAUSE ANALYSIS** - Do not automatically proceed with metric interpretation\n     - Report: \"⚠️ **SAMPLE RATIO MISMATCH DETECTED** - The experiment shows significant imbalance in sample allocation (p < 0.0005 on SRM metrics). All metric results may be compromised.\"\n     - List the problematic SRM metrics with their p-values\n     - Recommend investigation of: randomization bugs, selection bias, or technical issues\n     - **Ask User for Decision**: \"Despite the SRM issue, would you still like me to proceed with the metric analysis? Please note that any results should be interpreted with extreme caution due to the sample allocation imbalance. (Yes/No)\"\n     - **User Response Handling**:\n       - If **Yes**: Continue to Step 4 but include SRM warnings throughout the analysis\n       - If **No**: Stop analysis and provide guidance on fixing the experiment\n   - **If No SRM**: Proceed to Step 4 with confidence in the experiment integrity\n\n### Step 3: Process and Analyze Metrics\nEach metric object contains these key fields:\n- **Required Fields**: `metricName` (string), `rollupType` (string), `testResult.pValue` (number)\n- **Effect Size Metrics**: `delta.absolute`, `delta.relative` \n- **Additional Context**: `desirableDirection`, `metricType`, `metricLabel`, `controlVariant`, `treatmentVariant`\n\n## Analysis Rules and Methodology\n\n### Statistical Significance Classification\nEach metric JSON reflects the effect of a treatment on a key business or product indicator.\n\nClassify metrics using these p-value thresholds:\n- **Highly Statistically Significant**: p < 0.001\n- **Statistically Significant**: 0.001 ≤ p < 0.005\n- **Not Significant**: p ≥ 0.005 (acknowledge but don't prioritize in main analysis)\n\n### Grouping and Prioritization Rules\n\n1. **Group by Rollup Type**: Organize metrics by `rollupType` (metric level such as \"Impression\", \"Session\", \"User\", etc.)\n\n2. **Within Each Group**: \n   - List up to 5 metrics per significance category\n   - Sort by ascending p-value (most significant first)\n   - Apply tie-breaking hierarchy:\n     1. Larger `testResult.statistic` value\n     2. Larger total sample size (`controlVariant.count + treatmentVariant.count`)\n     3. Alphabetical order by `metricName`\n\n3. **Data Quality Requirements**:\n   - Include only metrics with valid `metricName`, `rollupType`, and numeric `pValue`\n   - Metrics with p < 0.001 appear ONLY in \"Highly Significant\" category\n   - For duplicate metrics (same `metricName` and `rollupType`), keep the one with largest sample size\n   - Return empty list for categories with no qualifying metrics\n\n### Output Format for Each Metric\nPresent metrics in this structured format:\n```\n\uD83D\uDCCA **[Metric Name]**\n   • P-value: [pValue] ([significance level])\n   • Effect Size: [delta.relative]% ([delta.absolute] absolute)\n   • Direction: [Positive/Negative] ([Desirable/Undesirable based on desirableDirection])\n   • Sample Size: [total count]\n```\n\n### Step 4: Generate Executive Summary\nProvide a clear, business-focused summary that includes:\n\n**\uD83C\uDFAF Key Findings**\n- Highlight the most significant positive and negative effects\n- Focus on metrics with both statistical and practical significance\n\n**\uD83D\uDCC8 Business Impact Analysis**\n- Translate statistical results into business implications\n- Discuss potential revenue, user experience, or operational impacts\n\n**⚖️ Treatment vs Control Comparison**\n- Summarize metric gains and losses between treatment and control groups\n- Identify patterns across different rollup types (metric levels)\n\n**\uD83D\uDCA1 Recommendations**\n- Suggest next steps based on the results (e.g., full rollout, further testing, investigation)\n- Highlight areas requiring additional analysis or caution\n\n**\uD83D\uDD0D Confidence and Limitations**\n- Acknowledge statistical confidence levels\n- Note any data quality issues or areas for further investigation\n- Mention if sample sizes are adequate for practical decision-making\n- **If SRM was detected but analysis continued**: Include prominent warnings about compromised data integrity and recommend treating all results as preliminary\n\n## Quality Assurance Checklist\nBefore presenting results, verify:\n- [ ] All required parameters were collected and validated\n- [ ] API call was successful and data was retrieved\n- [ ] **SRM check completed** - No QCNT metrics with p < 0.0005\n- [ ] Metrics are properly grouped by rollup type\n- [ ] Statistical significance is correctly classified\n- [ ] Sorting and tie-breaking rules are applied consistently\n- [ ] Output format is clear and business-friendly\n- [ ] Executive summary addresses key business questions\n\n\n\nAfter every user selection for workspaceId, scorecardId, control Flight, treatment Flight, primary segment, secondary segment, show the user selection thus far"
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:135",
+            "name": "MyAgent",
+            "version": "135",
+            "description": "",
+            "created_at": 1761848069,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt4.1",
+              "instructions": "You are a helpful assistant that answers general questions"
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:134",
+            "name": "MyAgent",
+            "version": "134",
+            "description": "Agent for image generation.",
+            "created_at": 1761790401,
+            "definition": {
+              "kind": "prompt",
+              "model": "computer-use-preview",
+              "instructions": "Generate images based on user prompts",
+              "tools": [
+                {
+                  "type": "image_generation",
+                  "quality": "low",
+                  "size": "1024x1024"
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:133",
+            "name": "MyAgent",
+            "version": "133",
+            "description": "",
+            "created_at": 1761772689,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini",
+              "instructions": "You are a storytelling agent. You craft engaging one-line stories based on user prompts and context."
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:132",
+            "name": "MyAgent",
+            "version": "132",
+            "description": "",
+            "created_at": 1761772488,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini",
+              "instructions": "You are a helpful writing assistant"
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:131",
+            "name": "MyAgent",
+            "version": "131",
+            "description": "Agent for image generation.",
+            "created_at": 1761762182,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-image-1",
+              "instructions": "Generate images based on user prompts",
+              "tools": [
+                {
+                  "type": "image_generation",
+                  "quality": "low",
+                  "size": "1024x1024"
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:130",
+            "name": "MyAgent",
+            "version": "130",
+            "description": "File search agent for product information queries.",
+            "created_at": 1761691461,
+            "definition": {
+              "kind": "prompt",
+              "model": "computer-use-preview",
+              "instructions": "\n            You are an computer automation assistant. \n            Use the computer_use_preview tool to interact with the screen when needed.\n            ",
+              "tools": [
+                {
+                  "type": "computer_use_preview",
+                  "environment": "windows",
+                  "display_width": 1026,
+                  "display_height": 769
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:129",
+            "name": "MyAgent",
+            "version": "129",
+            "description": "",
+            "created_at": 1761690717,
+            "definition": {
+              "kind": "prompt",
+              "model": "computer-use-preview",
+              "instructions": "You are a helpful agent that can use MCP tools to assist users. Use the available MCP tools to answer questions and perform tasks.",
+              "tools": [
+                {
+                  "type": "mcp",
+                  "server_label": "api-specs",
+                  "server_url": "https://gitmcp.io/Azure/azure-rest-api-specs",
+                  "require_approval": "always"
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:128",
+            "name": "MyAgent",
+            "version": "128",
+            "description": "File search agent for product information queries.",
+            "created_at": 1761689410,
+            "definition": {
+              "kind": "prompt",
+              "model": "computer-use-preview",
+              "instructions": "\n            You are an computer automation assistant. \n            Use the computer_use_preview tool to interact with the screen when needed.\n            ",
+              "tools": [
+                {
+                  "type": "computer_use_preview",
+                  "environment": "windows",
+                  "display_width": 1026,
+                  "display_height": 769
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:127",
+            "name": "MyAgent",
+            "version": "127",
+            "description": "Agent for image generation.",
+            "created_at": 1761687854,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4o",
+              "instructions": "Generate images based on user prompts",
+              "tools": [
+                {
+                  "type": "image_generation",
+                  "quality": "low",
+                  "size": "1024x1024"
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:126",
+            "name": "MyAgent",
+            "version": "126",
+            "description": "Agent for image generation.",
+            "created_at": 1761687537,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-image-1",
+              "instructions": "Generate images based on user prompts",
+              "tools": [
+                {
+                  "type": "image_generation",
+                  "quality": "low",
+                  "size": "1024x1024"
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:125",
+            "name": "MyAgent",
+            "version": "125",
+            "description": "Agent for image generation.",
+            "created_at": 1761687498,
+            "definition": {
+              "kind": "prompt",
+              "model": "computer-use-preview",
+              "instructions": "Generate images based on user prompts",
+              "tools": [
+                {
+                  "type": "image_generation",
+                  "quality": "low",
+                  "size": "1024x1024"
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:124",
+            "name": "MyAgent",
+            "version": "124",
+            "description": "",
+            "created_at": 1761683381,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4.1",
+              "instructions": "You are a helpful assistant that answers general questions"
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:123",
+            "name": "MyAgent",
+            "version": "123",
+            "description": "Code interpreter agent for data analysis and visualization.",
+            "created_at": 1761675394,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4o",
+              "instructions": "You are a helpful assistant.",
+              "tools": [
+                {
+                  "type": "code_interpreter",
+                  "container": {
+                    "file_ids": [
+                      "assistant-QdKZT4mTJ7dTjrxHZMm2wJ"
+                    ],
+                    "type": "auto"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:122",
+            "name": "MyAgent",
+            "version": "122",
+            "description": "Agent for web search.",
+            "created_at": 1761674098,
+            "definition": {
+              "kind": "prompt",
+              "model": "computer-use-preview-2",
+              "instructions": "You are a helpful assistant that can search the web",
+              "tools": [
+                {
+                  "type": "function",
+                  "name": "get_horoscope",
+                  "description": "Get today's horoscope for an astrological sign.",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "sign": {
+                        "type": "string",
+                        "description": "An astrological sign like Taurus or Aquarius"
+                      }
+                    },
+                    "required": [
+                      "sign"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "strict": true
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:121",
+            "name": "MyAgent",
+            "version": "121",
+            "description": "",
+            "created_at": 1761355195,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4.1",
+              "instructions": "You are a helpful assistant that answers general questions"
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:120",
+            "name": "MyAgent",
+            "version": "120",
+            "description": "",
+            "created_at": 1761325521,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini",
+              "instructions": "You are a helpful assistant that answers general questions."
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:119",
+            "name": "MyAgent",
+            "version": "119",
+            "description": "",
+            "created_at": 1761325487,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini",
+              "instructions": "You are a helpful assistant that answers general questions"
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:118",
+            "name": "MyAgent",
+            "version": "118",
+            "description": "",
+            "created_at": 1761325266,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini",
+              "instructions": "You are a helpful assistant that answers general questions."
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent:117",
+            "name": "MyAgent",
+            "version": "117",
+            "description": "",
+            "created_at": 1761325243,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini",
+              "instructions": "You are a helpful assistant that answers general questions"
+            }
+          }
+        ],
+        "first_id": "MyAgent:136",
+        "last_id": "MyAgent:117",
+        "has_more": true,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/MyAgent/versions?api-version=2025-11-15-preview&after=MyAgent%3A117&before=MyAgent%3A136",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "91da68cb-3bfb-40e3-8a8e-449325691cf0",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:11 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "55",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "9058d8bd290543381c7c8873a22a5adc",
+        "x-request-time": "0.053"
+      },
+      "ResponseBody": {
+        "data": [],
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/BasicWeatherAgent/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "2c159780-f3f1-46ed-abc2-2a587de6f5e6",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:13 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "57",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "90accaac405e78fe092d0843c73e325e",
+        "x-request-time": "0.037"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "BasicWeatherAgent:1",
+            "name": "BasicWeatherAgent",
+            "version": "1",
+            "description": "",
+            "created_at": 1761847415,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4.1",
+              "tools": [
+                {
+                  "type": "function",
+                  "name": "get_weather",
+                  "description": "Get the weather for a given location.",
+                  "parameters": {
+                    "properties": {
+                      "location": {
+                        "description": "The location to get the weather for.",
+                        "title": "Location",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "location"
+                    ],
+                    "title": "get_weather_input",
+                    "type": "object",
+                    "additionalProperties": false
+                  },
+                  "strict": false
+                }
+              ]
+            }
+          }
+        ],
+        "first_id": "BasicWeatherAgent:1",
+        "last_id": "BasicWeatherAgent:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/DeleteMe-MyAgent/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "8de0413f-5c13-4705-ac21-bc4e25f0c240",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:15 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "59",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "21ef0687e8391bbb9a006db16cb7b3b6",
+        "x-request-time": "0.025"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "DeleteMe-MyAgent:1",
+            "name": "DeleteMe-MyAgent",
+            "version": "1",
+            "description": "",
+            "created_at": 1761771936,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini",
+              "instructions": "You are a storytelling agent. You craft engaging one-line stories based on user prompts and context."
+            }
+          }
+        ],
+        "first_id": "DeleteMe-MyAgent:1",
+        "last_id": "DeleteMe-MyAgent:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/ComputerUseAgent/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "8902402d-d559-4cc5-b434-9c490c25f973",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:16 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "61",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "1f010fa4b0246b00c5ae50f57b207bc6",
+        "x-request-time": "0.032"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "ComputerUseAgent:5",
+            "name": "ComputerUseAgent",
+            "version": "5",
+            "description": "Computer automation agent with screen interaction capabilities.",
+            "created_at": 1761769973,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4o",
+              "instructions": "\n                You are a computer automation assistant. \n                \n                Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.\n                ",
+              "tools": [
+                {
+                  "type": "computer_use_preview",
+                  "environment": "windows",
+                  "display_width": 1026,
+                  "display_height": 769
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "ComputerUseAgent:4",
+            "name": "ComputerUseAgent",
+            "version": "4",
+            "description": "Computer automation agent with screen interaction capabilities.",
+            "created_at": 1761768917,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4o",
+              "instructions": "\n            You are a computer automation assistant. \n            \n            Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.\n            ",
+              "tools": [
+                {
+                  "type": "computer_use_preview",
+                  "environment": "windows",
+                  "display_width": 1026,
+                  "display_height": 769
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "ComputerUseAgent:3",
+            "name": "ComputerUseAgent",
+            "version": "3",
+            "description": "Computer automation agent with screen interaction capabilities.",
+            "created_at": 1761706333,
+            "definition": {
+              "kind": "prompt",
+              "model": "computer-use-preview",
+              "instructions": "\n            You are a computer automation assistant. Your task is to search for 'OpenAI news'.\n            \n            Steps:\n            1. Click on the search box\n            2. Type 'OpenAI news'\n            3. Press Enter or click Search\n            4. When you see search results, describe what specific search results you can see on the page\n            5. Then say \"Task completed - search results displayed\"\n            \n            Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.\n            ",
+              "tools": [
+                {
+                  "type": "computer_use_preview",
+                  "environment": "windows",
+                  "display_width": 1026,
+                  "display_height": 769
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "ComputerUseAgent:2",
+            "name": "ComputerUseAgent",
+            "version": "2",
+            "description": "Computer automation agent with screen interaction capabilities.",
+            "created_at": 1761704745,
+            "definition": {
+              "kind": "prompt",
+              "model": "computer-use-preview",
+              "instructions": "\n            You are a computer automation assistant. Your task is to search for 'OpenAI news'.\n            \n            Steps:\n            1. Click on the search box\n            2. Type 'OpenAI news'\n            3. Press Enter or click Search\n            4. Say \"Task completed - search results displayed\"\n            \n            Be direct and efficient. Complete in 3-4 actions maximum.\n            ",
+              "tools": [
+                {
+                  "type": "computer_use_preview",
+                  "environment": "windows",
+                  "display_width": 1026,
+                  "display_height": 769
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "ComputerUseAgent:1",
+            "name": "ComputerUseAgent",
+            "version": "1",
+            "description": "Computer automation agent with screen interaction capabilities.",
+            "created_at": 1761701997,
+            "definition": {
+              "kind": "prompt",
+              "model": "computer-use-preview",
+              "instructions": "\n            You are a computer automation assistant. Complete the given task efficiently using the computer_use_preview tool.\n            \n            For search tasks:\n            1. Take a screenshot to see the current state\n            2. Click on the search box if needed\n            3. Type the search query\n            4. Submit the search (press Enter or click search button)\n            5. When you see search results, describe what you found and say \"I can see the search results for OpenAI news are displayed\"\n            \n            Be efficient - complete the task in as few steps as possible. When you reach the search results page, \n            briefly describe what search results you can see before declaring completion.\n            ",
+              "tools": [
+                {
+                  "type": "computer_use_preview",
+                  "environment": "windows",
+                  "display_width": 1026,
+                  "display_height": 769
+                }
+              ]
+            }
+          }
+        ],
+        "first_id": "ComputerUseAgent:5",
+        "last_id": "ComputerUseAgent:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/TestAgentCreatedFromCurl23472/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "7a6ca1d5-7ef5-42d4-803a-e917db43e178",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:18 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "67",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "0bed72ecd1312daa01e8593b22faa073",
+        "x-request-time": "0.047"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "TestAgentCreatedFromCurl23472:2",
+            "name": "TestAgentCreatedFromCurl23472",
+            "version": "2",
+            "description": "",
+            "created_at": 1761761695,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4o-mini"
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "TestAgentCreatedFromCurl23472:1",
+            "name": "TestAgentCreatedFromCurl23472",
+            "version": "1",
+            "description": "",
+            "created_at": 1761761467,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          }
+        ],
+        "first_id": "TestAgentCreatedFromCurl23472:2",
+        "last_id": "TestAgentCreatedFromCurl23472:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/TestPreviewBasicAgent/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "6938be66-9659-49f4-8fc1-aabfae1b50b3",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:20 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "69",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "f6cf3ad6f9c4670477bd4b221ac7f173",
+        "x-request-time": "0.031"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "TestPreviewBasicAgent:1",
+            "name": "TestPreviewBasicAgent",
+            "version": "1",
+            "description": "",
+            "created_at": 1761691597,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini",
+              "instructions": "You are a storytelling agent. You craft engaging one-line stories based on user prompts and context."
+            }
+          }
+        ],
+        "first_id": "TestPreviewBasicAgent:1",
+        "last_id": "TestPreviewBasicAgent:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/MyAgent2/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "acf8f058-113b-491c-8580-8de870fb4e56",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:22 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "71",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "f460f636661835b2942c2e46b5215871",
+        "x-request-time": "0.030"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent2:4",
+            "name": "MyAgent2",
+            "version": "4",
+            "description": "File search agent for product information queries.",
+            "created_at": 1761690501,
+            "definition": {
+              "kind": "prompt",
+              "model": "computer-use-preview",
+              "instructions": "\n            You are an computer automation assistant. \n            Use the computer_use_preview tool to interact with the screen when needed.\n            ",
+              "tools": [
+                {
+                  "type": "computer_use_preview",
+                  "environment": "windows",
+                  "display_width": 1026,
+                  "display_height": 769
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent2:3",
+            "name": "MyAgent2",
+            "version": "3",
+            "description": "",
+            "created_at": 1760044898,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4o",
+              "instructions": "You are a helpful assistant that answers general questions"
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent2:2",
+            "name": "MyAgent2",
+            "version": "2",
+            "description": "",
+            "created_at": 1760025698,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4o"
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent2:1",
+            "name": "MyAgent2",
+            "version": "1",
+            "description": "",
+            "created_at": 1758814375,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4o-mini",
+              "instructions": "You are a helpful AI assistant. Always be polite and provide accurate information.",
+              "temperature": 0.7,
+              "top_p": 0.9,
+              "reasoning": {
+                "effort": "medium",
+                "summary": "auto"
+              },
+              "tools": [
+                {
+                  "type": "function",
+                  "name": "get_weather",
+                  "description": "Get the current weather for a location",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "location": {
+                        "type": "string",
+                        "description": "The city and state, e.g. San Francisco, CA"
+                      },
+                      "unit": {
+                        "type": "string",
+                        "enum": [
+                          "celsius",
+                          "fahrenheit"
+                        ],
+                        "description": "The temperature unit"
+                      }
+                    },
+                    "required": [
+                      "location"
+                    ]
+                  },
+                  "strict": true
+                }
+              ],
+              "text": {
+                "format": {
+                  "type": "text"
+                }
+              }
+            }
+          }
+        ],
+        "first_id": "MyAgent2:4",
+        "last_id": "MyAgent2:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/mohessieAgentTools2/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "90c16e4c-700f-4114-a44f-5344024235b9",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:23 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "63",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "53ef5a88086cb305ad25f28cd8e2b9ac",
+        "x-request-time": "0.039"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "mohessieAgentTools2:1",
+            "name": "mohessieAgentTools2",
+            "version": "1",
+            "description": "",
+            "created_at": 1761683312,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4o",
+              "instructions": "You are a helpful assistant that answers general questions and can use code tools to help with calculations and text processing",
+              "tools": [
+                {
+                  "type": "code_interpreter",
+                  "container": {
+                    "type": "auto"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "first_id": "mohessieAgentTools2:1",
+        "last_id": "mohessieAgentTools2:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/rarayudu-testv2agent/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "1bef2db9-5610-45cd-b424-6a5808f01fa0",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:25 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "73",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "6c51351f56d7bbb9d2a3d3aedca6f49f",
+        "x-request-time": "0.042"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {
+              "logo": "Avatar_Default.svg"
+            },
+            "object": "agent.version",
+            "id": "rarayudu-testv2agent:1",
+            "name": "rarayudu-testv2agent",
+            "version": "1",
+            "description": "",
+            "created_at": 1761682319,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4.1-nano",
+              "instructions": ""
+            }
+          }
+        ],
+        "first_id": "rarayudu-testv2agent:1",
+        "last_id": "rarayudu-testv2agent:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/mohessieAgentTools1/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "c098fd4f-aeaa-49d0-b27d-c3c81a6b1605",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:27 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "65",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "72dae67db8990927d025b39c6f2a2458",
+        "x-request-time": "0.026"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "mohessieAgentTools1:1",
+            "name": "mohessieAgentTools1",
+            "version": "1",
+            "description": "",
+            "created_at": 1761682041,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4o",
+              "instructions": "You are a helpful assistant that answers general questions and can use code tools to help with calculations and text processing",
+              "tools": [
+                {
+                  "type": "function",
+                  "name": "get_horoscope",
+                  "description": "Get today's horoscope for an astrological sign.",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "sign": {
+                        "type": "string",
+                        "description": "An astrological sign like Taurus or Aquarius"
+                      }
+                    },
+                    "required": [
+                      "sign"
+                    ]
+                  },
+                  "strict": true
+                }
+              ]
+            }
+          }
+        ],
+        "first_id": "mohessieAgentTools1:1",
+        "last_id": "mohessieAgentTools1:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/mohessieAgent/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "bec4944f-12f5-4db5-9891-7a15a91a1ac7",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:29 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "67",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "cfe17b85158471d3eef16d2d447d615d",
+        "x-request-time": "0.033"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "mohessieAgent:2",
+            "name": "mohessieAgent",
+            "version": "2",
+            "description": "",
+            "created_at": 1761679033,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4o",
+              "instructions": "You are a helpful assistant that answers general questions and can use tools to help with calculations and text processing",
+              "tools": [
+                {
+                  "type": "function",
+                  "name": "calculate",
+                  "description": "Performs basic arithmetic operations like addition, subtraction, multiplication, and division",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "operation": {
+                        "type": "string",
+                        "enum": [
+                          "add",
+                          "subtract",
+                          "multiply",
+                          "divide"
+                        ],
+                        "description": "The arithmetic operation to perform"
+                      },
+                      "x": {
+                        "type": "number",
+                        "description": "The first number"
+                      },
+                      "y": {
+                        "type": "number",
+                        "description": "The second number"
+                      }
+                    },
+                    "required": [
+                      "operation",
+                      "x",
+                      "y"
+                    ]
+                  },
+                  "strict": true
+                },
+                {
+                  "type": "function",
+                  "name": "text_utility",
+                  "description": "Performs simple text operations like counting characters, words, or converting case",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "description": "The input text to process"
+                      },
+                      "operation": {
+                        "type": "string",
+                        "enum": [
+                          "count_chars",
+                          "count_words",
+                          "uppercase",
+                          "lowercase",
+                          "reverse"
+                        ],
+                        "description": "The text operation to perform"
+                      }
+                    },
+                    "required": [
+                      "text",
+                      "operation"
+                    ]
+                  },
+                  "strict": true
+                },
+                {
+                  "type": "code_interpreter",
+                  "container": {
+                    "type": "auto"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "mohessieAgent:1",
+            "name": "mohessieAgent",
+            "version": "1",
+            "description": "",
+            "created_at": 1761244129,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4o",
+              "instructions": "You are a helpful assistant that answers general questions"
+            }
+          }
+        ],
+        "first_id": "mohessieAgent:2",
+        "last_id": "mohessieAgent:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/Agent2222/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "f19f8084-16b2-45a1-b0de-f5885b3c5bf9",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:30 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "77",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "2b86732ceb1b710bcce746cc0c4e78d8",
+        "x-request-time": "0.030"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "Agent2222:1",
+            "name": "Agent2222",
+            "version": "1",
+            "description": "",
+            "created_at": 1761601630,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4.1-nano",
+              "instructions": "You are a helpful assistant that answers general questions"
+            }
+          }
+        ],
+        "first_id": "Agent2222:1",
+        "last_id": "Agent2222:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/TestPiratePromptAgentWithToolsFromDotnetTests/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "ed40e038-1dcf-4ff7-8475-43f7b942b4da",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:32 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "69",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "ea4fe27c8244be11e2b46def6a661a7c",
+        "x-request-time": "0.037"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {
+              "can_delete_this": "true"
+            },
+            "object": "agent.version",
+            "id": "TestPiratePromptAgentWithToolsFromDotnetTests:1",
+            "name": "TestPiratePromptAgentWithToolsFromDotnetTests",
+            "version": "1",
+            "description": "",
+            "created_at": 1761600246,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini",
+              "instructions": "You are a helpful agent that happens to always talk like a pirate.",
+              "tools": [
+                {
+                  "type": "function",
+                  "name": "get_user_name",
+                  "description": "Gets the user's name, as used for friendly address.",
+                  "parameters": {},
+                  "strict": false
+                }
+              ]
+            }
+          }
+        ],
+        "first_id": "TestPiratePromptAgentWithToolsFromDotnetTests:1",
+        "last_id": "TestPiratePromptAgentWithToolsFromDotnetTests:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/TestAgent-gpt5-mini/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "c69669cf-a55f-438c-a441-fe7d74d49a97",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:34 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "71",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "737e06d71c99365e541c8a92109b03f5",
+        "x-request-time": "0.030"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "TestAgent-gpt5-mini:1",
+            "name": "TestAgent-gpt5-mini",
+            "version": "1",
+            "description": "",
+            "created_at": 1761594374,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini"
+            }
+          }
+        ],
+        "first_id": "TestAgent-gpt5-mini:1",
+        "last_id": "TestAgent-gpt5-mini:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/TestPiratePromptAgentWithToolsFromDotnetSamples/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "8d45c368-9240-46fc-8876-3d8fe3d6a668",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:36 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "73",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "2c1ed483b5a328c10cc905eddfc364ca",
+        "x-request-time": "0.031"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {
+              "can_delete_this": "true"
+            },
+            "object": "agent.version",
+            "id": "TestPiratePromptAgentWithToolsFromDotnetSamples:1",
+            "name": "TestPiratePromptAgentWithToolsFromDotnetSamples",
+            "version": "1",
+            "description": "",
+            "created_at": 1761594330,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5-mini",
+              "instructions": "You are a helpful agent that happens to always talk like a pirate.",
+              "tools": [
+                {
+                  "type": "function",
+                  "name": "get_user_name",
+                  "description": "Gets the user's name, as used for friendly address.",
+                  "parameters": {},
+                  "strict": false
+                }
+              ]
+            }
+          }
+        ],
+        "first_id": "TestPiratePromptAgentWithToolsFromDotnetSamples:1",
+        "last_id": "TestPiratePromptAgentWithToolsFromDotnetSamples:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/TestAgent-gpt5/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "05c79f51-39af-4481-b9a1-958688b66a10",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:37 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "79",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "9e3c242a38dfdeefa2882c401a223a68",
+        "x-request-time": "0.045"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "TestAgent-gpt5:1",
+            "name": "TestAgent-gpt5",
+            "version": "1",
+            "description": "",
+            "created_at": 1761594313,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-5"
+            }
+          }
+        ],
+        "first_id": "TestAgent-gpt5:1",
+        "last_id": "TestAgent-gpt5:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/aprilk_agent_test/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "dc170e62-3faa-4bbf-9914-b089dbfbd1d9",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:39 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "75",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "52b34112eb2872a953bfe4645b782a79",
+        "x-request-time": "0.033"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "aprilk_agent_test:1",
+            "name": "aprilk_agent_test",
+            "version": "1",
+            "description": "",
+            "created_at": 1761538372,
+            "definition": {
+              "kind": "Prompt",
+              "model": "gpt-4o-mini",
+              "Instructions": "You are a helpful test agent",
+              "temperature": "0.1f"
+            }
+          }
+        ],
+        "first_id": "aprilk_agent_test:1",
+        "last_id": "aprilk_agent_test:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/MyAgent123/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "79a4460c-8a2e-4953-8969-6b223ca04d9a",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:41 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "65",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "11e224c90cbac059f6c5c5517ff8d1cd",
+        "x-request-time": "0.040"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent123:3",
+            "name": "MyAgent123",
+            "version": "3",
+            "description": "",
+            "created_at": 1761537138,
+            "definition": {
+              "kind": "Prompt",
+              "model": "gpt-4o",
+              "Instructions": "You are a helpful test agent",
+              "temperature": "0.1f",
+              "tools": [
+                {
+                  "type": "web_search"
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent123:2",
+            "name": "MyAgent123",
+            "version": "2",
+            "description": "",
+            "created_at": 1760685751,
+            "definition": {
+              "kind": "Prompt",
+              "model": "gpt-4o-mini",
+              "Instructions": "You are a helpful test agent",
+              "temperature": "0.1f",
+              "tools": [
+                {
+                  "type": "web_search"
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "MyAgent123:1",
+            "name": "MyAgent123",
+            "version": "1",
+            "description": "",
+            "created_at": 1760681288,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4.1",
+              "instructions": "You are a helpful assistant that answers general questions"
+            }
+          }
+        ],
+        "first_id": "MyAgent123:3",
+        "last_id": "MyAgent123:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents/selshafey/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "64b2d2b1-1fff-41c0-b93a-59cd258ef58b",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:43 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "81",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "5b0257970925b287a0cf3e1428cbf339",
+        "x-request-time": "0.033"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "selshafey:1",
+            "name": "selshafey",
+            "version": "1",
+            "description": "",
+            "created_at": 1761495654,
+            "definition": {
+              "kind": "prompt",
+              "model": "gpt-4o",
+              "instructions": "You are a helpful assistant that answers general questions"
+            }
+          }
+        ],
+        "first_id": "selshafey:1",
+        "last_id": "selshafey:1",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project/agents?api-version=2025-11-15-preview&after=selshafey&before=cs_e2e_tests_client",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Agents/2.0.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.26100)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "67a13098-7bb0-4eda-aa98-213403a069cc",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 Oct 2025 21:00:44 GMT",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "77",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "2a4719babdd7e1c666d542bf9171e37f",
+        "x-request-time": "0.049"
+      },
+      "ResponseBody": {
+        "data": [],
+        "has_more": false,
+        "object": "list"
+      }
+    }
+  ],
+  "Variables": {
+    "PROJECT_ENDPOINT": "https://openai-sdk-aiservices-tip.services.ai.azure.com/api/projects/test-project"
+  }
+}
