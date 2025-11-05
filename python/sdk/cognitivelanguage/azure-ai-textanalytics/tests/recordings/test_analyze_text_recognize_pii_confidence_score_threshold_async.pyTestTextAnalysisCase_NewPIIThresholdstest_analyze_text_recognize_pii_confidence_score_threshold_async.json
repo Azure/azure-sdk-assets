@@ -1,0 +1,110 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.azure-api.net//language/:analyze-text?api-version=2025-11-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "408",
+        "Content-Type": "application/json",
+        "Ocp-Apim-Subscription-Key": "Sanitized",
+        "User-Agent": "azsdk-python-ai-textanalytics/6.0.0b2 Python/3.13.9 (Windows-11-10.0.26200-SP0)"
+      },
+      "RequestBody": {
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "Sanitized",
+              "text": "My name is John Doe. My ssn is 222-45-6789. My email is john@example.com. John Doe is my name.",
+              "language": "en"
+            }
+          ]
+        },
+        "parameters": {
+          "piiCategories": [
+            "All"
+          ],
+          "disableEntityValidation": true,
+          "confidenceScoreThreshold": {
+            "default": 0.3,
+            "overrides": [
+              {
+                "value": 0.9,
+                "entity": "USSocialSecurityNumber"
+              },
+              {
+                "value": 0.9,
+                "entity": "Email"
+              }
+            ]
+          }
+        },
+        "kind": "PiiEntityRecognition"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "69855943-0738-4cab-99d9-c94a787e0498",
+        "Content-Length": "666",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.PII=1,CognitiveServices.TextAnalytics.TextRecords=1",
+        "Date": "Wed, 05 Nov 2025 03:59:18 GMT",
+        "Set-Cookie": "Sanitized",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "47",
+        "x-ms-region": "West Europe"
+      },
+      "ResponseBody": {
+        "kind": "PiiEntityRecognitionResults",
+        "results": {
+          "documents": [
+            {
+              "redactedText": "My name is ********. My ssn is 222-45-6789. My email is john@example.com. ******** is my name.",
+              "id": "Sanitized",
+              "entities": [
+                {
+                  "text": "John Doe",
+                  "category": "Person",
+                  "type": "Person",
+                  "offset": 11,
+                  "length": 8,
+                  "mask": "********",
+                  "maskOffset": 11,
+                  "maskLength": 8,
+                  "confidenceScore": 1.0,
+                  "tags": [
+                    {
+                      "name": "Sanitized",
+                      "confidenceScore": 1.0
+                    }
+                  ]
+                },
+                {
+                  "text": "John Doe",
+                  "category": "Person",
+                  "type": "Person",
+                  "offset": 74,
+                  "length": 8,
+                  "mask": "********",
+                  "maskOffset": 74,
+                  "maskLength": 8,
+                  "confidenceScore": 1.0,
+                  "tags": [
+                    {
+                      "name": "Sanitized",
+                      "confidenceScore": 1.0
+                    }
+                  ]
+                }
+              ],
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2025-02-01"
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

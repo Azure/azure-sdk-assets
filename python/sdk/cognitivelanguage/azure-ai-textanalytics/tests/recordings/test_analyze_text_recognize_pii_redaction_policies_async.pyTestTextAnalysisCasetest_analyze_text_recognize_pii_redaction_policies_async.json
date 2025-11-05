@@ -1,0 +1,200 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.azure-api.net//language/:analyze-text?api-version=2025-11-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "688",
+        "Content-Type": "application/json",
+        "Ocp-Apim-Subscription-Key": "Sanitized",
+        "User-Agent": "azsdk-python-ai-textanalytics/6.0.0b2 Python/3.13.9 (Windows-11-10.0.26200-SP0)"
+      },
+      "RequestBody": {
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "Sanitized",
+              "text": "My name is John Doe. My ssn is 123-45-6789. My email is john@example.com..",
+              "language": "en"
+            },
+            {
+              "id": "Sanitized",
+              "text": "My name is John Doe. My ssn is 123-45-6789. My email is john@example.com..",
+              "language": "en"
+            }
+          ]
+        },
+        "parameters": {
+          "piiCategories": [
+            "All"
+          ],
+          "redactionPolicies": [
+            {
+              "policyName": "defaultPolicy",
+              "isDefault": true,
+              "policyKind": "entityMask"
+            },
+            {
+              "policyName": "customMaskForSSN",
+              "unmaskLength": 4,
+              "unmaskFromEnd": false,
+              "entityTypes": [
+                "USSocialSecurityNumber"
+              ],
+              "policyKind": "characterMask"
+            },
+            {
+              "policyName": "syntheticMaskForPerson",
+              "entityTypes": [
+                "Person",
+                "Email"
+              ],
+              "policyKind": "syntheticReplacement"
+            }
+          ]
+        },
+        "kind": "PiiEntityRecognition"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "73c161d5-aee1-408a-9ceb-7b6662b399ee",
+        "Content-Length": "1758",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.PII=2,CognitiveServices.TextAnalytics.TextRecords=2",
+        "Date": "Wed, 05 Nov 2025 05:16:16 GMT",
+        "Set-Cookie": "Sanitized",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "44",
+        "x-ms-region": "West Europe"
+      },
+      "ResponseBody": {
+        "kind": "PiiEntityRecognitionResults",
+        "results": {
+          "documents": [
+            {
+              "redactedText": "My name is Grady Heidenreich. My ssn is 123-*******. My email is Adaline76@yahoo.com.",
+              "id": "Sanitized",
+              "entities": [
+                {
+                  "text": "John Doe",
+                  "category": "Person",
+                  "type": "Person",
+                  "offset": 11,
+                  "length": 8,
+                  "mask": "Grady Heidenreich",
+                  "maskOffset": 11,
+                  "maskLength": 17,
+                  "confidenceScore": 1.0,
+                  "tags": [
+                    {
+                      "name": "Sanitized",
+                      "confidenceScore": 1.0
+                    }
+                  ]
+                },
+                {
+                  "text": "123-45-6789",
+                  "category": "USSocialSecurityNumber",
+                  "type": "USSocialSecurityNumber",
+                  "offset": 31,
+                  "length": 11,
+                  "mask": "*******",
+                  "maskOffset": 36,
+                  "maskLength": 7,
+                  "confidenceScore": 0.85,
+                  "tags": [
+                    {
+                      "name": "Sanitized",
+                      "confidenceScore": 0.85
+                    }
+                  ]
+                },
+                {
+                  "text": "john@example.com.",
+                  "category": "Email",
+                  "type": "Email",
+                  "offset": 56,
+                  "length": 17,
+                  "mask": "Adaline76@yahoo.com",
+                  "maskOffset": 65,
+                  "maskLength": 19,
+                  "confidenceScore": 0.8,
+                  "tags": [
+                    {
+                      "name": "Sanitized",
+                      "confidenceScore": 0.8
+                    }
+                  ]
+                }
+              ],
+              "warnings": []
+            },
+            {
+              "redactedText": "My name is Zechariah Ledner. My ssn is 123-*******. My email is Jeffrey.Bogan@hotmail.com.",
+              "id": "Sanitized",
+              "entities": [
+                {
+                  "text": "John Doe",
+                  "category": "Person",
+                  "type": "Person",
+                  "offset": 11,
+                  "length": 8,
+                  "mask": "Zechariah Ledner",
+                  "maskOffset": 11,
+                  "maskLength": 16,
+                  "confidenceScore": 1.0,
+                  "tags": [
+                    {
+                      "name": "Sanitized",
+                      "confidenceScore": 1.0
+                    }
+                  ]
+                },
+                {
+                  "text": "123-45-6789",
+                  "category": "USSocialSecurityNumber",
+                  "type": "USSocialSecurityNumber",
+                  "offset": 31,
+                  "length": 11,
+                  "mask": "*******",
+                  "maskOffset": 35,
+                  "maskLength": 7,
+                  "confidenceScore": 0.85,
+                  "tags": [
+                    {
+                      "name": "Sanitized",
+                      "confidenceScore": 0.85
+                    }
+                  ]
+                },
+                {
+                  "text": "john@example.com.",
+                  "category": "Email",
+                  "type": "Email",
+                  "offset": 56,
+                  "length": 17,
+                  "mask": "Jeffrey.Bogan@hotmail.com",
+                  "maskOffset": 64,
+                  "maskLength": 25,
+                  "confidenceScore": 0.8,
+                  "tags": [
+                    {
+                      "name": "Sanitized",
+                      "confidenceScore": 0.8
+                    }
+                  ]
+                }
+              ],
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2025-02-01"
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}
