@@ -13,10 +13,10 @@
         "X-Stainless-Arch": "x64",
         "X-Stainless-Lang": "go",
         "X-Stainless-Os": "Linux",
-        "X-Stainless-Package-Version": "1.2.1",
+        "X-Stainless-Package-Version": "3.2.0",
         "X-Stainless-Retry-Count": "0",
         "X-Stainless-Runtime": "go",
-        "X-Stainless-Runtime-Version": "go1.24.3"
+        "X-Stainless-Runtime-Version": "go1.25.1"
       },
       "RequestBody": {
         "input": "Define and explain the concept of catastrophic forgetting?",
@@ -24,33 +24,46 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "be02f5bd-a210-4826-a849-2561e0ff9595",
+        "apim-request-id": "d6c54104-d36b-4b5a-90c6-6356f7ae2682",
+        "azure-openai-data-collection": "true",
+        "azureml-internal-forward-count": "0",
+        "azureml-internal-oai-tool-enablement-override": "web_search",
+        "azureml-model-group": "aoai-standard-online-hot",
+        "azureml-served-by-cluster": "hyena-eastus-02",
         "Connection": "keep-alive",
-        "Content-Length": "2552",
+        "Content-Length": "2731",
         "Content-Type": "application/json",
-        "Date": "Mon, 02 Jun 2025 23:04:24 GMT",
+        "DataPlane-Supported-Modalities": "text+vision",
+        "Date": "Thu, 06 Nov 2025 21:18:09 GMT",
         "openai-organization": "1ae165719699410c9b5dba48cfaf5755",
-        "openai-processing-ms": "3409",
-        "openai-version": "2020-10-01",
+        "openai-processing-ms": "4781.5204",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-broker-route-timeout-ms": "90000",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-middleware-request-id": "be02f5bd-a210-4826-a849-2561e0ff9595",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-cmp-host": "cmp.westus3.hyena.infra.ai.azure.com",
+        "x-ms-deployment-name": "gpt-4o-0806",
+        "x-ms-oai-backend-host": "https://g4o8lme-usw3-a1-oai-oe-xgnkkp.westus3.inference.ml.azure.com",
         "x-ms-region": "East US",
+        "x-predictor-override": "{\"proxy\":{\"pipereplica_group_id\":\"proxy\"}}",
         "x-ratelimit-limit-requests": "4490",
         "x-ratelimit-limit-tokens": "449000",
         "x-ratelimit-remaining-requests": "4489",
-        "x-ratelimit-remaining-tokens": "432582",
-        "X-Request-ID": "47660ba7-d2ca-4073-b047-4d4578441ec9"
+        "x-ratelimit-remaining-tokens": "448966",
+        "X-Request-ID": "7872747b-0e53-4e5c-b090-84f974254a29"
       },
       "ResponseBody": {
         "id": "Sanitized",
         "object": "response",
-        "created_at": 1748905461,
+        "created_at": 1762463884,
         "status": "completed",
+        "background": false,
+        "content_filters": null,
         "error": null,
         "incomplete_details": null,
         "instructions": null,
         "max_output_tokens": null,
+        "max_tool_calls": null,
         "model": "gpt-4o-0806",
         "output": [
           {
@@ -61,7 +74,8 @@
               {
                 "type": "output_text",
                 "annotations": [],
-                "text": "Catastrophic forgetting refers to a phenomenon in machine learning, particularly observed in neural networks, where a model loses previously acquired knowledge upon learning new information. This issue is most common in settings like sequential or incremental learning, where a model encounters data in a non-static environment over time.\n\n### Key Aspects:\n\n1. **Sequential Learning**: When models are trained on new data sequentially, without access to previously seen data, they tend to forget what they learned earlier. For example, a model trained first on data from environment A and then on environment B might perform poorly on tasks from environment A after being trained on B.\n\n2. **Memory Overwriting**: Neural networks adjust weights based on new input data. When data distributions change or new tasks are introduced, the adjustments can overwrite the knowledge embedded in the weights from prior training.\n\n3. **Solutions and Approaches**:\n   - **Regularization Techniques**: Methods like Elastic Weight Consolidation (EWC) impose constraints on weight updates to preserve earlier knowledge.\n   - **Replay Methods**: Use of memory replay strategies that store and revisit past data, either real or synthetic, to reinforce old knowledge.\n   - **Dynamic Architectures**: Expanding model architecture dynamically to accommodate new knowledge without overwriting the old.\n\n4. **Impact**: Catastrophic forgetting poses significant challenges in deploying adaptable models, particularly in real-world applications where data evolves over time, like robotics, autonomous systems, and personalized recommendations.\n\nUnderstanding and mitigating catastrophic forgetting is crucial for developing robust models capable of continuous learning and adaptation."
+                "logprobs": [],
+                "text": "Catastrophic forgetting, also known as catastrophic interference, is a phenomenon observed in artificial neural networks, particularly in the context of continual learning. It occurs when a model abruptly loses the ability to perform well on previously learned tasks upon learning new tasks.\n\n### Key Aspects:\n\n1. **Interference**: As the model learns new information, the updates to its weights interfere with the weights that were important for performing older tasks, leading to degraded performance on those tasks.\n\n2. **Sequential Learning**: This issue is most pronounced in scenarios involving sequential (or continual) learning, where a model is expected to learn a series of tasks over time without revisiting the data of previous tasks.\n\n3. **Real-World Implications**: In applications such as robotics, autonomous vehicles, and personalized recommendations, catastrophic forgetting can be problematic as it limits the ability of systems to adapt and retain knowledge over time.\n\n4. **Solutions**:\n   - **Regularization Techniques**: Methods like Elastic Weight Consolidation (EWC) penalize changes to important weights for old tasks.\n   - **Replay Methods**: Involves storing some old data or using a model to generate pseudo-data for rehearsal.\n   - **Architectural Approaches**: Techniques such as model expansion or using separate subnetworks for different tasks.\n\n5. **Biological Contrast**: Unlike artificial networks, biological brains seem to have mechanisms to avoid catastrophic forgetting, as humans can learn new information while retaining old knowledge more efficiently.\n\nUnderstanding and addressing catastrophic forgetting is crucial for the development of more robust and adaptable AI systems that can learn continuously in dynamic environments."
               }
             ],
             "role": "assistant"
@@ -69,20 +83,24 @@
         ],
         "parallel_tool_calls": true,
         "previous_response_id": null,
+        "prompt_cache_key": null,
         "reasoning": {
           "effort": null,
           "summary": null
         },
+        "safety_identifier": null,
         "service_tier": "default",
         "store": true,
         "temperature": 1.0,
         "text": {
           "format": {
             "type": "text"
-          }
+          },
+          "verbosity": "medium"
         },
         "tool_choice": "auto",
         "tools": [],
+        "top_logprobs": 0,
         "top_p": 1.0,
         "truncation": "disabled",
         "usage": {
@@ -90,11 +108,11 @@
           "input_tokens_details": {
             "cached_tokens": 0
           },
-          "output_tokens": 314,
+          "output_tokens": 324,
           "output_tokens_details": {
             "reasoning_tokens": 0
           },
-          "total_tokens": 330
+          "total_tokens": 340
         },
         "user": null,
         "metadata": {}

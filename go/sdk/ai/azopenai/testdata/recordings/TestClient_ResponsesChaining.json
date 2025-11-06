@@ -13,10 +13,10 @@
         "X-Stainless-Arch": "x64",
         "X-Stainless-Lang": "go",
         "X-Stainless-Os": "Linux",
-        "X-Stainless-Package-Version": "1.2.1",
+        "X-Stainless-Package-Version": "3.2.0",
         "X-Stainless-Retry-Count": "0",
         "X-Stainless-Runtime": "go",
-        "X-Stainless-Runtime-Version": "go1.24.3"
+        "X-Stainless-Runtime-Version": "go1.25.1"
       },
       "RequestBody": {
         "input": "Define and explain the concept of catastrophic forgetting?",
@@ -24,44 +24,58 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "c4f99e2c-1e84-48ac-8f63-31ea4aba6039",
+        "apim-request-id": "5baa530a-edf8-41de-8c52-6181ce6f40d7",
+        "azure-openai-data-collection": "true",
+        "azureml-internal-forward-count": "0",
+        "azureml-internal-oai-tool-enablement-override": "web_search",
+        "azureml-model-group": "aoai-standard-online-hot",
+        "azureml-served-by-cluster": "hyena-eastus-01",
         "Connection": "keep-alive",
-        "Content-Length": "3108",
+        "Content-Length": "3374",
         "Content-Type": "application/json",
-        "Date": "Mon, 02 Jun 2025 23:04:30 GMT",
+        "DataPlane-Supported-Modalities": "text+vision",
+        "Date": "Thu, 06 Nov 2025 21:18:16 GMT",
         "openai-organization": "1ae165719699410c9b5dba48cfaf5755",
-        "openai-processing-ms": "3969",
-        "openai-version": "2020-10-01",
+        "openai-processing-ms": "5972.3473",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-broker-route-timeout-ms": "90000",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-middleware-request-id": "c4f99e2c-1e84-48ac-8f63-31ea4aba6039",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-cmp-host": "cmp.westus3.hyena.infra.ai.azure.com",
+        "x-ms-deployment-name": "gpt-4o-0806",
+        "x-ms-oai-backend-host": "https://g4o8lme-usw3-a1-oai-oe-xgnkkp.westus3.inference.ml.azure.com",
         "x-ms-region": "East US",
+        "x-predictor-override": "{\"proxy\":{\"pipereplica_group_id\":\"proxy\"}}",
         "x-ratelimit-limit-requests": "4490",
         "x-ratelimit-limit-tokens": "449000",
         "x-ratelimit-remaining-requests": "4488",
-        "x-ratelimit-remaining-tokens": "416164",
-        "X-Request-ID": "a464ae3c-0e32-4d09-aa97-f52a4e721750"
+        "x-ratelimit-remaining-tokens": "448932",
+        "X-Request-ID": "dabb0964-e273-40c8-8436-6e41d0c5b11a"
       },
       "ResponseBody": {
-        "id": "resp_683e2dfa33188190831bfd0d02c2d9f10b288d1ac405608f",
+        "id": "resp_02d653ddd8c831dd00690d10927cf88190916a61a56a24a1e1",
         "object": "response",
-        "created_at": 1748905466,
+        "created_at": 1762463890,
         "status": "completed",
+        "background": false,
+        "content_filters": null,
         "error": null,
         "incomplete_details": null,
         "instructions": null,
         "max_output_tokens": null,
+        "max_tool_calls": null,
         "model": "gpt-4o-0806",
         "output": [
           {
-            "id": "msg_683e2dfafbe88190aff0adbba7c3f9460b288d1ac405608f",
+            "id": "msg_02d653ddd8c831dd00690d1093383c8190b7e3a516c077cbfc",
             "type": "message",
             "status": "completed",
             "content": [
               {
                 "type": "output_text",
                 "annotations": [],
-                "text": "Catastrophic forgetting, also known as catastrophic interference, refers to a phenomenon in artificial neural networks where a model loses previously learned information upon learning new tasks or data. This typically occurs in sequential learning scenarios when the model is trained on one task and then another, causing it to overwrite or degrade the representations formed from the earlier task.\n\nHere’s a more detailed explanation:\n\n1. **Sequential Learning Challenges**: Unlike humans, who can retain and recall knowledge while learning new information, neural networks struggle to maintain previous knowledge without it being disrupted by new learning.\n\n2. **Impact on Performance**: When catastrophic forgetting occurs, the network's performance on earlier tasks significantly drops, impairing its ability to generalize across multiple tasks.\n\n3. **Underlying Mechanisms**: The root cause is often the shared weights and parameters in the network, which adjust to optimize performance for the current task, thereby altering the representations crucial for previous tasks.\n\n4. **Solutions**: Strategies to mitigate catastrophic forgetting include:\n   - **Regularization Techniques**: Methods like Elastic Weight Consolidation (EWC) penalize drastic changes to important weights.\n   - **Memory Replay**: Incorporating experiences from past tasks during training helps maintain balanced learning across tasks.\n   - **Modular Architectures**: Using specialized sub-networks or dual-memory systems to segregate knowledge from different tasks.\n\n5. **Importance in AI**: Addressing catastrophic forgetting is crucial for developing systems capable of lifelong learning and adaptation, particularly in areas like autonomous agents and continual learning applications.\n\nUnderstanding and mitigating catastrophic forgetting is essential for advancing the robustness and usefulness of AI models in dynamic environments."
+                "logprobs": [],
+                "text": "Catastrophic forgetting, also known as catastrophic interference, refers to the tendency of artificial neural networks to forget previously learned information upon learning new information. This issue arises in scenarios where a model is trained sequentially on multiple tasks or data distributions.\n\n### Key Aspects:\n\n1. **Sequential Learning**: In a typical setup, a neural network is trained on a specific dataset or task, and then it moves on to learn a new, different task. Without appropriate mechanisms, the model's performance on the earlier tasks can degrade significantly as it begins to focus only on the new task.\n\n2. **Stability-Plasticity Dilemma**: Balancing stability (retaining old knowledge) and plasticity (acquiring new knowledge) is crucial. Too much plasticity leads to forgetting old tasks, while too much stability impedes learning new tasks.\n\n3. **Causes**: Catastrophic forgetting occurs because neural networks update weights globally across the entire network, and new learning can overwrite weights that were crucial for previous tasks.\n\n### Approaches to Mitigate Catastrophic Forgetting:\n\n1. **Regularization Techniques**: Methods like Elastic Weight Consolidation (EWC) add a penalty for changing important weights related to previously learned tasks, helping retain information.\n\n2. **Replay Methods**: Generative replay or rehearsal techniques involve storing and replaying old data or synthetic data generated from learned models to reinforce old knowledge.\n\n3. **Architectural Solutions**: Some architectures use different network paths or cells for different tasks, reducing interference between tasks.\n\n4. **Meta-Learning**: Training models on a variety of tasks to help them generalize learning and better adapt to new tasks without forgetting the old ones.\n\nUnderstanding and solving catastrophic forgetting is crucial for the development of systems capable of continuous learning, a characteristic of more human-like intelligence."
               }
             ],
             "role": "assistant"
@@ -69,20 +83,24 @@
         ],
         "parallel_tool_calls": true,
         "previous_response_id": null,
+        "prompt_cache_key": null,
         "reasoning": {
           "effort": null,
           "summary": null
         },
+        "safety_identifier": null,
         "service_tier": "default",
         "store": true,
         "temperature": 1.0,
         "text": {
           "format": {
             "type": "text"
-          }
+          },
+          "verbosity": "medium"
         },
         "tool_choice": "auto",
         "tools": [],
+        "top_logprobs": 0,
         "top_p": 1.0,
         "truncation": "disabled",
         "usage": {
@@ -90,11 +108,11 @@
           "input_tokens_details": {
             "cached_tokens": 0
           },
-          "output_tokens": 328,
+          "output_tokens": 369,
           "output_tokens_details": {
             "reasoning_tokens": 0
           },
-          "total_tokens": 344
+          "total_tokens": 385
         },
         "user": null,
         "metadata": {}
@@ -107,95 +125,113 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "183",
+        "Content-Length": "185",
         "Content-Type": "application/json",
         "User-Agent": "fake-user-agent",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Lang": "go",
         "X-Stainless-Os": "Linux",
-        "X-Stainless-Package-Version": "1.2.1",
+        "X-Stainless-Package-Version": "3.2.0",
         "X-Stainless-Retry-Count": "0",
         "X-Stainless-Runtime": "go",
-        "X-Stainless-Runtime-Version": "go1.24.3"
+        "X-Stainless-Runtime-Version": "go1.25.1"
       },
       "RequestBody": {
+        "previous_response_id": "resp_02d653ddd8c831dd00690d10927cf88190916a61a56a24a1e1",
         "input": "Explain this at a level that could be understood by a college freshman",
-        "model": "gpt-4o-0806",
-        "previous_response_id": "resp_683e2dfa33188190831bfd0d02c2d9f10b288d1ac405608f"
+        "model": "gpt-4o-0806"
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "2f44b5a2-ba06-46a3-a845-af6563556871",
+        "apim-request-id": "23dfe6c5-1cfc-44e7-af8d-c12935eb4f82",
+        "azure-openai-data-collection": "true",
+        "azureml-internal-forward-count": "0",
+        "azureml-internal-oai-tool-enablement-override": "web_search",
+        "azureml-model-group": "aoai-standard-online-hot",
+        "azureml-served-by-cluster": "hyena-eastus-02",
         "Connection": "keep-alive",
-        "Content-Length": "3183",
+        "Content-Length": "3142",
         "Content-Type": "application/json",
-        "Date": "Mon, 02 Jun 2025 23:04:34 GMT",
+        "DataPlane-Supported-Modalities": "text+vision",
+        "Date": "Thu, 06 Nov 2025 21:18:21 GMT",
         "openai-organization": "1ae165719699410c9b5dba48cfaf5755",
-        "openai-processing-ms": "3914",
-        "openai-version": "2020-10-01",
+        "openai-processing-ms": "5418.4029",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-broker-route-timeout-ms": "90000",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-middleware-request-id": "2f44b5a2-ba06-46a3-a845-af6563556871",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-cmp-host": "cmp.westus3.hyena.infra.ai.azure.com",
+        "x-ms-deployment-name": "gpt-4o-0806",
+        "x-ms-oai-backend-host": "https://g4o8lme-usw3-a1-oai-oe-xgnkkp.westus3.inference.ml.azure.com",
         "x-ms-region": "East US",
+        "x-predictor-override": "{\"proxy\":{\"pipereplica_group_id\":\"proxy\"}}",
         "x-ratelimit-limit-requests": "4490",
         "x-ratelimit-limit-tokens": "449000",
         "x-ratelimit-remaining-requests": "4487",
-        "x-ratelimit-remaining-tokens": "399398",
-        "X-Request-ID": "666a3b91-2bc4-4d8a-981c-21cea7cf6248"
+        "x-ratelimit-remaining-tokens": "448509",
+        "X-Request-ID": "c08c17aa-63d9-46d7-94e6-34c9609f33a2"
       },
       "ResponseBody": {
-        "id": "resp_683e2dfe520c819087cc6cebebdc0eb80b288d1ac405608f",
+        "id": "resp_02d653ddd8c831dd00690d10988ba0819092e56d6995be8f65",
         "object": "response",
-        "created_at": 1748905470,
+        "created_at": 1762463896,
         "status": "completed",
+        "background": false,
+        "content_filters": null,
         "error": null,
         "incomplete_details": null,
         "instructions": null,
         "max_output_tokens": null,
+        "max_tool_calls": null,
         "model": "gpt-4o-0806",
         "output": [
           {
-            "id": "msg_683e2dfec8fc8190a93051c6a25562050b288d1ac405608f",
+            "id": "msg_02d653ddd8c831dd00690d109914a48190a36e6a896872449f",
             "type": "message",
             "status": "completed",
             "content": [
               {
                 "type": "output_text",
                 "annotations": [],
-                "text": "Catastrophic forgetting is a problem that occurs in computer models designed to learn tasks in sequence, similar to how humans learn things one after the other. Imagine you're studying for a math exam, and you spend all night memorizing formulas. The next day, you start learning history facts, and suddenly, you can't remember any of those math formulas you studied before. That's kind of what happens with catastrophic forgetting.\n\nHere's a simplified breakdown:\n\n1. **Learning in Sequence**: When a computer model (usually an artificial neural network) learns one task, it adjusts itself to understand and remember that task. If you then teach it a new task, it might change so much that it 'forgets' what it learned about the first task.\n\n2. **Why It Matters**: In real life, you want machines or robots to learn multiple tasks and remember them all, like a human can learn math, history, and science without forgetting any subject completely.\n\n3. **How It Happens**: The network in the computer uses the same \"brain\" cells, or pathways, to learn every task. When new information comes in, it can change these pathways, erasing the old information.\n\n4. **Fixing the Problem**: Scientists and engineers have thought of some clever ways to help:\n\n   - **Regularization Techniques**: They make sure the important pathways don't change too much when learning something new.\n   \n   - **Memory Replay**: They mix old and new information during learning so the model gets the chance to remember everything.\n\n   - **Specialized Sub-networks**: They create dedicated parts of the network for different tasks.\n\n5. **Why It's Important**: Solving catastrophic forgetting is key for creating advanced robots and AI systems that can learn and adapt just like people do, without losing what they already know.\n\nBy understanding and improving how computers learn, we can make smarter machines that can help us in more complex and dynamic situations."
+                "logprobs": [],
+                "text": "Catastrophic forgetting is a problem that happens in artificial intelligence, specifically with neural networks, which are computer systems used to recognize patterns and learn from data.\n\n### Imagine This:\n\nThink of a neural network like a student who can learn different subjects but gets confused if the new subject overwrites their memory of what they previously learned.\n\n### What Happens:\n\n1. **Learning New Things**: When a neural network learns something new, it adjusts its \"knowledge\" (or weights) to understand and remember the new information.\n\n2. **Forget Old Things**: If not handled carefully, learning new stuff can erase or mess up the information it learned before. This is like studying math, then history, and suddenly forgetting all the math once you start learning history.\n\n### Why It Matters:\n\nThis is a problem when we want AI to learn tasks one after another without losing its ability to perform the earlier tasks, similar to how humans can remember both math and history.\n\n### How to Fix It:\n\nTo prevent catastrophic forgetting, there are some clever tricks:\n\n1. **Regularization Techniques**: These adjust the learning in a way that protects important past knowledge from being overwritten.\n\n2. **Replay Methods**: This involves reviewing old lessons (or data) while learning new ones, so the network can reinforce what it learned before.\n\n3. **Special Designs**: Some network designs are made to compartmentalize knowledge, so different tasks don’t interfere with each other.\n\nBy using these methods, we aim to create AI that can learn and remember as smoothly as people do, so it can keep getting smarter without losing what it already knows."
               }
             ],
             "role": "assistant"
           }
         ],
         "parallel_tool_calls": true,
-        "previous_response_id": "resp_683e2dfa33188190831bfd0d02c2d9f10b288d1ac405608f",
+        "previous_response_id": "resp_02d653ddd8c831dd00690d10927cf88190916a61a56a24a1e1",
+        "prompt_cache_key": null,
         "reasoning": {
           "effort": null,
           "summary": null
         },
+        "safety_identifier": null,
         "service_tier": "default",
         "store": true,
         "temperature": 1.0,
         "text": {
           "format": {
             "type": "text"
-          }
+          },
+          "verbosity": "medium"
         },
         "tool_choice": "auto",
         "tools": [],
+        "top_logprobs": 0,
         "top_p": 1.0,
         "truncation": "disabled",
         "usage": {
-          "input_tokens": 364,
+          "input_tokens": 405,
           "input_tokens_details": {
             "cached_tokens": 0
           },
-          "output_tokens": 391,
+          "output_tokens": 326,
           "output_tokens_details": {
             "reasoning_tokens": 0
           },
-          "total_tokens": 755
+          "total_tokens": 731
         },
         "user": null,
         "metadata": {}
