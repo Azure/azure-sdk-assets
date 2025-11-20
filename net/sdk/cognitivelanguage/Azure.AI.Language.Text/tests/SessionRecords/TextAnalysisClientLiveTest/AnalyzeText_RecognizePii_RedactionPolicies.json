@@ -1,0 +1,223 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://sdk-test-01.cognitiveservices.azure.com/language/:analyze-text?api-version=2025-11-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "671",
+        "Content-Type": "application/json",
+        "Ocp-Apim-Subscription-Key": "Sanitized",
+        "traceparent": "00-97bd3f09e33dacc8b7ff3f3d6c8f657d-b2c9d43bf06db7a6-00",
+        "User-Agent": "azsdk-net-AI.Language.Text/1.0.0-alpha.20251119.1 (.NET 9.0.10; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "kind": "PiiEntityRecognition",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "A",
+              "text": "My name is John Doe. My ssn is 123-45-6789. My email is john@example.com..",
+              "language": "en"
+            },
+            {
+              "id": "B",
+              "text": "My name is John Doe. My ssn is 123-45-6789. My email is john@example.com..",
+              "language": "en"
+            }
+          ]
+        },
+        "parameters": {
+          "piiCategories": [
+            "All"
+          ],
+          "redactionPolicies": [
+            {
+              "policyKind": "entityMask",
+              "policyName": "defaultPolicy",
+              "isDefault": true
+            },
+            {
+              "policyKind": "characterMask",
+              "entityTypes": [
+                "USSocialSecurityNumber"
+              ],
+              "policyName": "customMaskForSSN",
+              "unmaskLength": 4,
+              "unmaskFromEnd": true
+            },
+            {
+              "policyKind": "syntheticReplacement",
+              "entityTypes": [
+                "Person",
+                "Email"
+              ],
+              "policyName": "syntheticMaskForPerson"
+            }
+          ]
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "19ea4182-c9ed-427c-bb24-779677fb0aaf",
+        "Content-Length": "1948",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.PII=2,CognitiveServices.TextAnalytics.TextRecords=2",
+        "Date": "Wed, 19 Nov 2025 22:27:32 GMT",
+        "Set-Cookie": "Sanitized",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "69",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "kind": "PiiEntityRecognitionResults",
+        "results": {
+          "documents": [
+            {
+              "redactedText": "My name is Yesenia Keebler. My ssn is *******6789. My email is Serena_Koss@gmail.com.",
+              "id": "A",
+              "entities": [
+                {
+                  "text": "John Doe",
+                  "category": "Person",
+                  "type": "Person",
+                  "offset": 11,
+                  "length": 8,
+                  "mask": "Yesenia Keebler",
+                  "maskOffset": 11,
+                  "maskLength": 15,
+                  "confidenceScore": 1.0,
+                  "tags": [
+                    {
+                      "name": "Person",
+                      "confidenceScore": 1.0
+                    }
+                  ]
+                },
+                {
+                  "text": "123-45-6789",
+                  "category": "USSocialSecurityNumber",
+                  "type": "USSocialSecurityNumber",
+                  "offset": 31,
+                  "length": 11,
+                  "mask": "*******",
+                  "maskOffset": 38,
+                  "maskLength": 7,
+                  "confidenceScore": 0.85,
+                  "tags": [
+                    {
+                      "name": "USSocialSecurityNumber",
+                      "confidenceScore": 0.85
+                    },
+                    {
+                      "name": "NationalId",
+                      "confidenceScore": 0.85
+                    },
+                    {
+                      "name": "GovernmentIssuedId",
+                      "confidenceScore": 0.85
+                    }
+                  ]
+                },
+                {
+                  "text": "john@example.com.",
+                  "category": "Email",
+                  "type": "Email",
+                  "offset": 56,
+                  "length": 17,
+                  "mask": "Serena_Koss@gmail.com",
+                  "maskOffset": 63,
+                  "maskLength": 21,
+                  "confidenceScore": 0.8,
+                  "tags": [
+                    {
+                      "name": "Email",
+                      "confidenceScore": 0.8
+                    }
+                  ]
+                }
+              ],
+              "warnings": []
+            },
+            {
+              "redactedText": "My name is Buster Keebler. My ssn is *******6789. My email is Lauryn_Smitham73@yahoo.com.",
+              "id": "B",
+              "entities": [
+                {
+                  "text": "John Doe",
+                  "category": "Person",
+                  "type": "Person",
+                  "offset": 11,
+                  "length": 8,
+                  "mask": "Buster Keebler",
+                  "maskOffset": 11,
+                  "maskLength": 14,
+                  "confidenceScore": 1.0,
+                  "tags": [
+                    {
+                      "name": "Person",
+                      "confidenceScore": 1.0
+                    }
+                  ]
+                },
+                {
+                  "text": "123-45-6789",
+                  "category": "USSocialSecurityNumber",
+                  "type": "USSocialSecurityNumber",
+                  "offset": 31,
+                  "length": 11,
+                  "mask": "*******",
+                  "maskOffset": 37,
+                  "maskLength": 7,
+                  "confidenceScore": 0.85,
+                  "tags": [
+                    {
+                      "name": "USSocialSecurityNumber",
+                      "confidenceScore": 0.85
+                    },
+                    {
+                      "name": "NationalId",
+                      "confidenceScore": 0.85
+                    },
+                    {
+                      "name": "GovernmentIssuedId",
+                      "confidenceScore": 0.85
+                    }
+                  ]
+                },
+                {
+                  "text": "john@example.com.",
+                  "category": "Email",
+                  "type": "Email",
+                  "offset": 56,
+                  "length": 17,
+                  "mask": "Lauryn_Smitham73@yahoo.com",
+                  "maskOffset": 62,
+                  "maskLength": 26,
+                  "confidenceScore": 0.8,
+                  "tags": [
+                    {
+                      "name": "Email",
+                      "confidenceScore": 0.8
+                    }
+                  ]
+                }
+              ],
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2025-02-01"
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "AZURE_TEXT_ENDPOINT": "https://sdk-test-01.cognitiveservices.azure.com/",
+    "AZURE_TEXT_KEY": "Sanitized",
+    "RandomSeed": "526691840"
+  }
+}
