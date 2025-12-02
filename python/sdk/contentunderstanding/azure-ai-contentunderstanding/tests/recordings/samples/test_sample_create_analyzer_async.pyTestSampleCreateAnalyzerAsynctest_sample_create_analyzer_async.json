@@ -1,17 +1,17 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://Sanitized.services.ai.azure.com/contentunderstanding/analyzers/python_sdk_sync_create_sync?api-version=2025-11-01",
+      "RequestUri": "https://Sanitized.services.ai.azure.com//contentunderstanding/analyzers/test_custom_analyzer_904a9cf6a7824d85?api-version=2025-11-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
-        "Connection": "keep-alive",
-        "Content-Length": "508",
+        "Content-Length": "852",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-python-ai-contentunderstanding/1.0.0b1 Python/3.12.3 (Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35)"
       },
       "RequestBody": {
         "baseAnalyzerId": "prebuilt-document",
+        "description": "Custom analyzer for extracting company information",
         "config": {
           "enableFormula": true,
           "enableLayout": true,
@@ -19,48 +19,63 @@
           "estimateFieldSourceAndConfidence": true,
           "returnDetails": true
         },
-        "description": "test analyzer: python_sdk_sync_create_sync",
         "fieldSchema": {
+          "name": "Sanitized",
+          "description": "Schema for extracting company information",
           "fields": {
-            "amount_due": {
-              "description": "Total amount due of this table",
+            "company_name": {
+              "type": "string",
               "method": "extract",
-              "type": "number"
+              "description": "Name of the company"
+            },
+            "total_amount": {
+              "type": "number",
+              "method": "extract",
+              "description": "Total amount on the document"
+            },
+            "document_summary": {
+              "type": "string",
+              "method": "generate",
+              "description": "A brief summary of the document content"
+            },
+            "document_type": {
+              "type": "string",
+              "method": "classify",
+              "description": "Type of document",
+              "enum": [
+                "invoice",
+                "receipt",
+                "contract",
+                "report",
+                "other"
+              ]
             }
-          },
-          "description": "schema description here",
-          "name": "Sanitized"
+          }
         },
-        "processingLocation": "global",
         "models": {
-          "completion": "gpt-4.1"
-        },
-        "tags": {
-          "tag1_name": "tag1_value"
+          "completion": "gpt-4.1",
+          "embedding": "text-embedding-3-large"
         }
       },
       "StatusCode": 201,
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-01-preview,2025-11-01",
-        "apim-request-id": "853b76b8-4524-4067-8203-8b56c035b3bd",
+        "apim-request-id": "9289e9f7-0826-42b7-8306-06ccfc44a562",
         "Content-Type": "application/json",
-        "Date": "Mon, 01 Dec 2025 23:44:04 GMT",
-        "Operation-Location": "https://fake_azure_content_understanding_endpoint.services.ai.azure.com/contentunderstanding/analyzers/python_sdk_sync_create_sync/operations/853b76b8-4524-4067-8203-8b56c035b3bd?api-version=2025-11-01",
-        "request-id": "853b76b8-4524-4067-8203-8b56c035b3bd",
+        "Date": "Mon, 01 Dec 2025 23:38:55 GMT",
+        "Operation-Location": "https://fake_azure_content_understanding_endpoint.services.ai.azure.com/contentunderstanding/analyzers/test_custom_analyzer_904a9cf6a7824d85/operations/9289e9f7-0826-42b7-8306-06ccfc44a562?api-version=2025-11-01",
+        "request-id": "9289e9f7-0826-42b7-8306-06ccfc44a562",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "141",
+        "x-envoy-upstream-service-time": "125",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
-        "analyzerId": "python_sdk_sync_create_sync",
-        "description": "test analyzer: python_sdk_sync_create_sync",
-        "tags": {
-          "tag1_name": "tag1_value"
-        },
-        "createdAt": "2025-12-01T23:44:04Z",
-        "lastModifiedAt": "2025-12-01T23:44:04Z",
+        "analyzerId": "test_custom_analyzer_904a9cf6a7824d85",
+        "description": "Custom analyzer for extracting company information",
+        "createdAt": "2025-12-01T23:38:55Z",
+        "lastModifiedAt": "2025-12-01T23:38:55Z",
         "baseAnalyzerId": "prebuilt-document",
         "config": {
           "returnDetails": true,
@@ -79,18 +94,40 @@
         },
         "fieldSchema": {
           "name": "Sanitized",
-          "description": "schema description here",
+          "description": "Schema for extracting company information",
           "fields": {
-            "amount_due": {
+            "company_name": {
+              "type": "string",
+              "method": "extract",
+              "description": "Name of the company"
+            },
+            "total_amount": {
               "type": "number",
               "method": "extract",
-              "description": "Total amount due of this table"
+              "description": "Total amount on the document"
+            },
+            "document_summary": {
+              "type": "string",
+              "method": "generate",
+              "description": "A brief summary of the document content"
+            },
+            "document_type": {
+              "type": "string",
+              "method": "classify",
+              "description": "Type of document",
+              "enum": [
+                "invoice",
+                "receipt",
+                "contract",
+                "report",
+                "other"
+              ]
             }
           }
         },
         "warnings": [],
         "status": "creating",
-        "processingLocation": "global",
+        "processingLocation": "geography",
         "supportedModels": {
           "completion": [
             "gpt-4o",
@@ -112,38 +149,34 @@
       }
     },
     {
-      "RequestUri": "https://Sanitized.services.ai.azure.com/contentunderstanding/analyzers/python_sdk_sync_create_sync/operations/853b76b8-4524-4067-8203-8b56c035b3bd?api-version=2025-11-01",
+      "RequestUri": "https://Sanitized.services.ai.azure.com/contentunderstanding/analyzers/test_custom_analyzer_904a9cf6a7824d85/operations/9289e9f7-0826-42b7-8306-06ccfc44a562?api-version=2025-11-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
-        "Connection": "keep-alive",
         "User-Agent": "azsdk-python-ai-contentunderstanding/1.0.0b1 Python/3.12.3 (Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-01-preview,2025-11-01",
-        "apim-request-id": "d0c8ced4-6e2d-41de-8f1d-e4db8b0909c2",
+        "apim-request-id": "40cd5d68-9b16-4571-9b3a-7153d1d02ed5",
         "Content-Type": "application/json",
-        "Date": "Mon, 01 Dec 2025 23:44:04 GMT",
-        "request-id": "d0c8ced4-6e2d-41de-8f1d-e4db8b0909c2",
+        "Date": "Mon, 01 Dec 2025 23:38:56 GMT",
+        "request-id": "40cd5d68-9b16-4571-9b3a-7153d1d02ed5",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "67",
+        "x-envoy-upstream-service-time": "54",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "id": "Sanitized",
         "status": "Running",
         "result": {
-          "analyzerId": "python_sdk_sync_create_sync",
-          "description": "test analyzer: python_sdk_sync_create_sync",
-          "tags": {
-            "tag1_name": "tag1_value"
-          },
-          "createdAt": "2025-12-01T23:44:04Z",
-          "lastModifiedAt": "2025-12-01T23:44:04Z",
+          "analyzerId": "test_custom_analyzer_904a9cf6a7824d85",
+          "description": "Custom analyzer for extracting company information",
+          "createdAt": "2025-12-01T23:38:55Z",
+          "lastModifiedAt": "2025-12-01T23:38:55Z",
           "baseAnalyzerId": "prebuilt-document",
           "config": {
             "returnDetails": true,
@@ -162,18 +195,40 @@
           },
           "fieldSchema": {
             "name": "Sanitized",
-            "description": "schema description here",
+            "description": "Schema for extracting company information",
             "fields": {
-              "amount_due": {
+              "company_name": {
+                "type": "string",
+                "method": "extract",
+                "description": "Name of the company"
+              },
+              "total_amount": {
                 "type": "number",
                 "method": "extract",
-                "description": "Total amount due of this table"
+                "description": "Total amount on the document"
+              },
+              "document_summary": {
+                "type": "string",
+                "method": "generate",
+                "description": "A brief summary of the document content"
+              },
+              "document_type": {
+                "type": "string",
+                "method": "classify",
+                "description": "Type of document",
+                "enum": [
+                  "invoice",
+                  "receipt",
+                  "contract",
+                  "report",
+                  "other"
+                ]
               }
             }
           },
           "warnings": [],
           "status": "creating",
-          "processingLocation": "global",
+          "processingLocation": "geography",
           "supportedModels": {
             "completion": [
               "gpt-4o",
@@ -196,38 +251,34 @@
       }
     },
     {
-      "RequestUri": "https://Sanitized.services.ai.azure.com/contentunderstanding/analyzers/python_sdk_sync_create_sync/operations/853b76b8-4524-4067-8203-8b56c035b3bd?api-version=2025-11-01",
+      "RequestUri": "https://Sanitized.services.ai.azure.com/contentunderstanding/analyzers/test_custom_analyzer_904a9cf6a7824d85/operations/9289e9f7-0826-42b7-8306-06ccfc44a562?api-version=2025-11-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
-        "Connection": "keep-alive",
         "User-Agent": "azsdk-python-ai-contentunderstanding/1.0.0b1 Python/3.12.3 (Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-01-preview,2025-11-01",
-        "apim-request-id": "e2ea93ee-2893-474c-b7f0-16afd863f005",
+        "apim-request-id": "4ec4045d-627e-42b5-9064-5868d9f958e0",
         "Content-Type": "application/json",
-        "Date": "Mon, 01 Dec 2025 23:44:33 GMT",
-        "request-id": "e2ea93ee-2893-474c-b7f0-16afd863f005",
+        "Date": "Mon, 01 Dec 2025 23:39:26 GMT",
+        "request-id": "4ec4045d-627e-42b5-9064-5868d9f958e0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "73",
+        "x-envoy-upstream-service-time": "66",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "id": "Sanitized",
         "status": "Succeeded",
         "result": {
-          "analyzerId": "python_sdk_sync_create_sync",
-          "description": "test analyzer: python_sdk_sync_create_sync",
-          "tags": {
-            "tag1_name": "tag1_value"
-          },
-          "createdAt": "2025-12-01T23:44:04Z",
-          "lastModifiedAt": "2025-12-01T23:44:06Z",
+          "analyzerId": "test_custom_analyzer_904a9cf6a7824d85",
+          "description": "Custom analyzer for extracting company information",
+          "createdAt": "2025-12-01T23:38:55Z",
+          "lastModifiedAt": "2025-12-01T23:38:58Z",
           "baseAnalyzerId": "prebuilt-document",
           "config": {
             "returnDetails": true,
@@ -246,18 +297,40 @@
           },
           "fieldSchema": {
             "name": "Sanitized",
-            "description": "schema description here",
+            "description": "Schema for extracting company information",
             "fields": {
-              "amount_due": {
+              "company_name": {
+                "type": "string",
+                "method": "extract",
+                "description": "Name of the company"
+              },
+              "total_amount": {
                 "type": "number",
                 "method": "extract",
-                "description": "Total amount due of this table"
+                "description": "Total amount on the document"
+              },
+              "document_summary": {
+                "type": "string",
+                "method": "generate",
+                "description": "A brief summary of the document content"
+              },
+              "document_type": {
+                "type": "string",
+                "method": "classify",
+                "description": "Type of document",
+                "enum": [
+                  "invoice",
+                  "receipt",
+                  "contract",
+                  "report",
+                  "other"
+                ]
               }
             }
           },
           "warnings": [],
           "status": "ready",
-          "processingLocation": "global",
+          "processingLocation": "geography",
           "supportedModels": {
             "completion": [
               "gpt-4o",
@@ -280,35 +353,31 @@
       }
     },
     {
-      "RequestUri": "https://Sanitized.services.ai.azure.com/contentunderstanding/analyzers/python_sdk_sync_create_sync?api-version=2025-11-01",
+      "RequestUri": "https://Sanitized.services.ai.azure.com//contentunderstanding/analyzers/test_custom_analyzer_904a9cf6a7824d85?api-version=2025-11-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
-        "Connection": "keep-alive",
         "User-Agent": "azsdk-python-ai-contentunderstanding/1.0.0b1 Python/3.12.3 (Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-01-preview,2025-11-01",
-        "apim-request-id": "8b3e2dd1-e6f9-4b73-a083-385b6f8c6e4a",
+        "apim-request-id": "e267da01-68d4-4ebf-95db-27da99924678",
         "Content-Type": "application/json",
-        "Date": "Mon, 01 Dec 2025 23:44:34 GMT",
-        "request-id": "8b3e2dd1-e6f9-4b73-a083-385b6f8c6e4a",
+        "Date": "Mon, 01 Dec 2025 23:39:26 GMT",
+        "request-id": "e267da01-68d4-4ebf-95db-27da99924678",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "28",
+        "x-envoy-upstream-service-time": "31",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
-        "analyzerId": "python_sdk_sync_create_sync",
-        "description": "test analyzer: python_sdk_sync_create_sync",
-        "tags": {
-          "tag1_name": "tag1_value"
-        },
-        "createdAt": "2025-12-01T23:44:04Z",
-        "lastModifiedAt": "2025-12-01T23:44:06Z",
+        "analyzerId": "test_custom_analyzer_904a9cf6a7824d85",
+        "description": "Custom analyzer for extracting company information",
+        "createdAt": "2025-12-01T23:38:55Z",
+        "lastModifiedAt": "2025-12-01T23:38:58Z",
         "baseAnalyzerId": "prebuilt-document",
         "config": {
           "returnDetails": true,
@@ -327,18 +396,40 @@
         },
         "fieldSchema": {
           "name": "Sanitized",
-          "description": "schema description here",
+          "description": "Schema for extracting company information",
           "fields": {
-            "amount_due": {
+            "company_name": {
+              "type": "string",
+              "method": "extract",
+              "description": "Name of the company"
+            },
+            "total_amount": {
               "type": "number",
               "method": "extract",
-              "description": "Total amount due of this table"
+              "description": "Total amount on the document"
+            },
+            "document_summary": {
+              "type": "string",
+              "method": "generate",
+              "description": "A brief summary of the document content"
+            },
+            "document_type": {
+              "type": "string",
+              "method": "classify",
+              "description": "Type of document",
+              "enum": [
+                "invoice",
+                "receipt",
+                "contract",
+                "report",
+                "other"
+              ]
             }
           }
         },
         "warnings": [],
         "status": "ready",
-        "processingLocation": "global",
+        "processingLocation": "geography",
         "supportedModels": {
           "completion": [
             "gpt-4o",
@@ -360,11 +451,10 @@
       }
     },
     {
-      "RequestUri": "https://Sanitized.services.ai.azure.com/contentunderstanding/analyzers/python_sdk_sync_create_sync?api-version=2025-11-01",
+      "RequestUri": "https://Sanitized.services.ai.azure.com//contentunderstanding/analyzers/test_custom_analyzer_904a9cf6a7824d85?api-version=2025-11-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "*/*",
-        "Connection": "keep-alive",
         "Content-Length": "0",
         "User-Agent": "azsdk-python-ai-contentunderstanding/1.0.0b1 Python/3.12.3 (Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35)"
       },
@@ -372,13 +462,13 @@
       "StatusCode": 204,
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-01-preview,2025-11-01",
-        "apim-request-id": "2a835b80-45c9-42d5-a34e-6ace7d00e95b",
+        "apim-request-id": "1182b792-9b15-4bdc-8b22-3fe0b3ac2282",
         "Content-Length": "0",
-        "Date": "Mon, 01 Dec 2025 23:44:34 GMT",
-        "request-id": "2a835b80-45c9-42d5-a34e-6ace7d00e95b",
+        "Date": "Mon, 01 Dec 2025 23:39:26 GMT",
+        "request-id": "1182b792-9b15-4bdc-8b22-3fe0b3ac2282",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "109",
+        "x-envoy-upstream-service-time": "106",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
