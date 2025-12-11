@@ -6,7 +6,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-net-AI.ContentUnderstanding/1.0.0-alpha.20251129.1 (.NET 9.0.10; Ubuntu 22.04.4 LTS)",
+        "User-Agent": "azsdk-net-AI.ContentUnderstanding/1.0.0-alpha.20251211.1 (.NET 10.0.0; Ubuntu 22.04.4 LTS)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
@@ -14,16 +14,16 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-01-preview,2025-11-01",
-        "apim-request-id": "bd765239-9d77-46e5-a923-3e79528f7011",
+        "apim-request-id": "087cb841-0e60-442f-96c5-0b5d59fb75e0",
         "Content-Type": "application/json",
-        "Date": "Sat, 29 Nov 2025 03:42:18 GMT",
-        "request-id": "bd765239-9d77-46e5-a923-3e79528f7011",
+        "Date": "Thu, 11 Dec 2025 16:50:23 GMT",
+        "request-id": "087cb841-0e60-442f-96c5-0b5d59fb75e0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "366",
+        "x-envoy-upstream-service-time": "536",
         "x-ms-region": "East US",
-        "x-ms-request-id": "bd765239-9d77-46e5-a923-3e79528f7011"
+        "x-ms-request-id": "087cb841-0e60-442f-96c5-0b5d59fb75e0"
       },
       "ResponseBody": {
         "value": [
@@ -1725,22 +1725,22 @@
                 "DocumentNumber": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Passport number"
+                  "description": "Passport number printed in the VIZ"
                 },
                 "FirstName": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Given name and middle initial if applicable"
+                  "description": "Given name printed in the VIZ"
                 },
                 "MiddleName": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Name between given name and surname"
+                  "description": "Name between given name and surname printed in the VIZ"
                 },
                 "LastName": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Surname"
+                  "description": "Surname printed in the VIZ"
                 },
                 "Aliases": {
                   "type": "array",
@@ -1754,62 +1754,57 @@
                 "BirthDate": {
                   "type": "date",
                   "method": "extract",
-                  "description": "Date of birth"
+                  "description": "Date of birth printed in the VIZ"
                 },
                 "ExpirationDate": {
                   "type": "date",
                   "method": "extract",
-                  "description": "Date of expiration"
+                  "description": "Date of expiration printed in the VIZ"
                 },
                 "IssueDate": {
                   "type": "date",
                   "method": "extract",
-                  "description": "Date of issue"
+                  "description": "Date of issue printed in the VIZ"
                 },
                 "Sex": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Sex",
-                  "enum": [
-                    "M",
-                    "F",
-                    "X"
-                  ]
+                  "description": "Sex printed in the VIZ"
                 },
                 "CountryRegion": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Issuing country or organization"
+                  "description": "Issuing country or organization printed in the VIZ"
                 },
                 "DocumentType": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Document type"
+                  "description": "Document type printed in the VIZ"
                 },
                 "Nationality": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Nationality"
+                  "description": "Nationality printed in the VIZ"
                 },
                 "PlaceOfBirth": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Place of birth"
+                  "description": "Place of birth printed in the VIZ"
                 },
                 "PlaceOfIssue": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Place of issue"
+                  "description": "Place of issue printed in the VIZ"
                 },
                 "IssuingAuthority": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Issuing authority"
+                  "description": "Issuing authority printed in the VIZ"
                 },
                 "PersonalNumber": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Personal Id. No."
+                  "description": "Personal ID number printed in the VIZ"
                 },
                 "MachineReadableZone": {
                   "type": "string",
@@ -12938,11 +12933,6 @@
                             "method": "extract",
                             "description": "CUSIP Number extracted from Form 1099-B."
                           },
-                          "IsFATCAFilingRequired": {
-                            "type": "boolean",
-                            "method": "extract",
-                            "description": "Is FATCA Filing Required extracted from Form 1099-B."
-                          },
                           "ApplicableForm8949Checkbox": {
                             "type": "string",
                             "method": "extract",
@@ -13042,7 +13032,7 @@
                           },
                           "Box7": {
                             "type": "boolean",
-                            "method": "extract",
+                            "method": "generate",
                             "description": "If checked, loss is not allowed based on amount in 1d."
                           },
                           "Box8": {
@@ -13103,6 +13093,11 @@
                           }
                         }
                       }
+                    },
+                    "IsFATCAFilingRequired": {
+                      "type": "boolean",
+                      "method": "extract",
+                      "description": "Is FATCA Filing Required extracted from Form 1099-B."
                     }
                   }
                 },
@@ -13110,126 +13105,133 @@
                   "type": "object",
                   "method": "generate",
                   "properties": {
-                    "Box1a": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 1a extracted from Form 1099-DIV."
-                    },
-                    "Box1b": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 1b extracted from Form 1099-DIV."
-                    },
-                    "Box2a": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2a extracted from Form 1099-DIV."
-                    },
-                    "Box2b": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2b extracted from Form 1099-DIV."
-                    },
-                    "Box2c": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2c extracted from Form 1099-DIV."
-                    },
-                    "Box2d": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2d extracted from Form 1099-DIV."
-                    },
-                    "Box2e": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2e extracted from Form 1099-DIV."
-                    },
-                    "Box2f": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2f extracted from Form 1099-DIV."
-                    },
-                    "Box3": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 3 extracted from Form 1099-DIV."
-                    },
-                    "Box4": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 4 extracted from Form 1099-DIV."
-                    },
-                    "Box5": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 5 extracted from Form 1099-DIV."
-                    },
-                    "Box6": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 6 extracted from Form 1099-DIV."
-                    },
-                    "Box7": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 7 extracted from Form 1099-DIV."
-                    },
-                    "Box8": {
-                      "type": "string",
-                      "method": "extract",
-                      "description": "Box 8 extracted from Form 1099-DIV."
-                    },
-                    "Box9": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 9 extracted from Form 1099-DIV."
-                    },
-                    "Box10": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 10 extracted from Form 1099-DIV."
-                    },
-                    "Box11": {
-                      "type": "boolean",
-                      "method": "extract",
-                      "description": "FATCA filing requirement."
-                    },
-                    "Box12": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 12 extracted from Form 1099-DIV."
-                    },
-                    "Box13": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 13 extracted from Form 1099-DIV."
-                    },
-                    "StateTaxesWithheld": {
-                      "type": "array",
+                    "Summary": {
+                      "type": "object",
                       "method": "generate",
-                      "description": "State Taxes Withheld extracted from Form 1099-DIV",
-                      "items": {
-                        "type": "object",
-                        "method": "generate",
-                        "properties": {
-                          "Box14": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 14 extracted from Form 1099-DIV."
-                          },
-                          "Box15": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 15 extracted from Form 1099-DIV."
-                          },
-                          "Box16": {
-                            "type": "number",
-                            "method": "extract",
-                            "description": "Box 16 extracted from Form 1099-DIV."
+                      "description": "Summary of Form 1099-DIV.",
+                      "properties": {
+                        "Box1a": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 1a extracted from Form 1099-DIV."
+                        },
+                        "Box1b": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 1b extracted from Form 1099-DIV."
+                        },
+                        "Box2a": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2a extracted from Form 1099-DIV."
+                        },
+                        "Box2b": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2b extracted from Form 1099-DIV."
+                        },
+                        "Box2c": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2c extracted from Form 1099-DIV."
+                        },
+                        "Box2d": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2d extracted from Form 1099-DIV."
+                        },
+                        "Box2e": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2e extracted from Form 1099-DIV."
+                        },
+                        "Box2f": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2f extracted from Form 1099-DIV."
+                        },
+                        "Box3": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 3 extracted from Form 1099-DIV."
+                        },
+                        "Box4": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 4 extracted from Form 1099-DIV."
+                        },
+                        "Box5": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 5 extracted from Form 1099-DIV."
+                        },
+                        "Box6": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 6 extracted from Form 1099-DIV."
+                        },
+                        "Box7": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 7 extracted from Form 1099-DIV."
+                        },
+                        "Box8": {
+                          "type": "string",
+                          "method": "extract",
+                          "description": "Box 8 extracted from Form 1099-DIV."
+                        },
+                        "Box9": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 9 extracted from Form 1099-DIV."
+                        },
+                        "Box10": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 10 extracted from Form 1099-DIV."
+                        },
+                        "Box12": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 12 extracted from Form 1099-DIV."
+                        },
+                        "Box13": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 13 extracted from Form 1099-DIV."
+                        },
+                        "StateTaxesWithheld": {
+                          "type": "array",
+                          "method": "generate",
+                          "description": "State Taxes Withheld extracted from Form 1099-DIV",
+                          "items": {
+                            "type": "object",
+                            "method": "generate",
+                            "properties": {
+                              "Box14": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 14 extracted from Form 1099-DIV."
+                              },
+                              "Box15": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 15 extracted from Form 1099-DIV."
+                              },
+                              "Box16": {
+                                "type": "number",
+                                "method": "extract",
+                                "description": "Box 16 extracted from Form 1099-DIV."
+                              }
+                            }
                           }
                         }
                       }
+                    },
+                    "IsFATCAFilingRequired": {
+                      "type": "boolean",
+                      "method": "extract",
+                      "description": "Is FATCA Filing Required extracted from Form 1099-DIV."
                     }
                   }
                 },
@@ -13237,106 +13239,113 @@
                   "type": "object",
                   "method": "generate",
                   "properties": {
+                    "Summary": {
+                      "type": "object",
+                      "method": "generate",
+                      "description": "Summary of Form 1099-INT.",
+                      "properties": {
+                        "Box1": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 1 extracted from Form 1099-INT."
+                        },
+                        "Box2": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2 extracted from Form 1099-INT."
+                        },
+                        "Box3": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 3 extracted from Form 1099-INT."
+                        },
+                        "Box4": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 4 extracted from Form 1099-INT."
+                        },
+                        "Box5": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 5 extracted from Form 1099-INT."
+                        },
+                        "Box6": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 6 extracted from Form 1099-INT."
+                        },
+                        "Box7": {
+                          "type": "string",
+                          "method": "extract",
+                          "description": "Box 7 extracted from Form 1099-INT."
+                        },
+                        "Box8": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 8 extracted from Form 1099-INT."
+                        },
+                        "Box9": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 9 extracted from Form 1099-INT."
+                        },
+                        "Box10": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 10 extracted from Form 1099-INT."
+                        },
+                        "Box11": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 11 extracted from Form 1099-INT."
+                        },
+                        "Box12": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 12 extracted from Form 1099-INT."
+                        },
+                        "Box13": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 13 extracted from Form 1099-INT."
+                        },
+                        "Box14": {
+                          "type": "string",
+                          "method": "extract",
+                          "description": "Box 14 extracted from Form 1099-INT."
+                        },
+                        "StateTaxesWithheld": {
+                          "type": "array",
+                          "method": "generate",
+                          "description": "State Taxes Withheld extracted from Form 1099-INT",
+                          "items": {
+                            "type": "object",
+                            "method": "generate",
+                            "properties": {
+                              "Box15": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 15 extracted from Form 1099-INT."
+                              },
+                              "Box16": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 16 extracted from Form 1099-INT."
+                              },
+                              "Box17": {
+                                "type": "number",
+                                "method": "extract",
+                                "description": "Box 17 extracted from Form 1099-INT."
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
                     "IsFATCAFilingRequired": {
                       "type": "boolean",
                       "method": "extract",
                       "description": "Is FATCA Filing Required extracted from Form 1099-INT."
-                    },
-                    "Box1": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 1 extracted from Form 1099-INT."
-                    },
-                    "Box2": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2 extracted from Form 1099-INT."
-                    },
-                    "Box3": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 3 extracted from Form 1099-INT."
-                    },
-                    "Box4": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 4 extracted from Form 1099-INT."
-                    },
-                    "Box5": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 5 extracted from Form 1099-INT."
-                    },
-                    "Box6": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 6 extracted from Form 1099-INT."
-                    },
-                    "Box7": {
-                      "type": "string",
-                      "method": "extract",
-                      "description": "Box 7 extracted from Form 1099-INT."
-                    },
-                    "Box8": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 8 extracted from Form 1099-INT."
-                    },
-                    "Box9": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 9 extracted from Form 1099-INT."
-                    },
-                    "Box10": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 10 extracted from Form 1099-INT."
-                    },
-                    "Box11": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 11 extracted from Form 1099-INT."
-                    },
-                    "Box12": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 12 extracted from Form 1099-INT."
-                    },
-                    "Box13": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 13 extracted from Form 1099-INT."
-                    },
-                    "Box14": {
-                      "type": "string",
-                      "method": "extract",
-                      "description": "Box 14 extracted from Form 1099-INT."
-                    },
-                    "StateTaxesWithheld": {
-                      "type": "array",
-                      "method": "generate",
-                      "description": "State Taxes Withheld extracted from Form 1099-INT",
-                      "items": {
-                        "type": "object",
-                        "method": "generate",
-                        "properties": {
-                          "Box15": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 15 extracted from Form 1099-INT."
-                          },
-                          "Box16": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 16 extracted from Form 1099-INT."
-                          },
-                          "Box17": {
-                            "type": "number",
-                            "method": "extract",
-                            "description": "Box 17 extracted from Form 1099-INT."
-                          }
-                        }
-                      }
                     }
                   }
                 },
@@ -13344,106 +13353,113 @@
                   "type": "object",
                   "method": "generate",
                   "properties": {
-                    "Box1": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 1 extracted from Form 1099-MISC."
-                    },
-                    "Box2": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2 extracted from Form 1099-MISC."
-                    },
-                    "Box3": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 3 extracted from Form 1099-MISC."
-                    },
-                    "Box4": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 4 extracted from Form 1099-MISC."
-                    },
-                    "Box5": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 5 extracted from Form 1099-MISC."
-                    },
-                    "Box6": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 6 extracted from Form 1099-MISC."
-                    },
-                    "Box7": {
-                      "type": "boolean",
-                      "method": "extract",
-                      "description": "Box 7 extracted from Form 1099-MISC."
-                    },
-                    "Box8": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 8 extracted from Form 1099-MISC."
-                    },
-                    "Box9": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 9 extracted from Form 1099-MISC."
-                    },
-                    "Box10": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 10 extracted from Form 1099-MISC."
-                    },
-                    "Box11": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 11 extracted from Form 1099-MISC."
-                    },
-                    "Box12": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 12 extracted from Form 1099-MISC."
-                    },
-                    "Box13": {
-                      "type": "boolean",
-                      "method": "extract",
-                      "description": "Box 13 extracted from Form 1099-MISC."
-                    },
-                    "Box14": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 14 extracted from Form 1099-MISC."
-                    },
-                    "Box15": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 15 extracted from Form 1099-MISC."
-                    },
-                    "StateTaxesWithheld": {
-                      "type": "array",
+                    "Summary": {
+                      "type": "object",
                       "method": "generate",
-                      "description": "State Taxes Withheld extracted from Form 1099-MISC",
-                      "items": {
-                        "type": "object",
-                        "method": "generate",
-                        "properties": {
-                          "Box16": {
-                            "type": "number",
-                            "method": "extract",
-                            "description": "Box 16 extracted from Form 1099-MISC."
-                          },
-                          "Box17": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 17 extracted from Form 1099-MISC."
-                          },
-                          "Box18": {
-                            "type": "number",
-                            "method": "extract",
-                            "description": "Box 18 extracted from Form 1099-MISC."
+                      "description": "Summary of Form 1099-MISC.",
+                      "properties": {
+                        "Box1": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 1 extracted from Form 1099-MISC."
+                        },
+                        "Box2": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2 extracted from Form 1099-MISC."
+                        },
+                        "Box3": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 3 extracted from Form 1099-MISC."
+                        },
+                        "Box4": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 4 extracted from Form 1099-MISC."
+                        },
+                        "Box5": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 5 extracted from Form 1099-MISC."
+                        },
+                        "Box6": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 6 extracted from Form 1099-MISC."
+                        },
+                        "Box7": {
+                          "type": "boolean",
+                          "method": "extract",
+                          "description": "Box 7 extracted from Form 1099-MISC."
+                        },
+                        "Box8": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 8 extracted from Form 1099-MISC."
+                        },
+                        "Box9": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 9 extracted from Form 1099-MISC."
+                        },
+                        "Box10": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 10 extracted from Form 1099-MISC."
+                        },
+                        "Box11": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 11 extracted from Form 1099-MISC."
+                        },
+                        "Box12": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 12 extracted from Form 1099-MISC."
+                        },
+                        "Box14": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 14 extracted from Form 1099-MISC."
+                        },
+                        "Box15": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 15 extracted from Form 1099-MISC."
+                        },
+                        "StateTaxesWithheld": {
+                          "type": "array",
+                          "method": "generate",
+                          "description": "State Taxes Withheld extracted from Form 1099-MISC",
+                          "items": {
+                            "type": "object",
+                            "method": "generate",
+                            "properties": {
+                              "Box16": {
+                                "type": "number",
+                                "method": "extract",
+                                "description": "Box 16 extracted from Form 1099-MISC."
+                              },
+                              "Box17": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 17 extracted from Form 1099-MISC."
+                              },
+                              "Box18": {
+                                "type": "number",
+                                "method": "extract",
+                                "description": "Box 18 extracted from Form 1099-MISC."
+                              }
+                            }
                           }
                         }
                       }
+                    },
+                    "IsFATCAFilingRequired": {
+                      "type": "boolean",
+                      "method": "extract",
+                      "description": "Is FATCA Filing Required extracted from Form 1099-MISC."
                     }
                   }
                 },
@@ -13451,96 +13467,98 @@
                   "type": "object",
                   "method": "generate",
                   "properties": {
-                    "TaxYear": {
-                      "type": "string",
-                      "method": "extract",
-                      "description": "Tax Year extracted from Form 1099-OID."
+                    "Summary": {
+                      "type": "object",
+                      "method": "generate",
+                      "description": "Summary of Form 1099-OID.",
+                      "properties": {
+                        "Box1": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 1 extracted from Form 1099-OID."
+                        },
+                        "Box2": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2 extracted from Form 1099-OID."
+                        },
+                        "Box3": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 3 extracted from Form 1099-OID."
+                        },
+                        "Box4": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 4 extracted from Form 1099-OID."
+                        },
+                        "Box5": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 5 extracted from Form 1099-OID."
+                        },
+                        "Box6": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 6 extracted from Form 1099-OID."
+                        },
+                        "Box7": {
+                          "type": "string",
+                          "method": "extract",
+                          "description": "Box 7 extracted from Form 1099-OID."
+                        },
+                        "Box8": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 8 extracted from Form 1099-OID."
+                        },
+                        "Box9": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 9 extracted from Form 1099-OID."
+                        },
+                        "Box10": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 10 extracted from Form 1099-OID."
+                        },
+                        "Box11": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 11 extracted from Form 1099-OID."
+                        },
+                        "StateTaxesWithheld": {
+                          "type": "array",
+                          "method": "generate",
+                          "description": "State Taxes Withheld extracted from Form 1099-OID",
+                          "items": {
+                            "type": "object",
+                            "method": "generate",
+                            "properties": {
+                              "Box12": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 12 extracted from Form 1099-OID."
+                              },
+                              "Box13": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 13 extracted from Form 1099-OID."
+                              },
+                              "Box14": {
+                                "type": "number",
+                                "method": "extract",
+                                "description": "Box 14 extracted from Form 1099-OID."
+                              }
+                            }
+                          }
+                        }
+                      }
                     },
                     "IsFATCAFilingRequired": {
                       "type": "boolean",
                       "method": "extract",
                       "description": "Is FATCA Filing Required extracted from Form 1099-OID."
-                    },
-                    "Box1": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 1 extracted from Form 1099-OID."
-                    },
-                    "Box2": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2 extracted from Form 1099-OID."
-                    },
-                    "Box3": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 3 extracted from Form 1099-OID."
-                    },
-                    "Box4": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 4 extracted from Form 1099-OID."
-                    },
-                    "Box5": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 5 extracted from Form 1099-OID."
-                    },
-                    "Box6": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 6 extracted from Form 1099-OID."
-                    },
-                    "Box7": {
-                      "type": "string",
-                      "method": "extract",
-                      "description": "Box 7 extracted from Form 1099-OID."
-                    },
-                    "Box8": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 8 extracted from Form 1099-OID."
-                    },
-                    "Box9": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 9 extracted from Form 1099-OID."
-                    },
-                    "Box10": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 10 extracted from Form 1099-OID."
-                    },
-                    "Box11": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 11 extracted from Form 1099-OID."
-                    },
-                    "StateTaxesWithheld": {
-                      "type": "array",
-                      "method": "generate",
-                      "description": "State Taxes Withheld extracted from Form 1099-OID",
-                      "items": {
-                        "type": "object",
-                        "method": "generate",
-                        "properties": {
-                          "Box12": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 12 extracted from Form 1099-OID."
-                          },
-                          "Box13": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 13 extracted from Form 1099-OID."
-                          },
-                          "Box14": {
-                            "type": "number",
-                            "method": "extract",
-                            "description": "Box 14 extracted from Form 1099-OID."
-                          }
-                        }
-                      }
                     }
                   }
                 }
@@ -18275,10 +18293,308 @@
             }
           },
           {
+            "analyzerId": "my_analyzer_1764531714_source",
+            "description": "Source analyzer for cross-resource copying",
+            "createdAt": "2025-11-30T19:41:55Z",
+            "lastModifiedAt": "2025-11-30T19:41:58Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "company_schema",
+              "description": "Schema for extracting company information",
+              "fields": {
+                "company_name": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the company"
+                },
+                "total_amount": {
+                  "type": "number",
+                  "method": "extract",
+                  "description": "Total amount on the document"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "ready",
+            "processingLocation": "geography",
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "my_analyzer_1764567450_source",
+            "description": "Source analyzer for copying",
+            "tags": {
+              "modelType": "in_development"
+            },
+            "createdAt": "2025-12-01T05:37:32Z",
+            "lastModifiedAt": "2025-12-01T05:37:34Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "company_schema",
+              "description": "Schema for extracting company information",
+              "fields": {
+                "company_name": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the company"
+                },
+                "total_amount": {
+                  "type": "number",
+                  "method": "extract",
+                  "description": "Total amount on the document"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "ready",
+            "processingLocation": "geography",
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "my_analyzer_1764567483_source",
+            "description": "Source analyzer for copying",
+            "tags": {
+              "modelType": "in_development"
+            },
+            "createdAt": "2025-12-01T05:38:04Z",
+            "lastModifiedAt": "2025-12-01T05:38:07Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "company_schema",
+              "description": "Schema for extracting company information",
+              "fields": {
+                "company_name": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the company"
+                },
+                "total_amount": {
+                  "type": "number",
+                  "method": "extract",
+                  "description": "Total amount on the document"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "ready",
+            "processingLocation": "geography",
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "my_analyzer_1764567817_source",
+            "description": "Source analyzer for copying",
+            "tags": {
+              "modelType": "in_development"
+            },
+            "createdAt": "2025-12-01T05:43:39Z",
+            "lastModifiedAt": "2025-12-01T05:43:41Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "company_schema",
+              "description": "Schema for extracting company information",
+              "fields": {
+                "company_name": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the company"
+                },
+                "total_amount": {
+                  "type": "number",
+                  "method": "extract",
+                  "description": "Total amount on the document"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "ready",
+            "processingLocation": "geography",
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
             "analyzerId": "my_classifier_1763936649",
             "description": "Custom classifier for financial document categorization",
             "createdAt": "2025-11-23T22:24:10Z",
             "lastModifiedAt": "2025-11-23T22:24:10Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": true,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "contentCategories": {
+                "Loan_Application": {
+                  "description": "Documents submitted by individuals or businesses to request funding, typically including personal or business details, financial history, loan amount, purpose, and supporting documentation."
+                },
+                "Invoice": {
+                  "description": "Billing documents issued by sellers or service providers to request payment for goods or services, detailing items, prices, taxes, totals, and payment terms."
+                },
+                "Bank_Statement": {
+                  "description": "Official statements issued by banks that summarize account activity over a period, including deposits, withdrawals, fees, and balances."
+                }
+              },
+              "enableSegment": true,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "warnings": [],
+            "status": "ready",
+            "processingLocation": "geography",
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "my_classifier_1764531673",
+            "description": "Custom classifier for financial document categorization",
+            "createdAt": "2025-11-30T19:41:14Z",
+            "lastModifiedAt": "2025-11-30T19:41:14Z",
             "baseAnalyzerId": "prebuilt-document",
             "config": {
               "returnDetails": true,
@@ -19611,6 +19927,143 @@
             }
           },
           {
+            "analyzerId": "test_analyzer_7047e600b138ac29b4a4671d453e928a",
+            "description": "Custom analyzer for extracting company information",
+            "createdAt": "2025-12-11T16:50:19Z",
+            "lastModifiedAt": "2025-12-11T16:50:21Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": false,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": true,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "company_schema",
+              "description": "Schema for extracting company information",
+              "fields": {
+                "company_name": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the company"
+                },
+                "total_amount": {
+                  "type": "number",
+                  "method": "extract",
+                  "description": "Total amount on the document"
+                },
+                "document_summary": {
+                  "type": "string",
+                  "method": "generate",
+                  "description": "A brief summary of the document content"
+                },
+                "document_type": {
+                  "type": "string",
+                  "method": "classify",
+                  "description": "Type of document",
+                  "enum": [
+                    "invoice",
+                    "receipt",
+                    "contract",
+                    "report",
+                    "other"
+                  ]
+                }
+              }
+            },
+            "warnings": [],
+            "status": "ready",
+            "processingLocation": "geography",
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "test_analyzer_target_a46a2b19d4be4cd191d11eac95d6cc5c",
+            "description": "Source analyzer for copying",
+            "tags": {
+              "modelType": "in_development"
+            },
+            "createdAt": "2025-12-01T15:27:20Z",
+            "lastModifiedAt": "2025-12-01T15:27:21Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "company_schema",
+              "description": "Schema for extracting company information",
+              "fields": {
+                "company_name": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the company"
+                },
+                "total_amount": {
+                  "type": "number",
+                  "method": "extract",
+                  "description": "Total amount on the document"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "ready",
+            "processingLocation": "geography",
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
             "analyzerId": "test_classifier_18ce55d9ca00ee35bfb2dc9c168cb811",
             "description": "Custom classifier for financial document categorization with automatic segmentation",
             "createdAt": "2025-11-29T01:15:27Z",
@@ -19703,6 +20156,1134 @@
               "completion": "gpt-4.1",
               "embedding": "text-embedding-3-large"
             }
+          },
+          {
+            "analyzerId": "test_receipt_analyzer_086a866c8391ba4b8b6c55f25399d192",
+            "description": "Receipt analyzer trained with labeled data",
+            "createdAt": "2025-12-04T02:53:37Z",
+            "lastModifiedAt": "2025-12-04T02:53:38Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "receipt_schema",
+              "description": "Schema for receipt extraction with labeled training data",
+              "fields": {
+                "MerchantName": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the merchant"
+                },
+                "Items": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of items purchased",
+                  "items": {
+                    "type": "object",
+                    "method": "extract",
+                    "description": "Individual item details",
+                    "properties": {
+                      "Quantity": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Quantity of the item"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name of the item"
+                      },
+                      "Price": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Price of the item"
+                      }
+                    }
+                  }
+                },
+                "TotalPrice": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Total price on the receipt"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "failed",
+            "processingLocation": "geography",
+            "knowledgeSources": [
+              {
+                "kind": "labeledData",
+                "containerUrl": "https://sanitized.blob.core.windows.net/container",
+                "prefix": "document_training/",
+                "fileListPath": ""
+              }
+            ],
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "test_receipt_analyzer_0ea7d9cfc585a7cfaada04245ce82133",
+            "description": "Receipt analyzer trained with labeled data",
+            "createdAt": "2025-12-04T02:47:11Z",
+            "lastModifiedAt": "2025-12-04T02:47:12Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "receipt_schema",
+              "description": "Schema for receipt extraction with labeled training data",
+              "fields": {
+                "MerchantName": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the merchant"
+                },
+                "Items": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of items purchased",
+                  "items": {
+                    "type": "object",
+                    "method": "extract",
+                    "description": "Individual item details",
+                    "properties": {
+                      "Quantity": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Quantity of the item"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name of the item"
+                      },
+                      "Price": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Price of the item"
+                      }
+                    }
+                  }
+                },
+                "TotalPrice": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Total price on the receipt"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "failed",
+            "processingLocation": "geography",
+            "knowledgeSources": [
+              {
+                "kind": "labeledData",
+                "containerUrl": "https://sanitized.blob.core.windows.net/container",
+                "prefix": "document_training/",
+                "fileListPath": ""
+              }
+            ],
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "test_receipt_analyzer_12ced86c1e5d385a09f6d1030a035586",
+            "description": "Receipt analyzer trained with labeled data",
+            "createdAt": "2025-12-04T03:00:35Z",
+            "lastModifiedAt": "2025-12-04T03:00:36Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "receipt_schema",
+              "description": "Schema for receipt extraction with labeled training data",
+              "fields": {
+                "MerchantName": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the merchant"
+                },
+                "Items": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of items purchased",
+                  "items": {
+                    "type": "object",
+                    "method": "extract",
+                    "description": "Individual item details",
+                    "properties": {
+                      "Quantity": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Quantity of the item"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name of the item"
+                      },
+                      "Price": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Price of the item"
+                      }
+                    }
+                  }
+                },
+                "TotalPrice": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Total price on the receipt"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "failed",
+            "processingLocation": "geography",
+            "knowledgeSources": [
+              {
+                "kind": "labeledData",
+                "containerUrl": "https://sanitized.blob.core.windows.net/container",
+                "prefix": "document_training/",
+                "fileListPath": ""
+              }
+            ],
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "test_receipt_analyzer_3cd6aefe57c9a8aa79de0b4bfeecf80e",
+            "description": "Receipt analyzer trained with labeled data",
+            "createdAt": "2025-12-04T02:43:26Z",
+            "lastModifiedAt": "2025-12-04T02:43:27Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "receipt_schema",
+              "description": "Schema for receipt extraction with labeled training data",
+              "fields": {
+                "MerchantName": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the merchant"
+                },
+                "Items": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of items purchased",
+                  "items": {
+                    "type": "object",
+                    "method": "extract",
+                    "description": "Individual item details",
+                    "properties": {
+                      "Quantity": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Quantity of the item"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name of the item"
+                      },
+                      "Price": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Price of the item"
+                      }
+                    }
+                  }
+                },
+                "TotalPrice": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Total price on the receipt"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "failed",
+            "processingLocation": "geography",
+            "knowledgeSources": [
+              {
+                "kind": "labeledData",
+                "containerUrl": "https://sanitized.blob.core.windows.net/container",
+                "prefix": "document_training/",
+                "fileListPath": ""
+              }
+            ],
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "test_receipt_analyzer_49454a938b5fbcbd0a1640ed956fe721",
+            "description": "Receipt analyzer trained with labeled data",
+            "createdAt": "2025-12-04T02:53:36Z",
+            "lastModifiedAt": "2025-12-04T02:53:37Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "receipt_schema",
+              "description": "Schema for receipt extraction with labeled training data",
+              "fields": {
+                "MerchantName": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the merchant"
+                },
+                "Items": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of items purchased",
+                  "items": {
+                    "type": "object",
+                    "method": "extract",
+                    "description": "Individual item details",
+                    "properties": {
+                      "Quantity": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Quantity of the item"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name of the item"
+                      },
+                      "Price": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Price of the item"
+                      }
+                    }
+                  }
+                },
+                "TotalPrice": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Total price on the receipt"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "failed",
+            "processingLocation": "geography",
+            "knowledgeSources": [
+              {
+                "kind": "labeledData",
+                "containerUrl": "https://sanitized.blob.core.windows.net/container",
+                "prefix": "document_training/",
+                "fileListPath": ""
+              }
+            ],
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "test_receipt_analyzer_7733b06d6f6f026d3103431ab9d6a410",
+            "description": "Receipt analyzer trained with labeled data",
+            "createdAt": "2025-12-04T02:47:13Z",
+            "lastModifiedAt": "2025-12-04T02:47:13Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "receipt_schema",
+              "description": "Schema for receipt extraction with labeled training data",
+              "fields": {
+                "MerchantName": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the merchant"
+                },
+                "Items": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of items purchased",
+                  "items": {
+                    "type": "object",
+                    "method": "extract",
+                    "description": "Individual item details",
+                    "properties": {
+                      "Quantity": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Quantity of the item"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name of the item"
+                      },
+                      "Price": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Price of the item"
+                      }
+                    }
+                  }
+                },
+                "TotalPrice": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Total price on the receipt"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "failed",
+            "processingLocation": "geography",
+            "knowledgeSources": [
+              {
+                "kind": "labeledData",
+                "containerUrl": "https://sanitized.blob.core.windows.net/container",
+                "prefix": "document_training/",
+                "fileListPath": ""
+              }
+            ],
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "test_receipt_analyzer_7c0d8d721f2f5e4ee1198a9fcfca0651",
+            "description": "Receipt analyzer trained with labeled data",
+            "createdAt": "2025-12-04T02:53:35Z",
+            "lastModifiedAt": "2025-12-04T02:53:35Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "receipt_schema",
+              "description": "Schema for receipt extraction with labeled training data",
+              "fields": {
+                "MerchantName": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the merchant"
+                },
+                "Items": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of items purchased",
+                  "items": {
+                    "type": "object",
+                    "method": "extract",
+                    "description": "Individual item details",
+                    "properties": {
+                      "Quantity": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Quantity of the item"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name of the item"
+                      },
+                      "Price": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Price of the item"
+                      }
+                    }
+                  }
+                },
+                "TotalPrice": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Total price on the receipt"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "failed",
+            "processingLocation": "geography",
+            "knowledgeSources": [
+              {
+                "kind": "labeledData",
+                "containerUrl": "https://sanitized.blob.core.windows.net/container",
+                "prefix": "document_training/",
+                "fileListPath": ""
+              }
+            ],
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "test_receipt_analyzer_8dec00cb078ba60d91d685cff9c65ac8",
+            "description": "Receipt analyzer trained with labeled data",
+            "createdAt": "2025-12-04T03:00:35Z",
+            "lastModifiedAt": "2025-12-04T03:00:35Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "receipt_schema",
+              "description": "Schema for receipt extraction with labeled training data",
+              "fields": {
+                "MerchantName": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the merchant"
+                },
+                "Items": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of items purchased",
+                  "items": {
+                    "type": "object",
+                    "method": "extract",
+                    "description": "Individual item details",
+                    "properties": {
+                      "Quantity": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Quantity of the item"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name of the item"
+                      },
+                      "Price": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Price of the item"
+                      }
+                    }
+                  }
+                },
+                "TotalPrice": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Total price on the receipt"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "failed",
+            "processingLocation": "geography",
+            "knowledgeSources": [
+              {
+                "kind": "labeledData",
+                "containerUrl": "https://sanitized.blob.core.windows.net/container",
+                "prefix": "document_training/",
+                "fileListPath": ""
+              }
+            ],
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "test_receipt_analyzer_c3205dd3a2755c82af788e985ec3d8b2",
+            "description": "Receipt analyzer trained with labeled data",
+            "createdAt": "2025-12-04T02:47:11Z",
+            "lastModifiedAt": "2025-12-04T02:47:12Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "receipt_schema",
+              "description": "Schema for receipt extraction with labeled training data",
+              "fields": {
+                "MerchantName": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the merchant"
+                },
+                "Items": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of items purchased",
+                  "items": {
+                    "type": "object",
+                    "method": "extract",
+                    "description": "Individual item details",
+                    "properties": {
+                      "Quantity": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Quantity of the item"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name of the item"
+                      },
+                      "Price": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Price of the item"
+                      }
+                    }
+                  }
+                },
+                "TotalPrice": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Total price on the receipt"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "failed",
+            "processingLocation": "geography",
+            "knowledgeSources": [
+              {
+                "kind": "labeledData",
+                "containerUrl": "https://sanitized.blob.core.windows.net/container",
+                "prefix": "document_training/",
+                "fileListPath": ""
+              }
+            ],
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "test_receipt_analyzer_c8004324d1d7c3edf280abc278845af3",
+            "description": "Receipt analyzer trained with labeled data",
+            "createdAt": "2025-12-04T03:00:37Z",
+            "lastModifiedAt": "2025-12-04T03:00:38Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "receipt_schema",
+              "description": "Schema for receipt extraction with labeled training data",
+              "fields": {
+                "MerchantName": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the merchant"
+                },
+                "Items": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of items purchased",
+                  "items": {
+                    "type": "object",
+                    "method": "extract",
+                    "description": "Individual item details",
+                    "properties": {
+                      "Quantity": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Quantity of the item"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name of the item"
+                      },
+                      "Price": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Price of the item"
+                      }
+                    }
+                  }
+                },
+                "TotalPrice": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Total price on the receipt"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "failed",
+            "processingLocation": "geography",
+            "knowledgeSources": [
+              {
+                "kind": "labeledData",
+                "containerUrl": "https://sanitized.blob.core.windows.net/container",
+                "prefix": "document_training/",
+                "fileListPath": ""
+              }
+            ],
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "test_receipt_analyzer_cbfeb84815946d8f671b348b39ae3978",
+            "description": "Receipt analyzer trained with labeled data",
+            "createdAt": "2025-12-04T02:43:37Z",
+            "lastModifiedAt": "2025-12-04T02:43:38Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "receipt_schema",
+              "description": "Schema for receipt extraction with labeled training data",
+              "fields": {
+                "MerchantName": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the merchant"
+                },
+                "Items": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of items purchased",
+                  "items": {
+                    "type": "object",
+                    "method": "extract",
+                    "description": "Individual item details",
+                    "properties": {
+                      "Quantity": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Quantity of the item"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name of the item"
+                      },
+                      "Price": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Price of the item"
+                      }
+                    }
+                  }
+                },
+                "TotalPrice": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Total price on the receipt"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "failed",
+            "processingLocation": "geography",
+            "knowledgeSources": [
+              {
+                "kind": "labeledData",
+                "containerUrl": "https://sanitized.blob.core.windows.net/container",
+                "prefix": "document_training/",
+                "fileListPath": ""
+              }
+            ],
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
+          },
+          {
+            "analyzerId": "test_receipt_analyzer_e22aa9ef6407bd357da90e9568b4dbdf",
+            "description": "Receipt analyzer trained with labeled data",
+            "createdAt": "2025-12-04T02:43:29Z",
+            "lastModifiedAt": "2025-12-04T02:43:30Z",
+            "baseAnalyzerId": "prebuilt-document",
+            "config": {
+              "returnDetails": true,
+              "enableOcr": true,
+              "enableLayout": true,
+              "enableFormula": false,
+              "enableFigureDescription": false,
+              "enableFigureAnalysis": false,
+              "chartFormat": "chartjs",
+              "tableFormat": "html",
+              "estimateFieldSourceAndConfidence": true,
+              "enableSegment": false,
+              "omitContent": false,
+              "segmentPerPage": false,
+              "annotationFormat": "markdown"
+            },
+            "fieldSchema": {
+              "name": "receipt_schema",
+              "description": "Schema for receipt extraction with labeled training data",
+              "fields": {
+                "MerchantName": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Name of the merchant"
+                },
+                "Items": {
+                  "type": "array",
+                  "method": "generate",
+                  "description": "List of items purchased",
+                  "items": {
+                    "type": "object",
+                    "method": "extract",
+                    "description": "Individual item details",
+                    "properties": {
+                      "Quantity": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Quantity of the item"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Name of the item"
+                      },
+                      "Price": {
+                        "type": "string",
+                        "method": "extract",
+                        "description": "Price of the item"
+                      }
+                    }
+                  }
+                },
+                "TotalPrice": {
+                  "type": "string",
+                  "method": "extract",
+                  "description": "Total price on the receipt"
+                }
+              }
+            },
+            "warnings": [],
+            "status": "failed",
+            "processingLocation": "geography",
+            "knowledgeSources": [
+              {
+                "kind": "labeledData",
+                "containerUrl": "https://sanitized.blob.core.windows.net/container",
+                "prefix": "document_training/",
+                "fileListPath": ""
+              }
+            ],
+            "supportedModels": {
+              "completion": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "gpt-4.1",
+                "gpt-4.1-mini",
+                "gpt-4.1-nano"
+              ],
+              "embedding": [
+                "text-embedding-3-small",
+                "text-embedding-3-large",
+                "text-embedding-ada-002"
+              ]
+            },
+            "models": {
+              "completion": "gpt-4.1",
+              "embedding": "text-embedding-3-large"
+            }
           }
         ]
       }
@@ -19710,6 +21291,6 @@
   ],
   "Variables": {
     "CONTENTUNDERSTANDING_ENDPOINT": "https://sanitized.services.ai.azure.com/",
-    "RandomSeed": "1274264077"
+    "RandomSeed": "1929870104"
   }
 }
