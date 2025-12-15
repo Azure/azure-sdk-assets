@@ -5,18 +5,17 @@
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
         "Connection": "keep-alive",
-        "User-Agent": "azure-ai-evaluation/1.10.0 test/1.0.0"
+        "User-Agent": "azure-ai-evaluation/1.14.0 test/1.0.0"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "azureml-served-by-cluster": "vienna-swedencentral-01",
         "Cache-Control": "no-cache",
-        "Content-Length": "2652",
+        "Content-Length": "2678",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 10 Jul 2025 19:19:21 GMT",
+        "Date": "Mon, 15 Dec 2025 21:01:29 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Request-Context": "appId=",
@@ -24,13 +23,13 @@
         "Vary": "Accept-Encoding",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "9f6b8500-fd67-43cf-a7f1-7e5fda15f61b",
+        "x-ms-correlation-request-id": "467e2c42-19da-4339-8ef1-26b9d91f9205",
         "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
         "x-ms-ratelimit-remaining-subscription-reads": "1099",
         "x-ms-response-type": "standard",
-        "x-ms-routing-request-id": "EASTUS:20250710T191922Z:9f6b8500-fd67-43cf-a7f1-7e5fda15f61b",
-        "X-MSEdge-Ref": "Ref A: 1516DD13429143C9B772B7DA0FD94366 Ref B: BN1AA2051012045 Ref C: 2025-07-10T19:19:22Z",
-        "x-request-time": "0.027"
+        "x-ms-routing-request-id": "SWEDENCENTRAL:20251215T210129Z:467e2c42-19da-4339-8ef1-26b9d91f9205",
+        "X-MSEdge-Ref": "Ref A: CF4548BE3E1C4E15B0D58107D4F5C948 Ref B: BN1AA2051013047 Ref C: 2025-12-15T21:01:29Z",
+        "x-request-time": "0.030"
       },
       "ResponseBody": {
         "id": "Sanitized",
@@ -51,7 +50,8 @@
           "provisioningState": "Succeeded",
           "managedNetwork": {
             "isolationMode": "Disabled",
-            "enableNetworkMonitor": false
+            "enableNetworkMonitor": false,
+            "enableFirewallLog": false
           },
           "allowRoleAssignmentOnRG": false,
           "v1LegacyMode": false,
@@ -112,9 +112,8 @@
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
         "Connection": "keep-alive",
-        "User-Agent": "azure-ai-evaluation/1.10.0 test/1.0.0"
+        "User-Agent": "azure-ai-evaluation/1.14.0 test/1.0.0"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -123,13 +122,13 @@
         "Connection": "keep-alive",
         "Content-Length": "141",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 10 Jul 2025 19:19:23 GMT",
-        "mise-correlation-id": "b670f829-5a45-4a4b-9c94-2fdbdd1c2578",
+        "Date": "Mon, 15 Dec 2025 21:01:29 GMT",
+        "mise-correlation-id": "0f4e4899-e5ca-457a-9f15-d6246441a786",
         "Request-Context": "appId=",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.022"
+        "x-request-time": "0.027"
       },
       "ResponseBody": [
         "[\n",
@@ -144,119 +143,116 @@
       ]
     },
     {
-      "RequestUri": "https://Sanitized.api.azureml.ms/raisvc/v1.0/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/00000/submitannotation",
+      "RequestUri": "https://Sanitized.api.azureml.ms/raisvc/v1.0/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/00000/sync_evals:run?api-version=2025-10-15-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
+        "aml-user-token": "YOU SHALL NOT PASS",
         "Connection": "keep-alive",
-        "Content-Length": "313",
+        "Content-Length": "531",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.10.0 test/1.0.0 (type=evaluator; subtype=GroundednessProEvaluator)"
+        "User-Agent": "azure-ai-evaluation/1.14.0 test/1.0.0"
       },
       "RequestBody": {
-        "UserTextList": [
-          "{\"question\": \"\", \"answer\": \"Paris\", \"context\": \"{'global_context': 'Global context', 'query_context': 'Customer wants to know the capital of France', 'response_context': 'Paris is the capital of France'}\"}"
-        ],
-        "AnnotationTask": "groundedness",
-        "MetricList": [
-          "generic_groundedness"
+        "name": "Sanitized",
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": {
+              "item": {
+                "type": "azure_ai_query_response_inline_message",
+                "query": "query",
+                "response": "Paris",
+                "context": "{'global_context': 'Global context', 'query_context': 'Customer wants to know the capital of France', 'response_context': 'Paris is the capital of France'}"
+              }
+            }
+          }
+        },
+        "testing_criteria": [
+          {
+            "type": "azure_ai_evaluator",
+            "name": "Sanitized",
+            "evaluator_name": "groundedness",
+            "data_mapping": {
+              "query": "{{item.query}}",
+              "response": "{{item.response}}"
+            }
+          }
         ]
       },
-      "StatusCode": 202,
-      "ResponseHeaders": {
-        "azureml-served-by-cluster": "vienna-swedencentral-01",
-        "Connection": "keep-alive",
-        "Content-Length": "276",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 10 Jul 2025 19:19:23 GMT",
-        "Location": "https://example.com",
-        "mise-correlation-id": "85ec63c7-d40b-478e-b31d-e6bddf7a4408",
-        "Request-Context": "appId=",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-response-type": "standard",
-        "x-request-time": "0.058"
-      },
-      "ResponseBody": {
-        "location": "https://swedencentral.api.azureml.ms/raisvc/v1.0/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/00000/operations/f84a7ed9-409e-456d-977b-4512bab49b2b",
-        "operationResult": null
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.api.azureml.ms/raisvc/v1.0/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/00000/operations/f84a7ed9-409e-456d-977b-4512bab49b2b",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
-        "Connection": "keep-alive",
-        "User-Agent": "azure-ai-evaluation/1.10.0 test/1.0.0"
-      },
-      "RequestBody": null,
-      "StatusCode": 202,
-      "ResponseHeaders": {
-        "azureml-served-by-cluster": "vienna-swedencentral-01",
-        "Connection": "keep-alive",
-        "Content-Length": "0",
-        "Date": "Thu, 10 Jul 2025 19:19:24 GMT",
-        "mise-correlation-id": "a04803ce-e431-412c-be22-0a0fc72647fb",
-        "Request-Context": "appId=",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-response-type": "standard",
-        "x-request-time": "0.020"
-      },
-      "ResponseBody": null
-    },
-    {
-      "RequestUri": "https://Sanitized.api.azureml.ms/raisvc/v1.0/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/00000/operations/f84a7ed9-409e-456d-977b-4512bab49b2b",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
-        "Connection": "keep-alive",
-        "User-Agent": "azure-ai-evaluation/1.10.0 test/1.0.0"
-      },
-      "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "azureml-served-by-cluster": "vienna-swedencentral-01",
         "Connection": "keep-alive",
-        "Content-Length": "123",
+        "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 10 Jul 2025 19:19:26 GMT",
-        "mise-correlation-id": "d33c828d-c2c8-4eb8-ba45-d7781739c605",
+        "Date": "Mon, 15 Dec 2025 21:01:32 GMT",
+        "mise-correlation-id": "68af7e7c-5be8-46d5-a2af-91ec047a502c",
         "Request-Context": "appId=",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.014"
+        "x-request-time": "2.214"
       },
-      "ResponseBody": [
-        "[\n",
-        "  {\n",
-        "    \"generic_groundedness\": \"{\\\"label\\\":\\\"5\\\",\\\"reasoning\\\":\\\"All Contents are grounded\\\",\\\"version\\\":\\\"0.1\\\"}\"\n",
-        "  }\n",
-        "]"
-      ]
+      "ResponseBody": {
+        "object": "eval.run.output_item",
+        "id": null,
+        "run_id": null,
+        "eval_id": null,
+        "created_at": 1765832492,
+        "status": "completed",
+        "datasource_item_id": null,
+        "datasource_item": {
+          "query": "query",
+          "response": "Paris",
+          "context": "{'global_context': 'Global context', 'query_context': 'Customer wants to know the capital of France', 'response_context': 'Paris is the capital of France'}"
+        },
+        "results": [
+          {
+            "type": "azure_ai_evaluator",
+            "name": "Sanitized",
+            "passed": true,
+            "score": 5.0,
+            "metric": "groundedness",
+            "label": null,
+            "threshold": null,
+            "reason": "The response \"Paris\" is fully correct and complete based on the provided context, which states that Paris is the capital of France.",
+            "sample": null,
+            "properties": {
+              "outcome": "pass",
+              "scoreProperties": {
+                "reasoning": "The response \"Paris\" is fully correct and complete based on the provided context, which states that Paris is the capital of France."
+              },
+              "metrics": {
+                "promptTokens": "2",
+                "completionTokens": "126"
+              },
+              "reasoning": "The response \"Paris\" is fully correct and complete based on the provided context, which states that Paris is the capital of France."
+            }
+          }
+        ],
+        "sample": null
+      }
     },
     {
       "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/00000?api-version=2023-08-01-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
         "Connection": "keep-alive",
-        "User-Agent": "azure-ai-evaluation/1.10.0 test/1.0.0"
+        "User-Agent": "azure-ai-evaluation/1.14.0 test/1.0.0"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "azureml-served-by-cluster": "vienna-swedencentral-01",
+        "azureml-served-by-cluster": "vienna-swedencentral-02",
         "Cache-Control": "no-cache",
-        "Content-Length": "2652",
+        "Content-Length": "2678",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 10 Jul 2025 19:19:28 GMT",
+        "Date": "Mon, 15 Dec 2025 21:01:34 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Request-Context": "appId=",
@@ -264,13 +260,13 @@
         "Vary": "Accept-Encoding",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "d9af2e72-dcd8-4377-b7f7-2c62d5573129",
+        "x-ms-correlation-request-id": "6207165d-0bbf-4536-9f10-58a59d46af2f",
         "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
         "x-ms-ratelimit-remaining-subscription-reads": "1099",
         "x-ms-response-type": "standard",
-        "x-ms-routing-request-id": "EASTUS:20250710T191929Z:d9af2e72-dcd8-4377-b7f7-2c62d5573129",
-        "X-MSEdge-Ref": "Ref A: 4F9A6FB685004E4C8B272A0CA0FB01B5 Ref B: BN1AA2051012045 Ref C: 2025-07-10T19:19:28Z",
-        "x-request-time": "0.027"
+        "x-ms-routing-request-id": "SWEDENCENTRAL:20251215T210135Z:6207165d-0bbf-4536-9f10-58a59d46af2f",
+        "X-MSEdge-Ref": "Ref A: 1025D54FB3904B74816B913E30410D23 Ref B: BN1AA2051013047 Ref C: 2025-12-15T21:01:34Z",
+        "x-request-time": "0.037"
       },
       "ResponseBody": {
         "id": "Sanitized",
@@ -291,7 +287,8 @@
           "provisioningState": "Succeeded",
           "managedNetwork": {
             "isolationMode": "Disabled",
-            "enableNetworkMonitor": false
+            "enableNetworkMonitor": false,
+            "enableFirewallLog": false
           },
           "allowRoleAssignmentOnRG": false,
           "v1LegacyMode": false,
@@ -352,9 +349,8 @@
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
         "Connection": "keep-alive",
-        "User-Agent": "azure-ai-evaluation/1.10.0 test/1.0.0"
+        "User-Agent": "azure-ai-evaluation/1.14.0 test/1.0.0"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -363,13 +359,13 @@
         "Connection": "keep-alive",
         "Content-Length": "141",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 10 Jul 2025 19:19:30 GMT",
-        "mise-correlation-id": "e973bdb0-5586-458c-ac46-b14725be651a",
+        "Date": "Mon, 15 Dec 2025 21:01:35 GMT",
+        "mise-correlation-id": "38abe8e7-ed98-4d86-9eb9-67a98ae79bc6",
         "Request-Context": "appId=",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.017"
+        "x-request-time": "0.061"
       },
       "ResponseBody": [
         "[\n",
@@ -384,101 +380,99 @@
       ]
     },
     {
-      "RequestUri": "https://Sanitized.api.azureml.ms/raisvc/v1.0/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/00000/submitannotation",
+      "RequestUri": "https://Sanitized.api.azureml.ms/raisvc/v1.0/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/00000/sync_evals:run?api-version=2025-10-15-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
+        "aml-user-token": "YOU SHALL NOT PASS",
         "Connection": "keep-alive",
-        "Content-Length": "319",
+        "Content-Length": "537",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.10.0 test/1.0.0 (type=evaluator; subtype=GroundednessProEvaluator)"
+        "User-Agent": "azure-ai-evaluation/1.14.0 test/1.0.0"
       },
       "RequestBody": {
-        "UserTextList": [
-          "{\"question\": \"\", \"answer\": \"Honolulu\", \"context\": \"{'global_context': 'Global context', 'query_context': 'Customer wants to know the capital of Hawaii', 'response_context': 'Honolulu is the capital of Hawaii'}\"}"
-        ],
-        "AnnotationTask": "groundedness",
-        "MetricList": [
-          "generic_groundedness"
+        "name": "Sanitized",
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": {
+              "item": {
+                "type": "azure_ai_query_response_inline_message",
+                "query": "query",
+                "response": "Honolulu",
+                "context": "{'global_context': 'Global context', 'query_context': 'Customer wants to know the capital of Hawaii', 'response_context': 'Honolulu is the capital of Hawaii'}"
+              }
+            }
+          }
+        },
+        "testing_criteria": [
+          {
+            "type": "azure_ai_evaluator",
+            "name": "Sanitized",
+            "evaluator_name": "groundedness",
+            "data_mapping": {
+              "query": "{{item.query}}",
+              "response": "{{item.response}}"
+            }
+          }
         ]
       },
-      "StatusCode": 202,
-      "ResponseHeaders": {
-        "azureml-served-by-cluster": "vienna-swedencentral-01",
-        "Connection": "keep-alive",
-        "Content-Length": "276",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 10 Jul 2025 19:19:30 GMT",
-        "Location": "https://example.com",
-        "mise-correlation-id": "68eab713-0164-4926-afe7-f863a6339ec5",
-        "Request-Context": "appId=",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-response-type": "standard",
-        "x-request-time": "0.054"
-      },
-      "ResponseBody": {
-        "location": "https://swedencentral.api.azureml.ms/raisvc/v1.0/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/00000/operations/020dbd1e-9570-42d7-8a2e-2af37f455223",
-        "operationResult": null
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.api.azureml.ms/raisvc/v1.0/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/00000/operations/020dbd1e-9570-42d7-8a2e-2af37f455223",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
-        "Connection": "keep-alive",
-        "User-Agent": "azure-ai-evaluation/1.10.0 test/1.0.0"
-      },
-      "RequestBody": null,
-      "StatusCode": 202,
-      "ResponseHeaders": {
-        "azureml-served-by-cluster": "vienna-swedencentral-01",
-        "Connection": "keep-alive",
-        "Content-Length": "0",
-        "Date": "Thu, 10 Jul 2025 19:19:31 GMT",
-        "mise-correlation-id": "264247fb-8f6c-494f-8126-6e9482c21a2d",
-        "Request-Context": "appId=",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-response-type": "standard",
-        "x-request-time": "0.021"
-      },
-      "ResponseBody": null
-    },
-    {
-      "RequestUri": "https://Sanitized.api.azureml.ms/raisvc/v1.0/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/00000/operations/020dbd1e-9570-42d7-8a2e-2af37f455223",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
-        "Connection": "keep-alive",
-        "User-Agent": "azure-ai-evaluation/1.10.0 test/1.0.0"
-      },
-      "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "azureml-served-by-cluster": "vienna-swedencentral-01",
         "Connection": "keep-alive",
-        "Content-Length": "123",
+        "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 10 Jul 2025 19:19:33 GMT",
-        "mise-correlation-id": "3f833d1b-9df9-46b6-b0bd-fd300ac7b883",
+        "Date": "Mon, 15 Dec 2025 21:01:37 GMT",
+        "mise-correlation-id": "b62097fb-b575-49ff-bdb1-844f40fb7dcf",
         "Request-Context": "appId=",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.015"
+        "x-request-time": "1.971"
       },
-      "ResponseBody": [
-        "[\n",
-        "  {\n",
-        "    \"generic_groundedness\": \"{\\\"label\\\":\\\"5\\\",\\\"reasoning\\\":\\\"All Contents are grounded\\\",\\\"version\\\":\\\"0.1\\\"}\"\n",
-        "  }\n",
-        "]"
-      ]
+      "ResponseBody": {
+        "object": "eval.run.output_item",
+        "id": null,
+        "run_id": null,
+        "eval_id": null,
+        "created_at": 1765832497,
+        "status": "completed",
+        "datasource_item_id": null,
+        "datasource_item": {
+          "query": "query",
+          "response": "Honolulu",
+          "context": "{'global_context': 'Global context', 'query_context': 'Customer wants to know the capital of Hawaii', 'response_context': 'Honolulu is the capital of Hawaii'}"
+        },
+        "results": [
+          {
+            "type": "azure_ai_evaluator",
+            "name": "Sanitized",
+            "passed": true,
+            "score": 5.0,
+            "metric": "groundedness",
+            "label": null,
+            "threshold": null,
+            "reason": "The response \"Honolulu\" is fully correct and complete, directly addressing the query based on the provided context.",
+            "sample": null,
+            "properties": {
+              "outcome": "pass",
+              "scoreProperties": {
+                "reasoning": "The response \"Honolulu\" is fully correct and complete, directly addressing the query based on the provided context."
+              },
+              "metrics": {
+                "promptTokens": "3",
+                "completionTokens": "123"
+              },
+              "reasoning": "The response \"Honolulu\" is fully correct and complete, directly addressing the query based on the provided context."
+            }
+          }
+        ],
+        "sample": null
+      }
     }
   ],
   "Variables": {}
