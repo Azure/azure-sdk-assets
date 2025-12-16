@@ -7,7 +7,7 @@
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 10 Dec 2025 10:02:15 GMT",
+        "Date": "Tue, 16 Dec 2025 07:47:00 GMT",
         "User-Agent": "azsdk-java-azure-ai-contentunderstanding/1.0.0-beta.1 (17.0.17; Windows 11; 10.0)",
         "x-ms-client-request-id": "Sanitized"
       },
@@ -15,14 +15,14 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-01-preview,2025-11-01",
-        "apim-request-id": "f8a989e0-4f1b-4e6c-ac30-c464edae982a",
+        "apim-request-id": "02a47e74-9f7a-4a5c-b9a6-588362b9608d",
         "Content-Type": "application/json",
-        "Date": "Wed, 10 Dec 2025 10:02:16 GMT",
-        "request-id": "f8a989e0-4f1b-4e6c-ac30-c464edae982a",
+        "Date": "Tue, 16 Dec 2025 07:47:00 GMT",
+        "request-id": "02a47e74-9f7a-4a5c-b9a6-588362b9608d",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "704",
+        "x-envoy-upstream-service-time": "945",
         "x-ms-region": "East US",
         "x-ms-request-id": "Sanitized"
       },
@@ -1726,22 +1726,22 @@
                 "DocumentNumber": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Passport number"
+                  "description": "Passport number printed in the VIZ"
                 },
                 "FirstName": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Given name and middle initial if applicable"
+                  "description": "Given name printed in the VIZ"
                 },
                 "MiddleName": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Name between given name and surname"
+                  "description": "Name between given name and surname printed in the VIZ"
                 },
                 "LastName": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Surname"
+                  "description": "Surname printed in the VIZ"
                 },
                 "Aliases": {
                   "type": "array",
@@ -1755,62 +1755,57 @@
                 "BirthDate": {
                   "type": "date",
                   "method": "extract",
-                  "description": "Date of birth"
+                  "description": "Date of birth printed in the VIZ"
                 },
                 "ExpirationDate": {
                   "type": "date",
                   "method": "extract",
-                  "description": "Date of expiration"
+                  "description": "Date of expiration printed in the VIZ"
                 },
                 "IssueDate": {
                   "type": "date",
                   "method": "extract",
-                  "description": "Date of issue"
+                  "description": "Date of issue printed in the VIZ"
                 },
                 "Sex": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Sex",
-                  "enum": [
-                    "M",
-                    "F",
-                    "X"
-                  ]
+                  "description": "Sex printed in the VIZ"
                 },
                 "CountryRegion": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Issuing country or organization"
+                  "description": "Issuing country or organization printed in the VIZ"
                 },
                 "DocumentType": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Document type"
+                  "description": "Document type printed in the VIZ"
                 },
                 "Nationality": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Nationality"
+                  "description": "Nationality printed in the VIZ"
                 },
                 "PlaceOfBirth": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Place of birth"
+                  "description": "Place of birth printed in the VIZ"
                 },
                 "PlaceOfIssue": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Place of issue"
+                  "description": "Place of issue printed in the VIZ"
                 },
                 "IssuingAuthority": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Issuing authority"
+                  "description": "Issuing authority printed in the VIZ"
                 },
                 "PersonalNumber": {
                   "type": "string",
                   "method": "extract",
-                  "description": "Personal Id. No."
+                  "description": "Personal ID number printed in the VIZ"
                 },
                 "MachineReadableZone": {
                   "type": "string",
@@ -12939,11 +12934,6 @@
                             "method": "extract",
                             "description": "CUSIP Number extracted from Form 1099-B."
                           },
-                          "IsFATCAFilingRequired": {
-                            "type": "boolean",
-                            "method": "extract",
-                            "description": "Is FATCA Filing Required extracted from Form 1099-B."
-                          },
                           "ApplicableForm8949Checkbox": {
                             "type": "string",
                             "method": "extract",
@@ -13043,7 +13033,7 @@
                           },
                           "Box7": {
                             "type": "boolean",
-                            "method": "extract",
+                            "method": "generate",
                             "description": "If checked, loss is not allowed based on amount in 1d."
                           },
                           "Box8": {
@@ -13104,6 +13094,11 @@
                           }
                         }
                       }
+                    },
+                    "IsFATCAFilingRequired": {
+                      "type": "boolean",
+                      "method": "extract",
+                      "description": "Is FATCA Filing Required extracted from Form 1099-B."
                     }
                   }
                 },
@@ -13111,126 +13106,133 @@
                   "type": "object",
                   "method": "generate",
                   "properties": {
-                    "Box1a": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 1a extracted from Form 1099-DIV."
-                    },
-                    "Box1b": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 1b extracted from Form 1099-DIV."
-                    },
-                    "Box2a": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2a extracted from Form 1099-DIV."
-                    },
-                    "Box2b": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2b extracted from Form 1099-DIV."
-                    },
-                    "Box2c": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2c extracted from Form 1099-DIV."
-                    },
-                    "Box2d": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2d extracted from Form 1099-DIV."
-                    },
-                    "Box2e": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2e extracted from Form 1099-DIV."
-                    },
-                    "Box2f": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2f extracted from Form 1099-DIV."
-                    },
-                    "Box3": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 3 extracted from Form 1099-DIV."
-                    },
-                    "Box4": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 4 extracted from Form 1099-DIV."
-                    },
-                    "Box5": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 5 extracted from Form 1099-DIV."
-                    },
-                    "Box6": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 6 extracted from Form 1099-DIV."
-                    },
-                    "Box7": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 7 extracted from Form 1099-DIV."
-                    },
-                    "Box8": {
-                      "type": "string",
-                      "method": "extract",
-                      "description": "Box 8 extracted from Form 1099-DIV."
-                    },
-                    "Box9": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 9 extracted from Form 1099-DIV."
-                    },
-                    "Box10": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 10 extracted from Form 1099-DIV."
-                    },
-                    "Box11": {
-                      "type": "boolean",
-                      "method": "extract",
-                      "description": "FATCA filing requirement."
-                    },
-                    "Box12": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 12 extracted from Form 1099-DIV."
-                    },
-                    "Box13": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 13 extracted from Form 1099-DIV."
-                    },
-                    "StateTaxesWithheld": {
-                      "type": "array",
+                    "Summary": {
+                      "type": "object",
                       "method": "generate",
-                      "description": "State Taxes Withheld extracted from Form 1099-DIV",
-                      "items": {
-                        "type": "object",
-                        "method": "generate",
-                        "properties": {
-                          "Box14": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 14 extracted from Form 1099-DIV."
-                          },
-                          "Box15": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 15 extracted from Form 1099-DIV."
-                          },
-                          "Box16": {
-                            "type": "number",
-                            "method": "extract",
-                            "description": "Box 16 extracted from Form 1099-DIV."
+                      "description": "Summary of Form 1099-DIV.",
+                      "properties": {
+                        "Box1a": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 1a extracted from Form 1099-DIV."
+                        },
+                        "Box1b": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 1b extracted from Form 1099-DIV."
+                        },
+                        "Box2a": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2a extracted from Form 1099-DIV."
+                        },
+                        "Box2b": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2b extracted from Form 1099-DIV."
+                        },
+                        "Box2c": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2c extracted from Form 1099-DIV."
+                        },
+                        "Box2d": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2d extracted from Form 1099-DIV."
+                        },
+                        "Box2e": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2e extracted from Form 1099-DIV."
+                        },
+                        "Box2f": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2f extracted from Form 1099-DIV."
+                        },
+                        "Box3": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 3 extracted from Form 1099-DIV."
+                        },
+                        "Box4": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 4 extracted from Form 1099-DIV."
+                        },
+                        "Box5": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 5 extracted from Form 1099-DIV."
+                        },
+                        "Box6": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 6 extracted from Form 1099-DIV."
+                        },
+                        "Box7": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 7 extracted from Form 1099-DIV."
+                        },
+                        "Box8": {
+                          "type": "string",
+                          "method": "extract",
+                          "description": "Box 8 extracted from Form 1099-DIV."
+                        },
+                        "Box9": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 9 extracted from Form 1099-DIV."
+                        },
+                        "Box10": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 10 extracted from Form 1099-DIV."
+                        },
+                        "Box12": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 12 extracted from Form 1099-DIV."
+                        },
+                        "Box13": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 13 extracted from Form 1099-DIV."
+                        },
+                        "StateTaxesWithheld": {
+                          "type": "array",
+                          "method": "generate",
+                          "description": "State Taxes Withheld extracted from Form 1099-DIV",
+                          "items": {
+                            "type": "object",
+                            "method": "generate",
+                            "properties": {
+                              "Box14": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 14 extracted from Form 1099-DIV."
+                              },
+                              "Box15": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 15 extracted from Form 1099-DIV."
+                              },
+                              "Box16": {
+                                "type": "number",
+                                "method": "extract",
+                                "description": "Box 16 extracted from Form 1099-DIV."
+                              }
+                            }
                           }
                         }
                       }
+                    },
+                    "IsFATCAFilingRequired": {
+                      "type": "boolean",
+                      "method": "extract",
+                      "description": "Is FATCA Filing Required extracted from Form 1099-DIV."
                     }
                   }
                 },
@@ -13238,106 +13240,113 @@
                   "type": "object",
                   "method": "generate",
                   "properties": {
+                    "Summary": {
+                      "type": "object",
+                      "method": "generate",
+                      "description": "Summary of Form 1099-INT.",
+                      "properties": {
+                        "Box1": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 1 extracted from Form 1099-INT."
+                        },
+                        "Box2": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2 extracted from Form 1099-INT."
+                        },
+                        "Box3": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 3 extracted from Form 1099-INT."
+                        },
+                        "Box4": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 4 extracted from Form 1099-INT."
+                        },
+                        "Box5": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 5 extracted from Form 1099-INT."
+                        },
+                        "Box6": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 6 extracted from Form 1099-INT."
+                        },
+                        "Box7": {
+                          "type": "string",
+                          "method": "extract",
+                          "description": "Box 7 extracted from Form 1099-INT."
+                        },
+                        "Box8": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 8 extracted from Form 1099-INT."
+                        },
+                        "Box9": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 9 extracted from Form 1099-INT."
+                        },
+                        "Box10": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 10 extracted from Form 1099-INT."
+                        },
+                        "Box11": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 11 extracted from Form 1099-INT."
+                        },
+                        "Box12": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 12 extracted from Form 1099-INT."
+                        },
+                        "Box13": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 13 extracted from Form 1099-INT."
+                        },
+                        "Box14": {
+                          "type": "string",
+                          "method": "extract",
+                          "description": "Box 14 extracted from Form 1099-INT."
+                        },
+                        "StateTaxesWithheld": {
+                          "type": "array",
+                          "method": "generate",
+                          "description": "State Taxes Withheld extracted from Form 1099-INT",
+                          "items": {
+                            "type": "object",
+                            "method": "generate",
+                            "properties": {
+                              "Box15": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 15 extracted from Form 1099-INT."
+                              },
+                              "Box16": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 16 extracted from Form 1099-INT."
+                              },
+                              "Box17": {
+                                "type": "number",
+                                "method": "extract",
+                                "description": "Box 17 extracted from Form 1099-INT."
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
                     "IsFATCAFilingRequired": {
                       "type": "boolean",
                       "method": "extract",
                       "description": "Is FATCA Filing Required extracted from Form 1099-INT."
-                    },
-                    "Box1": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 1 extracted from Form 1099-INT."
-                    },
-                    "Box2": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2 extracted from Form 1099-INT."
-                    },
-                    "Box3": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 3 extracted from Form 1099-INT."
-                    },
-                    "Box4": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 4 extracted from Form 1099-INT."
-                    },
-                    "Box5": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 5 extracted from Form 1099-INT."
-                    },
-                    "Box6": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 6 extracted from Form 1099-INT."
-                    },
-                    "Box7": {
-                      "type": "string",
-                      "method": "extract",
-                      "description": "Box 7 extracted from Form 1099-INT."
-                    },
-                    "Box8": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 8 extracted from Form 1099-INT."
-                    },
-                    "Box9": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 9 extracted from Form 1099-INT."
-                    },
-                    "Box10": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 10 extracted from Form 1099-INT."
-                    },
-                    "Box11": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 11 extracted from Form 1099-INT."
-                    },
-                    "Box12": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 12 extracted from Form 1099-INT."
-                    },
-                    "Box13": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 13 extracted from Form 1099-INT."
-                    },
-                    "Box14": {
-                      "type": "string",
-                      "method": "extract",
-                      "description": "Box 14 extracted from Form 1099-INT."
-                    },
-                    "StateTaxesWithheld": {
-                      "type": "array",
-                      "method": "generate",
-                      "description": "State Taxes Withheld extracted from Form 1099-INT",
-                      "items": {
-                        "type": "object",
-                        "method": "generate",
-                        "properties": {
-                          "Box15": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 15 extracted from Form 1099-INT."
-                          },
-                          "Box16": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 16 extracted from Form 1099-INT."
-                          },
-                          "Box17": {
-                            "type": "number",
-                            "method": "extract",
-                            "description": "Box 17 extracted from Form 1099-INT."
-                          }
-                        }
-                      }
                     }
                   }
                 },
@@ -13345,106 +13354,113 @@
                   "type": "object",
                   "method": "generate",
                   "properties": {
-                    "Box1": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 1 extracted from Form 1099-MISC."
-                    },
-                    "Box2": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2 extracted from Form 1099-MISC."
-                    },
-                    "Box3": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 3 extracted from Form 1099-MISC."
-                    },
-                    "Box4": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 4 extracted from Form 1099-MISC."
-                    },
-                    "Box5": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 5 extracted from Form 1099-MISC."
-                    },
-                    "Box6": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 6 extracted from Form 1099-MISC."
-                    },
-                    "Box7": {
-                      "type": "boolean",
-                      "method": "extract",
-                      "description": "Box 7 extracted from Form 1099-MISC."
-                    },
-                    "Box8": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 8 extracted from Form 1099-MISC."
-                    },
-                    "Box9": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 9 extracted from Form 1099-MISC."
-                    },
-                    "Box10": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 10 extracted from Form 1099-MISC."
-                    },
-                    "Box11": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 11 extracted from Form 1099-MISC."
-                    },
-                    "Box12": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 12 extracted from Form 1099-MISC."
-                    },
-                    "Box13": {
-                      "type": "boolean",
-                      "method": "extract",
-                      "description": "Box 13 extracted from Form 1099-MISC."
-                    },
-                    "Box14": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 14 extracted from Form 1099-MISC."
-                    },
-                    "Box15": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 15 extracted from Form 1099-MISC."
-                    },
-                    "StateTaxesWithheld": {
-                      "type": "array",
+                    "Summary": {
+                      "type": "object",
                       "method": "generate",
-                      "description": "State Taxes Withheld extracted from Form 1099-MISC",
-                      "items": {
-                        "type": "object",
-                        "method": "generate",
-                        "properties": {
-                          "Box16": {
-                            "type": "number",
-                            "method": "extract",
-                            "description": "Box 16 extracted from Form 1099-MISC."
-                          },
-                          "Box17": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 17 extracted from Form 1099-MISC."
-                          },
-                          "Box18": {
-                            "type": "number",
-                            "method": "extract",
-                            "description": "Box 18 extracted from Form 1099-MISC."
+                      "description": "Summary of Form 1099-MISC.",
+                      "properties": {
+                        "Box1": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 1 extracted from Form 1099-MISC."
+                        },
+                        "Box2": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2 extracted from Form 1099-MISC."
+                        },
+                        "Box3": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 3 extracted from Form 1099-MISC."
+                        },
+                        "Box4": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 4 extracted from Form 1099-MISC."
+                        },
+                        "Box5": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 5 extracted from Form 1099-MISC."
+                        },
+                        "Box6": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 6 extracted from Form 1099-MISC."
+                        },
+                        "Box7": {
+                          "type": "boolean",
+                          "method": "extract",
+                          "description": "Box 7 extracted from Form 1099-MISC."
+                        },
+                        "Box8": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 8 extracted from Form 1099-MISC."
+                        },
+                        "Box9": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 9 extracted from Form 1099-MISC."
+                        },
+                        "Box10": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 10 extracted from Form 1099-MISC."
+                        },
+                        "Box11": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 11 extracted from Form 1099-MISC."
+                        },
+                        "Box12": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 12 extracted from Form 1099-MISC."
+                        },
+                        "Box14": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 14 extracted from Form 1099-MISC."
+                        },
+                        "Box15": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 15 extracted from Form 1099-MISC."
+                        },
+                        "StateTaxesWithheld": {
+                          "type": "array",
+                          "method": "generate",
+                          "description": "State Taxes Withheld extracted from Form 1099-MISC",
+                          "items": {
+                            "type": "object",
+                            "method": "generate",
+                            "properties": {
+                              "Box16": {
+                                "type": "number",
+                                "method": "extract",
+                                "description": "Box 16 extracted from Form 1099-MISC."
+                              },
+                              "Box17": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 17 extracted from Form 1099-MISC."
+                              },
+                              "Box18": {
+                                "type": "number",
+                                "method": "extract",
+                                "description": "Box 18 extracted from Form 1099-MISC."
+                              }
+                            }
                           }
                         }
                       }
+                    },
+                    "IsFATCAFilingRequired": {
+                      "type": "boolean",
+                      "method": "extract",
+                      "description": "Is FATCA Filing Required extracted from Form 1099-MISC."
                     }
                   }
                 },
@@ -13452,96 +13468,98 @@
                   "type": "object",
                   "method": "generate",
                   "properties": {
-                    "TaxYear": {
-                      "type": "string",
-                      "method": "extract",
-                      "description": "Tax Year extracted from Form 1099-OID."
+                    "Summary": {
+                      "type": "object",
+                      "method": "generate",
+                      "description": "Summary of Form 1099-OID.",
+                      "properties": {
+                        "Box1": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 1 extracted from Form 1099-OID."
+                        },
+                        "Box2": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 2 extracted from Form 1099-OID."
+                        },
+                        "Box3": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 3 extracted from Form 1099-OID."
+                        },
+                        "Box4": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 4 extracted from Form 1099-OID."
+                        },
+                        "Box5": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 5 extracted from Form 1099-OID."
+                        },
+                        "Box6": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 6 extracted from Form 1099-OID."
+                        },
+                        "Box7": {
+                          "type": "string",
+                          "method": "extract",
+                          "description": "Box 7 extracted from Form 1099-OID."
+                        },
+                        "Box8": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 8 extracted from Form 1099-OID."
+                        },
+                        "Box9": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 9 extracted from Form 1099-OID."
+                        },
+                        "Box10": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 10 extracted from Form 1099-OID."
+                        },
+                        "Box11": {
+                          "type": "number",
+                          "method": "extract",
+                          "description": "Box 11 extracted from Form 1099-OID."
+                        },
+                        "StateTaxesWithheld": {
+                          "type": "array",
+                          "method": "generate",
+                          "description": "State Taxes Withheld extracted from Form 1099-OID",
+                          "items": {
+                            "type": "object",
+                            "method": "generate",
+                            "properties": {
+                              "Box12": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 12 extracted from Form 1099-OID."
+                              },
+                              "Box13": {
+                                "type": "string",
+                                "method": "extract",
+                                "description": "Box 13 extracted from Form 1099-OID."
+                              },
+                              "Box14": {
+                                "type": "number",
+                                "method": "extract",
+                                "description": "Box 14 extracted from Form 1099-OID."
+                              }
+                            }
+                          }
+                        }
+                      }
                     },
                     "IsFATCAFilingRequired": {
                       "type": "boolean",
                       "method": "extract",
                       "description": "Is FATCA Filing Required extracted from Form 1099-OID."
-                    },
-                    "Box1": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 1 extracted from Form 1099-OID."
-                    },
-                    "Box2": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 2 extracted from Form 1099-OID."
-                    },
-                    "Box3": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 3 extracted from Form 1099-OID."
-                    },
-                    "Box4": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 4 extracted from Form 1099-OID."
-                    },
-                    "Box5": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 5 extracted from Form 1099-OID."
-                    },
-                    "Box6": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 6 extracted from Form 1099-OID."
-                    },
-                    "Box7": {
-                      "type": "string",
-                      "method": "extract",
-                      "description": "Box 7 extracted from Form 1099-OID."
-                    },
-                    "Box8": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 8 extracted from Form 1099-OID."
-                    },
-                    "Box9": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 9 extracted from Form 1099-OID."
-                    },
-                    "Box10": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 10 extracted from Form 1099-OID."
-                    },
-                    "Box11": {
-                      "type": "number",
-                      "method": "extract",
-                      "description": "Box 11 extracted from Form 1099-OID."
-                    },
-                    "StateTaxesWithheld": {
-                      "type": "array",
-                      "method": "generate",
-                      "description": "State Taxes Withheld extracted from Form 1099-OID",
-                      "items": {
-                        "type": "object",
-                        "method": "generate",
-                        "properties": {
-                          "Box12": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 12 extracted from Form 1099-OID."
-                          },
-                          "Box13": {
-                            "type": "string",
-                            "method": "extract",
-                            "description": "Box 13 extracted from Form 1099-OID."
-                          },
-                          "Box14": {
-                            "type": "number",
-                            "method": "extract",
-                            "description": "Box 14 extracted from Form 1099-OID."
-                          }
-                        }
-                      }
                     }
                   }
                 }
@@ -21174,171 +21192,6 @@
                 "fileListPath": ""
               }
             ],
-            "supportedModels": {
-              "completion": [
-                "gpt-4o",
-                "gpt-4o-mini",
-                "gpt-4.1",
-                "gpt-4.1-mini",
-                "gpt-4.1-nano"
-              ],
-              "embedding": [
-                "text-embedding-3-small",
-                "text-embedding-3-large",
-                "text-embedding-ada-002"
-              ]
-            },
-            "models": {
-              "completion": "gpt-4.1",
-              "embedding": "text-embedding-3-large"
-            }
-          },
-          {
-            "analyzerId": "yslin_20251207_test",
-            "description": "My analyzer",
-            "tags": {
-              "createdBy": "Sanitized"
-            },
-            "createdAt": "2025-12-07T22:43:31Z",
-            "lastModifiedAt": "2025-12-07T22:43:33Z",
-            "baseAnalyzerId": "prebuilt-document",
-            "config": {
-              "returnDetails": true,
-              "enableOcr": true,
-              "enableLayout": true,
-              "enableFormula": false,
-              "enableFigureDescription": false,
-              "enableFigureAnalysis": false,
-              "chartFormat": "chartjs",
-              "tableFormat": "html",
-              "enableSegment": false,
-              "omitContent": false,
-              "segmentPerPage": false,
-              "annotationFormat": "markdown"
-            },
-            "fieldSchema": {
-              "name": "Sanitized",
-              "description": "My form",
-              "fields": {
-                "Company": {
-                  "type": "string",
-                  "description": "Name of company."
-                }
-              }
-            },
-            "warnings": [],
-            "status": "ready",
-            "processingLocation": "geography",
-            "supportedModels": {
-              "completion": [
-                "gpt-4o",
-                "gpt-4o-mini",
-                "gpt-4.1",
-                "gpt-4.1-mini",
-                "gpt-4.1-nano"
-              ],
-              "embedding": [
-                "text-embedding-3-small",
-                "text-embedding-3-large",
-                "text-embedding-ada-002"
-              ]
-            },
-            "models": {
-              "completion": "gpt-4.1",
-              "embedding": "text-embedding-3-large"
-            }
-          },
-          {
-            "analyzerId": "yslin_20251207_test_copy",
-            "description": "My analyzer",
-            "tags": {
-              "createdBy": "Sanitized"
-            },
-            "createdAt": "2025-12-07T23:10:21Z",
-            "lastModifiedAt": "2025-12-07T23:10:22Z",
-            "baseAnalyzerId": "prebuilt-document",
-            "config": {
-              "returnDetails": true,
-              "enableOcr": true,
-              "enableLayout": true,
-              "enableFormula": false,
-              "enableFigureDescription": false,
-              "enableFigureAnalysis": false,
-              "chartFormat": "chartjs",
-              "tableFormat": "html",
-              "enableSegment": false,
-              "omitContent": false,
-              "segmentPerPage": false,
-              "annotationFormat": "markdown"
-            },
-            "fieldSchema": {
-              "name": "Sanitized",
-              "description": "My form",
-              "fields": {
-                "Company": {
-                  "type": "string",
-                  "description": "Name of company."
-                }
-              }
-            },
-            "warnings": [],
-            "status": "ready",
-            "processingLocation": "geography",
-            "supportedModels": {
-              "completion": [
-                "gpt-4o",
-                "gpt-4o-mini",
-                "gpt-4.1",
-                "gpt-4.1-mini",
-                "gpt-4.1-nano"
-              ],
-              "embedding": [
-                "text-embedding-3-small",
-                "text-embedding-3-large",
-                "text-embedding-ada-002"
-              ]
-            },
-            "models": {
-              "completion": "gpt-4.1",
-              "embedding": "text-embedding-3-large"
-            }
-          },
-          {
-            "analyzerId": "yslin_20251208_to_delete",
-            "description": "My analyzer",
-            "tags": {
-              "createdBy": "Sanitized"
-            },
-            "createdAt": "2025-12-08T20:57:17Z",
-            "lastModifiedAt": "2025-12-08T20:57:21Z",
-            "baseAnalyzerId": "prebuilt-document",
-            "config": {
-              "returnDetails": true,
-              "enableOcr": true,
-              "enableLayout": true,
-              "enableFormula": false,
-              "enableFigureDescription": false,
-              "enableFigureAnalysis": false,
-              "chartFormat": "chartjs",
-              "tableFormat": "html",
-              "enableSegment": false,
-              "omitContent": false,
-              "segmentPerPage": false,
-              "annotationFormat": "markdown"
-            },
-            "fieldSchema": {
-              "name": "Sanitized",
-              "description": "My form",
-              "fields": {
-                "Company": {
-                  "type": "string",
-                  "description": "Name of company."
-                }
-              }
-            },
-            "warnings": [],
-            "status": "ready",
-            "processingLocation": "geography",
             "supportedModels": {
               "completion": [
                 "gpt-4o",
