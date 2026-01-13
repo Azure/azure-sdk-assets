@@ -1,0 +1,410 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com//contentunderstanding/analyzers/prebuilt-invoice?api-version=2025-11-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "User-Agent": "azsdk-python-ai-contentunderstanding/1.0.0b1 Python/3.12.9 (Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-01-preview,2025-11-01",
+        "apim-request-id": "837a6a61-f63c-48be-9967-40d0e3368521",
+        "Content-Type": "application/json",
+        "Date": "Tue, 13 Jan 2026 13:24:10 GMT",
+        "request-id": "837a6a61-f63c-48be-9967-40d0e3368521",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "3",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "analyzerId": "prebuilt-invoice",
+        "description": "Extract invoice document fields.",
+        "createdAt": "2025-11-01T00:00:00Z",
+        "baseAnalyzerId": "prebuilt-document",
+        "config": {
+          "returnDetails": true,
+          "enableOcr": true,
+          "enableLayout": true,
+          "enableFormula": false,
+          "enableFigureDescription": false,
+          "enableFigureAnalysis": false,
+          "chartFormat": "chartjs",
+          "tableFormat": "html",
+          "estimateFieldSourceAndConfidence": true,
+          "enableSegment": false,
+          "omitContent": false,
+          "segmentPerPage": false,
+          "annotationFormat": "markdown"
+        },
+        "fieldSchema": {
+          "name": "Sanitized",
+          "fields": {
+            "AmountDue": {
+              "type": "object",
+              "method": "generate",
+              "description": "Total Amount Due to the vendor",
+              "properties": {
+                "Amount": {
+                  "type": "number",
+                  "method": "extract"
+                },
+                "CurrencyCode": {
+                  "type": "string",
+                  "method": "generate"
+                }
+              }
+            },
+            "BalanceForward": {
+              "type": "object",
+              "method": "generate",
+              "description": "Explicit previously unpaid balance",
+              "properties": {
+                "Amount": {
+                  "type": "number",
+                  "method": "extract"
+                },
+                "CurrencyCode": {
+                  "type": "string",
+                  "method": "generate"
+                }
+              }
+            },
+            "BillingAddress": {
+              "type": "string",
+              "method": "extract",
+              "description": "Explicit billing address for the customer"
+            },
+            "BillingAddressRecipient": {
+              "type": "string",
+              "method": "extract",
+              "description": "Name associated with the BillingAddress"
+            },
+            "CountryRegion": {
+              "type": "string",
+              "method": "generate",
+              "description": "Country or region where the invoice was issued"
+            },
+            "CustomerAddress": {
+              "type": "string",
+              "method": "extract",
+              "description": "Mailing address for the Customer"
+            },
+            "CustomerAddressRecipient": {
+              "type": "string",
+              "method": "extract",
+              "description": "Name associated with the CustomerAddress"
+            },
+            "CustomerId": {
+              "type": "string",
+              "method": "extract",
+              "description": "Reference ID for the customer"
+            },
+            "CustomerName": {
+              "type": "string",
+              "method": "extract",
+              "description": "Customer being invoiced"
+            },
+            "CustomerTaxId": {
+              "type": "string",
+              "method": "extract",
+              "description": "The government ID number associated with the customer"
+            },
+            "DueDate": {
+              "type": "date",
+              "method": "extract",
+              "description": "Date payment for this invoice is due"
+            },
+            "InvoiceDate": {
+              "type": "date",
+              "method": "extract",
+              "description": "Date the invoice was issued"
+            },
+            "InvoiceId": {
+              "type": "string",
+              "method": "extract",
+              "description": "ID for this specific invoice (often 'Invoice Number')"
+            },
+            "LineItems": {
+              "type": "array",
+              "method": "generate",
+              "description": "List of line items",
+              "items": {
+                "type": "object",
+                "method": "generate",
+                "properties": {
+                  "Date": {
+                    "type": "date",
+                    "method": "extract",
+                    "description": "Date corresponding to each line item. Often it is a date the line item was shipped"
+                  },
+                  "Description": {
+                    "type": "string",
+                    "method": "extract",
+                    "description": "The text description for the invoice line item"
+                  },
+                  "ProductCode": {
+                    "type": "string",
+                    "method": "extract",
+                    "description": "Product code, product number, or SKU associated with the specific line item"
+                  },
+                  "Quantity": {
+                    "type": "number",
+                    "method": "extract",
+                    "description": "The quantity for this invoice line item"
+                  },
+                  "QuantityUnit": {
+                    "type": "string",
+                    "method": "extract",
+                    "description": "The unit of the line item, e.g., kg, lb, hours"
+                  },
+                  "TaxAmount": {
+                    "type": "object",
+                    "method": "generate",
+                    "description": "Tax associated with each line item",
+                    "properties": {
+                      "Amount": {
+                        "type": "number",
+                        "method": "extract"
+                      },
+                      "CurrencyCode": {
+                        "type": "string",
+                        "method": "generate"
+                      }
+                    }
+                  },
+                  "TaxRate": {
+                    "type": "number",
+                    "method": "extract",
+                    "description": "Tax rate associated with each line item (decimal fraction)"
+                  },
+                  "TotalAmount": {
+                    "type": "object",
+                    "method": "generate",
+                    "description": "The amount of the line item",
+                    "properties": {
+                      "Amount": {
+                        "type": "number",
+                        "method": "extract"
+                      },
+                      "CurrencyCode": {
+                        "type": "string",
+                        "method": "generate"
+                      }
+                    }
+                  },
+                  "UnitPrice": {
+                    "type": "object",
+                    "method": "generate",
+                    "description": "The net or gross price (depending on the gross invoice setting of the invoice) of one unit of this item",
+                    "properties": {
+                      "Amount": {
+                        "type": "number",
+                        "method": "extract"
+                      },
+                      "CurrencyCode": {
+                        "type": "string",
+                        "method": "generate"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "PaymentTerm": {
+              "type": "string",
+              "method": "extract",
+              "description": "The terms under which the payment is meant to be paid"
+            },
+            "PONumber": {
+              "type": "string",
+              "method": "extract",
+              "description": "A purchase order reference number"
+            },
+            "RemittanceAddress": {
+              "type": "string",
+              "method": "extract",
+              "description": "Explicit remittance or payment address for the customer"
+            },
+            "RemittanceAddressRecipient": {
+              "type": "string",
+              "method": "extract",
+              "description": "Name associated with the RemittanceAddress"
+            },
+            "ServiceAddress": {
+              "type": "string",
+              "method": "extract",
+              "description": "Explicit service address or property address for the customer"
+            },
+            "ServiceAddressRecipient": {
+              "type": "string",
+              "method": "extract",
+              "description": "Name associated with the ServiceAddress"
+            },
+            "ShippingAddress": {
+              "type": "string",
+              "method": "extract",
+              "description": "Explicit shipping address for the customer"
+            },
+            "ShippingAddressRecipient": {
+              "type": "string",
+              "method": "extract",
+              "description": "Name associated with the ShippingAddress"
+            },
+            "SubtotalAmount": {
+              "type": "object",
+              "method": "generate",
+              "description": "Subtotal field identified on this invoice",
+              "properties": {
+                "Amount": {
+                  "type": "number",
+                  "method": "generate"
+                },
+                "CurrencyCode": {
+                  "type": "string",
+                  "method": "generate"
+                }
+              }
+            },
+            "TaxDetails": {
+              "type": "array",
+              "method": "generate",
+              "description": "List of tax details",
+              "items": {
+                "type": "object",
+                "method": "generate",
+                "properties": {
+                  "Amount": {
+                    "type": "object",
+                    "method": "generate",
+                    "description": "The amount of the tax detail",
+                    "properties": {
+                      "Amount": {
+                        "type": "number",
+                        "method": "extract"
+                      },
+                      "CurrencyCode": {
+                        "type": "string",
+                        "method": "generate"
+                      }
+                    }
+                  },
+                  "Description": {
+                    "type": "string",
+                    "method": "extract",
+                    "description": "The description of the tax detail"
+                  },
+                  "NetAmount": {
+                    "type": "object",
+                    "method": "generate",
+                    "description": "The net amount before tax.",
+                    "properties": {
+                      "Amount": {
+                        "type": "number",
+                        "method": "extract"
+                      },
+                      "CurrencyCode": {
+                        "type": "string",
+                        "method": "generate"
+                      }
+                    }
+                  },
+                  "Rate": {
+                    "type": "number",
+                    "method": "extract",
+                    "description": "The rate of the tax detail (decimal fraction)"
+                  }
+                }
+              }
+            },
+            "TotalAmount": {
+              "type": "object",
+              "method": "generate",
+              "description": "Total new charges associated with this invoice",
+              "properties": {
+                "Amount": {
+                  "type": "number",
+                  "method": "extract"
+                },
+                "CurrencyCode": {
+                  "type": "string",
+                  "method": "generate"
+                }
+              }
+            },
+            "TotalDiscountAmount": {
+              "type": "object",
+              "method": "generate",
+              "description": "Total discount field identified on this invoice",
+              "properties": {
+                "Amount": {
+                  "type": "number",
+                  "method": "extract"
+                },
+                "CurrencyCode": {
+                  "type": "string",
+                  "method": "generate"
+                }
+              }
+            },
+            "TotalTaxAmount": {
+              "type": "object",
+              "method": "generate",
+              "description": "Total tax field identified on this invoice",
+              "properties": {
+                "Amount": {
+                  "type": "number",
+                  "method": "generate"
+                },
+                "CurrencyCode": {
+                  "type": "string",
+                  "method": "generate"
+                }
+              }
+            },
+            "VendorAddress": {
+              "type": "string",
+              "method": "extract",
+              "description": "Mailing address for the Vendor"
+            },
+            "VendorAddressRecipient": {
+              "type": "string",
+              "method": "extract",
+              "description": "Name associated with the VendorAddress"
+            },
+            "VendorName": {
+              "type": "string",
+              "method": "extract",
+              "description": "Vendor who has created this invoice"
+            },
+            "VendorTaxId": {
+              "type": "string",
+              "method": "extract",
+              "description": "The government ID number associated with the vendor"
+            }
+          }
+        },
+        "warnings": [],
+        "status": "ready",
+        "processingLocation": "geography",
+        "supportedModels": {
+          "completion": [
+            "gpt-4.1"
+          ],
+          "embedding": [
+            "text-embedding-3-large"
+          ]
+        },
+        "models": {
+          "completion": "gpt-4.1",
+          "embedding": "text-embedding-3-large"
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}
