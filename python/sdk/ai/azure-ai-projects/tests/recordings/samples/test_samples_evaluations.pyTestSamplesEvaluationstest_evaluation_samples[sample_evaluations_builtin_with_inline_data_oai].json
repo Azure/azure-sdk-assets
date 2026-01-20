@@ -1,0 +1,81 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals?api-version=2025-11-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "Content-Length": "763",
+        "Content-Type": "application/json",
+        "User-Agent": "OpenAI/Python 2.6.1"
+      },
+      "RequestBody": {
+        "data_source_config": {
+          "type": "custom",
+          "item_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string"
+              },
+              "response": {
+                "type": "string"
+              },
+              "context": {
+                "type": "string"
+              },
+              "ground_truth": {
+                "type": "string"
+              }
+            },
+            "required": []
+          },
+          "include_sample_schema": true
+        },
+        "testing_criteria": [
+          {
+            "type": "azure_ai_evaluator",
+            "name": "violence",
+            "evaluator_name": "builtin.violence",
+            "data_mapping": {
+              "query": "{{item.query}}",
+              "response": "{{item.response}}"
+            },
+            "initialization_parameters": {
+              "deployment_name": "gpt-4o"
+            }
+          },
+          {
+            "type": "azure_ai_evaluator",
+            "name": "f1",
+            "evaluator_name": "builtin.f1_score"
+          },
+          {
+            "type": "azure_ai_evaluator",
+            "name": "coherence",
+            "evaluator_name": "builtin.coherence",
+            "initialization_parameters": {
+              "deployment_name": "gpt-4o"
+            }
+          }
+        ],
+        "name": "testing_builtin_inline_data_eval_with_openai_client"
+      },
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "apim-request-id": "49459fa3-c3d6-450e-8067-07d57ea33d36",
+        "Content-Length": "146",
+        "Content-Type": "application/json",
+        "Date": "Tue, 20 Jan 2026 01:42:08 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "statusCode": 401,
+        "message": "Unauthorized. Access token is missing, invalid, audience is incorrect (https://ai.azure.com), or have expired."
+      }
+    }
+  ],
+  "Variables": {}
+}
