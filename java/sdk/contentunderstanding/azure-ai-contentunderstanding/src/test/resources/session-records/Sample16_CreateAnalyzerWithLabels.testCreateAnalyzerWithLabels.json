@@ -1,57 +1,64 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/contentunderstanding/analyzers/my_custom_analyzer_testcreateanalyzerf57324428e?api-version=2025-11-01&allowReplace=true",
+      "RequestUri": "https://REDACTED/contentunderstanding/analyzers/test_receipt_analyzer_82660296e2e17596?api-version=2025-11-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "857",
+        "Content-Length": "914",
         "Content-Type": "application/json",
-        "Date": "Fri, 23 Jan 2026 21:51:45 GMT",
+        "Date": "Fri, 23 Jan 2026 21:58:47 GMT",
         "User-Agent": "azsdk-java-azure-ai-contentunderstanding/1.0.0-beta.1 (17.0.7; Mac OS X; 26.2)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
-        "description": "Custom analyzer for extracting company information",
+        "description": "Receipt analyzer with labeled training data",
         "baseAnalyzerId": "prebuilt-document",
         "config": {
-          "returnDetails": true,
           "enableOcr": true,
-          "enableLayout": true,
-          "enableFormula": true,
-          "estimateFieldSourceAndConfidence": true
+          "enableLayout": true
         },
         "fieldSchema": {
-          "name": "company_schema",
-          "description": "Schema for extracting company information",
+          "name": "receipt_schema",
+          "description": "Schema for receipt extraction with items",
           "fields": {
-            "total_amount": {
-              "method": "extract",
-              "type": "number",
-              "description": "Total amount on the document"
-            },
-            "company_name": {
+            "MerchantName": {
               "method": "extract",
               "type": "string",
-              "description": "Name of the company"
+              "description": "Name of the merchant"
             },
-            "document_summary": {
+            "Total": {
+              "method": "extract",
+              "type": "string",
+              "description": "Total amount"
+            },
+            "Items": {
               "method": "generate",
-              "type": "string",
-              "description": "A brief summary of the document content"
-            },
-            "document_type": {
-              "method": "classify",
-              "type": "string",
-              "description": "Type of document",
-              "enum": [
-                "invoice",
-                "receipt",
-                "contract",
-                "report",
-                "other"
-              ]
+              "type": "array",
+              "description": "List of items purchased",
+              "items": {
+                "method": "extract",
+                "type": "object",
+                "description": "Individual item details",
+                "properties": {
+                  "Price": {
+                    "method": "extract",
+                    "type": "string",
+                    "description": "Price of the item"
+                  },
+                  "Quantity": {
+                    "method": "extract",
+                    "type": "string",
+                    "description": "Quantity of the item"
+                  },
+                  "Name": {
+                    "method": "extract",
+                    "type": "string",
+                    "description": "Name of the item"
+                  }
+                }
+              }
             }
           }
         },
@@ -63,26 +70,26 @@
       "StatusCode": 201,
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-01-preview,2025-11-01",
-        "apim-request-id": "99366291-582e-4f75-ba07-1753034c55a1",
+        "apim-request-id": "8997f627-75a9-4f0e-9068-e1db681dd432",
         "Content-Type": "application/json",
-        "Date": "Fri, 23 Jan 2026 21:51:48 GMT",
-        "Operation-Location": "https://REDACTED.services.ai.azure.com/contentunderstanding/analyzers/my_custom_analyzer_testcreateanalyzerf57324428e/operations/99366291-582e-4f75-ba07-1753034c55a1?api-version=2025-11-01",
-        "request-id": "99366291-582e-4f75-ba07-1753034c55a1",
+        "Date": "Fri, 23 Jan 2026 21:58:48 GMT",
+        "Operation-Location": "https://REDACTED.services.ai.azure.com/contentunderstanding/analyzers/test_receipt_analyzer_82660296e2e17596/operations/8997f627-75a9-4f0e-9068-e1db681dd432?api-version=2025-11-01",
+        "request-id": "8997f627-75a9-4f0e-9068-e1db681dd432",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "137",
+        "x-envoy-upstream-service-time": "129",
         "x-ms-region": "East US",
         "x-ms-request-id": "Sanitized"
       },
       "ResponseBody": {
-        "analyzerId": "my_custom_analyzer_testcreateanalyzerf57324428e",
-        "description": "Custom analyzer for extracting company information",
-        "createdAt": "2026-01-23T21:51:48Z",
-        "lastModifiedAt": "2026-01-23T21:51:48Z",
+        "analyzerId": "test_receipt_analyzer_82660296e2e17596",
+        "description": "Receipt analyzer with labeled training data",
+        "createdAt": "2026-01-23T21:58:48Z",
+        "lastModifiedAt": "2026-01-23T21:58:48Z",
         "baseAnalyzerId": "prebuilt-document",
         "config": {
-          "returnDetails": true,
+          "returnDetails": false,
           "enableOcr": true,
           "enableLayout": true,
           "enableFormula": true,
@@ -90,42 +97,51 @@
           "enableFigureAnalysis": false,
           "chartFormat": "chartjs",
           "tableFormat": "html",
-          "estimateFieldSourceAndConfidence": true,
           "enableSegment": false,
           "omitContent": false,
           "segmentPerPage": false,
           "annotationFormat": "markdown"
         },
         "fieldSchema": {
-          "name": "company_schema",
-          "description": "Schema for extracting company information",
+          "name": "receipt_schema",
+          "description": "Schema for receipt extraction with items",
           "fields": {
-            "total_amount": {
-              "type": "number",
-              "method": "extract",
-              "description": "Total amount on the document"
-            },
-            "company_name": {
+            "MerchantName": {
               "type": "string",
               "method": "extract",
-              "description": "Name of the company"
+              "description": "Name of the merchant"
             },
-            "document_summary": {
+            "Total": {
               "type": "string",
+              "method": "extract",
+              "description": "Total amount"
+            },
+            "Items": {
+              "type": "array",
               "method": "generate",
-              "description": "A brief summary of the document content"
-            },
-            "document_type": {
-              "type": "string",
-              "method": "classify",
-              "description": "Type of document",
-              "enum": [
-                "invoice",
-                "receipt",
-                "contract",
-                "report",
-                "other"
-              ]
+              "description": "List of items purchased",
+              "items": {
+                "type": "object",
+                "method": "extract",
+                "description": "Individual item details",
+                "properties": {
+                  "Price": {
+                    "type": "string",
+                    "method": "extract",
+                    "description": "Price of the item"
+                  },
+                  "Quantity": {
+                    "type": "string",
+                    "method": "extract",
+                    "description": "Quantity of the item"
+                  },
+                  "Name": {
+                    "type": "string",
+                    "method": "extract",
+                    "description": "Name of the item"
+                  }
+                }
+              }
             }
           }
         },
@@ -153,12 +169,12 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/contentunderstanding/analyzers/my_custom_analyzer_testcreateanalyzerf57324428e/operations/99366291-582e-4f75-ba07-1753034c55a1?api-version=2025-11-01",
+      "RequestUri": "https://REDACTED/contentunderstanding/analyzers/test_receipt_analyzer_82660296e2e17596/operations/8997f627-75a9-4f0e-9068-e1db681dd432?api-version=2025-11-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
         "Authorization": "Sanitized",
-        "Date": "Fri, 23 Jan 2026 21:51:48 GMT",
+        "Date": "Fri, 23 Jan 2026 21:58:49 GMT",
         "User-Agent": "azsdk-java-azure-ai-contentunderstanding/1.0.0-beta.1 (17.0.7; Mac OS X; 26.2)",
         "x-ms-client-request-id": "Sanitized"
       },
@@ -166,28 +182,28 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-01-preview,2025-11-01",
-        "apim-request-id": "b522f344-9eb7-41f8-b0e2-9fcfe744115c",
+        "apim-request-id": "23b5b6d9-7ec5-4682-bccf-9476aef1461b",
         "Content-Type": "application/json",
-        "Date": "Fri, 23 Jan 2026 21:51:48 GMT",
-        "request-id": "b522f344-9eb7-41f8-b0e2-9fcfe744115c",
+        "Date": "Fri, 23 Jan 2026 21:58:49 GMT",
+        "request-id": "23b5b6d9-7ec5-4682-bccf-9476aef1461b",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "57",
+        "x-envoy-upstream-service-time": "53",
         "x-ms-region": "East US",
         "x-ms-request-id": "Sanitized"
       },
       "ResponseBody": {
-        "id": "99366291-582e-4f75-ba07-1753034c55a1",
+        "id": "8997f627-75a9-4f0e-9068-e1db681dd432",
         "status": "Running",
         "result": {
-          "analyzerId": "my_custom_analyzer_testcreateanalyzerf57324428e",
-          "description": "Custom analyzer for extracting company information",
-          "createdAt": "2026-01-23T21:51:48Z",
-          "lastModifiedAt": "2026-01-23T21:51:48Z",
+          "analyzerId": "test_receipt_analyzer_82660296e2e17596",
+          "description": "Receipt analyzer with labeled training data",
+          "createdAt": "2026-01-23T21:58:48Z",
+          "lastModifiedAt": "2026-01-23T21:58:48Z",
           "baseAnalyzerId": "prebuilt-document",
           "config": {
-            "returnDetails": true,
+            "returnDetails": false,
             "enableOcr": true,
             "enableLayout": true,
             "enableFormula": true,
@@ -195,42 +211,51 @@
             "enableFigureAnalysis": false,
             "chartFormat": "chartjs",
             "tableFormat": "html",
-            "estimateFieldSourceAndConfidence": true,
             "enableSegment": false,
             "omitContent": false,
             "segmentPerPage": false,
             "annotationFormat": "markdown"
           },
           "fieldSchema": {
-            "name": "company_schema",
-            "description": "Schema for extracting company information",
+            "name": "receipt_schema",
+            "description": "Schema for receipt extraction with items",
             "fields": {
-              "total_amount": {
-                "type": "number",
-                "method": "extract",
-                "description": "Total amount on the document"
-              },
-              "company_name": {
+              "MerchantName": {
                 "type": "string",
                 "method": "extract",
-                "description": "Name of the company"
+                "description": "Name of the merchant"
               },
-              "document_summary": {
+              "Total": {
                 "type": "string",
+                "method": "extract",
+                "description": "Total amount"
+              },
+              "Items": {
+                "type": "array",
                 "method": "generate",
-                "description": "A brief summary of the document content"
-              },
-              "document_type": {
-                "type": "string",
-                "method": "classify",
-                "description": "Type of document",
-                "enum": [
-                  "invoice",
-                  "receipt",
-                  "contract",
-                  "report",
-                  "other"
-                ]
+                "description": "List of items purchased",
+                "items": {
+                  "type": "object",
+                  "method": "extract",
+                  "description": "Individual item details",
+                  "properties": {
+                    "Price": {
+                      "type": "string",
+                      "method": "extract",
+                      "description": "Price of the item"
+                    },
+                    "Quantity": {
+                      "type": "string",
+                      "method": "extract",
+                      "description": "Quantity of the item"
+                    },
+                    "Name": {
+                      "type": "string",
+                      "method": "extract",
+                      "description": "Name of the item"
+                    }
+                  }
+                }
               }
             }
           },
@@ -259,12 +284,12 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/contentunderstanding/analyzers/my_custom_analyzer_testcreateanalyzerf57324428e/operations/99366291-582e-4f75-ba07-1753034c55a1?api-version=2025-11-01",
+      "RequestUri": "https://REDACTED/contentunderstanding/analyzers/test_receipt_analyzer_82660296e2e17596/operations/8997f627-75a9-4f0e-9068-e1db681dd432?api-version=2025-11-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
         "Authorization": "Sanitized",
-        "Date": "Fri, 23 Jan 2026 21:51:50 GMT",
+        "Date": "Fri, 23 Jan 2026 21:58:50 GMT",
         "User-Agent": "azsdk-java-azure-ai-contentunderstanding/1.0.0-beta.1 (17.0.7; Mac OS X; 26.2)",
         "x-ms-client-request-id": "Sanitized"
       },
@@ -272,28 +297,28 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-01-preview,2025-11-01",
-        "apim-request-id": "5a968151-9726-4668-bb76-c934dd70300d",
+        "apim-request-id": "feb15f12-dda7-4046-b022-2e93785ac504",
         "Content-Type": "application/json",
-        "Date": "Fri, 23 Jan 2026 21:51:50 GMT",
-        "request-id": "5a968151-9726-4668-bb76-c934dd70300d",
+        "Date": "Fri, 23 Jan 2026 21:58:50 GMT",
+        "request-id": "feb15f12-dda7-4046-b022-2e93785ac504",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "60",
+        "x-envoy-upstream-service-time": "51",
         "x-ms-region": "East US",
         "x-ms-request-id": "Sanitized"
       },
       "ResponseBody": {
-        "id": "99366291-582e-4f75-ba07-1753034c55a1",
+        "id": "8997f627-75a9-4f0e-9068-e1db681dd432",
         "status": "Succeeded",
         "result": {
-          "analyzerId": "my_custom_analyzer_testcreateanalyzerf57324428e",
-          "description": "Custom analyzer for extracting company information",
-          "createdAt": "2026-01-23T21:51:48Z",
-          "lastModifiedAt": "2026-01-23T21:51:49Z",
+          "analyzerId": "test_receipt_analyzer_82660296e2e17596",
+          "description": "Receipt analyzer with labeled training data",
+          "createdAt": "2026-01-23T21:58:48Z",
+          "lastModifiedAt": "2026-01-23T21:58:50Z",
           "baseAnalyzerId": "prebuilt-document",
           "config": {
-            "returnDetails": true,
+            "returnDetails": false,
             "enableOcr": true,
             "enableLayout": true,
             "enableFormula": true,
@@ -301,42 +326,51 @@
             "enableFigureAnalysis": false,
             "chartFormat": "chartjs",
             "tableFormat": "html",
-            "estimateFieldSourceAndConfidence": true,
             "enableSegment": false,
             "omitContent": false,
             "segmentPerPage": false,
             "annotationFormat": "markdown"
           },
           "fieldSchema": {
-            "name": "company_schema",
-            "description": "Schema for extracting company information",
+            "name": "receipt_schema",
+            "description": "Schema for receipt extraction with items",
             "fields": {
-              "total_amount": {
-                "type": "number",
-                "method": "extract",
-                "description": "Total amount on the document"
-              },
-              "company_name": {
+              "MerchantName": {
                 "type": "string",
                 "method": "extract",
-                "description": "Name of the company"
+                "description": "Name of the merchant"
               },
-              "document_summary": {
+              "Total": {
                 "type": "string",
+                "method": "extract",
+                "description": "Total amount"
+              },
+              "Items": {
+                "type": "array",
                 "method": "generate",
-                "description": "A brief summary of the document content"
-              },
-              "document_type": {
-                "type": "string",
-                "method": "classify",
-                "description": "Type of document",
-                "enum": [
-                  "invoice",
-                  "receipt",
-                  "contract",
-                  "report",
-                  "other"
-                ]
+                "description": "List of items purchased",
+                "items": {
+                  "type": "object",
+                  "method": "extract",
+                  "description": "Individual item details",
+                  "properties": {
+                    "Price": {
+                      "type": "string",
+                      "method": "extract",
+                      "description": "Price of the item"
+                    },
+                    "Quantity": {
+                      "type": "string",
+                      "method": "extract",
+                      "description": "Quantity of the item"
+                    },
+                    "Name": {
+                      "type": "string",
+                      "method": "extract",
+                      "description": "Name of the item"
+                    }
+                  }
+                }
               }
             }
           },
@@ -365,12 +399,12 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/contentunderstanding/analyzers/my_custom_analyzer_testcreateanalyzerf57324428e?api-version=2025-11-01&allowReplace=true",
+      "RequestUri": "https://REDACTED/contentunderstanding/analyzers/test_receipt_analyzer_82660296e2e17596?api-version=2025-11-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
         "Authorization": "Sanitized",
-        "Date": "Fri, 23 Jan 2026 21:51:50 GMT",
+        "Date": "Fri, 23 Jan 2026 21:58:50 GMT",
         "User-Agent": "azsdk-java-azure-ai-contentunderstanding/1.0.0-beta.1 (17.0.7; Mac OS X; 26.2)",
         "x-ms-client-request-id": "Sanitized"
       },
@@ -378,25 +412,25 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-01-preview,2025-11-01",
-        "apim-request-id": "fb292971-ba9f-41d9-a7d5-46d489702f81",
+        "apim-request-id": "3a01ecb5-d25a-4424-8b74-23f723d26622",
         "Content-Type": "application/json",
-        "Date": "Fri, 23 Jan 2026 21:51:50 GMT",
-        "request-id": "fb292971-ba9f-41d9-a7d5-46d489702f81",
+        "Date": "Fri, 23 Jan 2026 21:58:50 GMT",
+        "request-id": "3a01ecb5-d25a-4424-8b74-23f723d26622",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "47",
+        "x-envoy-upstream-service-time": "27",
         "x-ms-region": "East US",
         "x-ms-request-id": "Sanitized"
       },
       "ResponseBody": {
-        "analyzerId": "my_custom_analyzer_testcreateanalyzerf57324428e",
-        "description": "Custom analyzer for extracting company information",
-        "createdAt": "2026-01-23T21:51:48Z",
-        "lastModifiedAt": "2026-01-23T21:51:49Z",
+        "analyzerId": "test_receipt_analyzer_82660296e2e17596",
+        "description": "Receipt analyzer with labeled training data",
+        "createdAt": "2026-01-23T21:58:48Z",
+        "lastModifiedAt": "2026-01-23T21:58:50Z",
         "baseAnalyzerId": "prebuilt-document",
         "config": {
-          "returnDetails": true,
+          "returnDetails": false,
           "enableOcr": true,
           "enableLayout": true,
           "enableFormula": true,
@@ -404,42 +438,51 @@
           "enableFigureAnalysis": false,
           "chartFormat": "chartjs",
           "tableFormat": "html",
-          "estimateFieldSourceAndConfidence": true,
           "enableSegment": false,
           "omitContent": false,
           "segmentPerPage": false,
           "annotationFormat": "markdown"
         },
         "fieldSchema": {
-          "name": "company_schema",
-          "description": "Schema for extracting company information",
+          "name": "receipt_schema",
+          "description": "Schema for receipt extraction with items",
           "fields": {
-            "total_amount": {
-              "type": "number",
-              "method": "extract",
-              "description": "Total amount on the document"
-            },
-            "company_name": {
+            "MerchantName": {
               "type": "string",
               "method": "extract",
-              "description": "Name of the company"
+              "description": "Name of the merchant"
             },
-            "document_summary": {
+            "Total": {
               "type": "string",
+              "method": "extract",
+              "description": "Total amount"
+            },
+            "Items": {
+              "type": "array",
               "method": "generate",
-              "description": "A brief summary of the document content"
-            },
-            "document_type": {
-              "type": "string",
-              "method": "classify",
-              "description": "Type of document",
-              "enum": [
-                "invoice",
-                "receipt",
-                "contract",
-                "report",
-                "other"
-              ]
+              "description": "List of items purchased",
+              "items": {
+                "type": "object",
+                "method": "extract",
+                "description": "Individual item details",
+                "properties": {
+                  "Price": {
+                    "type": "string",
+                    "method": "extract",
+                    "description": "Price of the item"
+                  },
+                  "Quantity": {
+                    "type": "string",
+                    "method": "extract",
+                    "description": "Quantity of the item"
+                  },
+                  "Name": {
+                    "type": "string",
+                    "method": "extract",
+                    "description": "Name of the item"
+                  }
+                }
+              }
             }
           }
         },
@@ -467,13 +510,13 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/contentunderstanding/analyzers/my_custom_analyzer_testcreateanalyzerf57324428e?api-version=2025-11-01",
+      "RequestUri": "https://REDACTED/contentunderstanding/analyzers/test_receipt_analyzer_82660296e2e17596?api-version=2025-11-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "*/*",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 23 Jan 2026 21:51:50 GMT",
+        "Date": "Fri, 23 Jan 2026 21:58:51 GMT",
         "User-Agent": "azsdk-java-azure-ai-contentunderstanding/1.0.0-beta.1 (17.0.7; Mac OS X; 26.2)",
         "x-ms-client-request-id": "Sanitized"
       },
@@ -481,13 +524,13 @@
       "StatusCode": 204,
       "ResponseHeaders": {
         "api-supported-versions": "2025-05-01-preview,2025-11-01",
-        "apim-request-id": "c7529393-3352-4af2-af31-3c367992ce5a",
+        "apim-request-id": "c7d87ea3-d0b3-4efd-8d77-4945f5e0e2b1",
         "Content-Length": "0",
-        "Date": "Fri, 23 Jan 2026 21:51:51 GMT",
-        "request-id": "c7529393-3352-4af2-af31-3c367992ce5a",
+        "Date": "Fri, 23 Jan 2026 21:58:50 GMT",
+        "request-id": "c7d87ea3-d0b3-4efd-8d77-4945f5e0e2b1",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "89",
+        "x-envoy-upstream-service-time": "77",
         "x-ms-region": "East US",
         "x-ms-request-id": "Sanitized"
       },
@@ -495,6 +538,6 @@
     }
   ],
   "Variables": {
-    "0": "my_custom_analyzer_testcreateanalyzerf57324428e"
+    "0": "test_receipt_analyzer_82660296e2e17596"
   }
 }
