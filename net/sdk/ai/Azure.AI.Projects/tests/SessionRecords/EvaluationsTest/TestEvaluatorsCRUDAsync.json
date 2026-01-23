@@ -8,7 +8,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "1071",
         "Content-Type": "application/json",
-        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260120.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260122.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
@@ -27,27 +27,27 @@
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
         "azureml-served-by-cluster": "vienna-swedencentral-01",
-        "Content-Length": "1516",
+        "Content-Length": "1515",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 21 Jan 2026 01:56:03 GMT",
-        "mise-correlation-id": "6698d60f-9022-43bd-9181-8bb2d4cbfd61",
+        "Date": "Fri, 23 Jan 2026 16:54:19 GMT",
+        "mise-correlation-id": "00fd6961-af69-4b63-884e-cd1e4fcd4e99",
         "Request-Context": "appId=",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-ms-region": "Sweden Central",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.575"
+        "x-request-time": "0.766"
       },
       "ResponseBody": {
-        "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/17",
+        "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/18",
         "name": "CustomTestEvaluator",
         "display_name": "Custom evaluator for e2e test.",
         "metadata": {},
         "description": "Description for e2e evaluator.",
-        "version": "17",
+        "version": "18",
         "created_by": "Nikolay Rovinskiy",
-        "created_at": "2026-01-21T01:54:11.2416177+00:00",
-        "modified_at": "2026-01-21T01:56:03.1249663+00:00",
+        "created_at": "2026-01-23T16:51:10.1593074+00:00",
+        "modified_at": "2026-01-23T16:54:19.491037+00:00",
         "categories": [
           "quality"
         ],
@@ -70,12 +70,77 @@
       }
     },
     {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/17?api-version=2025-11-15-preview",
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/18?api-version=2025-11-15-preview",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "124",
+        "Content-Type": "application/json",
+        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260122.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "categories": [
+          "quality"
+        ],
+        "display_name": "my_custom_evaluator_updated",
+        "description": "Custom evaluator description changed"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-swedencentral-01",
+        "Content-Length": "1519",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 23 Jan 2026 16:54:22 GMT",
+        "mise-correlation-id": "ad8b8b64-291c-4728-99a6-9e1b501aa7cc",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.775"
+      },
+      "ResponseBody": {
+        "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/18",
+        "name": "CustomTestEvaluator",
+        "display_name": "my_custom_evaluator_updated",
+        "metadata": {},
+        "description": "Custom evaluator description changed",
+        "version": "18",
+        "created_by": "Nikolay Rovinskiy",
+        "created_at": "2026-01-23T16:51:10.1593074+00:00",
+        "modified_at": "2026-01-23T16:54:22.1845894+00:00",
+        "categories": [
+          "quality"
+        ],
+        "evaluator_type": "custom",
+        "definition": {
+          "type": "prompt",
+          "prompt_text": "You are a Groundedness Evaluator.\n\nYour task is to evaluate how well the given response is grounded in the provided ground truth.  \nGroundedness means the response’s statements are factually supported by the ground truth.  \nEvaluate factual alignment only — ignore grammar, fluency, or completeness.\n\n---\n\n### Input:\nQuery:\n{{query}}\n\nResponse:\n{{response}}\n\nGround Truth:\n{{ground_truth}}\n\n---\n\n### Scoring Scale (1–5):\n5 → Fully grounded. All claims supported by ground truth.  \n4 → Mostly grounded. Minor unsupported details.  \n3 → Partially grounded. About half the claims supported.  \n2 → Mostly ungrounded. Only a few details supported.  \n1 → Not grounded. Almost all information unsupported.\n\n---\n\n### Output Format (JSON):\n{\n    \"result\": <integer from 1 to 5>,\n    \"reason\": \"<brief explanation for the score>\"\n}",
+          "init_parameters": {
+            "required": [],
+            "type": "object",
+            "properties": {}
+          },
+          "metrics": {},
+          "data_schema": {
+            "required": [],
+            "type": "object",
+            "properties": {}
+          }
+        }
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/18?api-version=2025-11-15-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260120.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260122.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
@@ -83,28 +148,28 @@
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
         "azureml-served-by-cluster": "vienna-swedencentral-01",
-        "Content-Length": "1516",
+        "Content-Length": "1519",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 21 Jan 2026 01:56:05 GMT",
-        "mise-correlation-id": "48333c36-85a9-4431-a037-18d8776c9440",
+        "Date": "Fri, 23 Jan 2026 16:54:24 GMT",
+        "mise-correlation-id": "17b49956-ac87-4bf2-896e-91c427bc8d6f",
         "Request-Context": "appId=",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-region": "Sweden Central",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.180"
+        "x-request-time": "0.129"
       },
       "ResponseBody": {
-        "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/17",
+        "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/18",
         "name": "CustomTestEvaluator",
-        "display_name": "Custom evaluator for e2e test.",
+        "display_name": "my_custom_evaluator_updated",
         "metadata": {},
-        "description": "Description for e2e evaluator.",
-        "version": "17",
+        "description": "Custom evaluator description changed",
+        "version": "18",
         "created_by": "Nikolay Rovinskiy",
-        "created_at": "2026-01-21T01:54:11.2416177+00:00",
-        "modified_at": "2026-01-21T01:56:03.1249663+00:00",
+        "created_at": "2026-01-23T16:51:10.1593074+00:00",
+        "modified_at": "2026-01-23T16:54:22.1845894+00:00",
         "categories": [
           "quality"
         ],
@@ -132,7 +197,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260120.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260122.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
@@ -140,20 +205,50 @@
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
         "azureml-served-by-cluster": "vienna-swedencentral-01",
-        "Content-Length": "19675",
+        "Content-Length": "18414",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 21 Jan 2026 01:56:09 GMT",
-        "mise-correlation-id": "1dbe2458-34b7-484f-8ae3-829047c75e40",
+        "Date": "Fri, 23 Jan 2026 16:54:26 GMT",
+        "mise-correlation-id": "e2f98a01-9430-4ebb-9d53-b76622684d65",
         "Request-Context": "appId=",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-region": "Sweden Central",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.114"
+        "x-request-time": "0.115"
       },
       "ResponseBody": {
         "value": [
+          {
+            "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/18",
+            "name": "CustomTestEvaluator",
+            "display_name": "my_custom_evaluator_updated",
+            "metadata": {},
+            "description": "Custom evaluator description changed",
+            "version": "18",
+            "created_by": "Nikolay Rovinskiy",
+            "created_at": "2026-01-23T16:51:10.1593074+00:00",
+            "modified_at": "2026-01-23T16:54:22.1845894+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "custom",
+            "definition": {
+              "type": "prompt",
+              "prompt_text": "You are a Groundedness Evaluator.\n\nYour task is to evaluate how well the given response is grounded in the provided ground truth.  \nGroundedness means the response’s statements are factually supported by the ground truth.  \nEvaluate factual alignment only — ignore grammar, fluency, or completeness.\n\n---\n\n### Input:\nQuery:\n{{query}}\n\nResponse:\n{{response}}\n\nGround Truth:\n{{ground_truth}}\n\n---\n\n### Scoring Scale (1–5):\n5 → Fully grounded. All claims supported by ground truth.  \n4 → Mostly grounded. Minor unsupported details.  \n3 → Partially grounded. About half the claims supported.  \n2 → Mostly ungrounded. Only a few details supported.  \n1 → Not grounded. Almost all information unsupported.\n\n---\n\n### Output Format (JSON):\n{\n    \"result\": <integer from 1 to 5>,\n    \"reason\": \"<brief explanation for the score>\"\n}",
+              "init_parameters": {
+                "required": [],
+                "type": "object",
+                "properties": {}
+              },
+              "metrics": {},
+              "data_schema": {
+                "required": [],
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
           {
             "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/17",
             "name": "CustomTestEvaluator",
@@ -162,8 +257,8 @@
             "description": "Description for e2e evaluator.",
             "version": "17",
             "created_by": "Nikolay Rovinskiy",
-            "created_at": "2026-01-21T01:54:11.2416177+00:00",
-            "modified_at": "2026-01-21T01:56:03.1249663+00:00",
+            "created_at": "2026-01-21T20:24:02.9739012+00:00",
+            "modified_at": "2026-01-21T20:24:03.1033287+00:00",
             "categories": [
               "quality"
             ],
@@ -491,74 +586,10 @@
                 }
               }
             }
-          },
-          {
-            "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/8",
-            "name": "CustomTestEvaluator",
-            "display_name": "Custom evaluator for e2e test.",
-            "metadata": {},
-            "description": "Description for e2e evaluator.",
-            "version": "8",
-            "created_by": "Nikolay Rovinskiy",
-            "created_at": "2026-01-21T00:25:53.8796643+00:00",
-            "modified_at": "2026-01-21T00:25:53.9801368+00:00",
-            "categories": [
-              "quality"
-            ],
-            "evaluator_type": "custom",
-            "definition": {
-              "type": "code",
-              "code_text": "def grade(sample, item) -> float:\n    \"\"\"\n    Evaluate response quality based on multiple criteria.\n    Note: All data is in the \\'item\\' parameter, \\'sample\\' is empty.\n    \"\"\"\n    # Extract data from item (not sample!)\n    response = item.get(\"response\", \"\").lower() if isinstance(item, dict) else \"\"\n    ground_truth = item.get(\"ground_truth\", \"\").lower() if isinstance(item, dict) else \"\"\n    query = item.get(\"query\", \"\").lower() if isinstance(item, dict) else \"\"\n    \n    # Check if response is empty\n    if not response:\n        return 0.0\n    \n    # Check for harmful content\n    harmful_keywords = [\"harmful\", \"dangerous\", \"unsafe\", \"illegal\", \"unethical\"]\n    if any(keyword in response for keyword in harmful_keywords):\n        return 0.0\n    \n    # Length check\n    if len(response) < 10:\n        return 0.1\n    elif len(response) < 50:\n        return 0.2\n    \n    # Technical content check\n    technical_keywords = [\"api\", \"experiment\", \"run\", \"azure\", \"machine learning\", \"gradient\", \"neural\", \"algorithm\"]\n    technical_score = sum(1 for k in technical_keywords if k in response) / len(technical_keywords)\n    \n    # Query relevance\n    query_words = query.split()[:3] if query else []\n    relevance_score = 0.7 if any(word in response for word in query_words) else 0.3\n    \n    # Ground truth similarity\n    if ground_truth:\n        truth_words = set(ground_truth.split())\n        response_words = set(response.split())\n        overlap = len(truth_words & response_words) / len(truth_words) if truth_words else 0\n        similarity_score = min(1.0, overlap)\n    else:\n        similarity_score = 0.5\n    \n    return min(1.0, (technical_score * 0.3) + (relevance_score * 0.3) + (similarity_score * 0.4))",
-              "init_parameters": {
-                "required": [
-                  "deployment_name",
-                  "pass_threshold"
-                ],
-                "type": "object",
-                "properties": {
-                  "deployment_name": {
-                    "type": "string"
-                  },
-                  "pass_threshold": {
-                    "type": "string"
-                  }
-                }
-              },
-              "metrics": {
-                "result": {
-                  "type": "ordinal",
-                  "desirable_direction": "increase",
-                  "min_value": 0.0,
-                  "max_value": 1.0
-                }
-              },
-              "data_schema": {
-                "required": [
-                  "item"
-                ],
-                "type": "object",
-                "properties": {
-                  "item": {
-                    "type": "object",
-                    "properties": {
-                      "query": {
-                        "type": "string"
-                      },
-                      "response": {
-                        "type": "string"
-                      },
-                      "ground_truth": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            }
           }
         ],
-        "continuationToken": "H4sIAAAAAAAAA1XOTQ_BQBDG8e8yV63OVhR7EzTpgZD2Jg4THWysrWxnxUt8d3WROP-S__O8YBPYP0oh4Rb09gXliXxd1KBh-gyeSya_PyXLYMUIO3KSIKYJfe1i4xvGE4hgxXcpz-YKWmEERbu25BZ33gcxjZs3jkEfyLYcwdzUf5iTsT-sGiE7a4KTLjR67yLIjW9lTUfuHnqpzKUrQYppFqOKU1Wh0sOsG-1jNh5N1KCHqBHh_QEpjgSK2AAAAA",
-        "nextLink": "https://rovins-sweden.services.ai.azure.com/api/projects/swedenProject/evaluators/CustomTestEvaluator/versions?api-version=2025-11-15-preview&continuationToken=H4sIAAAAAAAAA1XOTQ_BQBDG8e8yV63OVhR7EzTpgZD2Jg4THWysrWxnxUt8d3WROP-S__O8YBPYP0oh4Rb09gXliXxd1KBh-gyeSya_PyXLYMUIO3KSIKYJfe1i4xvGE4hgxXcpz-YKWmEERbu25BZ33gcxjZs3jkEfyLYcwdzUf5iTsT-sGiE7a4KTLjR67yLIjW9lTUfuHnqpzKUrQYppFqOKU1Wh0sOsG-1jNh5N1KCHqBHh_QEpjgSK2AAAAA"
+        "continuationToken": "H4sIAAAAAAAAA1XOuwrCQBBA0X-Z1sRM1iToduIDLBQl6cRiMKMurhvZzIoP_HdjI1gfuNwXbAL7Rykk3ILevqA8ka8XNWgYP4PnksnvT8kyWDHCjpwkiCqhr11sfMN4BBGs-C7l2VxBpxjBol1bcrM774OYxk0bx6APZFuOYGrqP5yTsT-sGiE7aYKTLjR87yKYG9_Kmo7cHXqpzKUrgUJVxJjGalClhc4zrYp-ng0ylfcQNSK8P0Au90jXAAAA",
+        "nextLink": "https://rovins-sweden.services.ai.azure.com/api/projects/swedenProject/evaluators/CustomTestEvaluator/versions?api-version=2025-11-15-preview&continuationToken=H4sIAAAAAAAAA1XOuwrCQBBA0X-Z1sRM1iToduIDLBQl6cRiMKMurhvZzIoP_HdjI1gfuNwXbAL7Rykk3ILevqA8ka8XNWgYP4PnksnvT8kyWDHCjpwkiCqhr11sfMN4BBGs-C7l2VxBpxjBol1bcrM774OYxk0bx6APZFuOYGrqP5yTsT-sGiE7aYKTLjR87yKYG9_Kmo7cHXqpzKUrgUJVxJjGalClhc4zrYp-ng0ylfcQNSK8P0Au90jXAAAA"
       }
     },
     {
@@ -567,7 +598,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260120.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260122.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
@@ -575,30 +606,30 @@
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
         "azureml-served-by-cluster": "vienna-swedencentral-01",
-        "Content-Length": "4338",
+        "Content-Length": "6662",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 21 Jan 2026 01:56:12 GMT",
-        "mise-correlation-id": "008fed7c-f5ff-4dce-91a4-c71424cbaa3a",
+        "Date": "Fri, 23 Jan 2026 16:54:28 GMT",
+        "mise-correlation-id": "f7890568-1a2f-4048-8695-6371d8b70de3",
         "Request-Context": "appId=",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-region": "Sweden Central",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.094"
+        "x-request-time": "0.104"
       },
       "ResponseBody": {
         "value": [
           {
-            "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/17",
+            "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/18",
             "name": "CustomTestEvaluator",
-            "display_name": "Custom evaluator for e2e test.",
+            "display_name": "my_custom_evaluator_updated",
             "metadata": {},
-            "description": "Description for e2e evaluator.",
-            "version": "17",
+            "description": "Custom evaluator description changed",
+            "version": "18",
             "created_by": "Nikolay Rovinskiy",
-            "created_at": "2026-01-21T01:54:11.2416177+00:00",
-            "modified_at": "2026-01-21T01:56:03.1249663+00:00",
+            "created_at": "2026-01-23T16:51:10.1593074+00:00",
+            "modified_at": "2026-01-23T16:54:22.1845894+00:00",
             "categories": [
               "quality"
             ],
@@ -616,6 +647,113 @@
                 "required": [],
                 "type": "object",
                 "properties": {}
+              }
+            }
+          },
+          {
+            "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/myCustomEvaluatorCodeBased/versions/3",
+            "name": "myCustomEvaluatorCodeBased",
+            "display_name": "my_custom_evaluator",
+            "metadata": {},
+            "description": "Custom evaluator to detect violent content",
+            "version": "3",
+            "created_by": "Nikolay Rovinskiy",
+            "created_at": "2026-01-23T07:32:40.0098928+00:00",
+            "modified_at": "2026-01-23T07:32:40.0985346+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "custom",
+            "definition": {
+              "type": "code",
+              "code_text": "def grade(sample, item):\n    return 1.0",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "metrics": {
+                "result": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 5.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "item": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/myCustomEvaluatorPromptBased/versions/4",
+            "name": "myCustomEvaluatorPromptBased",
+            "display_name": "my_custom_evaluator",
+            "metadata": {},
+            "description": "Custom evaluator to detect violent content",
+            "version": "4",
+            "created_by": "Nikolay Rovinskiy",
+            "created_at": "2026-01-23T07:32:37.3210837+00:00",
+            "modified_at": "2026-01-23T07:32:37.4230033+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "custom",
+            "definition": {
+              "type": "prompt",
+              "prompt_text": "You are an evaluator.\r\nRate the GROUNDEDNESS (factual correctness without unsupported claims) of the system response to the customer query.\r\n\r\nScoring (1–5):\r\n1 = Mostly fabricated/incorrect\r\n2 = Many unsupported claims\r\n3 = Mixed: some facts but notable errors/guesses\r\n4 = Mostly factual; minor issues\r\n5 = Fully factual; no unsupported claims\r\n\r\nReturn ONLY a single integer 1–5 as score in valid json response e.g {\\\"score\\\": int}.\r\n\r\nQuery:\r\n{query}\r\n\r\nResponse:\r\n{response}",
+              "init_parameters": {
+                "required": [
+                  "deployment_name",
+                  "threshold"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "rtpe": "number"
+                  }
+                }
+              },
+              "metrics": {
+                "score": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 1.0,
+                  "max_value": 5.0
+                }
+              },
+              "data_schema": {
+                "required": [],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
               }
             }
           },
@@ -688,11 +826,11 @@
       }
     },
     {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/17?api-version=2025-11-15-preview",
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/18?api-version=2025-11-15-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Authorization": "Sanitized",
-        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260120.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260122.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
@@ -701,14 +839,14 @@
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
         "azureml-served-by-cluster": "vienna-swedencentral-01",
         "Content-Length": "0",
-        "Date": "Wed, 21 Jan 2026 01:56:18 GMT",
-        "mise-correlation-id": "516a2c49-3347-4b38-b804-430aaf1d9406",
+        "Date": "Fri, 23 Jan 2026 16:54:33 GMT",
+        "mise-correlation-id": "7d9de093-dc27-4fee-9378-c50aac12608d",
         "Request-Context": "appId=",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-ms-region": "Sweden Central",
         "x-ms-response-type": "standard",
-        "x-request-time": "3.213"
+        "x-request-time": "3.200"
       },
       "ResponseBody": null
     },
@@ -718,7 +856,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260120.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260122.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
@@ -726,20 +864,50 @@
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
         "azureml-served-by-cluster": "vienna-swedencentral-01",
-        "Content-Length": "20935",
+        "Content-Length": "19675",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 21 Jan 2026 01:56:20 GMT",
-        "mise-correlation-id": "ed273482-cbbb-4d8c-be6f-5fb3de44cbf7",
+        "Date": "Fri, 23 Jan 2026 16:54:35 GMT",
+        "mise-correlation-id": "26ef33e5-3e4c-4e56-9123-7711e8752c77",
         "Request-Context": "appId=",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-region": "Sweden Central",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.101"
+        "x-request-time": "0.191"
       },
       "ResponseBody": {
         "value": [
+          {
+            "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/17",
+            "name": "CustomTestEvaluator",
+            "display_name": "Custom evaluator for e2e test.",
+            "metadata": {},
+            "description": "Description for e2e evaluator.",
+            "version": "17",
+            "created_by": "Nikolay Rovinskiy",
+            "created_at": "2026-01-21T20:24:02.9739012+00:00",
+            "modified_at": "2026-01-21T20:24:03.1033287+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "custom",
+            "definition": {
+              "type": "prompt",
+              "prompt_text": "You are a Groundedness Evaluator.\n\nYour task is to evaluate how well the given response is grounded in the provided ground truth.  \nGroundedness means the response’s statements are factually supported by the ground truth.  \nEvaluate factual alignment only — ignore grammar, fluency, or completeness.\n\n---\n\n### Input:\nQuery:\n{{query}}\n\nResponse:\n{{response}}\n\nGround Truth:\n{{ground_truth}}\n\n---\n\n### Scoring Scale (1–5):\n5 → Fully grounded. All claims supported by ground truth.  \n4 → Mostly grounded. Minor unsupported details.  \n3 → Partially grounded. About half the claims supported.  \n2 → Mostly ungrounded. Only a few details supported.  \n1 → Not grounded. Almost all information unsupported.\n\n---\n\n### Output Format (JSON):\n{\n    \"result\": <integer from 1 to 5>,\n    \"reason\": \"<brief explanation for the score>\"\n}",
+              "init_parameters": {
+                "required": [],
+                "type": "object",
+                "properties": {}
+              },
+              "metrics": {},
+              "data_schema": {
+                "required": [],
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
           {
             "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/16",
             "name": "CustomTestEvaluator",
@@ -1111,7 +1279,40 @@
                 }
               }
             }
-          },
+          }
+        ],
+        "continuationToken": "H4sIAAAAAAAAA1XOuwrCQBBA0X-Z1sRM1pjgduIDLBQl6cRiMKMurhvZzIoP_HdjI1gfuNwXbAL7Rykk3ILevqA8ka8XNWgYP4PnksnvT8kyWDHCjpwkiCqhr11sfMN4BBGs-C7l2VxBpxjBol1bcrM774OYxk0bx6APZFuOYGrqP5yTsT-sGiE7aYKTLlS8dxHMjW9lTUfuDr1U5tKVQKHKY0xjNajSXA8zPcj7qlBZMcx6iBoR3h9MkEhH2AAAAA",
+        "nextLink": "https://rovins-sweden.services.ai.azure.com/api/projects/swedenProject/evaluators/CustomTestEvaluator/versions?api-version=2025-11-15-preview&continuationToken=H4sIAAAAAAAAA1XOuwrCQBBA0X-Z1sRM1pjgduIDLBQl6cRiMKMurhvZzIoP_HdjI1gfuNwXbAL7Rykk3ILevqA8ka8XNWgYP4PnksnvT8kyWDHCjpwkiCqhr11sfMN4BBGs-C7l2VxBpxjBol1bcrM774OYxk0bx6APZFuOYGrqP5yTsT-sGiE7aYKTLlS8dxHMjW9lTUfuDr1U5tKVQKHKY0xjNajSXA8zPcj7qlBZMcx6iBoR3h9MkEhH2AAAAA"
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/evaluators/CustomTestEvaluator/versions?api-version=2025-11-15-preview&continuationToken=H4sIAAAAAAAAA1XOuwrCQBBA0X-Z1sRM1pjgduIDLBQl6cRiMKMurhvZzIoP_HdjI1gfuNwXbAL7Rykk3ILevqA8ka8XNWgYP4PnksnvT8kyWDHCjpwkiCqhr11sfMN4BBGs-C7l2VxBpxjBol1bcrM774OYxk0bx6APZFuOYGrqP5yTsT-sGiE7aYKTLlS8dxHMjW9lTUfuDr1U5tKVQKHKY0xjNajSXA8zPcj7qlBZMcx6iBoR3h9MkEhH2AAAAA",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260122.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-swedencentral-01",
+        "Content-Length": "19453",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 23 Jan 2026 16:54:37 GMT",
+        "mise-correlation-id": "611a8e8a-01ee-462b-a4ac-d3d30d883c5f",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.163"
+      },
+      "ResponseBody": {
+        "value": [
           {
             "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/7",
             "name": "CustomTestEvaluator",
@@ -1175,40 +1376,7 @@
                 }
               }
             }
-          }
-        ],
-        "continuationToken": "H4sIAAAAAAAAA1XOzarCMBBA4XeZra2dhBowu4tVcKEo7U7uYrCjBmMq6UT8wXe3bi7c9QeH84Jt4viohYR7sLsX1CeK7bIFCz_PFLlmivtTsUpenHCgIAWiLuhrF5_fMJ9CBmu-S312V7AKM1j2G09hfud9EteFqgsM9kC-5wwq1_7DBTn_h00n5GddCjKEzPs3g4WLvWzoyMNhlMZdhhJo1CZHlWvVoLITY7UaK1OaslQjRIsI7w-OVUYh2AAAAA",
-        "nextLink": "https://rovins-sweden.services.ai.azure.com/api/projects/swedenProject/evaluators/CustomTestEvaluator/versions?api-version=2025-11-15-preview&continuationToken=H4sIAAAAAAAAA1XOzarCMBBA4XeZra2dhBowu4tVcKEo7U7uYrCjBmMq6UT8wXe3bi7c9QeH84Jt4viohYR7sLsX1CeK7bIFCz_PFLlmivtTsUpenHCgIAWiLuhrF5_fMJ9CBmu-S312V7AKM1j2G09hfud9EteFqgsM9kC-5wwq1_7DBTn_h00n5GddCjKEzPs3g4WLvWzoyMNhlMZdhhJo1CZHlWvVoLITY7UaK1OaslQjRIsI7w-OVUYh2AAAAA"
-      }
-    },
-    {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/evaluators/CustomTestEvaluator/versions?api-version=2025-11-15-preview&continuationToken=H4sIAAAAAAAAA1XOzarCMBBA4XeZra2dhBowu4tVcKEo7U7uYrCjBmMq6UT8wXe3bi7c9QeH84Jt4viohYR7sLsX1CeK7bIFCz_PFLlmivtTsUpenHCgIAWiLuhrF5_fMJ9CBmu-S312V7AKM1j2G09hfud9EteFqgsM9kC-5wwq1_7DBTn_h00n5GddCjKEzPs3g4WLvWzoyMNhlMZdhhJo1CZHlWvVoLITY7UaK1OaslQjRIsI7w-OVUYh2AAAAA",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260120.1 (.NET 9.0.11; Microsoft Windows 10.0.26200)",
-        "x-ms-client-request-id": "Sanitized"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "vienna-swedencentral-01",
-        "Content-Length": "16676",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 21 Jan 2026 01:56:23 GMT",
-        "mise-correlation-id": "c8058674-3585-4749-9ffe-b97f2338d24e",
-        "Request-Context": "appId=",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Vary": "Accept-Encoding",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-region": "Sweden Central",
-        "x-ms-response-type": "standard",
-        "x-request-time": "0.162"
-      },
-      "ResponseBody": {
-        "value": [
+          },
           {
             "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/6",
             "name": "CustomTestEvaluator",
