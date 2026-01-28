@@ -1,0 +1,561 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/agents/teacher-agent/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "363",
+        "Content-Type": "application/json",
+        "traceparent": "00-445d46887aa49e8d969a4f0f434d038b-636b4fd9b75d5855-01",
+        "User-Agent": "azsdk-python-ai-projects/2.0.0b4 Python/3.14.2 (Windows-11-10.0.26200-SP0)"
+      },
+      "RequestBody": {
+        "definition": {
+          "model": "gpt-4o",
+          "instructions": "You are a teacher that creates pre-school math questions for students and checks answers. \n                                    If the answer is correct, you stop the conversation by saying [COMPLETE]. \n                                    If the answer is wrong, you ask student to fix it.",
+          "kind": "prompt"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "bd4b8dcc-9e87-45b8-92a6-a8846b3bae5c",
+        "azureml-served-by-cluster": "hyena-eastus2-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 28 Jan 2026 19:58:47 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "445d46887aa49e8d969a4f0f434d038b"
+      },
+      "ResponseBody": {
+        "metadata": {},
+        "object": "agent.version",
+        "id": "teacher-agent:1",
+        "name": "teacher-agent",
+        "version": "1",
+        "description": "",
+        "created_at": 1769630328,
+        "definition": {
+          "kind": "prompt",
+          "model": "gpt-4o",
+          "instructions": "You are a teacher that creates pre-school math questions for students and checks answers. \n                                    If the answer is correct, you stop the conversation by saying [COMPLETE]. \n                                    If the answer is wrong, you ask student to fix it."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/agents/student-agent/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "222",
+        "Content-Type": "application/json",
+        "traceparent": "00-9d77aa1d61e584ad8e71e41463c70a43-c0ba4d3673a01555-01",
+        "User-Agent": "azsdk-python-ai-projects/2.0.0b4 Python/3.14.2 (Windows-11-10.0.26200-SP0)"
+      },
+      "RequestBody": {
+        "definition": {
+          "model": "gpt-4o",
+          "instructions": "You are a student who answers questions from the teacher. \n                                    When the teacher gives you a question, you answer it.",
+          "kind": "prompt"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "f79c5915-7ddd-4e53-986e-90f92d49c49c",
+        "azureml-served-by-cluster": "hyena-eastus2-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 28 Jan 2026 19:58:47 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "9d77aa1d61e584ad8e71e41463c70a43"
+      },
+      "ResponseBody": {
+        "metadata": {},
+        "object": "agent.version",
+        "id": "student-agent:1",
+        "name": "student-agent",
+        "version": "1",
+        "description": "",
+        "created_at": 1769630328,
+        "definition": {
+          "kind": "prompt",
+          "model": "gpt-4o",
+          "instructions": "You are a student who answers questions from the teacher. \n                                    When the teacher gives you a question, you answer it."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/agents/student-teacher-workflow/versions?api-version=2025-11-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "1938",
+        "Content-Type": "application/json",
+        "traceparent": "00-355f486ef0834a9d57f576764d9a94e5-6d38d24f3a8109e1-01",
+        "User-Agent": "azsdk-python-ai-projects/2.0.0b4 Python/3.14.2 (Windows-11-10.0.26200-SP0)"
+      },
+      "RequestBody": {
+        "definition": {
+          "workflow": "\nkind: workflow\ntrigger:\n  kind: OnConversationStart\n  id: my_workflow\n  actions:\n    - kind: SetVariable\n      id: set_variable_input_task\n      variable: Local.LatestMessage\n      value: \"=UserMessage(System.LastMessageText)\"\n\n    - kind: CreateConversation\n      id: create_student_conversation\n      conversationId: Local.StudentConversationId\n\n    - kind: CreateConversation\n      id: create_teacher_conversation\n      conversationId: Local.TeacherConversationId\n\n    - kind: InvokeAzureAgent\n      id: student_agent\n      description: The student node\n      conversationId: \"=Local.StudentConversationId\"\n      agent:\n        name: student-agent\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: InvokeAzureAgent\n      id: teacher_agent\n      description: The teacher node\n      conversationId: \"=Local.TeacherConversationId\"\n      agent:\n        name: teacher-agent\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: SetVariable\n      id: set_variable_turncount\n      variable: Local.TurnCount\n      value: \"=Local.TurnCount + 1\"\n\n    - kind: ConditionGroup\n      id: completion_check\n      conditions:\n        - condition: '=!IsBlank(Find(\"[COMPLETE]\", Upper(Last(Local.LatestMessage).Text)))'\n          id: check_done\n          actions:\n            - kind: EndConversation\n              id: end_workflow\n\n        - condition: \"=Local.TurnCount >= 4\"\n          id: check_turn_count_exceeded\n          actions:\n            - kind: SendActivity\n              id: send_activity_tired\n              activity: \"Let's try again later...I am tired.\"\n\n      elseActions:\n        - kind: GotoAction\n          id: goto_student_agent\n          actionId: student_agent\n",
+          "kind": "workflow"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "eab4406b-0d60-4d91-9795-de49a9a17fec",
+        "azureml-served-by-cluster": "hyena-eastus2-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 28 Jan 2026 19:58:47 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "355f486ef0834a9d57f576764d9a94e5"
+      },
+      "ResponseBody": {
+        "metadata": {},
+        "object": "agent.version",
+        "id": "student-teacher-workflow:1",
+        "name": "student-teacher-workflow",
+        "version": "1",
+        "description": "",
+        "created_at": 1769630328,
+        "definition": {
+          "kind": "workflow",
+          "workflow": "\nkind: workflow\ntrigger:\n  kind: OnConversationStart\n  id: my_workflow\n  actions:\n    - kind: SetVariable\n      id: set_variable_input_task\n      variable: Local.LatestMessage\n      value: \"=UserMessage(System.LastMessageText)\"\n\n    - kind: CreateConversation\n      id: create_student_conversation\n      conversationId: Local.StudentConversationId\n\n    - kind: CreateConversation\n      id: create_teacher_conversation\n      conversationId: Local.TeacherConversationId\n\n    - kind: InvokeAzureAgent\n      id: student_agent\n      description: The student node\n      conversationId: \"=Local.StudentConversationId\"\n      agent:\n        name: student-agent\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: InvokeAzureAgent\n      id: teacher_agent\n      description: The teacher node\n      conversationId: \"=Local.TeacherConversationId\"\n      agent:\n        name: teacher-agent\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: SetVariable\n      id: set_variable_turncount\n      variable: Local.TurnCount\n      value: \"=Local.TurnCount + 1\"\n\n    - kind: ConditionGroup\n      id: completion_check\n      conditions:\n        - condition: '=!IsBlank(Find(\"[COMPLETE]\", Upper(Last(Local.LatestMessage).Text)))'\n          id: check_done\n          actions:\n            - kind: EndConversation\n              id: end_workflow\n\n        - condition: \"=Local.TurnCount >= 4\"\n          id: check_turn_count_exceeded\n          actions:\n            - kind: SendActivity\n              id: send_activity_tired\n              activity: \"Let's try again later...I am tired.\"\n\n      elseActions:\n        - kind: GotoAction\n          id: goto_student_agent\n          actionId: student_agent\n"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/conversations?api-version=2025-11-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "Content-Length": "2",
+        "Content-Type": "application/json",
+        "User-Agent": "AIProjectClient AsyncOpenAI/Python 2.12.0"
+      },
+      "RequestBody": {},
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "62bb69ae-d2e1-4526-bfdb-8b30aa5f263d",
+        "azureml-served-by-cluster": "hyena-eastus2-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 28 Jan 2026 19:58:49 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "86f7f857f1bf35f164d0c7f4057fbe65"
+      },
+      "ResponseBody": {
+        "id": "conv_ba0eb79b5c496483001BaVZXCFm4c6hq0fU2wPBCRxd2ISHV9E",
+        "object": "conversation",
+        "created_at": 1769630329,
+        "metadata": {}
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/responses?api-version=2025-11-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "Content-Length": "220",
+        "Content-Type": "application/json",
+        "User-Agent": "AIProjectClient AsyncOpenAI/Python 2.12.0"
+      },
+      "RequestBody": {
+        "conversation": "conv_ba0eb79b5c496483001BaVZXCFm4c6hq0fU2wPBCRxd2ISHV9E",
+        "input": "1 + 1 = ?",
+        "metadata": {
+          "x-ms-debug-mode-enabled": "1"
+        },
+        "stream": true,
+        "agent": {
+          "name": "student-teacher-workflow",
+          "type": "agent_reference"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "a5a53cbe-20aa-43af-bf49-b44555a139e4",
+        "azureml-served-by-cluster": "hyena-eastus2-01,hyena-eastus2-02",
+        "Cache-Control": "no-cache",
+        "Content-Type": "text/event-stream; charset=utf-8",
+        "Date": "Wed, 28 Jan 2026 19:58:49 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "f3d388edebf72eb4c9060f5282c3164a"
+      },
+      "ResponseBody": [
+        "event: response.created\n",
+        "data: {\"type\":\"response.created\",\"sequence_number\":1,\"response\":{\"metadata\":{\"x-ms-debug-mode-enabled\":\"1\"},\"temperature\":null,\"top_p\":null,\"user\":null,\"service_tier\":\"auto\",\"model\":\"\",\"background\":false,\"tools\":[],\"tool_choice\":\"auto\",\"truncation\":\"auto\",\"id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\",\"object\":\"response\",\"status\":\"in_progress\",\"created_at\":1769630330,\"error\":null,\"incomplete_details\":null,\"output\":[],\"instructions\":\"\",\"parallel_tool_calls\":true,\"conversation\":{\"id\":\"conv_ba0eb79b5c496483001BaVZXCFm4c6hq0fU2wPBCRxd2ISHV9E\"},\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"structured_inputs\":{}}}\n\n",
+        "event: response.in_progress\n",
+        "data: {\"type\":\"response.in_progress\",\"sequence_number\":2,\"response\":{\"metadata\":{\"x-ms-debug-mode-enabled\":\"1\"},\"temperature\":null,\"top_p\":null,\"user\":null,\"service_tier\":\"auto\",\"model\":\"\",\"background\":false,\"tools\":[],\"tool_choice\":\"auto\",\"truncation\":\"auto\",\"id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\",\"object\":\"response\",\"status\":\"in_progress\",\"created_at\":1769630330,\"error\":null,\"incomplete_details\":null,\"output\":[],\"instructions\":\"\",\"parallel_tool_calls\":true,\"conversation\":{\"id\":\"conv_ba0eb79b5c496483001BaVZXCFm4c6hq0fU2wPBCRxd2ISHV9E\"},\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"structured_inputs\":{}}}\n\n",
+        "event: response.output_item.added\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":3,\"output_index\":0,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300NmRY3D9b6YBbetAZHmaRSDRa4yPZsFJE\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"SetVariable\",\"action_id\":\"set_variable_input_task\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"my_workflow\",\"status\":\"in_progress\"}}\n\n",
+        "event: response.output_item.done\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":4,\"output_index\":0,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300NmRY3D9b6YBbetAZHmaRSDRa4yPZsFJE\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"SetVariable\",\"action_id\":\"set_variable_input_task\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"my_workflow\",\"status\":\"completed\"}}\n\n",
+        "event: response.output_item.added\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":5,\"output_index\":1,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300jKxg8L5r4x3rD0ojoQhXnBvbtVmhhcV1\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"CreateConversation\",\"action_id\":\"create_student_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"set_variable_input_task\",\"status\":\"in_progress\"}}\n\n",
+        "event: response.output_item.done\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":6,\"output_index\":1,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300jKxg8L5r4x3rD0ojoQhXnBvbtVmhhcV1\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"CreateConversation\",\"action_id\":\"create_student_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"set_variable_input_task\",\"status\":\"completed\"}}\n\n",
+        "event: response.output_item.added\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":7,\"output_index\":2,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c496483003tGWOd33EHObruQl0NhcMjPvvOGz3liN\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"CreateConversation\",\"action_id\":\"create_teacher_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_student_conversation\",\"status\":\"in_progress\"}}\n\n",
+        "event: response.output_item.done\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":8,\"output_index\":2,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c496483003tGWOd33EHObruQl0NhcMjPvvOGz3liN\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"CreateConversation\",\"action_id\":\"create_teacher_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_student_conversation\",\"status\":\"completed\"}}\n\n",
+        "event: response.output_item.added\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":9,\"output_index\":3,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c496483000AhCYdM2danWvDUyJK7ZBIb53r3J7ZDe\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"InvokeAzureAgent\",\"action_id\":\"student_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_teacher_conversation\",\"status\":\"in_progress\"}}\n\n",
+        "event: response.output_item.done\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":10,\"output_index\":3,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c496483000AhCYdM2danWvDUyJK7ZBIb53r3J7ZDe\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"InvokeAzureAgent\",\"action_id\":\"student_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_teacher_conversation\",\"status\":\"completed\"}}\n\n",
+        "event: response.output_item.added\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":11,\"output_index\":4,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300KQFxUsWm4NdSr1U91rhSqY6tS72lt4qV\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"InvokeAzureAgent\",\"action_id\":\"teacher_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"student_agent_Post\",\"status\":\"in_progress\"}}\n\n",
+        "event: response.output_item.done\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":12,\"output_index\":4,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300KQFxUsWm4NdSr1U91rhSqY6tS72lt4qV\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"InvokeAzureAgent\",\"action_id\":\"teacher_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"student_agent_Post\",\"status\":\"completed\"}}\n\n",
+        "event: response.output_item.added\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":13,\"output_index\":5,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300vhVfpcReLanpAwZuOvbfPKTzHYjBdXOc\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"SetVariable\",\"action_id\":\"set_variable_turncount\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"teacher_agent_Post\",\"status\":\"in_progress\"}}\n\n",
+        "event: response.output_item.done\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":14,\"output_index\":5,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300vhVfpcReLanpAwZuOvbfPKTzHYjBdXOc\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"SetVariable\",\"action_id\":\"set_variable_turncount\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"teacher_agent_Post\",\"status\":\"completed\"}}\n\n",
+        "event: response.output_item.added\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":15,\"output_index\":6,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300wfr3Q6Tyog4wAQ01ynB0YMxwTxz2dXV7\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"EndConversation\",\"action_id\":\"end_workflow\",\"parent_action_id\":\"check_doneActions\",\"previous_action_id\":\"check_doneActions\",\"status\":\"in_progress\"}}\n\n",
+        "event: response.output_item.done\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":16,\"output_index\":6,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300wfr3Q6Tyog4wAQ01ynB0YMxwTxz2dXV7\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"EndConversation\",\"action_id\":\"end_workflow\",\"parent_action_id\":\"check_doneActions\",\"previous_action_id\":\"check_doneActions\",\"status\":\"completed\"}}\n\n",
+        "event: response.completed\n",
+        "data: {\"type\":\"response.completed\",\"sequence_number\":17,\"response\":{\"metadata\":{\"x-ms-debug-mode-enabled\":\"1\"},\"temperature\":null,\"top_p\":null,\"user\":null,\"service_tier\":\"auto\",\"model\":\"\",\"background\":false,\"tools\":[],\"tool_choice\":\"auto\",\"truncation\":\"auto\",\"id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\",\"object\":\"response\",\"status\":\"completed\",\"created_at\":1769630330,\"error\":null,\"incomplete_details\":null,\"output\":[{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300NmRY3D9b6YBbetAZHmaRSDRa4yPZsFJE\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"SetVariable\",\"action_id\":\"set_variable_input_task\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"my_workflow\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300jKxg8L5r4x3rD0ojoQhXnBvbtVmhhcV1\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"CreateConversation\",\"action_id\":\"create_student_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"set_variable_input_task\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c496483003tGWOd33EHObruQl0NhcMjPvvOGz3liN\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"CreateConversation\",\"action_id\":\"create_teacher_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_student_conversation\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c496483000AhCYdM2danWvDUyJK7ZBIb53r3J7ZDe\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"InvokeAzureAgent\",\"action_id\":\"student_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_teacher_conversation\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300KQFxUsWm4NdSr1U91rhSqY6tS72lt4qV\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"InvokeAzureAgent\",\"action_id\":\"teacher_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"student_agent_Post\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300vhVfpcReLanpAwZuOvbfPKTzHYjBdXOc\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"SetVariable\",\"action_id\":\"set_variable_turncount\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"teacher_agent_Post\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_ba0eb79b5c49648300wfr3Q6Tyog4wAQ01ynB0YMxwTxz2dXV7\",\"created_by\":{\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO\"},\"kind\":\"EndConversation\",\"action_id\":\"end_workflow\",\"parent_action_id\":\"check_doneActions\",\"previous_action_id\":\"check_doneActions\",\"status\":\"completed\"}],\"instructions\":\"\",\"output_text\":\"\",\"usage\":{\"input_tokens\":0,\"input_tokens_details\":{\"cached_tokens\":0},\"output_tokens\":0,\"output_tokens_details\":{\"reasoning_tokens\":0},\"total_tokens\":0},\"parallel_tool_calls\":true,\"conversation\":{\"id\":\"conv_ba0eb79b5c496483001BaVZXCFm4c6hq0fU2wPBCRxd2ISHV9E\"},\"agent\":{\"type\":\"agent_id\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"structured_inputs\":{}}}\n\n"
+      ]
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/conversations/conv_ba0eb79b5c496483001BaVZXCFm4c6hq0fU2wPBCRxd2ISHV9E/items?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient AsyncOpenAI/Python 2.12.0"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "9a235f03-6ad9-4595-8e35-1aa7d4bb547a",
+        "azureml-served-by-cluster": "hyena-eastus2-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 28 Jan 2026 19:58:53 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "d9eb8e1d89c37291f134f24bcf23161a"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "type": "workflow_action",
+            "id": "wfa_ba0eb79b5c49648300wfr3Q6Tyog4wAQ01ynB0YMxwTxz2dXV7",
+            "created_by": {
+              "agent": {
+                "type": "agent_id",
+                "name": "student-teacher-workflow",
+                "version": "1"
+              },
+              "response_id": "wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO"
+            },
+            "kind": "EndConversation",
+            "action_id": "end_workflow",
+            "parent_action_id": "check_doneActions",
+            "previous_action_id": "check_doneActions",
+            "status": "completed"
+          },
+          {
+            "type": "workflow_action",
+            "id": "wfa_ba0eb79b5c49648300vhVfpcReLanpAwZuOvbfPKTzHYjBdXOc",
+            "created_by": {
+              "agent": {
+                "type": "agent_id",
+                "name": "student-teacher-workflow",
+                "version": "1"
+              },
+              "response_id": "wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO"
+            },
+            "kind": "SetVariable",
+            "action_id": "set_variable_turncount",
+            "parent_action_id": "my_workflow",
+            "previous_action_id": "teacher_agent_Post",
+            "status": "completed"
+          },
+          {
+            "type": "workflow_action",
+            "id": "wfa_ba0eb79b5c49648300KQFxUsWm4NdSr1U91rhSqY6tS72lt4qV",
+            "created_by": {
+              "agent": {
+                "type": "agent_id",
+                "name": "student-teacher-workflow",
+                "version": "1"
+              },
+              "response_id": "wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO"
+            },
+            "kind": "InvokeAzureAgent",
+            "action_id": "teacher_agent",
+            "parent_action_id": "my_workflow",
+            "previous_action_id": "student_agent_Post",
+            "status": "completed"
+          },
+          {
+            "type": "workflow_action",
+            "id": "wfa_ba0eb79b5c496483000AhCYdM2danWvDUyJK7ZBIb53r3J7ZDe",
+            "created_by": {
+              "agent": {
+                "type": "agent_id",
+                "name": "student-teacher-workflow",
+                "version": "1"
+              },
+              "response_id": "wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO"
+            },
+            "kind": "InvokeAzureAgent",
+            "action_id": "student_agent",
+            "parent_action_id": "my_workflow",
+            "previous_action_id": "create_teacher_conversation",
+            "status": "completed"
+          },
+          {
+            "type": "workflow_action",
+            "id": "wfa_ba0eb79b5c496483003tGWOd33EHObruQl0NhcMjPvvOGz3liN",
+            "created_by": {
+              "agent": {
+                "type": "agent_id",
+                "name": "student-teacher-workflow",
+                "version": "1"
+              },
+              "response_id": "wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO"
+            },
+            "kind": "CreateConversation",
+            "action_id": "create_teacher_conversation",
+            "parent_action_id": "my_workflow",
+            "previous_action_id": "create_student_conversation",
+            "status": "completed"
+          },
+          {
+            "type": "workflow_action",
+            "id": "wfa_ba0eb79b5c49648300jKxg8L5r4x3rD0ojoQhXnBvbtVmhhcV1",
+            "created_by": {
+              "agent": {
+                "type": "agent_id",
+                "name": "student-teacher-workflow",
+                "version": "1"
+              },
+              "response_id": "wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO"
+            },
+            "kind": "CreateConversation",
+            "action_id": "create_student_conversation",
+            "parent_action_id": "my_workflow",
+            "previous_action_id": "set_variable_input_task",
+            "status": "completed"
+          },
+          {
+            "type": "workflow_action",
+            "id": "wfa_ba0eb79b5c49648300NmRY3D9b6YBbetAZHmaRSDRa4yPZsFJE",
+            "created_by": {
+              "agent": {
+                "type": "agent_id",
+                "name": "student-teacher-workflow",
+                "version": "1"
+              },
+              "response_id": "wfresp_ba0eb79b5c49648300tBhg0H2XTnC9VwebXcmC3rJ4GAVUs6UO"
+            },
+            "kind": "SetVariable",
+            "action_id": "set_variable_input_task",
+            "parent_action_id": "my_workflow",
+            "previous_action_id": "my_workflow",
+            "status": "completed"
+          },
+          {
+            "type": "message",
+            "id": "msg_ba0eb79b5c49648300Z45kQHToFmhx9Xoqv8AxhQNKYAcZD9EL",
+            "status": "completed",
+            "role": "user",
+            "content": [
+              {
+                "type": "input_text",
+                "text": "1 + 1 = ?"
+              }
+            ]
+          }
+        ],
+        "first_id": "wfa_ba0eb79b5c49648300wfr3Q6Tyog4wAQ01ynB0YMxwTxz2dXV7",
+        "last_id": "msg_ba0eb79b5c49648300Z45kQHToFmhx9Xoqv8AxhQNKYAcZD9EL",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/conversations/conv_ba0eb79b5c496483001BaVZXCFm4c6hq0fU2wPBCRxd2ISHV9E?api-version=2025-11-15-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json",
+        "User-Agent": "AIProjectClient AsyncOpenAI/Python 2.12.0"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "2546e6b2-e9e2-4b2c-92fa-6af593e3e760",
+        "azureml-served-by-cluster": "hyena-eastus2-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 28 Jan 2026 19:58:53 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "dee4c3024a3ef0c49341b65237a886f2"
+      },
+      "ResponseBody": {
+        "object": "conversation.deleted",
+        "deleted": true,
+        "id": "conv_ba0eb79b5c496483001BaVZXCFm4c6hq0fU2wPBCRxd2ISHV9E"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/agents/student-teacher-workflow/versions/1?api-version=2025-11-15-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "traceparent": "00-818556610740a3c7168960e1bd06a204-8cebf9b1e4f5bfed-01",
+        "User-Agent": "azsdk-python-ai-projects/2.0.0b4 Python/3.14.2 (Windows-11-10.0.26200-SP0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "da3fdd2a-7c46-4227-8d23-eeb92aba99be",
+        "azureml-served-by-cluster": "hyena-eastus2-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 28 Jan 2026 19:58:53 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "818556610740a3c7168960e1bd06a204"
+      },
+      "ResponseBody": {
+        "object": "agent.version.deleted",
+        "name": "student-teacher-workflow",
+        "version": "1",
+        "deleted": true
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/agents/student-agent/versions/1?api-version=2025-11-15-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "traceparent": "00-5cac4a8f7a20e3e6b1b3044d42a90ef9-69964e0966a8abba-01",
+        "User-Agent": "azsdk-python-ai-projects/2.0.0b4 Python/3.14.2 (Windows-11-10.0.26200-SP0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "422e03f5-ec9a-4b8c-b9f3-56db875ab361",
+        "azureml-served-by-cluster": "hyena-eastus2-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 28 Jan 2026 19:58:53 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "5cac4a8f7a20e3e6b1b3044d42a90ef9"
+      },
+      "ResponseBody": {
+        "object": "agent.version.deleted",
+        "name": "student-agent",
+        "version": "1",
+        "deleted": true
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/agents/teacher-agent/versions/1?api-version=2025-11-15-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "traceparent": "00-178a89b17a076a865a61c1f2880b5a19-8ab92ede9b3e1b94-01",
+        "User-Agent": "azsdk-python-ai-projects/2.0.0b4 Python/3.14.2 (Windows-11-10.0.26200-SP0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "46963297-bfd7-4795-b5e3-80c32a02ccb0",
+        "azureml-served-by-cluster": "hyena-eastus2-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 28 Jan 2026 19:58:53 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "178a89b17a076a865a61c1f2880b5a19"
+      },
+      "ResponseBody": {
+        "object": "agent.version.deleted",
+        "name": "teacher-agent",
+        "version": "1",
+        "deleted": true
+      }
+    }
+  ],
+  "Variables": {}
+}
