@@ -1,0 +1,2354 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals?api-version=2025-11-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "Content-Length": "3622",
+        "Content-Type": "application/json",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": {
+        "data_source_config": {
+          "type": "custom",
+          "item_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string"
+              },
+              "response": {
+                "type": "string"
+              },
+              "context": {
+                "type": "string"
+              },
+              "ground_truth": {
+                "type": "string"
+              }
+            },
+            "required": []
+          },
+          "include_sample_schema": true
+        },
+        "testing_criteria": [
+          {
+            "type": "label_model",
+            "model": "gpt-4o",
+            "input": [
+              {
+                "role": "developer",
+                "content": "Classify the sentiment of the following statement as one of 'positive', 'neutral', or 'negative'"
+              },
+              {
+                "role": "user",
+                "content": "Statement: {{item.query}}"
+              }
+            ],
+            "passing_labels": [
+              "positive",
+              "neutral"
+            ],
+            "labels": [
+              "positive",
+              "neutral",
+              "negative"
+            ],
+            "name": "label_grader"
+          },
+          {
+            "type": "text_similarity",
+            "input": "{{item.ground_truth}}",
+            "evaluation_metric": "bleu",
+            "reference": "{{item.response}}",
+            "pass_threshold": 1,
+            "name": "text_check_grader"
+          },
+          {
+            "type": "string_check",
+            "input": "{{item.ground_truth}}",
+            "reference": "{{item.ground_truth}}",
+            "operation": "eq",
+            "name": "string_check_grader"
+          },
+          {
+            "type": "score_model",
+            "name": "score",
+            "model": "gpt-4o",
+            "input": [
+              {
+                "role": "system",
+                "content": "Evaluate the degree of similarity between the given output and the ground truth on a scale from 1 to 5, using a chain of thought to ensure step-by-step reasoning before reaching the conclusion.\n\nConsider the following criteria:\n\n- 5: Highly similar - The output and ground truth are nearly identical, with only minor, insignificant differences.\n- 4: Somewhat similar - The output is largely similar to the ground truth but has few noticeable differences.\n- 3: Moderately similar - There are some evident differences, but the core essence is captured in the output.\n- 2: Slightly similar - The output only captures a few elements of the ground truth and contains several differences.\n- 1: Not similar - The output is significantly different from the ground truth, with few or no matching elements.\n\n# Steps\n\n1. Identify and list the key elements present in both the output and the ground truth.\n2. Compare these key elements to evaluate their similarities and differences, considering both content and structure.\n3. Analyze the semantic meaning conveyed by both the output and the ground truth, noting any significant deviations.\n4. Based on these comparisons, categorize the level of similarity according to the defined criteria above.\n5. Write out the reasoning for why a particular score is chosen, to ensure transparency and correctness.\n6. Assign a similarity score based on the defined criteria above.\n\n# Output Format\n\nProvide the final similarity score as an integer (1, 2, 3, 4, or 5).\n\n# Examples\n\n**Example 1:**\n\n- Output: \"The cat sat on the mat.\"\n- Ground Truth: \"The feline is sitting on the rug.\"\n- Reasoning: Both sentences describe a cat sitting on a surface, but they use different wording. The structure is slightly different, but the core meaning is preserved. There are noticeable differences, but the overall meaning is conveyed well.\n- Similarity Score: 3\n\n**Example 2:**\n\n- Output: \"The quick brown fox jumps over the lazy dog.\"\n- Ground Truth: \"A fast brown animal leaps over a sleeping canine.\"\n- Reasoning: The meaning of both sentences is very similar, with only minor differences in wording. The structure and intent are well preserved.\n- Similarity Score: 4\n\n# Notes\n\n- Always aim to provide a fair and balanced assessment.\n- Consider both syntactic and semantic differences in your evaluation.\n- Consistency in scoring similar pairs is crucial for accurate measurement."
+              },
+              {
+                "role": "user",
+                "content": "Output: {{item.response}}}}\nGround Truth: {{item.ground_truth}}"
+              }
+            ],
+            "image_tag": "2025-05-08",
+            "pass_threshold": 0.5
+          }
+        ],
+        "name": "OpenAI graders test"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "apim-request-id": "43a7d85c-c685-457f-a4fc-3e2166166960",
+        "azureml-served-by-cluster": "vienna-swedencentral-02",
+        "Content-Length": "5094",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:56:45 GMT",
+        "mise-correlation-id": "32f5c516-2e4c-453e-8716-8069438677a0",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.432"
+      },
+      "ResponseBody": {
+        "object": "eval",
+        "created_at": 1769929006,
+        "modified_at": 1769929006,
+        "created_by": "April Kwong",
+        "id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "name": "OpenAI graders test",
+        "metadata": {},
+        "properties": {
+          "evals_run_type": "azure_ai"
+        },
+        "data_source_config": {
+          "type": "custom",
+          "item_schema": {},
+          "include_sample_schema": true,
+          "schema": {
+            "item": {
+              "type": "object",
+              "properties": {
+                "query": {
+                  "type": "string"
+                },
+                "response": {
+                  "type": "string"
+                },
+                "context": {
+                  "type": "string"
+                },
+                "ground_truth": {
+                  "type": "string"
+                }
+              },
+              "required": []
+            },
+            "sample": {
+              "type": "object",
+              "properties": {
+                "output_text": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "testing_criteria": [
+          {
+            "type": "label_model",
+            "id": "label_grader_f6e6bf46-c245-4ca3-89da-2e73462eddf3",
+            "name": "label_grader",
+            "input": [
+              {
+                "role": "developer",
+                "content": "Classify the sentiment of the following statement as one of 'positive', 'neutral', or 'negative'",
+                "type": "message"
+              },
+              {
+                "role": "user",
+                "content": "Statement: {{item.query}}",
+                "type": "message"
+              }
+            ],
+            "labels": [
+              "positive",
+              "neutral",
+              "negative"
+            ],
+            "model": "gpt-4o",
+            "passing_labels": [
+              "positive",
+              "neutral"
+            ]
+          },
+          {
+            "type": "text_similarity",
+            "id": "text_check_grader_ddced643-e4b3-4360-a3e8-3fcbb5951f49",
+            "name": "text_check_grader",
+            "evaluation_metric": "bleu",
+            "input": "{{item.ground_truth}}",
+            "reference": "{{item.response}}",
+            "pass_threshold": 1.0
+          },
+          {
+            "type": "string_check",
+            "id": "string_check_grader_0f9d33a6-89bc-483f-a0de-3663fcfb9874",
+            "name": "string_check_grader",
+            "input": "{{item.ground_truth}}",
+            "operation": "eq",
+            "reference": "{{item.ground_truth}}"
+          },
+          {
+            "type": "score_model",
+            "id": "score_2192a9ae-3c67-40ec-9392-f39e2cc9fb3e",
+            "name": "score",
+            "input": [
+              {
+                "role": "system",
+                "content": "Evaluate the degree of similarity between the given output and the ground truth on a scale from 1 to 5, using a chain of thought to ensure step-by-step reasoning before reaching the conclusion.\n\nConsider the following criteria:\n\n- 5: Highly similar - The output and ground truth are nearly identical, with only minor, insignificant differences.\n- 4: Somewhat similar - The output is largely similar to the ground truth but has few noticeable differences.\n- 3: Moderately similar - There are some evident differences, but the core essence is captured in the output.\n- 2: Slightly similar - The output only captures a few elements of the ground truth and contains several differences.\n- 1: Not similar - The output is significantly different from the ground truth, with few or no matching elements.\n\n# Steps\n\n1. Identify and list the key elements present in both the output and the ground truth.\n2. Compare these key elements to evaluate their similarities and differences, considering both content and structure.\n3. Analyze the semantic meaning conveyed by both the output and the ground truth, noting any significant deviations.\n4. Based on these comparisons, categorize the level of similarity according to the defined criteria above.\n5. Write out the reasoning for why a particular score is chosen, to ensure transparency and correctness.\n6. Assign a similarity score based on the defined criteria above.\n\n# Output Format\n\nProvide the final similarity score as an integer (1, 2, 3, 4, or 5).\n\n# Examples\n\n**Example 1:**\n\n- Output: \"The cat sat on the mat.\"\n- Ground Truth: \"The feline is sitting on the rug.\"\n- Reasoning: Both sentences describe a cat sitting on a surface, but they use different wording. The structure is slightly different, but the core meaning is preserved. There are noticeable differences, but the overall meaning is conveyed well.\n- Similarity Score: 3\n\n**Example 2:**\n\n- Output: \"The quick brown fox jumps over the lazy dog.\"\n- Ground Truth: \"A fast brown animal leaps over a sleeping canine.\"\n- Reasoning: The meaning of both sentences is very similar, with only minor differences in wording. The structure and intent are well preserved.\n- Similarity Score: 4\n\n# Notes\n\n- Always aim to provide a fair and balanced assessment.\n- Consider both syntactic and semantic differences in your evaluation.\n- Consistency in scoring similar pairs is crucial for accurate measurement.",
+                "type": "message"
+              },
+              {
+                "role": "user",
+                "content": "Output: {{item.response}}}}\nGround Truth: {{item.ground_truth}}",
+                "type": "message"
+              }
+            ],
+            "model": "gpt-4o",
+            "pass_threshold": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "475768ff-9ddc-4952-be7c-a82950182000",
+        "azureml-served-by-cluster": "vienna-swedencentral-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:56:46 GMT",
+        "mise-correlation-id": "65998cdd-e15c-4999-be2f-13f8c8cde8f0",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.244"
+      },
+      "ResponseBody": {
+        "object": "eval",
+        "created_at": 1769929006,
+        "modified_at": 1769929006,
+        "created_by": "April Kwong",
+        "id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "name": "OpenAI graders test",
+        "metadata": {},
+        "properties": {
+          "evals_run_type": "azure_ai"
+        },
+        "data_source_config": {
+          "type": "custom",
+          "item_schema": {},
+          "include_sample_schema": true,
+          "schema": {
+            "item": {
+              "type": "object",
+              "properties": {
+                "query": {
+                  "type": "string"
+                },
+                "response": {
+                  "type": "string"
+                },
+                "context": {
+                  "type": "string"
+                },
+                "ground_truth": {
+                  "type": "string"
+                }
+              },
+              "required": []
+            },
+            "sample": {
+              "type": "object",
+              "properties": {
+                "output_text": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "testing_criteria": [
+          {
+            "type": "label_model",
+            "id": "label_grader_f6e6bf46-c245-4ca3-89da-2e73462eddf3",
+            "name": "label_grader",
+            "input": [
+              {
+                "role": "developer",
+                "content": "Classify the sentiment of the following statement as one of 'positive', 'neutral', or 'negative'",
+                "type": "message"
+              },
+              {
+                "role": "user",
+                "content": "Statement: {{item.query}}",
+                "type": "message"
+              }
+            ],
+            "labels": [
+              "positive",
+              "neutral",
+              "negative"
+            ],
+            "model": "gpt-4o",
+            "passing_labels": [
+              "positive",
+              "neutral"
+            ]
+          },
+          {
+            "type": "text_similarity",
+            "id": "text_check_grader_ddced643-e4b3-4360-a3e8-3fcbb5951f49",
+            "name": "text_check_grader",
+            "evaluation_metric": "bleu",
+            "input": "{{item.ground_truth}}",
+            "reference": "{{item.response}}",
+            "pass_threshold": 1.0
+          },
+          {
+            "type": "string_check",
+            "id": "string_check_grader_0f9d33a6-89bc-483f-a0de-3663fcfb9874",
+            "name": "string_check_grader",
+            "input": "{{item.ground_truth}}",
+            "operation": "eq",
+            "reference": "{{item.ground_truth}}"
+          },
+          {
+            "type": "score_model",
+            "id": "score_2192a9ae-3c67-40ec-9392-f39e2cc9fb3e",
+            "name": "score",
+            "input": [
+              {
+                "role": "system",
+                "content": "Evaluate the degree of similarity between the given output and the ground truth on a scale from 1 to 5, using a chain of thought to ensure step-by-step reasoning before reaching the conclusion.\n\nConsider the following criteria:\n\n- 5: Highly similar - The output and ground truth are nearly identical, with only minor, insignificant differences.\n- 4: Somewhat similar - The output is largely similar to the ground truth but has few noticeable differences.\n- 3: Moderately similar - There are some evident differences, but the core essence is captured in the output.\n- 2: Slightly similar - The output only captures a few elements of the ground truth and contains several differences.\n- 1: Not similar - The output is significantly different from the ground truth, with few or no matching elements.\n\n# Steps\n\n1. Identify and list the key elements present in both the output and the ground truth.\n2. Compare these key elements to evaluate their similarities and differences, considering both content and structure.\n3. Analyze the semantic meaning conveyed by both the output and the ground truth, noting any significant deviations.\n4. Based on these comparisons, categorize the level of similarity according to the defined criteria above.\n5. Write out the reasoning for why a particular score is chosen, to ensure transparency and correctness.\n6. Assign a similarity score based on the defined criteria above.\n\n# Output Format\n\nProvide the final similarity score as an integer (1, 2, 3, 4, or 5).\n\n# Examples\n\n**Example 1:**\n\n- Output: \"The cat sat on the mat.\"\n- Ground Truth: \"The feline is sitting on the rug.\"\n- Reasoning: Both sentences describe a cat sitting on a surface, but they use different wording. The structure is slightly different, but the core meaning is preserved. There are noticeable differences, but the overall meaning is conveyed well.\n- Similarity Score: 3\n\n**Example 2:**\n\n- Output: \"The quick brown fox jumps over the lazy dog.\"\n- Ground Truth: \"A fast brown animal leaps over a sleeping canine.\"\n- Reasoning: The meaning of both sentences is very similar, with only minor differences in wording. The structure and intent are well preserved.\n- Similarity Score: 4\n\n# Notes\n\n- Always aim to provide a fair and balanced assessment.\n- Consider both syntactic and semantic differences in your evaluation.\n- Consistency in scoring similar pairs is crucial for accurate measurement.",
+                "type": "message"
+              },
+              {
+                "role": "user",
+                "content": "Output: {{item.response}}}}\nGround Truth: {{item.ground_truth}}",
+                "type": "message"
+              }
+            ],
+            "model": "gpt-4o",
+            "pass_threshold": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc/runs?api-version=2025-11-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "Content-Length": "1034",
+        "Content-Type": "application/json",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": {
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": [
+              {
+                "item": {
+                  "query": "I love this product! It works great.",
+                  "context": "Product review context",
+                  "ground_truth": "The product is excellent and performs well.",
+                  "response": "The product is amazing and works perfectly."
+                }
+              },
+              {
+                "item": {
+                  "query": "The weather is cloudy today.",
+                  "context": "Weather observation",
+                  "ground_truth": "Today's weather is overcast.",
+                  "response": "The sky is covered with clouds today."
+                }
+              },
+              {
+                "item": {
+                  "query": "What is the capital of France?",
+                  "context": "Geography question about European capitals",
+                  "ground_truth": "Paris",
+                  "response": "The capital of France is Paris."
+                }
+              },
+              {
+                "item": {
+                  "query": "Explain quantum computing",
+                  "context": "Complex scientific concept explanation",
+                  "ground_truth": "Quantum computing uses quantum mechanics principles",
+                  "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+                }
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "team": "eval-exp",
+          "scenario": "graders-inline-v1"
+        },
+        "name": "inline_data_graders_run"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "apim-request-id": "eaa19a7a-5b78-4025-81bd-49110e2c70a6",
+        "azureml-served-by-cluster": "vienna-swedencentral-02",
+        "Content-Length": "2140",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:56:52 GMT",
+        "mise-correlation-id": "09c1c354-45ad-4260-a9ff-8117b0b2c7cd",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "5.607"
+      },
+      "ResponseBody": {
+        "object": "eval.run",
+        "created_at": 1769929012,
+        "modified_at": 1769929012,
+        "created_by": null,
+        "id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+        "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "status": "in_progress",
+        "model": null,
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": [
+              {
+                "item": {
+                  "query": "I love this product! It works great.",
+                  "context": "Product review context",
+                  "ground_truth": "The product is excellent and performs well.",
+                  "response": "The product is amazing and works perfectly."
+                }
+              },
+              {
+                "item": {
+                  "query": "The weather is cloudy today.",
+                  "context": "Weather observation",
+                  "ground_truth": "Today's weather is overcast.",
+                  "response": "The sky is covered with clouds today."
+                }
+              },
+              {
+                "item": {
+                  "query": "What is the capital of France?",
+                  "context": "Geography question about European capitals",
+                  "ground_truth": "Paris",
+                  "response": "The capital of France is Paris."
+                }
+              },
+              {
+                "item": {
+                  "query": "Explain quantum computing",
+                  "context": "Complex scientific concept explanation",
+                  "ground_truth": "Quantum computing uses quantum mechanics principles",
+                  "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+                }
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "team": "eval-exp",
+          "scenario": "graders-inline-v1"
+        },
+        "properties": {
+          "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+          "NetworkType": "Public"
+        },
+        "name": "inline_data_graders_run",
+        "report_url": null,
+        "result_counts": {
+          "total": 0,
+          "passed": 0,
+          "failed": 0,
+          "errored": 0
+        },
+        "per_model_usage": [],
+        "per_testing_criteria_results": [],
+        "error": {
+          "code": null,
+          "message": null,
+          "correlation_id": null,
+          "inner_error": null
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc/runs/evalrun_2e939ff3c0954856841ccb46c2ca3ef2?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "9f1cb007-4979-41d9-8dde-aa25a5dc2e75",
+        "azureml-served-by-cluster": "vienna-swedencentral-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:56:52 GMT",
+        "mise-correlation-id": "70e62de3-224c-4727-823d-d354b6742905",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.395"
+      },
+      "ResponseBody": {
+        "object": "eval.run",
+        "created_at": 1769929012,
+        "modified_at": 1769929012,
+        "created_by": "April Kwong",
+        "id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+        "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "status": "in_progress",
+        "model": null,
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": [
+              {
+                "query": "I love this product! It works great.",
+                "context": "Product review context",
+                "ground_truth": "The product is excellent and performs well.",
+                "response": "The product is amazing and works perfectly."
+              },
+              {
+                "query": "The weather is cloudy today.",
+                "context": "Weather observation",
+                "ground_truth": "Today's weather is overcast.",
+                "response": "The sky is covered with clouds today."
+              },
+              {
+                "query": "What is the capital of France?",
+                "context": "Geography question about European capitals",
+                "ground_truth": "Paris",
+                "response": "The capital of France is Paris."
+              },
+              {
+                "query": "Explain quantum computing",
+                "context": "Complex scientific concept explanation",
+                "ground_truth": "Quantum computing uses quantum mechanics principles",
+                "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "team": "eval-exp",
+          "scenario": "graders-inline-v1",
+          "trigger_type": "oneoff"
+        },
+        "properties": {
+          "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+          "NetworkType": "Public",
+          "runType": "eval_run",
+          "_azureml.evaluation_run": "evaluation.service",
+          "_azureml.evaluate_artifacts": "[{\"path\": \"instance_results.jsonl\", \"type\": \"table\"}]"
+        },
+        "name": "inline_data_graders_run",
+        "report_url": null,
+        "result_counts": {
+          "total": 0,
+          "passed": 0,
+          "failed": 0,
+          "errored": 0
+        },
+        "per_model_usage": [],
+        "per_testing_criteria_results": [],
+        "error": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc/runs/evalrun_2e939ff3c0954856841ccb46c2ca3ef2?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "b8ce5ed6-de2e-4716-809e-9c4574054c27",
+        "azureml-served-by-cluster": "vienna-swedencentral-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:56:53 GMT",
+        "mise-correlation-id": "ae9f8191-3d13-4a95-9891-c27832c29239",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.303"
+      },
+      "ResponseBody": {
+        "object": "eval.run",
+        "created_at": 1769929012,
+        "modified_at": 1769929012,
+        "created_by": "April Kwong",
+        "id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+        "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "status": "in_progress",
+        "model": null,
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": [
+              {
+                "query": "I love this product! It works great.",
+                "context": "Product review context",
+                "ground_truth": "The product is excellent and performs well.",
+                "response": "The product is amazing and works perfectly."
+              },
+              {
+                "query": "The weather is cloudy today.",
+                "context": "Weather observation",
+                "ground_truth": "Today's weather is overcast.",
+                "response": "The sky is covered with clouds today."
+              },
+              {
+                "query": "What is the capital of France?",
+                "context": "Geography question about European capitals",
+                "ground_truth": "Paris",
+                "response": "The capital of France is Paris."
+              },
+              {
+                "query": "Explain quantum computing",
+                "context": "Complex scientific concept explanation",
+                "ground_truth": "Quantum computing uses quantum mechanics principles",
+                "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "team": "eval-exp",
+          "scenario": "graders-inline-v1",
+          "trigger_type": "oneoff"
+        },
+        "properties": {
+          "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+          "NetworkType": "Public",
+          "runType": "eval_run",
+          "_azureml.evaluation_run": "evaluation.service",
+          "_azureml.evaluate_artifacts": "[{\"path\": \"instance_results.jsonl\", \"type\": \"table\"}]"
+        },
+        "name": "inline_data_graders_run",
+        "report_url": null,
+        "result_counts": {
+          "total": 0,
+          "passed": 0,
+          "failed": 0,
+          "errored": 0
+        },
+        "per_model_usage": [],
+        "per_testing_criteria_results": [],
+        "error": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc/runs/evalrun_2e939ff3c0954856841ccb46c2ca3ef2?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "22d77e6d-1a97-48f6-8615-0c0332f39f90",
+        "azureml-served-by-cluster": "vienna-swedencentral-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:56:59 GMT",
+        "mise-correlation-id": "746430d2-4f5a-4527-af06-48f989430526",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.655"
+      },
+      "ResponseBody": {
+        "object": "eval.run",
+        "created_at": 1769929012,
+        "modified_at": 1769929012,
+        "created_by": "April Kwong",
+        "id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+        "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "status": "in_progress",
+        "model": null,
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": [
+              {
+                "query": "I love this product! It works great.",
+                "context": "Product review context",
+                "ground_truth": "The product is excellent and performs well.",
+                "response": "The product is amazing and works perfectly."
+              },
+              {
+                "query": "The weather is cloudy today.",
+                "context": "Weather observation",
+                "ground_truth": "Today's weather is overcast.",
+                "response": "The sky is covered with clouds today."
+              },
+              {
+                "query": "What is the capital of France?",
+                "context": "Geography question about European capitals",
+                "ground_truth": "Paris",
+                "response": "The capital of France is Paris."
+              },
+              {
+                "query": "Explain quantum computing",
+                "context": "Complex scientific concept explanation",
+                "ground_truth": "Quantum computing uses quantum mechanics principles",
+                "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "team": "eval-exp",
+          "scenario": "graders-inline-v1",
+          "trigger_type": "oneoff"
+        },
+        "properties": {
+          "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+          "NetworkType": "Public",
+          "runType": "eval_run",
+          "_azureml.evaluation_run": "evaluation.service",
+          "_azureml.evaluate_artifacts": "[{\"path\": \"instance_results.jsonl\", \"type\": \"table\"}]"
+        },
+        "name": "inline_data_graders_run",
+        "report_url": null,
+        "result_counts": {
+          "total": 0,
+          "passed": 0,
+          "failed": 0,
+          "errored": 0
+        },
+        "per_model_usage": [],
+        "per_testing_criteria_results": [],
+        "error": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc/runs/evalrun_2e939ff3c0954856841ccb46c2ca3ef2?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "bc40d6b5-3974-4f68-a034-f504c23cfcfb",
+        "azureml-served-by-cluster": "vienna-swedencentral-01",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:57:04 GMT",
+        "mise-correlation-id": "3bebca7a-9d02-49b7-b10c-9cc09f054ecc",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.433"
+      },
+      "ResponseBody": {
+        "object": "eval.run",
+        "created_at": 1769929012,
+        "modified_at": 1769929012,
+        "created_by": "April Kwong",
+        "id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+        "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "status": "in_progress",
+        "model": null,
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": [
+              {
+                "query": "I love this product! It works great.",
+                "context": "Product review context",
+                "ground_truth": "The product is excellent and performs well.",
+                "response": "The product is amazing and works perfectly."
+              },
+              {
+                "query": "The weather is cloudy today.",
+                "context": "Weather observation",
+                "ground_truth": "Today's weather is overcast.",
+                "response": "The sky is covered with clouds today."
+              },
+              {
+                "query": "What is the capital of France?",
+                "context": "Geography question about European capitals",
+                "ground_truth": "Paris",
+                "response": "The capital of France is Paris."
+              },
+              {
+                "query": "Explain quantum computing",
+                "context": "Complex scientific concept explanation",
+                "ground_truth": "Quantum computing uses quantum mechanics principles",
+                "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "team": "eval-exp",
+          "scenario": "graders-inline-v1",
+          "trigger_type": "oneoff"
+        },
+        "properties": {
+          "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+          "NetworkType": "Public",
+          "runType": "eval_run",
+          "_azureml.evaluation_run": "evaluation.service",
+          "_azureml.evaluate_artifacts": "[{\"path\": \"instance_results.jsonl\", \"type\": \"table\"}]"
+        },
+        "name": "inline_data_graders_run",
+        "report_url": null,
+        "result_counts": {
+          "total": 0,
+          "passed": 0,
+          "failed": 0,
+          "errored": 0
+        },
+        "per_model_usage": [],
+        "per_testing_criteria_results": [],
+        "error": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc/runs/evalrun_2e939ff3c0954856841ccb46c2ca3ef2?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "a0bfc475-6971-4de4-a35f-a010e3d15c1e",
+        "azureml-served-by-cluster": "vienna-swedencentral-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:57:10 GMT",
+        "mise-correlation-id": "dad18711-2911-45d5-a20f-103f1aab2474",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.201"
+      },
+      "ResponseBody": {
+        "object": "eval.run",
+        "created_at": 1769929012,
+        "modified_at": 1769929012,
+        "created_by": "April Kwong",
+        "id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+        "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "status": "in_progress",
+        "model": null,
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": [
+              {
+                "query": "I love this product! It works great.",
+                "context": "Product review context",
+                "ground_truth": "The product is excellent and performs well.",
+                "response": "The product is amazing and works perfectly."
+              },
+              {
+                "query": "The weather is cloudy today.",
+                "context": "Weather observation",
+                "ground_truth": "Today's weather is overcast.",
+                "response": "The sky is covered with clouds today."
+              },
+              {
+                "query": "What is the capital of France?",
+                "context": "Geography question about European capitals",
+                "ground_truth": "Paris",
+                "response": "The capital of France is Paris."
+              },
+              {
+                "query": "Explain quantum computing",
+                "context": "Complex scientific concept explanation",
+                "ground_truth": "Quantum computing uses quantum mechanics principles",
+                "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "team": "eval-exp",
+          "scenario": "graders-inline-v1",
+          "trigger_type": "oneoff"
+        },
+        "properties": {
+          "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+          "NetworkType": "Public",
+          "runType": "eval_run",
+          "_azureml.evaluation_run": "evaluation.service",
+          "_azureml.evaluate_artifacts": "[{\"path\": \"instance_results.jsonl\", \"type\": \"table\"}]"
+        },
+        "name": "inline_data_graders_run",
+        "report_url": null,
+        "result_counts": {
+          "total": 0,
+          "passed": 0,
+          "failed": 0,
+          "errored": 0
+        },
+        "per_model_usage": [],
+        "per_testing_criteria_results": [],
+        "error": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc/runs/evalrun_2e939ff3c0954856841ccb46c2ca3ef2?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "6fd28cd0-d306-4d0e-94c6-5f7277e33b9b",
+        "azureml-served-by-cluster": "vienna-swedencentral-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:57:15 GMT",
+        "mise-correlation-id": "5751e380-69de-4030-b407-75c87ef9c648",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.158"
+      },
+      "ResponseBody": {
+        "object": "eval.run",
+        "created_at": 1769929012,
+        "modified_at": 1769929012,
+        "created_by": "April Kwong",
+        "id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+        "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "status": "in_progress",
+        "model": null,
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": [
+              {
+                "query": "I love this product! It works great.",
+                "context": "Product review context",
+                "ground_truth": "The product is excellent and performs well.",
+                "response": "The product is amazing and works perfectly."
+              },
+              {
+                "query": "The weather is cloudy today.",
+                "context": "Weather observation",
+                "ground_truth": "Today's weather is overcast.",
+                "response": "The sky is covered with clouds today."
+              },
+              {
+                "query": "What is the capital of France?",
+                "context": "Geography question about European capitals",
+                "ground_truth": "Paris",
+                "response": "The capital of France is Paris."
+              },
+              {
+                "query": "Explain quantum computing",
+                "context": "Complex scientific concept explanation",
+                "ground_truth": "Quantum computing uses quantum mechanics principles",
+                "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "team": "eval-exp",
+          "scenario": "graders-inline-v1",
+          "trigger_type": "oneoff"
+        },
+        "properties": {
+          "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+          "NetworkType": "Public",
+          "runType": "eval_run",
+          "_azureml.evaluation_run": "evaluation.service",
+          "_azureml.evaluate_artifacts": "[{\"path\": \"instance_results.jsonl\", \"type\": \"table\"}]"
+        },
+        "name": "inline_data_graders_run",
+        "report_url": null,
+        "result_counts": {
+          "total": 0,
+          "passed": 0,
+          "failed": 0,
+          "errored": 0
+        },
+        "per_model_usage": [],
+        "per_testing_criteria_results": [],
+        "error": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc/runs/evalrun_2e939ff3c0954856841ccb46c2ca3ef2?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "8d6d1630-19d6-4781-ae0c-84ee747dba22",
+        "azureml-served-by-cluster": "vienna-swedencentral-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:57:20 GMT",
+        "mise-correlation-id": "f3b053a1-dc4a-4f11-94e7-233932673fa5",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.196"
+      },
+      "ResponseBody": {
+        "object": "eval.run",
+        "created_at": 1769929012,
+        "modified_at": 1769929012,
+        "created_by": "April Kwong",
+        "id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+        "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "status": "in_progress",
+        "model": null,
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": [
+              {
+                "query": "I love this product! It works great.",
+                "context": "Product review context",
+                "ground_truth": "The product is excellent and performs well.",
+                "response": "The product is amazing and works perfectly."
+              },
+              {
+                "query": "The weather is cloudy today.",
+                "context": "Weather observation",
+                "ground_truth": "Today's weather is overcast.",
+                "response": "The sky is covered with clouds today."
+              },
+              {
+                "query": "What is the capital of France?",
+                "context": "Geography question about European capitals",
+                "ground_truth": "Paris",
+                "response": "The capital of France is Paris."
+              },
+              {
+                "query": "Explain quantum computing",
+                "context": "Complex scientific concept explanation",
+                "ground_truth": "Quantum computing uses quantum mechanics principles",
+                "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "team": "eval-exp",
+          "scenario": "graders-inline-v1",
+          "trigger_type": "oneoff"
+        },
+        "properties": {
+          "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+          "NetworkType": "Public",
+          "runType": "eval_run",
+          "_azureml.evaluation_run": "evaluation.service",
+          "_azureml.evaluate_artifacts": "[{\"path\": \"instance_results.jsonl\", \"type\": \"table\"}]"
+        },
+        "name": "inline_data_graders_run",
+        "report_url": null,
+        "result_counts": {
+          "total": 0,
+          "passed": 0,
+          "failed": 0,
+          "errored": 0
+        },
+        "per_model_usage": [],
+        "per_testing_criteria_results": [],
+        "error": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc/runs/evalrun_2e939ff3c0954856841ccb46c2ca3ef2?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "d53f5ad2-3a67-4c5c-82b3-bc6c5b9faba2",
+        "azureml-served-by-cluster": "vienna-swedencentral-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:57:26 GMT",
+        "mise-correlation-id": "1ca7c9e2-5ed7-4de8-a316-44f308240342",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.536"
+      },
+      "ResponseBody": {
+        "object": "eval.run",
+        "created_at": 1769929012,
+        "modified_at": 1769929012,
+        "created_by": "April Kwong",
+        "id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+        "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "status": "in_progress",
+        "model": null,
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": [
+              {
+                "query": "I love this product! It works great.",
+                "context": "Product review context",
+                "ground_truth": "The product is excellent and performs well.",
+                "response": "The product is amazing and works perfectly."
+              },
+              {
+                "query": "The weather is cloudy today.",
+                "context": "Weather observation",
+                "ground_truth": "Today's weather is overcast.",
+                "response": "The sky is covered with clouds today."
+              },
+              {
+                "query": "What is the capital of France?",
+                "context": "Geography question about European capitals",
+                "ground_truth": "Paris",
+                "response": "The capital of France is Paris."
+              },
+              {
+                "query": "Explain quantum computing",
+                "context": "Complex scientific concept explanation",
+                "ground_truth": "Quantum computing uses quantum mechanics principles",
+                "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "team": "eval-exp",
+          "scenario": "graders-inline-v1",
+          "trigger_type": "oneoff"
+        },
+        "properties": {
+          "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+          "NetworkType": "Public",
+          "runType": "eval_run",
+          "_azureml.evaluation_run": "evaluation.service",
+          "_azureml.evaluate_artifacts": "[{\"path\": \"instance_results.jsonl\", \"type\": \"table\"}]"
+        },
+        "name": "inline_data_graders_run",
+        "report_url": null,
+        "result_counts": {
+          "total": 0,
+          "passed": 0,
+          "failed": 0,
+          "errored": 0
+        },
+        "per_model_usage": [],
+        "per_testing_criteria_results": [],
+        "error": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc/runs/evalrun_2e939ff3c0954856841ccb46c2ca3ef2?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "abd30a4a-303b-4c15-b18f-ac6771c02c60",
+        "azureml-served-by-cluster": "vienna-swedencentral-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:57:32 GMT",
+        "mise-correlation-id": "07d26b53-6666-401d-b50e-79bd434312bc",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.420"
+      },
+      "ResponseBody": {
+        "object": "eval.run",
+        "created_at": 1769929012,
+        "modified_at": 1769929012,
+        "created_by": "April Kwong",
+        "id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+        "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "status": "in_progress",
+        "model": null,
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": [
+              {
+                "query": "I love this product! It works great.",
+                "context": "Product review context",
+                "ground_truth": "The product is excellent and performs well.",
+                "response": "The product is amazing and works perfectly."
+              },
+              {
+                "query": "The weather is cloudy today.",
+                "context": "Weather observation",
+                "ground_truth": "Today's weather is overcast.",
+                "response": "The sky is covered with clouds today."
+              },
+              {
+                "query": "What is the capital of France?",
+                "context": "Geography question about European capitals",
+                "ground_truth": "Paris",
+                "response": "The capital of France is Paris."
+              },
+              {
+                "query": "Explain quantum computing",
+                "context": "Complex scientific concept explanation",
+                "ground_truth": "Quantum computing uses quantum mechanics principles",
+                "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "team": "eval-exp",
+          "scenario": "graders-inline-v1",
+          "trigger_type": "oneoff"
+        },
+        "properties": {
+          "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+          "NetworkType": "Public",
+          "runType": "eval_run",
+          "_azureml.evaluation_run": "evaluation.service",
+          "_azureml.evaluate_artifacts": "[{\"path\": \"instance_results.jsonl\", \"type\": \"table\"}]"
+        },
+        "name": "inline_data_graders_run",
+        "report_url": null,
+        "result_counts": {
+          "total": 0,
+          "passed": 0,
+          "failed": 0,
+          "errored": 0
+        },
+        "per_model_usage": [],
+        "per_testing_criteria_results": [],
+        "error": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc/runs/evalrun_2e939ff3c0954856841ccb46c2ca3ef2?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "ac145d29-9144-42de-ab03-cccbaa3ff5d1",
+        "azureml-served-by-cluster": "vienna-swedencentral-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:57:37 GMT",
+        "mise-correlation-id": "0865343c-2e55-4f95-a483-fe5bfb607d83",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.171"
+      },
+      "ResponseBody": {
+        "object": "eval.run",
+        "created_at": 1769929012,
+        "modified_at": 1769929012,
+        "created_by": "April Kwong",
+        "id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+        "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "status": "in_progress",
+        "model": null,
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": [
+              {
+                "query": "I love this product! It works great.",
+                "context": "Product review context",
+                "ground_truth": "The product is excellent and performs well.",
+                "response": "The product is amazing and works perfectly."
+              },
+              {
+                "query": "The weather is cloudy today.",
+                "context": "Weather observation",
+                "ground_truth": "Today's weather is overcast.",
+                "response": "The sky is covered with clouds today."
+              },
+              {
+                "query": "What is the capital of France?",
+                "context": "Geography question about European capitals",
+                "ground_truth": "Paris",
+                "response": "The capital of France is Paris."
+              },
+              {
+                "query": "Explain quantum computing",
+                "context": "Complex scientific concept explanation",
+                "ground_truth": "Quantum computing uses quantum mechanics principles",
+                "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "team": "eval-exp",
+          "scenario": "graders-inline-v1",
+          "trigger_type": "oneoff"
+        },
+        "properties": {
+          "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+          "NetworkType": "Public",
+          "runType": "eval_run",
+          "_azureml.evaluation_run": "evaluation.service",
+          "_azureml.evaluate_artifacts": "[{\"path\": \"instance_results.jsonl\", \"type\": \"table\"}]"
+        },
+        "name": "inline_data_graders_run",
+        "report_url": null,
+        "result_counts": {
+          "total": 0,
+          "passed": 0,
+          "failed": 0,
+          "errored": 0
+        },
+        "per_model_usage": [],
+        "per_testing_criteria_results": [],
+        "error": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc/runs/evalrun_2e939ff3c0954856841ccb46c2ca3ef2?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "09bc6537-85b2-41ca-87c1-510dc011c999",
+        "azureml-served-by-cluster": "vienna-swedencentral-01",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:57:43 GMT",
+        "mise-correlation-id": "9e6049d2-fb12-4e5c-844a-488a3960f1a3",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.421"
+      },
+      "ResponseBody": {
+        "object": "eval.run",
+        "created_at": 1769929012,
+        "modified_at": 1769929062,
+        "created_by": "April Kwong",
+        "id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+        "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "status": "completed",
+        "model": null,
+        "data_source": {
+          "type": "jsonl",
+          "source": {
+            "type": "file_content",
+            "content": [
+              {
+                "query": "I love this product! It works great.",
+                "context": "Product review context",
+                "ground_truth": "The product is excellent and performs well.",
+                "response": "The product is amazing and works perfectly."
+              },
+              {
+                "query": "The weather is cloudy today.",
+                "context": "Weather observation",
+                "ground_truth": "Today's weather is overcast.",
+                "response": "The sky is covered with clouds today."
+              },
+              {
+                "query": "What is the capital of France?",
+                "context": "Geography question about European capitals",
+                "ground_truth": "Paris",
+                "response": "The capital of France is Paris."
+              },
+              {
+                "query": "Explain quantum computing",
+                "context": "Complex scientific concept explanation",
+                "ground_truth": "Quantum computing uses quantum mechanics principles",
+                "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "team": "eval-exp",
+          "scenario": "graders-inline-v1",
+          "trigger_type": "oneoff"
+        },
+        "properties": {
+          "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+          "NetworkType": "Public",
+          "runType": "eval_run",
+          "_azureml.evaluation_run": "evaluation.service",
+          "_azureml.evaluate_artifacts": "[{\"path\": \"instance_results.jsonl\", \"type\": \"table\"}]",
+          "job_logs": "azureai://accounts/sanitized-account-name/projects/sanitized-project-name/evaluationresults/eval-result-evalrun_2e939ff3c0954856841ccb46c2ca3ef2-LDGQ/versions/1"
+        },
+        "name": "inline_data_graders_run",
+        "report_url": "https://ai.azure.com/nextgen/r/e0PPodqSSMyGXVSZRms7XA,rg-aprilk,,aprilk-swedencentral-resource,aprilk-swedencentral/build/evaluations/eval_7d3b7af81bd242829f2849659ae82adc/run/evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+        "result_counts": {
+          "total": 4,
+          "passed": 0,
+          "failed": 4,
+          "errored": 0
+        },
+        "per_model_usage": [
+          {
+            "model_name": "gpt-4o-2024-07-18",
+            "invocation_count": 8,
+            "total_tokens": 4651,
+            "prompt_tokens": 3211,
+            "completion_tokens": 1440,
+            "cached_tokens": 0
+          }
+        ],
+        "per_testing_criteria_results": [
+          {
+            "testing_criteria": "label_grader",
+            "passed": 4,
+            "failed": 0
+          },
+          {
+            "testing_criteria": "text_check_grader",
+            "passed": 0,
+            "failed": 4
+          },
+          {
+            "testing_criteria": "string_check_grader",
+            "passed": 4,
+            "failed": 0
+          },
+          {
+            "testing_criteria": "score",
+            "passed": 4,
+            "failed": 0
+          }
+        ],
+        "error": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc/runs/evalrun_2e939ff3c0954856841ccb46c2ca3ef2/output_items?api-version=2025-11-15-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "47e5cbaa-627a-405a-a560-bce7f9f0f66f",
+        "azureml-served-by-cluster": "vienna-swedencentral-01",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:57:43 GMT",
+        "mise-correlation-id": "9f209ce5-6a38-4fc4-8fec-7d5a8f931de2",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.183"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "object": "eval.run.output_item",
+            "id": "1",
+            "run_id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+            "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+            "created_at": 1769929058,
+            "status": "completed",
+            "datasource_item_id": 0,
+            "datasource_item": {
+              "query": "I love this product! It works great.",
+              "context": "Product review context",
+              "ground_truth": "The product is excellent and performs well.",
+              "response": "The product is amazing and works perfectly."
+            },
+            "results": [
+              {
+                "type": "label_model",
+                "name": "label_grader",
+                "metric": "label_grader",
+                "score": 1,
+                "label": "pass",
+                "reason": null,
+                "threshold": null,
+                "passed": true,
+                "sample": {
+                  "input": [
+                    {
+                      "role": "developer",
+                      "content": "Classify the sentiment of the following statement as one of 'positive', 'neutral', or 'negative'"
+                    },
+                    {
+                      "role": "user",
+                      "content": "Statement: I love this product! It works great."
+                    }
+                  ],
+                  "output": [
+                    {
+                      "role": "assistant",
+                      "content": "{\"steps\":[{\"description\":\"Identify the sentiment expressed in the statement.\",\"conclusion\":\"The statement expresses a personal feeling of affection towards a product.\"},{\"description\":\"Assess the intensity of the sentiment: words like 'love' and 'works great' indicate strong positive feelings.\",\"conclusion\":\"The sentiment is strongly positive.\"},{\"description\":\"Classify the overall sentiment of the statement based on the identified tone and intensity.\",\"conclusion\":\"The overall sentiment is positive.\"}],\"result\":\"positive\"}"
+                    }
+                  ],
+                  "finish_reason": "stop",
+                  "model": "gpt-4o-2024-07-18",
+                  "usage": {
+                    "total_tokens": 250,
+                    "completion_tokens": 98,
+                    "prompt_tokens": 152,
+                    "cached_tokens": 0
+                  },
+                  "error": null,
+                  "temperature": 1,
+                  "top_p": 1
+                }
+              },
+              {
+                "type": "text_similarity",
+                "name": "text_check_grader",
+                "metric": "text_check_grader",
+                "score": 0.18756826382863573,
+                "label": null,
+                "reason": null,
+                "threshold": null,
+                "passed": false
+              },
+              {
+                "type": "string_check",
+                "name": "string_check_grader",
+                "metric": "string_check_grader",
+                "score": 1,
+                "label": null,
+                "reason": null,
+                "threshold": null,
+                "passed": true
+              },
+              {
+                "type": "score_model",
+                "name": "score",
+                "metric": "score",
+                "score": 1,
+                "label": "pass",
+                "reason": null,
+                "threshold": null,
+                "passed": true,
+                "sample": {
+                  "input": [
+                    {
+                      "role": "system",
+                      "content": "Evaluate the degree of similarity between the given output and the ground truth on a scale from 1 to 5, using a chain of thought to ensure step-by-step reasoning before reaching the conclusion.\n\nConsider the following criteria:\n\n- 5: Highly similar - The output and ground truth are nearly identical, with only minor, insignificant differences.\n- 4: Somewhat similar - The output is largely similar to the ground truth but has few noticeable differences.\n- 3: Moderately similar - There are some evident differences, but the core essence is captured in the output.\n- 2: Slightly similar - The output only captures a few elements of the ground truth and contains several differences.\n- 1: Not similar - The output is significantly different from the ground truth, with few or no matching elements.\n\n# Steps\n\n1. Identify and list the key elements present in both the output and the ground truth.\n2. Compare these key elements to evaluate their similarities and differences, considering both content and structure.\n3. Analyze the semantic meaning conveyed by both the output and the ground truth, noting any significant deviations.\n4. Based on these comparisons, categorize the level of similarity according to the defined criteria above.\n5. Write out the reasoning for why a particular score is chosen, to ensure transparency and correctness.\n6. Assign a similarity score based on the defined criteria above.\n\n# Output Format\n\nProvide the final similarity score as an integer (1, 2, 3, 4, or 5).\n\n# Examples\n\n**Example 1:**\n\n- Output: \"The cat sat on the mat.\"\n- Ground Truth: \"The feline is sitting on the rug.\"\n- Reasoning: Both sentences describe a cat sitting on a surface, but they use different wording. The structure is slightly different, but the core meaning is preserved. There are noticeable differences, but the overall meaning is conveyed well.\n- Similarity Score: 3\n\n**Example 2:**\n\n- Output: \"The quick brown fox jumps over the lazy dog.\"\n- Ground Truth: \"A fast brown animal leaps over a sleeping canine.\"\n- Reasoning: The meaning of both sentences is very similar, with only minor differences in wording. The structure and intent are well preserved.\n- Similarity Score: 4\n\n# Notes\n\n- Always aim to provide a fair and balanced assessment.\n- Consider both syntactic and semantic differences in your evaluation.\n- Consistency in scoring similar pairs is crucial for accurate measurement."
+                    },
+                    {
+                      "role": "user",
+                      "content": "Output: The product is amazing and works perfectly.}}\nGround Truth: The product is excellent and performs well."
+                    }
+                  ],
+                  "output": [
+                    {
+                      "role": "assistant",
+                      "content": "{\"steps\":[{\"description\":\"Identify key elements in both the output and ground truth. The key elements include the adjectives 'amazing' vs 'excellent' and the phrases 'works perfectly' vs 'performs well'.\",\"conclusion\":\"Identified the main similarities and differences in the key elements.\"},{\"description\":\"Compare the key elements. Both phrases describe a product positively, using different adjectives but conveying similar meanings. 'Amazing' and 'excellent' are both strong positive descriptors. 'Works perfectly' and 'performs well' both indicate that the product functions as intended but use different verbs and adverbs to express it.\",\"conclusion\":\"The core essence of the output and ground truth is similar, although the wording differs slightly.\"},{\"description\":\"Analyze the semantic meaning. The positive sentiment of the description is maintained across both the output and ground truth despite the different word choices. The output captures the essence of the ground truth closely.\",\"conclusion\":\"Semantic meaning is preserved in both statements.\"},{\"description\":\"Based on the comparisons, assign a similarity score. The output is largely similar to the ground truth with only minor differences in word choice that do not alter the overall message.\",\"conclusion\":\"A score of 4 is appropriate due to similarities in meaning with slight variations in wording.\"},{\"description\":\"Summarize the reasoning. Both statements express a strong positive sentiment about the product. The differences in wording do not significantly impact the understanding of the overall message, but they are noticeable enough to prevent a perfect similarity rating.\",\"conclusion\":\"The reasoning supports a similarity score, which reflects the predominantly similar nature of the statements.\"}],\"result\":4}"
+                    }
+                  ],
+                  "finish_reason": "stop",
+                  "model": "gpt-4o-2024-07-18",
+                  "usage": {
+                    "total_tokens": 983,
+                    "completion_tokens": 329,
+                    "prompt_tokens": 654,
+                    "cached_tokens": 0
+                  },
+                  "error": null,
+                  "temperature": 1,
+                  "top_p": 1
+                }
+              }
+            ],
+            "sample": {
+              "error": null,
+              "finish_reason": "stop",
+              "input": [
+                {
+                  "role": "system",
+                  "content": "Evaluate the degree of similarity between the given output and the ground truth on a scale from 1 to 5, using a chain of thought to ensure step-by-step reasoning before reaching the conclusion.\n\nConsider the following criteria:\n\n- 5: Highly similar - The output and ground truth are nearly identical, with only minor, insignificant differences.\n- 4: Somewhat similar - The output is largely similar to the ground truth but has few noticeable differences.\n- 3: Moderately similar - There are some evident differences, but the core essence is captured in the output.\n- 2: Slightly similar - The output only captures a few elements of the ground truth and contains several differences.\n- 1: Not similar - The output is significantly different from the ground truth, with few or no matching elements.\n\n# Steps\n\n1. Identify and list the key elements present in both the output and the ground truth.\n2. Compare these key elements to evaluate their similarities and differences, considering both content and structure.\n3. Analyze the semantic meaning conveyed by both the output and the ground truth, noting any significant deviations.\n4. Based on these comparisons, categorize the level of similarity according to the defined criteria above.\n5. Write out the reasoning for why a particular score is chosen, to ensure transparency and correctness.\n6. Assign a similarity score based on the defined criteria above.\n\n# Output Format\n\nProvide the final similarity score as an integer (1, 2, 3, 4, or 5).\n\n# Examples\n\n**Example 1:**\n\n- Output: \"The cat sat on the mat.\"\n- Ground Truth: \"The feline is sitting on the rug.\"\n- Reasoning: Both sentences describe a cat sitting on a surface, but they use different wording. The structure is slightly different, but the core meaning is preserved. There are noticeable differences, but the overall meaning is conveyed well.\n- Similarity Score: 3\n\n**Example 2:**\n\n- Output: \"The quick brown fox jumps over the lazy dog.\"\n- Ground Truth: \"A fast brown animal leaps over a sleeping canine.\"\n- Reasoning: The meaning of both sentences is very similar, with only minor differences in wording. The structure and intent are well preserved.\n- Similarity Score: 4\n\n# Notes\n\n- Always aim to provide a fair and balanced assessment.\n- Consider both syntactic and semantic differences in your evaluation.\n- Consistency in scoring similar pairs is crucial for accurate measurement."
+                },
+                {
+                  "role": "user",
+                  "content": "Output: The product is amazing and works perfectly.}}\nGround Truth: The product is excellent and performs well."
+                }
+              ],
+              "max_completion_tokens": null,
+              "model": "gpt-4o-2024-07-18",
+              "output": [
+                {
+                  "role": "assistant",
+                  "content": "{\"steps\":[{\"description\":\"Identify key elements in both the output and ground truth. The key elements include the adjectives 'amazing' vs 'excellent' and the phrases 'works perfectly' vs 'performs well'.\",\"conclusion\":\"Identified the main similarities and differences in the key elements.\"},{\"description\":\"Compare the key elements. Both phrases describe a product positively, using different adjectives but conveying similar meanings. 'Amazing' and 'excellent' are both strong positive descriptors. 'Works perfectly' and 'performs well' both indicate that the product functions as intended but use different verbs and adverbs to express it.\",\"conclusion\":\"The core essence of the output and ground truth is similar, although the wording differs slightly.\"},{\"description\":\"Analyze the semantic meaning. The positive sentiment of the description is maintained across both the output and ground truth despite the different word choices. The output captures the essence of the ground truth closely.\",\"conclusion\":\"Semantic meaning is preserved in both statements.\"},{\"description\":\"Based on the comparisons, assign a similarity score. The output is largely similar to the ground truth with only minor differences in word choice that do not alter the overall message.\",\"conclusion\":\"A score of 4 is appropriate due to similarities in meaning with slight variations in wording.\"},{\"description\":\"Summarize the reasoning. Both statements express a strong positive sentiment about the product. The differences in wording do not significantly impact the understanding of the overall message, but they are noticeable enough to prevent a perfect similarity rating.\",\"conclusion\":\"The reasoning supports a similarity score, which reflects the predominantly similar nature of the statements.\"}],\"result\":4}"
+                }
+              ],
+              "seed": null,
+              "temperature": 1.0,
+              "top_p": 1.0,
+              "usage": {
+                "cached_tokens": 0,
+                "completion_tokens": 329,
+                "prompt_tokens": 654,
+                "total_tokens": 983
+              }
+            }
+          },
+          {
+            "object": "eval.run.output_item",
+            "id": "2",
+            "run_id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+            "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+            "created_at": 1769929058,
+            "status": "completed",
+            "datasource_item_id": 1,
+            "datasource_item": {
+              "query": "The weather is cloudy today.",
+              "context": "Weather observation",
+              "ground_truth": "Today's weather is overcast.",
+              "response": "The sky is covered with clouds today."
+            },
+            "results": [
+              {
+                "type": "label_model",
+                "name": "label_grader",
+                "metric": "label_grader",
+                "score": 1,
+                "label": "pass",
+                "reason": null,
+                "threshold": null,
+                "passed": true,
+                "sample": {
+                  "input": [
+                    {
+                      "role": "developer",
+                      "content": "Classify the sentiment of the following statement as one of 'positive', 'neutral', or 'negative'"
+                    },
+                    {
+                      "role": "user",
+                      "content": "Statement: The weather is cloudy today."
+                    }
+                  ],
+                  "output": [
+                    {
+                      "role": "assistant",
+                      "content": "{\"steps\":[{\"description\":\"Identify the main subject of the statement, which is 'the weather'.\",\"conclusion\":\"The statement is about the weather.\"},{\"description\":\"Analyze the description of the weather being 'cloudy'.\",\"conclusion\":\"'Cloudy' is a neutral descriptor, providing information about the state of the weather without implying positive or negative sentiments.\"},{\"description\":\"Determine how the word 'cloudy' affects the overall sentiment of the statement.\",\"conclusion\":\"Since 'cloudy' does not carry positive or negative connotations in a general context, the sentiment remains neutral.\"}],\"result\":\"neutral\"}"
+                    }
+                  ],
+                  "finish_reason": "stop",
+                  "model": "gpt-4o-2024-07-18",
+                  "usage": {
+                    "total_tokens": 274,
+                    "completion_tokens": 125,
+                    "prompt_tokens": 149,
+                    "cached_tokens": 0
+                  },
+                  "error": null,
+                  "temperature": 1,
+                  "top_p": 1
+                }
+              },
+              {
+                "type": "text_similarity",
+                "name": "text_check_grader",
+                "metric": "text_check_grader",
+                "score": 0.032033495455712595,
+                "label": null,
+                "reason": null,
+                "threshold": null,
+                "passed": false
+              },
+              {
+                "type": "string_check",
+                "name": "string_check_grader",
+                "metric": "string_check_grader",
+                "score": 1,
+                "label": null,
+                "reason": null,
+                "threshold": null,
+                "passed": true
+              },
+              {
+                "type": "score_model",
+                "name": "score",
+                "metric": "score",
+                "score": 0.6,
+                "label": "pass",
+                "reason": null,
+                "threshold": null,
+                "passed": true,
+                "sample": {
+                  "input": [
+                    {
+                      "role": "system",
+                      "content": "Evaluate the degree of similarity between the given output and the ground truth on a scale from 1 to 5, using a chain of thought to ensure step-by-step reasoning before reaching the conclusion.\n\nConsider the following criteria:\n\n- 5: Highly similar - The output and ground truth are nearly identical, with only minor, insignificant differences.\n- 4: Somewhat similar - The output is largely similar to the ground truth but has few noticeable differences.\n- 3: Moderately similar - There are some evident differences, but the core essence is captured in the output.\n- 2: Slightly similar - The output only captures a few elements of the ground truth and contains several differences.\n- 1: Not similar - The output is significantly different from the ground truth, with few or no matching elements.\n\n# Steps\n\n1. Identify and list the key elements present in both the output and the ground truth.\n2. Compare these key elements to evaluate their similarities and differences, considering both content and structure.\n3. Analyze the semantic meaning conveyed by both the output and the ground truth, noting any significant deviations.\n4. Based on these comparisons, categorize the level of similarity according to the defined criteria above.\n5. Write out the reasoning for why a particular score is chosen, to ensure transparency and correctness.\n6. Assign a similarity score based on the defined criteria above.\n\n# Output Format\n\nProvide the final similarity score as an integer (1, 2, 3, 4, or 5).\n\n# Examples\n\n**Example 1:**\n\n- Output: \"The cat sat on the mat.\"\n- Ground Truth: \"The feline is sitting on the rug.\"\n- Reasoning: Both sentences describe a cat sitting on a surface, but they use different wording. The structure is slightly different, but the core meaning is preserved. There are noticeable differences, but the overall meaning is conveyed well.\n- Similarity Score: 3\n\n**Example 2:**\n\n- Output: \"The quick brown fox jumps over the lazy dog.\"\n- Ground Truth: \"A fast brown animal leaps over a sleeping canine.\"\n- Reasoning: The meaning of both sentences is very similar, with only minor differences in wording. The structure and intent are well preserved.\n- Similarity Score: 4\n\n# Notes\n\n- Always aim to provide a fair and balanced assessment.\n- Consider both syntactic and semantic differences in your evaluation.\n- Consistency in scoring similar pairs is crucial for accurate measurement."
+                    },
+                    {
+                      "role": "user",
+                      "content": "Output: The sky is covered with clouds today.}}\nGround Truth: Today's weather is overcast."
+                    }
+                  ],
+                  "output": [
+                    {
+                      "role": "assistant",
+                      "content": "{\"steps\":[{\"description\":\"Identify the key elements present in both statements.\",\"conclusion\":\"The output mentions clouds and the current state of the sky, while the ground truth refers to overcast weather.\"},{\"description\":\"Compare the content and structure of both statements.\",\"conclusion\":\"The output is more descriptive about the specific feature of the sky (clouds) and the day, while the ground truth conveys the weather condition in a concise manner without mentioning clouds directly.\"},{\"description\":\"Analyze the semantic meaning conveyed by both statements.\",\"conclusion\":\"Both capture the essence of overcast weather, but the first statement provides more detail about the clouds.\"},{\"description\":\"Determine the degree of similarity based on identified differences and similarities.\",\"conclusion\":\"The phrases have different word choices and structures but convey similar core meanings about the weather.\"},{\"description\":\"Select an appropriate similarity score based on the criteria provided.\",\"conclusion\":\"Given they capture similar concepts (overcast conditions) with noticeable differences in wording and detail, a score of 3 is appropriate.\"}],\"result\":0.6}"
+                    }
+                  ],
+                  "finish_reason": "stop",
+                  "model": "gpt-4o-2024-07-18",
+                  "usage": {
+                    "total_tokens": 866,
+                    "completion_tokens": 214,
+                    "prompt_tokens": 652,
+                    "cached_tokens": 0
+                  },
+                  "error": null,
+                  "temperature": 1,
+                  "top_p": 1
+                }
+              }
+            ],
+            "sample": {
+              "error": null,
+              "finish_reason": "stop",
+              "input": [
+                {
+                  "role": "system",
+                  "content": "Evaluate the degree of similarity between the given output and the ground truth on a scale from 1 to 5, using a chain of thought to ensure step-by-step reasoning before reaching the conclusion.\n\nConsider the following criteria:\n\n- 5: Highly similar - The output and ground truth are nearly identical, with only minor, insignificant differences.\n- 4: Somewhat similar - The output is largely similar to the ground truth but has few noticeable differences.\n- 3: Moderately similar - There are some evident differences, but the core essence is captured in the output.\n- 2: Slightly similar - The output only captures a few elements of the ground truth and contains several differences.\n- 1: Not similar - The output is significantly different from the ground truth, with few or no matching elements.\n\n# Steps\n\n1. Identify and list the key elements present in both the output and the ground truth.\n2. Compare these key elements to evaluate their similarities and differences, considering both content and structure.\n3. Analyze the semantic meaning conveyed by both the output and the ground truth, noting any significant deviations.\n4. Based on these comparisons, categorize the level of similarity according to the defined criteria above.\n5. Write out the reasoning for why a particular score is chosen, to ensure transparency and correctness.\n6. Assign a similarity score based on the defined criteria above.\n\n# Output Format\n\nProvide the final similarity score as an integer (1, 2, 3, 4, or 5).\n\n# Examples\n\n**Example 1:**\n\n- Output: \"The cat sat on the mat.\"\n- Ground Truth: \"The feline is sitting on the rug.\"\n- Reasoning: Both sentences describe a cat sitting on a surface, but they use different wording. The structure is slightly different, but the core meaning is preserved. There are noticeable differences, but the overall meaning is conveyed well.\n- Similarity Score: 3\n\n**Example 2:**\n\n- Output: \"The quick brown fox jumps over the lazy dog.\"\n- Ground Truth: \"A fast brown animal leaps over a sleeping canine.\"\n- Reasoning: The meaning of both sentences is very similar, with only minor differences in wording. The structure and intent are well preserved.\n- Similarity Score: 4\n\n# Notes\n\n- Always aim to provide a fair and balanced assessment.\n- Consider both syntactic and semantic differences in your evaluation.\n- Consistency in scoring similar pairs is crucial for accurate measurement."
+                },
+                {
+                  "role": "user",
+                  "content": "Output: The sky is covered with clouds today.}}\nGround Truth: Today's weather is overcast."
+                }
+              ],
+              "max_completion_tokens": null,
+              "model": "gpt-4o-2024-07-18",
+              "output": [
+                {
+                  "role": "assistant",
+                  "content": "{\"steps\":[{\"description\":\"Identify the key elements present in both statements.\",\"conclusion\":\"The output mentions clouds and the current state of the sky, while the ground truth refers to overcast weather.\"},{\"description\":\"Compare the content and structure of both statements.\",\"conclusion\":\"The output is more descriptive about the specific feature of the sky (clouds) and the day, while the ground truth conveys the weather condition in a concise manner without mentioning clouds directly.\"},{\"description\":\"Analyze the semantic meaning conveyed by both statements.\",\"conclusion\":\"Both capture the essence of overcast weather, but the first statement provides more detail about the clouds.\"},{\"description\":\"Determine the degree of similarity based on identified differences and similarities.\",\"conclusion\":\"The phrases have different word choices and structures but convey similar core meanings about the weather.\"},{\"description\":\"Select an appropriate similarity score based on the criteria provided.\",\"conclusion\":\"Given they capture similar concepts (overcast conditions) with noticeable differences in wording and detail, a score of 3 is appropriate.\"}],\"result\":0.6}"
+                }
+              ],
+              "seed": null,
+              "temperature": 1.0,
+              "top_p": 1.0,
+              "usage": {
+                "cached_tokens": 0,
+                "completion_tokens": 214,
+                "prompt_tokens": 652,
+                "total_tokens": 866
+              }
+            }
+          },
+          {
+            "object": "eval.run.output_item",
+            "id": "3",
+            "run_id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+            "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+            "created_at": 1769929058,
+            "status": "completed",
+            "datasource_item_id": 2,
+            "datasource_item": {
+              "query": "What is the capital of France?",
+              "context": "Geography question about European capitals",
+              "ground_truth": "Paris",
+              "response": "The capital of France is Paris."
+            },
+            "results": [
+              {
+                "type": "label_model",
+                "name": "label_grader",
+                "metric": "label_grader",
+                "score": 1,
+                "label": "pass",
+                "reason": null,
+                "threshold": null,
+                "passed": true,
+                "sample": {
+                  "input": [
+                    {
+                      "role": "developer",
+                      "content": "Classify the sentiment of the following statement as one of 'positive', 'neutral', or 'negative'"
+                    },
+                    {
+                      "role": "user",
+                      "content": "Statement: What is the capital of France?"
+                    }
+                  ],
+                  "output": [
+                    {
+                      "role": "assistant",
+                      "content": "{\"steps\":[{\"description\":\"The statement is a neutral question requesting information.\",\"conclusion\":\"The sentiment is not positive or negative.\"},{\"description\":\"Questions typically do not convey emotions and are often classified as neutral unless they imply a certain tone or context.\",\"conclusion\":\"Reinforces that this question has no emotional charge.\"},{\"description\":\"The subject matter (the capital of France) is a straightforward factual inquiry.\",\"conclusion\":\"Further confirms the neutral nature of the statement.\"}],\"result\":\"neutral\"}"
+                    }
+                  ],
+                  "finish_reason": "stop",
+                  "model": "gpt-4o-2024-07-18",
+                  "usage": {
+                    "total_tokens": 251,
+                    "completion_tokens": 101,
+                    "prompt_tokens": 150,
+                    "cached_tokens": 0
+                  },
+                  "error": null,
+                  "temperature": 1,
+                  "top_p": 1
+                }
+              },
+              {
+                "type": "text_similarity",
+                "name": "text_check_grader",
+                "metric": "text_check_grader",
+                "score": 0.0024787521766663585,
+                "label": null,
+                "reason": null,
+                "threshold": null,
+                "passed": false
+              },
+              {
+                "type": "string_check",
+                "name": "string_check_grader",
+                "metric": "string_check_grader",
+                "score": 1,
+                "label": null,
+                "reason": null,
+                "threshold": null,
+                "passed": true
+              },
+              {
+                "type": "score_model",
+                "name": "score",
+                "metric": "score",
+                "score": 1,
+                "label": "pass",
+                "reason": null,
+                "threshold": null,
+                "passed": true,
+                "sample": {
+                  "input": [
+                    {
+                      "role": "system",
+                      "content": "Evaluate the degree of similarity between the given output and the ground truth on a scale from 1 to 5, using a chain of thought to ensure step-by-step reasoning before reaching the conclusion.\n\nConsider the following criteria:\n\n- 5: Highly similar - The output and ground truth are nearly identical, with only minor, insignificant differences.\n- 4: Somewhat similar - The output is largely similar to the ground truth but has few noticeable differences.\n- 3: Moderately similar - There are some evident differences, but the core essence is captured in the output.\n- 2: Slightly similar - The output only captures a few elements of the ground truth and contains several differences.\n- 1: Not similar - The output is significantly different from the ground truth, with few or no matching elements.\n\n# Steps\n\n1. Identify and list the key elements present in both the output and the ground truth.\n2. Compare these key elements to evaluate their similarities and differences, considering both content and structure.\n3. Analyze the semantic meaning conveyed by both the output and the ground truth, noting any significant deviations.\n4. Based on these comparisons, categorize the level of similarity according to the defined criteria above.\n5. Write out the reasoning for why a particular score is chosen, to ensure transparency and correctness.\n6. Assign a similarity score based on the defined criteria above.\n\n# Output Format\n\nProvide the final similarity score as an integer (1, 2, 3, 4, or 5).\n\n# Examples\n\n**Example 1:**\n\n- Output: \"The cat sat on the mat.\"\n- Ground Truth: \"The feline is sitting on the rug.\"\n- Reasoning: Both sentences describe a cat sitting on a surface, but they use different wording. The structure is slightly different, but the core meaning is preserved. There are noticeable differences, but the overall meaning is conveyed well.\n- Similarity Score: 3\n\n**Example 2:**\n\n- Output: \"The quick brown fox jumps over the lazy dog.\"\n- Ground Truth: \"A fast brown animal leaps over a sleeping canine.\"\n- Reasoning: The meaning of both sentences is very similar, with only minor differences in wording. The structure and intent are well preserved.\n- Similarity Score: 4\n\n# Notes\n\n- Always aim to provide a fair and balanced assessment.\n- Consider both syntactic and semantic differences in your evaluation.\n- Consistency in scoring similar pairs is crucial for accurate measurement."
+                    },
+                    {
+                      "role": "user",
+                      "content": "Output: The capital of France is Paris.}}\nGround Truth: Paris"
+                    }
+                  ],
+                  "output": [
+                    {
+                      "role": "assistant",
+                      "content": "{\"steps\":[{\"description\":\"Identify the key elements in both the output and the ground truth.\",\"conclusion\":\"The key element in the output is 'The capital of France is Paris', and in the ground truth, it is 'Paris'.\"},{\"description\":\"Compare the key elements to evaluate their similarities and differences in content and structure.\",\"conclusion\":\"The output provides a full sentence giving context ('The capital of France') while the ground truth is simply a noun ('Paris').\"},{\"description\":\"Analyze the semantic meaning conveyed by both statements noting significant deviations.\",\"conclusion\":\"Both statements ultimately refer to the same location (Paris), but the ground truth is a more concise representation. The output also specifies that Paris is the capital of France, making it slightly more informative.\"},{\"description\":\"Based on these comparisons, categorize the level of similarity according to defined criteria.\",\"conclusion\":\"There is a clear relationship between the two, as they refer to the same subject (the city of Paris), but the output includes additional context that the ground truth does not.\"},{\"description\":\"Write out the reasoning for the score chosen to ensure transparency and correctness.\",\"conclusion\":\"Considering the concise nature of the ground truth but the informative context of the output, I would assign a score of 4, indicating that while the core idea is captured, there are noticeable differences in detail.\"}],\"result\":4}"
+                    }
+                  ],
+                  "finish_reason": "stop",
+                  "model": "gpt-4o-2024-07-18",
+                  "usage": {
+                    "total_tokens": 922,
+                    "completion_tokens": 276,
+                    "prompt_tokens": 646,
+                    "cached_tokens": 0
+                  },
+                  "error": null,
+                  "temperature": 1,
+                  "top_p": 1
+                }
+              }
+            ],
+            "sample": {
+              "error": null,
+              "finish_reason": "stop",
+              "input": [
+                {
+                  "role": "system",
+                  "content": "Evaluate the degree of similarity between the given output and the ground truth on a scale from 1 to 5, using a chain of thought to ensure step-by-step reasoning before reaching the conclusion.\n\nConsider the following criteria:\n\n- 5: Highly similar - The output and ground truth are nearly identical, with only minor, insignificant differences.\n- 4: Somewhat similar - The output is largely similar to the ground truth but has few noticeable differences.\n- 3: Moderately similar - There are some evident differences, but the core essence is captured in the output.\n- 2: Slightly similar - The output only captures a few elements of the ground truth and contains several differences.\n- 1: Not similar - The output is significantly different from the ground truth, with few or no matching elements.\n\n# Steps\n\n1. Identify and list the key elements present in both the output and the ground truth.\n2. Compare these key elements to evaluate their similarities and differences, considering both content and structure.\n3. Analyze the semantic meaning conveyed by both the output and the ground truth, noting any significant deviations.\n4. Based on these comparisons, categorize the level of similarity according to the defined criteria above.\n5. Write out the reasoning for why a particular score is chosen, to ensure transparency and correctness.\n6. Assign a similarity score based on the defined criteria above.\n\n# Output Format\n\nProvide the final similarity score as an integer (1, 2, 3, 4, or 5).\n\n# Examples\n\n**Example 1:**\n\n- Output: \"The cat sat on the mat.\"\n- Ground Truth: \"The feline is sitting on the rug.\"\n- Reasoning: Both sentences describe a cat sitting on a surface, but they use different wording. The structure is slightly different, but the core meaning is preserved. There are noticeable differences, but the overall meaning is conveyed well.\n- Similarity Score: 3\n\n**Example 2:**\n\n- Output: \"The quick brown fox jumps over the lazy dog.\"\n- Ground Truth: \"A fast brown animal leaps over a sleeping canine.\"\n- Reasoning: The meaning of both sentences is very similar, with only minor differences in wording. The structure and intent are well preserved.\n- Similarity Score: 4\n\n# Notes\n\n- Always aim to provide a fair and balanced assessment.\n- Consider both syntactic and semantic differences in your evaluation.\n- Consistency in scoring similar pairs is crucial for accurate measurement."
+                },
+                {
+                  "role": "user",
+                  "content": "Output: The capital of France is Paris.}}\nGround Truth: Paris"
+                }
+              ],
+              "max_completion_tokens": null,
+              "model": "gpt-4o-2024-07-18",
+              "output": [
+                {
+                  "role": "assistant",
+                  "content": "{\"steps\":[{\"description\":\"Identify the key elements in both the output and the ground truth.\",\"conclusion\":\"The key element in the output is 'The capital of France is Paris', and in the ground truth, it is 'Paris'.\"},{\"description\":\"Compare the key elements to evaluate their similarities and differences in content and structure.\",\"conclusion\":\"The output provides a full sentence giving context ('The capital of France') while the ground truth is simply a noun ('Paris').\"},{\"description\":\"Analyze the semantic meaning conveyed by both statements noting significant deviations.\",\"conclusion\":\"Both statements ultimately refer to the same location (Paris), but the ground truth is a more concise representation. The output also specifies that Paris is the capital of France, making it slightly more informative.\"},{\"description\":\"Based on these comparisons, categorize the level of similarity according to defined criteria.\",\"conclusion\":\"There is a clear relationship between the two, as they refer to the same subject (the city of Paris), but the output includes additional context that the ground truth does not.\"},{\"description\":\"Write out the reasoning for the score chosen to ensure transparency and correctness.\",\"conclusion\":\"Considering the concise nature of the ground truth but the informative context of the output, I would assign a score of 4, indicating that while the core idea is captured, there are noticeable differences in detail.\"}],\"result\":4}"
+                }
+              ],
+              "seed": null,
+              "temperature": 1.0,
+              "top_p": 1.0,
+              "usage": {
+                "cached_tokens": 0,
+                "completion_tokens": 276,
+                "prompt_tokens": 646,
+                "total_tokens": 922
+              }
+            }
+          },
+          {
+            "object": "eval.run.output_item",
+            "id": "4",
+            "run_id": "evalrun_2e939ff3c0954856841ccb46c2ca3ef2",
+            "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+            "created_at": 1769929058,
+            "status": "completed",
+            "datasource_item_id": 3,
+            "datasource_item": {
+              "query": "Explain quantum computing",
+              "context": "Complex scientific concept explanation",
+              "ground_truth": "Quantum computing uses quantum mechanics principles",
+              "response": "Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information."
+            },
+            "results": [
+              {
+                "type": "label_model",
+                "name": "label_grader",
+                "metric": "label_grader",
+                "score": 1,
+                "label": "pass",
+                "reason": null,
+                "threshold": null,
+                "passed": true,
+                "sample": {
+                  "input": [
+                    {
+                      "role": "developer",
+                      "content": "Classify the sentiment of the following statement as one of 'positive', 'neutral', or 'negative'"
+                    },
+                    {
+                      "role": "user",
+                      "content": "Statement: Explain quantum computing"
+                    }
+                  ],
+                  "output": [
+                    {
+                      "role": "assistant",
+                      "content": "{\"steps\":[{\"description\":\"Identify the tone of the statement.\",\"conclusion\":\"The statement is an inquiry and does not express an opinion or emotion.\"},{\"description\":\"Analyze the content of the statement.\",\"conclusion\":\"It is a request for information rather than an expression of sentiment.\"},{\"description\":\"Determine if the request could be considered positive, neutral, or negative.\",\"conclusion\":\"The statement is neutral, as it seeks knowledge without any implied positive or negative sentiment.\"}],\"result\":\"neutral\"}"
+                    }
+                  ],
+                  "finish_reason": "stop",
+                  "model": "gpt-4o-2024-07-18",
+                  "usage": {
+                    "total_tokens": 246,
+                    "completion_tokens": 100,
+                    "prompt_tokens": 146,
+                    "cached_tokens": 0
+                  },
+                  "error": null,
+                  "temperature": 1,
+                  "top_p": 1
+                }
+              },
+              {
+                "type": "text_similarity",
+                "name": "text_check_grader",
+                "metric": "text_check_grader",
+                "score": 0.0283483466346485,
+                "label": null,
+                "reason": null,
+                "threshold": null,
+                "passed": false
+              },
+              {
+                "type": "string_check",
+                "name": "string_check_grader",
+                "metric": "string_check_grader",
+                "score": 1,
+                "label": null,
+                "reason": null,
+                "threshold": null,
+                "passed": true
+              },
+              {
+                "type": "score_model",
+                "name": "score",
+                "metric": "score",
+                "score": 1,
+                "label": "pass",
+                "reason": null,
+                "threshold": null,
+                "passed": true,
+                "sample": {
+                  "input": [
+                    {
+                      "role": "system",
+                      "content": "Evaluate the degree of similarity between the given output and the ground truth on a scale from 1 to 5, using a chain of thought to ensure step-by-step reasoning before reaching the conclusion.\n\nConsider the following criteria:\n\n- 5: Highly similar - The output and ground truth are nearly identical, with only minor, insignificant differences.\n- 4: Somewhat similar - The output is largely similar to the ground truth but has few noticeable differences.\n- 3: Moderately similar - There are some evident differences, but the core essence is captured in the output.\n- 2: Slightly similar - The output only captures a few elements of the ground truth and contains several differences.\n- 1: Not similar - The output is significantly different from the ground truth, with few or no matching elements.\n\n# Steps\n\n1. Identify and list the key elements present in both the output and the ground truth.\n2. Compare these key elements to evaluate their similarities and differences, considering both content and structure.\n3. Analyze the semantic meaning conveyed by both the output and the ground truth, noting any significant deviations.\n4. Based on these comparisons, categorize the level of similarity according to the defined criteria above.\n5. Write out the reasoning for why a particular score is chosen, to ensure transparency and correctness.\n6. Assign a similarity score based on the defined criteria above.\n\n# Output Format\n\nProvide the final similarity score as an integer (1, 2, 3, 4, or 5).\n\n# Examples\n\n**Example 1:**\n\n- Output: \"The cat sat on the mat.\"\n- Ground Truth: \"The feline is sitting on the rug.\"\n- Reasoning: Both sentences describe a cat sitting on a surface, but they use different wording. The structure is slightly different, but the core meaning is preserved. There are noticeable differences, but the overall meaning is conveyed well.\n- Similarity Score: 3\n\n**Example 2:**\n\n- Output: \"The quick brown fox jumps over the lazy dog.\"\n- Ground Truth: \"A fast brown animal leaps over a sleeping canine.\"\n- Reasoning: The meaning of both sentences is very similar, with only minor differences in wording. The structure and intent are well preserved.\n- Similarity Score: 4\n\n# Notes\n\n- Always aim to provide a fair and balanced assessment.\n- Consider both syntactic and semantic differences in your evaluation.\n- Consistency in scoring similar pairs is crucial for accurate measurement."
+                    },
+                    {
+                      "role": "user",
+                      "content": "Output: Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information.}}\nGround Truth: Quantum computing uses quantum mechanics principles"
+                    }
+                  ],
+                  "output": [
+                    {
+                      "role": "assistant",
+                      "content": "{\"steps\":[{\"description\":\"Identify key elements in both the output and ground truth.\",\"conclusion\":\"Output talks about quantum computing, mentioning superposition and entanglement; the ground truth mentions quantum mechanics principles.\"},{\"description\":\"Compare the content and structure of the output and ground truth.\",\"conclusion\":\"The output is more detailed than the ground truth, providing specific concepts like superposition and entanglement.\"},{\"description\":\"Analyze the semantic meaning conveyed by both the output and the ground truth.\",\"conclusion\":\"Both convey the essence of using quantum mechanics in computing, but the output is more informative.\"},{\"description\":\"Based on the comparisons, categorize the level of similarity according to the defined criteria.\",\"conclusion\":\"There are evident differences in detail level, but the core concept of quantum computing is maintained in both.\"},{\"description\":\"Final assessment based on the defined criteria.\",\"conclusion\":\"The output and ground truth are somewhat similar but differ in detail and scope.\"}],\"result\":4}"
+                    }
+                  ],
+                  "finish_reason": "stop",
+                  "model": "gpt-4o-2024-07-18",
+                  "usage": {
+                    "total_tokens": 859,
+                    "completion_tokens": 197,
+                    "prompt_tokens": 662,
+                    "cached_tokens": 0
+                  },
+                  "error": null,
+                  "temperature": 1,
+                  "top_p": 1
+                }
+              }
+            ],
+            "sample": {
+              "error": null,
+              "finish_reason": "stop",
+              "input": [
+                {
+                  "role": "system",
+                  "content": "Evaluate the degree of similarity between the given output and the ground truth on a scale from 1 to 5, using a chain of thought to ensure step-by-step reasoning before reaching the conclusion.\n\nConsider the following criteria:\n\n- 5: Highly similar - The output and ground truth are nearly identical, with only minor, insignificant differences.\n- 4: Somewhat similar - The output is largely similar to the ground truth but has few noticeable differences.\n- 3: Moderately similar - There are some evident differences, but the core essence is captured in the output.\n- 2: Slightly similar - The output only captures a few elements of the ground truth and contains several differences.\n- 1: Not similar - The output is significantly different from the ground truth, with few or no matching elements.\n\n# Steps\n\n1. Identify and list the key elements present in both the output and the ground truth.\n2. Compare these key elements to evaluate their similarities and differences, considering both content and structure.\n3. Analyze the semantic meaning conveyed by both the output and the ground truth, noting any significant deviations.\n4. Based on these comparisons, categorize the level of similarity according to the defined criteria above.\n5. Write out the reasoning for why a particular score is chosen, to ensure transparency and correctness.\n6. Assign a similarity score based on the defined criteria above.\n\n# Output Format\n\nProvide the final similarity score as an integer (1, 2, 3, 4, or 5).\n\n# Examples\n\n**Example 1:**\n\n- Output: \"The cat sat on the mat.\"\n- Ground Truth: \"The feline is sitting on the rug.\"\n- Reasoning: Both sentences describe a cat sitting on a surface, but they use different wording. The structure is slightly different, but the core meaning is preserved. There are noticeable differences, but the overall meaning is conveyed well.\n- Similarity Score: 3\n\n**Example 2:**\n\n- Output: \"The quick brown fox jumps over the lazy dog.\"\n- Ground Truth: \"A fast brown animal leaps over a sleeping canine.\"\n- Reasoning: The meaning of both sentences is very similar, with only minor differences in wording. The structure and intent are well preserved.\n- Similarity Score: 4\n\n# Notes\n\n- Always aim to provide a fair and balanced assessment.\n- Consider both syntactic and semantic differences in your evaluation.\n- Consistency in scoring similar pairs is crucial for accurate measurement."
+                },
+                {
+                  "role": "user",
+                  "content": "Output: Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information.}}\nGround Truth: Quantum computing uses quantum mechanics principles"
+                }
+              ],
+              "max_completion_tokens": null,
+              "model": "gpt-4o-2024-07-18",
+              "output": [
+                {
+                  "role": "assistant",
+                  "content": "{\"steps\":[{\"description\":\"Identify key elements in both the output and ground truth.\",\"conclusion\":\"Output talks about quantum computing, mentioning superposition and entanglement; the ground truth mentions quantum mechanics principles.\"},{\"description\":\"Compare the content and structure of the output and ground truth.\",\"conclusion\":\"The output is more detailed than the ground truth, providing specific concepts like superposition and entanglement.\"},{\"description\":\"Analyze the semantic meaning conveyed by both the output and the ground truth.\",\"conclusion\":\"Both convey the essence of using quantum mechanics in computing, but the output is more informative.\"},{\"description\":\"Based on the comparisons, categorize the level of similarity according to the defined criteria.\",\"conclusion\":\"There are evident differences in detail level, but the core concept of quantum computing is maintained in both.\"},{\"description\":\"Final assessment based on the defined criteria.\",\"conclusion\":\"The output and ground truth are somewhat similar but differ in detail and scope.\"}],\"result\":4}"
+                }
+              ],
+              "seed": null,
+              "temperature": 1.0,
+              "top_p": 1.0,
+              "usage": {
+                "cached_tokens": 0,
+                "completion_tokens": 197,
+                "prompt_tokens": 662,
+                "total_tokens": 859
+              }
+            }
+          }
+        ],
+        "first_id": "1",
+        "last_id": "4",
+        "has_more": false
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc?api-version=2025-11-15-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "bf6bda29-7984-4cd5-b7ae-a1e477c33afc",
+        "azureml-served-by-cluster": "vienna-swedencentral-01",
+        "Content-Length": "227",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 01 Feb 2026 06:57:44 GMT",
+        "mise-correlation-id": "8b3a3020-0404-43f0-80b0-b5fcaff27167",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.724"
+      },
+      "ResponseBody": {
+        "object": "eval.deleted",
+        "deleted": false,
+        "eval_id": "eval_7d3b7af81bd242829f2849659ae82adc",
+        "run_id": null,
+        "location": "https://swedencentral.api.azureml.ms/openai/evals/eval_7d3b7af81bd242829f2849659ae82adc"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/responses?api-version=2025-11-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "Content-Length": "1295",
+        "Content-Type": "application/json",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
+      },
+      "RequestBody": {
+        "input": "sanitized-print-output",
+        "instructions": "We just run Python code for an evaluation sample and captured a Python array of print statements.\nValidating the printed content to determine if the evaluation completed successfully:\nRespond false if any entries show:\n- Error messages or exception text (not including normal status messages)\n- Malformed or corrupted data\n- Actual timeout errors or connection failures\n- Explicit failure messages like \"Evaluation run failed\"\n- Exceptions being raised\n\nRespond with true if:\n- The evaluation was created and ran\n- Status messages showing progress (like \"Waiting for eval run to complete... current status: in_progress\") are NORMAL and expected\n- The evaluation completed with results (passed or failed evaluation metrics are both valid outcomes)\n- Resources were cleaned up (agent deleted, evaluation deleted)\n\nAlways respond with `reason` indicating the reason for the response.",
+        "model": "gpt-4o",
+        "text": {
+          "format": {
+            "type": "json_schema",
+            "name": "TestReport",
+            "schema": {
+              "additionalProperties": false,
+              "description": "Schema for validation test report.",
+              "properties": {
+                "correct": {
+                  "title": "Correct",
+                  "type": "boolean"
+                },
+                "reason": {
+                  "title": "Reason",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "correct",
+                "reason"
+              ],
+              "title": "TestReport",
+              "type": "object"
+            }
+          }
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "e61ad431-f4f6-4b9a-bd02-3cc7152a0f51",
+        "azureai-processed-tier": "default",
+        "azureai-requested-tier": "default",
+        "azureml-internal-forward-count": "1",
+        "azureml-served-by-cluster": "hyena-swedencentral-01,hyena-swedencentral-01",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json",
+        "Date": "Sun, 01 Feb 2026 06:57:49 GMT",
+        "openai-client-partition-id": "fda8ce6dd2154ae098fdfcc69270d4f7e61ad431-f4f6-4b9a-bd02-3cc7152a0f51",
+        "openai-organization": "fda8ce6dd2154ae098fdfcc69270d4f7",
+        "openai-processing-ms": "973",
+        "openai-project": "79af2663-27ee-45f2-a20d-da719789bd08",
+        "openai-version": "2020-10-01",
+        "request-context": "appId=",
+        "skip-error-remapping": "true",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "Sweden Central",
+        "x-ms-response-type": "standard",
+        "x-ratelimit-limit-tokens": "100000",
+        "x-ratelimit-remaining-tokens": "95925",
+        "x-ratelimit-reset-tokens": "0",
+        "X-Request-ID": "d486ad66-5504-4604-a4df-331ad9fdee09"
+      },
+      "ResponseBody": {
+        "metadata": {},
+        "temperature": 1,
+        "top_p": 1,
+        "user": null,
+        "service_tier": "default",
+        "top_logprobs": 0,
+        "model": "gpt-4o",
+        "reasoning": {},
+        "background": false,
+        "text": {
+          "format": {
+            "type": "json_schema",
+            "name": "TestReport",
+            "schema": {
+              "additionalProperties": false,
+              "description": "Schema for validation test report.",
+              "properties": {
+                "correct": {
+                  "title": "Correct",
+                  "type": "boolean"
+                },
+                "reason": {
+                  "title": "Reason",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "correct",
+                "reason"
+              ],
+              "title": "TestReport",
+              "type": "object"
+            },
+            "strict": true
+          },
+          "verbosity": "medium"
+        },
+        "tools": [],
+        "tool_choice": "auto",
+        "truncation": "disabled",
+        "id": "resp_071e94fadc70b17800697ef96d5c0c8190a162bd9db528a6ef",
+        "object": "response",
+        "status": "completed",
+        "created_at": 1769929069,
+        "error": null,
+        "incomplete_details": null,
+        "output": [
+          {
+            "type": "message",
+            "id": "msg_071e94fadc70b17800697ef96d98a4819087e2337dbc531b4f",
+            "status": "completed",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "{\"correct\":true,\"reason\":\"The evaluation was created and ran successfully, as indicated by the status messages. Resources were cleaned up (evaluation deleted) after the run.\"}",
+                "annotations": [],
+                "logprobs": []
+              }
+            ],
+            "created_by": {
+              "response_id": "resp_071e94fadc70b17800697ef96d5c0c8190a162bd9db528a6ef"
+            }
+          }
+        ],
+        "instructions": "We just run Python code for an evaluation sample and captured a Python array of print statements.\nValidating the printed content to determine if the evaluation completed successfully:\nRespond false if any entries show:\n- Error messages or exception text (not including normal status messages)\n- Malformed or corrupted data\n- Actual timeout errors or connection failures\n- Explicit failure messages like \"Evaluation run failed\"\n- Exceptions being raised\n\nRespond with true if:\n- The evaluation was created and ran\n- Status messages showing progress (like \"Waiting for eval run to complete... current status: in_progress\") are NORMAL and expected\n- The evaluation completed with results (passed or failed evaluation metrics are both valid outcomes)\n- Resources were cleaned up (agent deleted, evaluation deleted)\n\nAlways respond with `reason` indicating the reason for the response.",
+        "usage": {
+          "input_tokens": 508,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 36,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 544
+        },
+        "parallel_tool_calls": true,
+        "conversation": null
+      }
+    }
+  ],
+  "Variables": {}
+}
