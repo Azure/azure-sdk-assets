@@ -1,0 +1,144 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.cognitiveservices.azure.com/language/:analyze-text?api-version=2025-11-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "Content-Length": "377",
+        "Content-Type": "application/json",
+        "Ocp-Apim-Subscription-Key": "Sanitized",
+        "User-Agent": "azsdk-python-ai-textanalytics/6.0.0b2 Python/3.13.11 (Windows-11-10.0.26200-SP0)"
+      },
+      "RequestBody": {
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "Sanitized",
+              "text": "My name is John Doe. My ssn is 222-45-6789. My email is john@example.com. John Doe is my name.",
+              "language": "en"
+            }
+          ]
+        },
+        "parameters": {
+          "piiCategories": [
+            "All"
+          ],
+          "confidenceScoreThreshold": {
+            "default": 0.3,
+            "overrides": [
+              {
+                "value": 0.9,
+                "entity": "USSocialSecurityNumber"
+              },
+              {
+                "value": 0.9,
+                "entity": "Email"
+              }
+            ]
+          }
+        },
+        "kind": "PiiEntityRecognition"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "0dfcf965-f4d6-458c-83b7-35c94b8d37a6",
+        "Content-Length": "1082",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.PII=1,CognitiveServices.TextAnalytics.TextRecords=1",
+        "Date": "Fri, 06 Feb 2026 05:47:44 GMT",
+        "Set-Cookie": "Sanitized",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "41",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "kind": "PiiEntityRecognitionResults",
+        "results": {
+          "documents": [
+            {
+              "redactedText": "My name is ********. My ssn is ***********. My email is ****@example.com. ******** is my name.",
+              "id": "Sanitized",
+              "entities": [
+                {
+                  "text": "John Doe",
+                  "category": "Person",
+                  "type": "Person",
+                  "offset": 11,
+                  "length": 8,
+                  "mask": "********",
+                  "maskOffset": 11,
+                  "maskLength": 8,
+                  "confidenceScore": 1.0,
+                  "tags": [
+                    {
+                      "name": "Sanitized",
+                      "confidenceScore": 1.0
+                    }
+                  ]
+                },
+                {
+                  "text": "222-45-6789",
+                  "category": "PhoneNumber",
+                  "type": "PhoneNumber",
+                  "offset": 31,
+                  "length": 11,
+                  "mask": "***********",
+                  "maskOffset": 31,
+                  "maskLength": 11,
+                  "confidenceScore": 0.75,
+                  "tags": [
+                    {
+                      "name": "Sanitized",
+                      "confidenceScore": 0.75
+                    }
+                  ]
+                },
+                {
+                  "text": "john",
+                  "category": "Person",
+                  "type": "Person",
+                  "offset": 56,
+                  "length": 4,
+                  "mask": "****",
+                  "maskOffset": 56,
+                  "maskLength": 4,
+                  "confidenceScore": 0.7,
+                  "tags": [
+                    {
+                      "name": "Sanitized",
+                      "confidenceScore": 0.7
+                    }
+                  ]
+                },
+                {
+                  "text": "John Doe",
+                  "category": "Person",
+                  "type": "Person",
+                  "offset": 74,
+                  "length": 8,
+                  "mask": "********",
+                  "maskOffset": 74,
+                  "maskLength": 8,
+                  "confidenceScore": 1.0,
+                  "tags": [
+                    {
+                      "name": "Sanitized",
+                      "confidenceScore": 1.0
+                    }
+                  ]
+                }
+              ],
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2025-11-01"
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}
