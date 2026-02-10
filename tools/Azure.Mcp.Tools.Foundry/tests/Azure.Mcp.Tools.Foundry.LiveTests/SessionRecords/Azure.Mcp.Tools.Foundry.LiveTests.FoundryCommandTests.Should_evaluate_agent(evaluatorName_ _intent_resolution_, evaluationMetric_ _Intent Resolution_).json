@@ -1,0 +1,134 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.cognitiveservices.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-04-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "8945",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-net-AI.OpenAI/2.8.0-beta.1 (.NET 10.0.2; Microsoft Windows 10.0.26200) MEAI/10.2.0-preview.1.26063.2",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "temperature": 0,
+        "top_p": 1,
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are an expert in evaluating the quality of a RESPONSE from an intelligent assistant based on provided definition and Data."
+          },
+          {
+            "role": "user",
+            "content": "# Goal\r\nYour goal is to assess the quality of the RESPONSE of an assistant in relation to a QUERY from a user, specifically focusing on\r\nthe assistant's ability to understand and resolve the user intent expressed in the QUERY. There is also a field for tool definitions\r\ndescribing the functions, if any, that are accessible to the agent and that the agent may invoke in the RESPONSE if necessary.\r\n\r\nThere are two components to intent resolution:\r\n    - Intent Understanding: The extent to which the agent accurately discerns the user's underlying need or inquiry.\r\n    - Response Resolution: The degree to which the agent's response is comprehensive, relevant, and adequately addresses the user's request.\r\n\r\nNote that the QUERY can either be a string with a user request or an entire conversation history including previous requests and responses from the assistant.\r\nIn this case, the assistant's response should be evaluated in the context of the entire conversation but the focus should be on the last intent.\r\n\r\n# Data\r\nQUERY: [{\"role\":\"user\",\"contents\":[{\"$type\":\"text\",\"text\":\"What is the weather in NYC today?\"}],\"messageId\":\"msg_fakeMessageHash1\"}]\r\nRESPONSE: [{\"role\":\"user\",\"contents\":[{\"$type\":\"text\",\"text\":\"What is the weather in NYC today?\"}],\"messageId\":\"msg_fakeMessageHash1\"},{\"authorName\":\"asst_XNa6yxvWUvRhCpWmE3kxk09u\",\"role\":\"assistant\",\"contents\":[{\"$type\":\"functionCall\",\"callId\":\"call_fakeCallHash1\",\"name\":\"bing_grounding\",\"arguments\":{\"requesturl\":\"https://api.bing.microsoft.com/v7.0/search?q=NewYorkCityweatherAugust42025\"}}],\"messageId\":\"step_fakeRunStepHash1\"},{\"authorName\":\"asst_XNa6yxvWUvRhCpWmE3kxk09u\",\"role\":\"assistant\",\"contents\":[{\"$type\":\"text\",\"text\":\"The weather in New York City today, August 4, 2025, is expected to have a high of 88\\u00B0F during the day and a low of 70\\u00B0F at night. There is a 25% chance of precipitation, with light winds at about 7 mph.\\u30103:2\\u2020source\\u3011.\"}],\"messageId\":\"msg_fakeMessageHash2\"}]\r\nTOOL_DEFINITIONS: [{\"name\":\"bing_grounding\",\"description\":\"Enhance model output with web data.\",\"functionSchema\":{\"type\":\"object\",\"properties\":{\"requesturl\":{\"type\":\"string\",\"description\":\"URL used in Bing Search API.\"}}}}]\r\n\r\n\r\n# Ratings\r\n## [Score: 1] (Response completely unrelated to user intent)\r\n**Definition:** The agent's response does not address the query at all.\r\n\r\n**Example:**\r\n  **Query:** How do I bake a chocolate cake?\r\n  **Response:** The latest smartphone models have incredible features and performance.\r\n  **Tool Definitions:** []\r\n\r\n**Expected output**\r\n{\r\n    \"explanation\": \"The agent's response is entirely off-topic, discussing smartphones instead of providing any information about baking a chocolate cake.\"\r\n    \"conversation_has_intent\": true,\r\n    \"agent_perceived_intent\": \"discussion about smartphone features\",\r\n    \"actual_user_intent\": \"bake a chocolate cake\",\r\n    \"correct_intent_detected\": false,\r\n    \"intent_resolved\": false,\r\n    \"resolution_score\": 1,\r\n}\r\n\r\n\r\n## [Score: 2] (Response minimally relates to user intent)\r\n**Definition:** The response shows a token attempt to address the query by mentioning a relevant keyword or concept, but it provides almost no useful or actionable information.\r\n\r\n**Example input:**\r\n  **Query:** How do I bake a chocolate cake?\r\n  **Response:** Chocolate cake involves some ingredients.\r\n  **Tool Definitions:** []\r\n\r\n**Expected output**\r\n{\r\n    \"explanation\": \"While the response mentions 'ingredients' related to a chocolate cake, it barely addresses the process or any detailed steps, leaving the query unresolved.\"\r\n    \"conversation_has_intent\": true,\r\n    \"agent_perceived_intent\": \"mention of ingredients\",\r\n    \"actual_user_intent\": \"bake a chocolate cake\",\r\n    \"correct_intent_detected\": false,\r\n    \"intent_resolved\": false,\r\n    \"resolution_score\": 2,\r\n}\r\n\r\n\r\n## [Score: 3] (Response partially addresses the user intent but lacks complete details)\r\n**Definition:** The response provides a basic idea related to the query by mentioning a few relevant elements, but it omits several key details and specifics needed for fully resolving the user's query.\r\n\r\n**Example input:**\r\n  **Query:** How do I bake a chocolate cake?\r\n  **Response:** Preheat your oven and mix the ingredients before baking the cake.\r\n  **Tool Definitions:** []\r\n\r\n**Expected output**\r\n{\r\n    \"explanation\": \"The response outlines a minimal process (preheating and mixing) but omits critical details like ingredient measurements, baking time, and temperature specifics, resulting in only a partial resolution of the query.\"\r\n    \"conversation_has_intent\": true,\r\n    \"agent_perceived_intent\": \"basic baking process\",\r\n    \"actual_user_intent\": \"bake a chocolate cake\",\r\n    \"correct_intent_detected\": true,\r\n    \"intent_resolved\": false,\r\n    \"resolution_score\": 3,\r\n}\r\n\r\n\r\n## [Score: 4] (Response addresses the user intent with moderate accuracy but has minor inaccuracies or omissions)\r\n**Definition:** The response offers a moderately detailed answer that includes several specific elements relevant to the query, yet it still lacks some finer details or complete information.\r\n\r\n**Example input:**\r\n  **Query:** How do I bake a chocolate cake?\r\n  **Response:** Preheat your oven to 350°F. In a bowl, combine flour, sugar, cocoa, eggs, and milk, mix well, and bake for about 30 minutes.\r\n  **Tool Definitions:** []\r\n\r\n**Expected output**\r\n{\r\n    \"explanation\": \"The response includes specific steps and ingredients, indicating a clear intent to provide a recipe. However, it lacks detailed measurements and finer instructions, which makes the resolution only moderately complete.\"\r\n    \"conversation_has_intent\": true,\r\n    \"agent_perceived_intent\": \"provide a basic chocolate cake recipe\",\r\n    \"actual_user_intent\": \"bake a chocolate cake\",\r\n    \"correct_intent_detected\": true,\r\n    \"intent_resolved\": false,\r\n    \"resolution_score\": 4,\r\n}\r\n\r\n\r\n## [Score: 5] (Response directly addresses the user intent and fully resolves it)\r\n**Definition:** The response provides a complete, detailed, and accurate answer that fully resolves the user's query with all necessary information and precision.\r\n\r\n**Example input:**\r\n  **Query:** How do I bake a chocolate cake?\r\n  **Response:** Preheat your oven to 350°F (175°C) and grease a 9-inch round cake pan. In a large bowl, sift together 1 ¾ cups all-purpose flour, 1 cup sugar, ¾ cup unsweetened cocoa powder, 1 ½ tsp baking powder, and 1 tsp salt. In another bowl, beat 2 large eggs with 1 cup milk, ½ cup vegetable oil, and 2 tsp vanilla extract. Combine the wet ingredients with the dry ingredients, then gradually mix in 1 cup boiling water until smooth. Pour the batter into the prepared pan and bake for 30-35 minutes or until a toothpick inserted into the center comes out clean. Allow the cake to cool before serving.\r\n  **Tool Definitions:** []\r\n\r\n**Expected output**\r\n{\r\n    \"explanation\": \"The response delivers a complete and precise recipe with detailed instructions and measurements, fully addressing the user's query about baking a chocolate cake.\"\r\n    \"conversation_has_intent\": true,\r\n    \"agent_perceived_intent\": \"provide a comprehensive chocolate cake recipe\",\r\n    \"actual_user_intent\": \"bake a chocolate cake\",\r\n    \"correct_intent_detected\": true,\r\n    \"intent_resolved\": true,\r\n    \"resolution_score\": 5,\r\n}\r\n\r\n\r\n# Task\r\n\r\nPlease provide your evaluation for the assistant RESPONSE in relation to the user QUERY and tool definitions based on the Definitions and examples above.\r\nYour output should consist only of a JSON object, as provided in the examples, that has the following keys:\r\n  - explanation: a string that explains why you think the input Data should get this resolution_score.\r\n  - conversation_has_intent: true or false\r\n  - agent_perceived_intent: a string that describes the intent the agent perceived from the user query\r\n  - actual_user_intent: a string that describes the actual user intent\r\n  - correct_intent_detected: true or false\r\n  - intent_resolved: true or false\r\n  - resolution_score: an integer between 1 and 5 that represents the resolution score\r\n\r\n\r\n# Output"
+          }
+        ],
+        "model": "gpt-4o",
+        "max_completion_tokens": 800,
+        "frequency_penalty": 0,
+        "presence_penalty": 0,
+        "response_format": {
+          "type": "json_object"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "b0804273-c898-4cd8-a7df-f146c46be0d9",
+        "azureml-model-session": "d20251214210615-6cb5870fc0324a98",
+        "Content-Length": "1675",
+        "Content-Type": "application/json",
+        "Date": "Tue, 10 Feb 2026 18:56:24 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-accel-buffering": "no",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-deployment-name": "gpt-4o",
+        "x-ms-rai-invoked": "true",
+        "x-ms-region": "West US",
+        "x-ratelimit-limit-requests": "30",
+        "x-ratelimit-limit-tokens": "30000",
+        "x-ratelimit-remaining-requests": "29",
+        "x-ratelimit-remaining-tokens": "26887",
+        "X-Request-ID": "7c7fd4b6-da28-4543-a2e0-fe04f7ee8107"
+      },
+      "ResponseBody": {
+        "choices": [
+          {
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            },
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "annotations": [],
+              "content": "{\n    \"explanation\": \"The assistant correctly understood the user's intent to find out the current weather in New York City. It used the 'bing_grounding' tool to fetch the relevant data and provided a detailed weather report, including temperature, precipitation chance, and wind speed, which fully resolves the user's query.\",\n    \"conversation_has_intent\": true,\n    \"agent_perceived_intent\": \"provide current weather information for New York City\",\n    \"actual_user_intent\": \"find out the weather in NYC today\",\n    \"correct_intent_detected\": true,\n    \"intent_resolved\": true,\n    \"resolution_score\": 5\n}",
+              "refusal": null,
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1770749783,
+        "id": "chatcmpl-D7nCJUOtibclb8GQ4mRNYmcDnUt0o",
+        "model": "gpt-4o-2024-08-06",
+        "object": "chat.completion",
+        "prompt_filter_results": [
+          {
+            "prompt_index": 0,
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
+          }
+        ],
+        "system_fingerprint": "fp_4a331a0222",
+        "usage": {
+          "completion_tokens": 134,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": 0
+          },
+          "prompt_tokens": 1846,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0
+          },
+          "total_tokens": 1980
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}
