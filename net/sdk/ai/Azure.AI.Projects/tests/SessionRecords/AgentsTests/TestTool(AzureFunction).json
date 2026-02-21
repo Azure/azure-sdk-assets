@@ -1,0 +1,365 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents/cs-e2e-tests-client/versions?api-version=v1",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "1004",
+        "Content-Type": "application/json",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects/2.0.0-alpha.20260220.1 (.NET 8.0.24; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "definition": {
+          "kind": "prompt",
+          "model": "gpt-4.1",
+          "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://balapvstorage123.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+          "tools": [
+            {
+              "type": "azure_function",
+              "azure_function": {
+                "function": {
+                  "name": "foo",
+                  "description": "Get answers from the foo bot.",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                        "description": "The question to ask."
+                      }
+                    }
+                  }
+                },
+                "input_binding": {
+                  "type": "storage_queue",
+                  "storage_queue": {
+                    "queue_service_endpoint": "https://balapvstorage123.queue.core.windows.net",
+                    "queue_name": "azure-function-foo-input"
+                  }
+                },
+                "output_binding": {
+                  "type": "storage_queue",
+                  "storage_queue": {
+                    "queue_service_endpoint": "https://balapvstorage123.queue.core.windows.net",
+                    "queue_name": "azure-function-tool-output"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-02",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sat, 21 Feb 2026 00:09:25 GMT",
+        "request-context": "appId=",
+        "Server": "istio-envoy",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "15",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "908a8ee375551b7b72fcd24f33d5b90b"
+      },
+      "ResponseBody": {
+        "metadata": {},
+        "object": "agent.version",
+        "id": "cs-e2e-tests-client:1",
+        "name": "cs-e2e-tests-client",
+        "version": "1",
+        "description": "",
+        "created_at": 1771632565,
+        "definition": {
+          "kind": "prompt",
+          "model": "gpt-4.1",
+          "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://balapvstorage123.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+          "tools": [
+            {
+              "type": "azure_function",
+              "azure_function": {
+                "function": {
+                  "name": "foo",
+                  "description": "Get answers from the foo bot.",
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                        "description": "The question to ask."
+                      }
+                    }
+                  }
+                },
+                "input_binding": {
+                  "type": "storage_queue",
+                  "storage_queue": {
+                    "queue_service_endpoint": "https://balapvstorage123.queue.core.windows.net",
+                    "queue_name": "azure-function-foo-input"
+                  }
+                },
+                "output_binding": {
+                  "type": "storage_queue",
+                  "storage_queue": {
+                    "queue_service_endpoint": "https://balapvstorage123.queue.core.windows.net",
+                    "queue_name": "azure-function-tool-output"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/responses",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json, text/event-stream",
+        "Authorization": "Sanitized",
+        "Content-Length": "258",
+        "Content-Type": "application/json",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects/2.0.0-alpha.20260220.1 (.NET 8.0.24; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "tool_choice": "required",
+        "input": [
+          {
+            "type": "message",
+            "role": "user",
+            "content": [
+              {
+                "type": "input_text",
+                "text": "What is the most prevalent element in the universe? What would foo say?"
+              }
+            ]
+          }
+        ],
+        "agent_reference": {
+          "type": "agent_reference",
+          "name": "cs-e2e-tests-client"
+        }
+      },
+      "StatusCode": 408,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "Content-Length": "75",
+        "Content-Type": "application/json",
+        "Date": "Sat, 21 Feb 2026 00:11:27 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Timeout",
+          "message": "The operation was timeout."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/responses",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json, text/event-stream",
+        "Authorization": "Sanitized",
+        "Content-Length": "258",
+        "Content-Type": "application/json",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects/2.0.0-alpha.20260220.1 (.NET 8.0.24; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "tool_choice": "required",
+        "input": [
+          {
+            "type": "message",
+            "role": "user",
+            "content": [
+              {
+                "type": "input_text",
+                "text": "What is the most prevalent element in the universe? What would foo say?"
+              }
+            ]
+          }
+        ],
+        "agent_reference": {
+          "type": "agent_reference",
+          "name": "cs-e2e-tests-client"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureai-processed-tier": "default",
+        "azureai-requested-tier": "default",
+        "azureml-internal-forward-count": "1",
+        "azureml-served-by-cluster": "hyena-stage-eastus2-02,hyena-westus2-02",
+        "Content-Length": "4336",
+        "Content-Type": "application/json",
+        "Date": "Sat, 21 Feb 2026 00:11:30 GMT",
+        "openai-client-partition-id": "bf059ab68ac94a4b8478363c386cf498b91b3292-6e73-4aaa-8868-a50a4cdca1a2",
+        "openai-organization": "bf059ab68ac94a4b8478363c386cf498",
+        "openai-processing-ms": "42877",
+        "openai-project": "0c3b9460-45fa-460e-ba12-ab1e9dcf8e11",
+        "openai-version": "2020-10-01",
+        "request-context": "appId=",
+        "Server": "istio-envoy",
+        "skip-error-remapping": "true",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "7",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "x-ratelimit-limit-requests": "180",
+        "x-ratelimit-limit-tokens": "180000",
+        "x-ratelimit-remaining-requests": "179",
+        "x-ratelimit-remaining-tokens": "179896",
+        "x-ratelimit-reset-requests": "0",
+        "x-ratelimit-reset-tokens": "0",
+        "X-Request-ID": "9a550e3d-55c1-4374-b777-def5b98ed3bc"
+      },
+      "ResponseBody": {
+        "metadata": {},
+        "top_logprobs": 0,
+        "temperature": 1,
+        "top_p": 1,
+        "service_tier": "default",
+        "model": "gpt-4.1",
+        "reasoning": {},
+        "background": false,
+        "text": {
+          "format": {
+            "type": "text"
+          },
+          "verbosity": "medium"
+        },
+        "tools": [
+          {
+            "type": "azure_function",
+            "azure_function": {
+              "function": {
+                "name": "foo",
+                "description": "Get answers from the foo bot.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The question to ask."
+                    }
+                  }
+                }
+              },
+              "input_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://balapvstorage123.queue.core.windows.net",
+                  "queue_name": "azure-function-foo-input"
+                }
+              },
+              "output_binding": {
+                "type": "storage_queue",
+                "storage_queue": {
+                  "queue_service_endpoint": "https://balapvstorage123.queue.core.windows.net",
+                  "queue_name": "azure-function-tool-output"
+                }
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "truncation": "disabled",
+        "id": "resp_08c3bb2ce646b689006998f833afb48195bac9cb96f4461f59",
+        "object": "response",
+        "status": "completed",
+        "created_at": 1771632692,
+        "completed_at": 1771632732,
+        "error": null,
+        "incomplete_details": null,
+        "output": [
+          {
+            "type": "azure_function_call",
+            "id": "fc_08c3bb2ce646b689006998f8383a5481959ab09454c6464309",
+            "agent_reference": {
+              "type": "agent_reference",
+              "name": "cs-e2e-tests-client",
+              "version": "1"
+            },
+            "response_id": "resp_08c3bb2ce646b689006998f833afb48195bac9cb96f4461f59",
+            "call_id": "call_802187c93f714dcba2b95d7c0b64537f",
+            "arguments": "{\"function_args\": {\"question\": \"What is the most prevalent element in the universe?\"}, \"azure_function_config\": {\"function\": {\"name\": \"foo\", \"description\": \"Get answers from the foo bot.\", \"parameters\": {\"type\": \"object\", \"properties\": {\"query\": {\"type\": \"string\", \"description\": \"The question to ask.\"}}}}, \"call_origin\": \"rapi\", \"input_binding\": {\"storage_queue\": {\"service_endpoint\": \"https://balapvstorage123.queue.core.windows.net\", \"queue_name\": \"azure-function-foo-input\"}}, \"output_binding\": {\"storage_queue\": {\"service_endpoint\": \"https://balapvstorage123.queue.core.windows.net\", \"queue_name\": \"azure-function-tool-output\"}}}, \"function_name\": \"foo\"}",
+            "status": "completed"
+          },
+          {
+            "type": "azure_function_call_output",
+            "id": "fco_08c3bb2ce646b689006998f85a76408195abf342f83bfbb08a",
+            "agent_reference": {
+              "type": "agent_reference",
+              "name": "cs-e2e-tests-client",
+              "version": "1"
+            },
+            "response_id": "resp_08c3bb2ce646b689006998f833afb48195bac9cb96f4461f59",
+            "call_id": "call_802187c93f714dcba2b95d7c0b64537f",
+            "output": "Bar",
+            "status": "completed"
+          },
+          {
+            "type": "message",
+            "id": "msg_08c3bb2ce646b689006998f85bbdd881958bd197f973cdf3c1",
+            "agent_reference": {
+              "type": "agent_reference",
+              "name": "cs-e2e-tests-client",
+              "version": "1"
+            },
+            "response_id": "resp_08c3bb2ce646b689006998f833afb48195bac9cb96f4461f59",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "Foo says Bar.",
+                "annotations": [],
+                "logprobs": []
+              }
+            ],
+            "status": "completed"
+          }
+        ],
+        "instructions": "You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as 'https://balapvstorage123.queue.core.windows.net/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
+        "usage": {
+          "input_tokens": 521,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 123,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 644
+        },
+        "parallel_tool_calls": true,
+        "agent_reference": {
+          "type": "agent_reference",
+          "name": "cs-e2e-tests-client",
+          "version": "1"
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "MODEL_DEPLOYMENT_NAME": "gpt-4.1",
+    "PROJECT_ENDPOINT": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project",
+    "STORAGE_QUEUE_URI": "https://balapvstorage123.queue.core.windows.net"
+  }
+}
