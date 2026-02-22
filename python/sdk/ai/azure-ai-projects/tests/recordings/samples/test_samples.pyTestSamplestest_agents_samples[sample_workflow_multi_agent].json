@@ -20,21 +20,21 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "6fb51509-8b0c-4da7-96e3-559a468c3969",
-        "azureml-served-by-cluster": "hyena-westus2-01",
+        "apim-request-id": "d8ab00db-875b-4a87-8b37-0a46ad05b9eb",
+        "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 22 Feb 2026 06:34:00 GMT",
+        "Date": "Sun, 22 Feb 2026 06:51:48 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "19",
+        "x-http2-stream-id": "17",
         "x-ms-region": "West US 2",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "2741354a2b06d90b41129bd26c4b1ff2"
+        "X-Request-ID": "9439589215baa0422fa3c51866499a40"
       },
       "ResponseBody": {
         "metadata": {},
@@ -43,7 +43,7 @@
         "name": "teacher-agent",
         "version": "1",
         "description": "",
-        "created_at": 1771742041,
+        "created_at": 1771743109,
         "definition": {
           "kind": "prompt",
           "model": "sanitized-gpt-agent",
@@ -71,21 +71,21 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "d3f807be-a25e-403f-8233-40634bc62b1f",
-        "azureml-served-by-cluster": "hyena-westus2-01",
+        "apim-request-id": "9de90f9d-b051-41d1-b141-6146fdb9b578",
+        "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 22 Feb 2026 06:34:01 GMT",
+        "Date": "Sun, 22 Feb 2026 06:51:48 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "25",
+        "x-http2-stream-id": "3",
         "x-ms-region": "West US 2",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "45dc3a0588d74dc2a654a5b67211c82c"
+        "X-Request-ID": "45881f727c40aa4258fe044e53a0ce33"
       },
       "ResponseBody": {
         "metadata": {},
@@ -94,7 +94,7 @@
         "name": "student-agent",
         "version": "1",
         "description": "",
-        "created_at": 1771742041,
+        "created_at": 1771743109,
         "definition": {
           "kind": "prompt",
           "model": "sanitized-gpt-agent",
@@ -122,21 +122,21 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "e1e2645e-4315-41d6-904c-d6ec82a919b9",
-        "azureml-served-by-cluster": "hyena-westus2-01",
+        "apim-request-id": "19b77a19-8ff7-4888-bd15-19825efb6012",
+        "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 22 Feb 2026 06:34:00 GMT",
+        "Date": "Sun, 22 Feb 2026 06:51:49 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "13",
+        "x-http2-stream-id": "3",
         "x-ms-region": "West US 2",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "b0ca625fd733462ea19edb19d227f9e8"
+        "X-Request-ID": "a2aaf9b1c4d0222ea933407deb5fc8f0"
       },
       "ResponseBody": {
         "metadata": {},
@@ -145,7 +145,7 @@
         "name": "student-teacher-workflow",
         "version": "1",
         "description": "",
-        "created_at": 1771742041,
+        "created_at": 1771743109,
         "definition": {
           "kind": "workflow",
           "workflow": "\nkind: workflow\ntrigger:\n  kind: OnConversationStart\n  id: my_workflow\n  actions:\n    - kind: SetVariable\n      id: set_variable_input_task\n      variable: Local.LatestMessage\n      value: \"=UserMessage(System.LastMessageText)\"\n\n    - kind: CreateConversation\n      id: create_student_conversation\n      conversationId: Local.StudentConversationId\n\n    - kind: CreateConversation\n      id: create_teacher_conversation\n      conversationId: Local.TeacherConversationId\n\n    - kind: InvokeAzureAgent\n      id: student_agent\n      description: The student node\n      conversationId: \"=Local.StudentConversationId\"\n      agent:\n        name: student-agent\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: InvokeAzureAgent\n      id: teacher_agent\n      description: The teacher node\n      conversationId: \"=Local.TeacherConversationId\"\n      agent:\n        name: teacher-agent\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: SendActivity\n      id: send_teacher_reply\n      activity: \"{Last(Local.LatestMessage).Text}\"                \n\n    - kind: SetVariable\n      id: set_variable_turncount\n      variable: Local.TurnCount\n      value: \"=Local.TurnCount + 1\"\n\n    - kind: ConditionGroup\n      id: completion_check\n      conditions:\n        - condition: '=!IsBlank(Find(\"[COMPLETE]\", Upper(Last(Local.LatestMessage).Text)))'\n          id: check_done\n          actions:\n            - kind: EndConversation\n              id: end_workflow\n\n        - condition: \"=Local.TurnCount >= 4\"\n          id: check_turn_count_exceeded\n          actions:\n            - kind: SendActivity\n              id: send_activity_tired\n              activity: \"Let's try again later...I am tired.\"\n\n      elseActions:\n        - kind: GotoAction\n          id: goto_student_agent\n          actionId: student_agent\n"
@@ -166,27 +166,27 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "934d5825-f65c-4a1d-b9ad-460c0059a649",
-        "azureml-served-by-cluster": "hyena-westus2-01",
+        "apim-request-id": "87e879ab-c64a-4bfc-a6f7-cee412a5fc79",
+        "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 22 Feb 2026 06:34:03 GMT",
+        "Date": "Sun, 22 Feb 2026 06:51:52 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "21",
+        "x-http2-stream-id": "5",
         "x-ms-region": "West US 2",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "ac586aab4f55ed194a4f1f3ddcf6bab1"
+        "X-Request-ID": "ec051307e3c46abdac7c4cbb54932f75"
       },
       "ResponseBody": {
-        "id": "conv_7cd85a9503292b9100MV3C7akrvRwvl4Lpgx3t0xKC4jrEXi27",
+        "id": "conv_ee13ea1c437f2eaa00oqxRbay3YHl27e32nxE6ifqqVOIp2m22",
         "object": "conversation",
         "metadata": {},
-        "created_at": 1771742044
+        "created_at": 1771743112
       }
     },
     {
@@ -200,7 +200,7 @@
         "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
       },
       "RequestBody": {
-        "conversation": "conv_7cd85a9503292b9100MV3C7akrvRwvl4Lpgx3t0xKC4jrEXi27",
+        "conversation": "conv_ee13ea1c437f2eaa00oqxRbay3YHl27e32nxE6ifqqVOIp2m22",
         "input": "1 + 1 = ?",
         "stream": true,
         "agent_reference": {
@@ -211,76 +211,76 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "73470927-1efe-4321-85bc-bac787b5cf21",
-        "azureml-served-by-cluster": "hyena-westus2-01,hyena-westus2-01",
+        "apim-request-id": "0c83f4b4-f024-4d13-a411-f267f6261f63",
+        "azureml-served-by-cluster": "hyena-westus2-01,hyena-westus2-02",
         "Cache-Control": "no-cache",
         "Content-Type": "text/event-stream; charset=utf-8",
-        "Date": "Sun, 22 Feb 2026 06:34:04 GMT",
+        "Date": "Sun, 22 Feb 2026 06:51:53 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "27",
+        "x-http2-stream-id": "5",
         "x-ms-region": "West US 2",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "acc2c05a52ab51316f19f6b7e6568da8"
+        "X-Request-ID": "a57c1861bc97138ee24edc56ca8d02ab"
       },
       "ResponseBody": [
         "event: response.created\n",
-        "data: {\"type\":\"response.created\",\"sequence_number\":1,\"response\":{\"metadata\":{},\"service_tier\":\"auto\",\"model\":\"\",\"background\":false,\"tools\":[],\"truncation\":\"auto\",\"id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"object\":\"response\",\"status\":\"in_progress\",\"created_at\":1771742045,\"completed_at\":1771742045,\"error\":null,\"incomplete_details\":null,\"output\":[],\"instructions\":\"\",\"parallel_tool_calls\":true,\"conversation\":{\"id\":\"conv_7cd85a9503292b9100MV3C7akrvRwvl4Lpgx3t0xKC4jrEXi27\"},\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"}}}\n\n",
+        "data: {\"type\":\"response.created\",\"sequence_number\":1,\"response\":{\"metadata\":{},\"service_tier\":\"auto\",\"model\":\"\",\"background\":false,\"tools\":[],\"truncation\":\"auto\",\"id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"object\":\"response\",\"status\":\"in_progress\",\"created_at\":1771743113,\"completed_at\":1771743113,\"error\":null,\"incomplete_details\":null,\"output\":[],\"instructions\":\"\",\"parallel_tool_calls\":true,\"conversation\":{\"id\":\"conv_ee13ea1c437f2eaa00oqxRbay3YHl27e32nxE6ifqqVOIp2m22\"},\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"}}}\n\n",
         "event: response.in_progress\n",
-        "data: {\"type\":\"response.in_progress\",\"sequence_number\":2,\"response\":{\"metadata\":{},\"service_tier\":\"auto\",\"model\":\"\",\"background\":false,\"tools\":[],\"truncation\":\"auto\",\"id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"object\":\"response\",\"status\":\"in_progress\",\"created_at\":1771742045,\"completed_at\":1771742045,\"error\":null,\"incomplete_details\":null,\"output\":[],\"instructions\":\"\",\"parallel_tool_calls\":true,\"conversation\":{\"id\":\"conv_7cd85a9503292b9100MV3C7akrvRwvl4Lpgx3t0xKC4jrEXi27\"},\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"}}}\n\n",
+        "data: {\"type\":\"response.in_progress\",\"sequence_number\":2,\"response\":{\"metadata\":{},\"service_tier\":\"auto\",\"model\":\"\",\"background\":false,\"tools\":[],\"truncation\":\"auto\",\"id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"object\":\"response\",\"status\":\"in_progress\",\"created_at\":1771743113,\"completed_at\":1771743113,\"error\":null,\"incomplete_details\":null,\"output\":[],\"instructions\":\"\",\"parallel_tool_calls\":true,\"conversation\":{\"id\":\"conv_ee13ea1c437f2eaa00oqxRbay3YHl27e32nxE6ifqqVOIp2m22\"},\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"}}}\n\n",
         "event: response.output_item.added\n",
-        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":3,\"output_index\":0,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b91004PbNMoEQfJjgB1mAw0umBZ1wf18mFvZ5\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"SetVariable\",\"action_id\":\"set_variable_input_task\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"my_workflow\",\"status\":\"in_progress\"}}\n\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":3,\"output_index\":0,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00J8NEfd9KhJTL63JNiTOWc8iOslXPbkjw\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"SetVariable\",\"action_id\":\"set_variable_input_task\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"my_workflow\",\"status\":\"in_progress\"}}\n\n",
         "event: response.output_item.done\n",
-        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":4,\"output_index\":0,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b91004PbNMoEQfJjgB1mAw0umBZ1wf18mFvZ5\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"SetVariable\",\"action_id\":\"set_variable_input_task\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"my_workflow\",\"status\":\"completed\"}}\n\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":4,\"output_index\":0,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00J8NEfd9KhJTL63JNiTOWc8iOslXPbkjw\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"SetVariable\",\"action_id\":\"set_variable_input_task\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"my_workflow\",\"status\":\"completed\"}}\n\n",
         "event: response.output_item.added\n",
-        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":5,\"output_index\":1,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100gDDFDHDOysLUrUYM4ZSXyWciOZKEkG3C\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"CreateConversation\",\"action_id\":\"create_student_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"set_variable_input_task\",\"status\":\"in_progress\"}}\n\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":5,\"output_index\":1,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa000ieFFJqwnLAoC5ayWwLJRIfzCUWTIvxs\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"CreateConversation\",\"action_id\":\"create_student_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"set_variable_input_task\",\"status\":\"in_progress\"}}\n\n",
         "event: response.output_item.done\n",
-        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":6,\"output_index\":1,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100gDDFDHDOysLUrUYM4ZSXyWciOZKEkG3C\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"CreateConversation\",\"action_id\":\"create_student_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"set_variable_input_task\",\"status\":\"completed\"}}\n\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":6,\"output_index\":1,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa000ieFFJqwnLAoC5ayWwLJRIfzCUWTIvxs\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"CreateConversation\",\"action_id\":\"create_student_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"set_variable_input_task\",\"status\":\"completed\"}}\n\n",
         "event: response.output_item.added\n",
-        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":7,\"output_index\":2,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100n41TJheHbBwtePUCASAAcyFLAz3TK8ON\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"CreateConversation\",\"action_id\":\"create_teacher_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_student_conversation\",\"status\":\"in_progress\"}}\n\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":7,\"output_index\":2,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00nODte5eYOXwDYeQOvEsnsii2aodAyEwR\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"CreateConversation\",\"action_id\":\"create_teacher_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_student_conversation\",\"status\":\"in_progress\"}}\n\n",
         "event: response.output_item.done\n",
-        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":8,\"output_index\":2,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100n41TJheHbBwtePUCASAAcyFLAz3TK8ON\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"CreateConversation\",\"action_id\":\"create_teacher_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_student_conversation\",\"status\":\"completed\"}}\n\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":8,\"output_index\":2,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00nODte5eYOXwDYeQOvEsnsii2aodAyEwR\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"CreateConversation\",\"action_id\":\"create_teacher_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_student_conversation\",\"status\":\"completed\"}}\n\n",
         "event: response.output_item.added\n",
-        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":9,\"output_index\":3,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100ACkbhnmCYmxMAB4q8VJUYZs7cbp253cy\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"InvokeAzureAgent\",\"action_id\":\"student_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_teacher_conversation\",\"status\":\"in_progress\"}}\n\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":9,\"output_index\":3,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00Uh1o4RrLFuevSlgfgXsgiuvwpbGBjLEb\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"InvokeAzureAgent\",\"action_id\":\"student_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_teacher_conversation\",\"status\":\"in_progress\"}}\n\n",
         "event: response.output_item.done\n",
-        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":10,\"output_index\":3,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100ACkbhnmCYmxMAB4q8VJUYZs7cbp253cy\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"InvokeAzureAgent\",\"action_id\":\"student_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_teacher_conversation\",\"status\":\"completed\"}}\n\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":10,\"output_index\":3,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00Uh1o4RrLFuevSlgfgXsgiuvwpbGBjLEb\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"InvokeAzureAgent\",\"action_id\":\"student_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_teacher_conversation\",\"status\":\"completed\"}}\n\n",
         "event: response.output_item.added\n",
-        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":11,\"output_index\":4,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100l0Aj9xiKuyt9SKxGCbGuMTOBrcWBrl3z\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"InvokeAzureAgent\",\"action_id\":\"teacher_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"student_agent_Post\",\"status\":\"in_progress\"}}\n\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":11,\"output_index\":4,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00YAzY4COYY3O7sLt70yZ9FraW89CbMqra\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"InvokeAzureAgent\",\"action_id\":\"teacher_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"student_agent_Post\",\"status\":\"in_progress\"}}\n\n",
         "event: response.output_item.done\n",
-        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":12,\"output_index\":4,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100l0Aj9xiKuyt9SKxGCbGuMTOBrcWBrl3z\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"InvokeAzureAgent\",\"action_id\":\"teacher_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"student_agent_Post\",\"status\":\"completed\"}}\n\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":12,\"output_index\":4,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00YAzY4COYY3O7sLt70yZ9FraW89CbMqra\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"InvokeAzureAgent\",\"action_id\":\"teacher_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"student_agent_Post\",\"status\":\"completed\"}}\n\n",
         "event: response.output_item.added\n",
-        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":13,\"output_index\":5,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100vKDIpVGYRi19tQZfjYSTfuvIzIQ1ymp4\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"SendActivity\",\"action_id\":\"send_teacher_reply\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"teacher_agent_Post\",\"status\":\"in_progress\"}}\n\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":13,\"output_index\":5,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00WED3enXX6eRjuV7Ecp9DKMbAmOb0Mezt\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"SendActivity\",\"action_id\":\"send_teacher_reply\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"teacher_agent_Post\",\"status\":\"in_progress\"}}\n\n",
         "event: response.output_item.added\n",
-        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":14,\"output_index\":6,\"item\":{\"type\":\"message\",\"id\":\"msg_7cd85a9503292b9100AjgDMT77MovIY9FjSOfTP9J0QpCNIdCj\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"role\":\"assistant\",\"content\":[],\"status\":\"in_progress\"}}\n\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":14,\"output_index\":6,\"item\":{\"type\":\"message\",\"id\":\"msg_ee13ea1c437f2eaa00HBL9Nu8L9SxqjkpY7DucZD7MnuCBhnR4\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"role\":\"assistant\",\"content\":[],\"status\":\"in_progress\"}}\n\n",
         "event: response.content_part.added\n",
-        "data: {\"type\":\"response.content_part.added\",\"sequence_number\":15,\"item_id\":\"msg_7cd85a9503292b9100AjgDMT77MovIY9FjSOfTP9J0QpCNIdCj\",\"output_index\":6,\"content_index\":0,\"part\":{\"type\":\"output_text\",\"text\":\"\",\"annotations\":[]}}\n\n",
+        "data: {\"type\":\"response.content_part.added\",\"sequence_number\":15,\"item_id\":\"msg_ee13ea1c437f2eaa00HBL9Nu8L9SxqjkpY7DucZD7MnuCBhnR4\",\"output_index\":6,\"content_index\":0,\"part\":{\"type\":\"output_text\",\"text\":\"\",\"annotations\":[]}}\n\n",
         "event: response.output_text.delta\n",
-        "data: {\"type\":\"response.output_text.delta\",\"sequence_number\":16,\"item_id\":\"msg_7cd85a9503292b9100AjgDMT77MovIY9FjSOfTP9J0QpCNIdCj\",\"output_index\":6,\"content_index\":0,\"delta\":\"Correct! 1 + 1 = 2. **[COMPLETE]**\",\"logprobs\":[]}\n\n",
+        "data: {\"type\":\"response.output_text.delta\",\"sequence_number\":16,\"item_id\":\"msg_ee13ea1c437f2eaa00HBL9Nu8L9SxqjkpY7DucZD7MnuCBhnR4\",\"output_index\":6,\"content_index\":0,\"delta\":\"Correct! 1 + 1 = 2. **[COMPLETE]**\",\"logprobs\":[]}\n\n",
         "event: response.output_text.done\n",
-        "data: {\"type\":\"response.output_text.done\",\"sequence_number\":17,\"item_id\":\"msg_7cd85a9503292b9100AjgDMT77MovIY9FjSOfTP9J0QpCNIdCj\",\"output_index\":6,\"content_index\":0,\"text\":\"Correct! 1 + 1 = 2. **[COMPLETE]**\",\"logprobs\":[]}\n\n",
+        "data: {\"type\":\"response.output_text.done\",\"sequence_number\":17,\"item_id\":\"msg_ee13ea1c437f2eaa00HBL9Nu8L9SxqjkpY7DucZD7MnuCBhnR4\",\"output_index\":6,\"content_index\":0,\"text\":\"Correct! 1 + 1 = 2. **[COMPLETE]**\",\"logprobs\":[]}\n\n",
         "event: response.content_part.done\n",
-        "data: {\"type\":\"response.content_part.done\",\"sequence_number\":18,\"item_id\":\"msg_7cd85a9503292b9100AjgDMT77MovIY9FjSOfTP9J0QpCNIdCj\",\"output_index\":6,\"content_index\":0,\"part\":{\"type\":\"output_text\",\"text\":\"Correct! 1 + 1 = 2. **[COMPLETE]**\",\"annotations\":[]}}\n\n",
+        "data: {\"type\":\"response.content_part.done\",\"sequence_number\":18,\"item_id\":\"msg_ee13ea1c437f2eaa00HBL9Nu8L9SxqjkpY7DucZD7MnuCBhnR4\",\"output_index\":6,\"content_index\":0,\"part\":{\"type\":\"output_text\",\"text\":\"Correct! 1 + 1 = 2. **[COMPLETE]**\",\"annotations\":[]}}\n\n",
         "event: response.output_item.done\n",
-        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":19,\"output_index\":6,\"item\":{\"type\":\"message\",\"id\":\"msg_7cd85a9503292b9100AjgDMT77MovIY9FjSOfTP9J0QpCNIdCj\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"role\":\"assistant\",\"content\":[{\"type\":\"output_text\",\"text\":\"Correct! 1 + 1 = 2. **[COMPLETE]**\",\"annotations\":[]}],\"status\":\"completed\"}}\n\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":19,\"output_index\":6,\"item\":{\"type\":\"message\",\"id\":\"msg_ee13ea1c437f2eaa00HBL9Nu8L9SxqjkpY7DucZD7MnuCBhnR4\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"role\":\"assistant\",\"content\":[{\"type\":\"output_text\",\"text\":\"Correct! 1 + 1 = 2. **[COMPLETE]**\",\"annotations\":[]}],\"status\":\"completed\"}}\n\n",
         "event: response.output_item.done\n",
-        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":20,\"output_index\":5,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100vKDIpVGYRi19tQZfjYSTfuvIzIQ1ymp4\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"SendActivity\",\"action_id\":\"send_teacher_reply\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"teacher_agent_Post\",\"status\":\"completed\"}}\n\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":20,\"output_index\":5,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00WED3enXX6eRjuV7Ecp9DKMbAmOb0Mezt\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"SendActivity\",\"action_id\":\"send_teacher_reply\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"teacher_agent_Post\",\"status\":\"completed\"}}\n\n",
         "event: response.output_item.added\n",
-        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":21,\"output_index\":7,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100KJEklyPFKIZjPxnyO97qYM2FhuDKDVXw\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"SetVariable\",\"action_id\":\"set_variable_turncount\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"send_teacher_reply\",\"status\":\"in_progress\"}}\n\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":21,\"output_index\":7,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00qKqCKttKtKpMDM5sWMEmvaIS7JgMi5q6\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"SetVariable\",\"action_id\":\"set_variable_turncount\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"send_teacher_reply\",\"status\":\"in_progress\"}}\n\n",
         "event: response.output_item.done\n",
-        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":22,\"output_index\":7,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100KJEklyPFKIZjPxnyO97qYM2FhuDKDVXw\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"SetVariable\",\"action_id\":\"set_variable_turncount\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"send_teacher_reply\",\"status\":\"completed\"}}\n\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":22,\"output_index\":7,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00qKqCKttKtKpMDM5sWMEmvaIS7JgMi5q6\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"SetVariable\",\"action_id\":\"set_variable_turncount\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"send_teacher_reply\",\"status\":\"completed\"}}\n\n",
         "event: response.output_item.added\n",
-        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":23,\"output_index\":8,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100JjNEfPkg1BZJSCHalRebZ2d8054eel2j\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"EndConversation\",\"action_id\":\"end_workflow\",\"parent_action_id\":\"check_doneActions\",\"previous_action_id\":\"check_doneActions\",\"status\":\"in_progress\"}}\n\n",
+        "data: {\"type\":\"response.output_item.added\",\"sequence_number\":23,\"output_index\":8,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00piRJ4ODEQg7VqKcntHTfLANSY4SLPEuV\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"EndConversation\",\"action_id\":\"end_workflow\",\"parent_action_id\":\"check_doneActions\",\"previous_action_id\":\"check_doneActions\",\"status\":\"in_progress\"}}\n\n",
         "event: response.output_item.done\n",
-        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":24,\"output_index\":8,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100JjNEfPkg1BZJSCHalRebZ2d8054eel2j\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"EndConversation\",\"action_id\":\"end_workflow\",\"parent_action_id\":\"check_doneActions\",\"previous_action_id\":\"check_doneActions\",\"status\":\"completed\"}}\n\n",
+        "data: {\"type\":\"response.output_item.done\",\"sequence_number\":24,\"output_index\":8,\"item\":{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00piRJ4ODEQg7VqKcntHTfLANSY4SLPEuV\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"EndConversation\",\"action_id\":\"end_workflow\",\"parent_action_id\":\"check_doneActions\",\"previous_action_id\":\"check_doneActions\",\"status\":\"completed\"}}\n\n",
         "event: response.completed\n",
-        "data: {\"type\":\"response.completed\",\"sequence_number\":25,\"response\":{\"metadata\":{},\"service_tier\":\"auto\",\"model\":\"\",\"background\":false,\"tools\":[],\"truncation\":\"auto\",\"id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"object\":\"response\",\"status\":\"completed\",\"created_at\":1771742045,\"completed_at\":1771742045,\"error\":null,\"incomplete_details\":null,\"output\":[{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b91004PbNMoEQfJjgB1mAw0umBZ1wf18mFvZ5\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"SetVariable\",\"action_id\":\"set_variable_input_task\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"my_workflow\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100gDDFDHDOysLUrUYM4ZSXyWciOZKEkG3C\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"CreateConversation\",\"action_id\":\"create_student_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"set_variable_input_task\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100n41TJheHbBwtePUCASAAcyFLAz3TK8ON\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"CreateConversation\",\"action_id\":\"create_teacher_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_student_conversation\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100ACkbhnmCYmxMAB4q8VJUYZs7cbp253cy\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"InvokeAzureAgent\",\"action_id\":\"student_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_teacher_conversation\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100l0Aj9xiKuyt9SKxGCbGuMTOBrcWBrl3z\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"InvokeAzureAgent\",\"action_id\":\"teacher_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"student_agent_Post\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100vKDIpVGYRi19tQZfjYSTfuvIzIQ1ymp4\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"SendActivity\",\"action_id\":\"send_teacher_reply\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"teacher_agent_Post\",\"status\":\"completed\"},{\"type\":\"message\",\"id\":\"msg_7cd85a9503292b9100AjgDMT77MovIY9FjSOfTP9J0QpCNIdCj\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"role\":\"assistant\",\"content\":[{\"type\":\"output_text\",\"text\":\"Correct! 1 + 1 = 2. **[COMPLETE]**\",\"annotations\":[]}],\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100KJEklyPFKIZjPxnyO97qYM2FhuDKDVXw\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"SetVariable\",\"action_id\":\"set_variable_turncount\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"send_teacher_reply\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_7cd85a9503292b9100JjNEfPkg1BZJSCHalRebZ2d8054eel2j\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE\",\"kind\":\"EndConversation\",\"action_id\":\"end_workflow\",\"parent_action_id\":\"check_doneActions\",\"previous_action_id\":\"check_doneActions\",\"status\":\"completed\"}],\"instructions\":\"\",\"output_text\":\"\",\"usage\":{\"input_tokens\":0,\"input_tokens_details\":{\"cached_tokens\":0},\"output_tokens\":0,\"output_tokens_details\":{\"reasoning_tokens\":0},\"total_tokens\":0},\"parallel_tool_calls\":true,\"conversation\":{\"id\":\"conv_7cd85a9503292b9100MV3C7akrvRwvl4Lpgx3t0xKC4jrEXi27\"},\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"}}}\n\n"
+        "data: {\"type\":\"response.completed\",\"sequence_number\":25,\"response\":{\"metadata\":{},\"service_tier\":\"auto\",\"model\":\"\",\"background\":false,\"tools\":[],\"truncation\":\"auto\",\"id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"object\":\"response\",\"status\":\"completed\",\"created_at\":1771743113,\"completed_at\":1771743113,\"error\":null,\"incomplete_details\":null,\"output\":[{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00J8NEfd9KhJTL63JNiTOWc8iOslXPbkjw\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"SetVariable\",\"action_id\":\"set_variable_input_task\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"my_workflow\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa000ieFFJqwnLAoC5ayWwLJRIfzCUWTIvxs\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"CreateConversation\",\"action_id\":\"create_student_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"set_variable_input_task\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00nODte5eYOXwDYeQOvEsnsii2aodAyEwR\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"CreateConversation\",\"action_id\":\"create_teacher_conversation\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_student_conversation\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00Uh1o4RrLFuevSlgfgXsgiuvwpbGBjLEb\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"InvokeAzureAgent\",\"action_id\":\"student_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"create_teacher_conversation\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00YAzY4COYY3O7sLt70yZ9FraW89CbMqra\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"InvokeAzureAgent\",\"action_id\":\"teacher_agent\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"student_agent_Post\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00WED3enXX6eRjuV7Ecp9DKMbAmOb0Mezt\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"SendActivity\",\"action_id\":\"send_teacher_reply\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"teacher_agent_Post\",\"status\":\"completed\"},{\"type\":\"message\",\"id\":\"msg_ee13ea1c437f2eaa00HBL9Nu8L9SxqjkpY7DucZD7MnuCBhnR4\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"role\":\"assistant\",\"content\":[{\"type\":\"output_text\",\"text\":\"Correct! 1 + 1 = 2. **[COMPLETE]**\",\"annotations\":[]}],\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00qKqCKttKtKpMDM5sWMEmvaIS7JgMi5q6\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"SetVariable\",\"action_id\":\"set_variable_turncount\",\"parent_action_id\":\"my_workflow\",\"previous_action_id\":\"send_teacher_reply\",\"status\":\"completed\"},{\"type\":\"workflow_action\",\"id\":\"wfa_ee13ea1c437f2eaa00piRJ4ODEQg7VqKcntHTfLANSY4SLPEuV\",\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"},\"response_id\":\"wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC\",\"kind\":\"EndConversation\",\"action_id\":\"end_workflow\",\"parent_action_id\":\"check_doneActions\",\"previous_action_id\":\"check_doneActions\",\"status\":\"completed\"}],\"instructions\":\"\",\"output_text\":\"\",\"usage\":{\"input_tokens\":0,\"input_tokens_details\":{\"cached_tokens\":0},\"output_tokens\":0,\"output_tokens_details\":{\"reasoning_tokens\":0},\"total_tokens\":0},\"parallel_tool_calls\":true,\"conversation\":{\"id\":\"conv_ee13ea1c437f2eaa00oqxRbay3YHl27e32nxE6ifqqVOIp2m22\"},\"agent_reference\":{\"type\":\"agent_reference\",\"name\":\"student-teacher-workflow\",\"version\":\"1\"}}}\n\n"
       ]
     },
     {
-      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/v1/responses/wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE",
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/v1/responses/wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -291,21 +291,21 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "7db150e0-8a91-4bbd-ae0f-13c0a5d7a6db",
+        "apim-request-id": "406e7b7e-7af2-4777-a9f7-872770148fd1",
         "azureml-served-by-cluster": "hyena-westus2-01,hyena-westus2-02",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 22 Feb 2026 06:34:21 GMT",
+        "Date": "Sun, 22 Feb 2026 06:52:11 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "3",
+        "x-http2-stream-id": "7",
         "x-ms-region": "West US 2",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "6ef1902f7c4edb23d30488c52d8ada5b"
+        "X-Request-ID": "7cf76ffd0ae67c5f05ad39ba5d704ee7"
       },
       "ResponseBody": {
         "metadata": {},
@@ -314,22 +314,22 @@
         "background": false,
         "tools": [],
         "truncation": "auto",
-        "id": "wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE",
+        "id": "wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC",
         "object": "response",
         "status": "completed",
-        "created_at": 1771742045,
+        "created_at": 1771743113,
         "error": null,
         "incomplete_details": null,
         "output": [
           {
             "type": "workflow_action",
-            "id": "wfa_7cd85a9503292b91004PbNMoEQfJjgB1mAw0umBZ1wf18mFvZ5",
+            "id": "wfa_ee13ea1c437f2eaa00J8NEfd9KhJTL63JNiTOWc8iOslXPbkjw",
             "agent_reference": {
               "type": "agent_reference",
               "name": "student-teacher-workflow",
               "version": "1"
             },
-            "response_id": "wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE",
+            "response_id": "wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC",
             "kind": "SetVariable",
             "action_id": "set_variable_input_task",
             "parent_action_id": "my_workflow",
@@ -338,13 +338,13 @@
           },
           {
             "type": "workflow_action",
-            "id": "wfa_7cd85a9503292b9100gDDFDHDOysLUrUYM4ZSXyWciOZKEkG3C",
+            "id": "wfa_ee13ea1c437f2eaa000ieFFJqwnLAoC5ayWwLJRIfzCUWTIvxs",
             "agent_reference": {
               "type": "agent_reference",
               "name": "student-teacher-workflow",
               "version": "1"
             },
-            "response_id": "wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE",
+            "response_id": "wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC",
             "kind": "CreateConversation",
             "action_id": "create_student_conversation",
             "parent_action_id": "my_workflow",
@@ -353,13 +353,13 @@
           },
           {
             "type": "workflow_action",
-            "id": "wfa_7cd85a9503292b9100n41TJheHbBwtePUCASAAcyFLAz3TK8ON",
+            "id": "wfa_ee13ea1c437f2eaa00nODte5eYOXwDYeQOvEsnsii2aodAyEwR",
             "agent_reference": {
               "type": "agent_reference",
               "name": "student-teacher-workflow",
               "version": "1"
             },
-            "response_id": "wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE",
+            "response_id": "wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC",
             "kind": "CreateConversation",
             "action_id": "create_teacher_conversation",
             "parent_action_id": "my_workflow",
@@ -368,13 +368,13 @@
           },
           {
             "type": "workflow_action",
-            "id": "wfa_7cd85a9503292b9100ACkbhnmCYmxMAB4q8VJUYZs7cbp253cy",
+            "id": "wfa_ee13ea1c437f2eaa00Uh1o4RrLFuevSlgfgXsgiuvwpbGBjLEb",
             "agent_reference": {
               "type": "agent_reference",
               "name": "student-teacher-workflow",
               "version": "1"
             },
-            "response_id": "wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE",
+            "response_id": "wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC",
             "kind": "InvokeAzureAgent",
             "action_id": "student_agent",
             "parent_action_id": "my_workflow",
@@ -383,13 +383,13 @@
           },
           {
             "type": "workflow_action",
-            "id": "wfa_7cd85a9503292b9100l0Aj9xiKuyt9SKxGCbGuMTOBrcWBrl3z",
+            "id": "wfa_ee13ea1c437f2eaa00YAzY4COYY3O7sLt70yZ9FraW89CbMqra",
             "agent_reference": {
               "type": "agent_reference",
               "name": "student-teacher-workflow",
               "version": "1"
             },
-            "response_id": "wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE",
+            "response_id": "wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC",
             "kind": "InvokeAzureAgent",
             "action_id": "teacher_agent",
             "parent_action_id": "my_workflow",
@@ -398,13 +398,13 @@
           },
           {
             "type": "workflow_action",
-            "id": "wfa_7cd85a9503292b9100vKDIpVGYRi19tQZfjYSTfuvIzIQ1ymp4",
+            "id": "wfa_ee13ea1c437f2eaa00WED3enXX6eRjuV7Ecp9DKMbAmOb0Mezt",
             "agent_reference": {
               "type": "agent_reference",
               "name": "student-teacher-workflow",
               "version": "1"
             },
-            "response_id": "wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE",
+            "response_id": "wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC",
             "kind": "SendActivity",
             "action_id": "send_teacher_reply",
             "parent_action_id": "my_workflow",
@@ -413,13 +413,13 @@
           },
           {
             "type": "message",
-            "id": "msg_7cd85a9503292b9100AjgDMT77MovIY9FjSOfTP9J0QpCNIdCj",
+            "id": "msg_ee13ea1c437f2eaa00HBL9Nu8L9SxqjkpY7DucZD7MnuCBhnR4",
             "agent_reference": {
               "type": "agent_reference",
               "name": "student-teacher-workflow",
               "version": "1"
             },
-            "response_id": "wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE",
+            "response_id": "wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC",
             "role": "assistant",
             "content": [
               {
@@ -432,13 +432,13 @@
           },
           {
             "type": "workflow_action",
-            "id": "wfa_7cd85a9503292b9100KJEklyPFKIZjPxnyO97qYM2FhuDKDVXw",
+            "id": "wfa_ee13ea1c437f2eaa00qKqCKttKtKpMDM5sWMEmvaIS7JgMi5q6",
             "agent_reference": {
               "type": "agent_reference",
               "name": "student-teacher-workflow",
               "version": "1"
             },
-            "response_id": "wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE",
+            "response_id": "wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC",
             "kind": "SetVariable",
             "action_id": "set_variable_turncount",
             "parent_action_id": "my_workflow",
@@ -447,13 +447,13 @@
           },
           {
             "type": "workflow_action",
-            "id": "wfa_7cd85a9503292b9100JjNEfPkg1BZJSCHalRebZ2d8054eel2j",
+            "id": "wfa_ee13ea1c437f2eaa00piRJ4ODEQg7VqKcntHTfLANSY4SLPEuV",
             "agent_reference": {
               "type": "agent_reference",
               "name": "student-teacher-workflow",
               "version": "1"
             },
-            "response_id": "wfresp_7cd85a9503292b91003gzx1gplhyExzcRMUOtHUxvwfuYmisZE",
+            "response_id": "wfresp_ee13ea1c437f2eaa00sDiWuMhO4JxZwx536s1JhZHHUr7FGwmC",
             "kind": "EndConversation",
             "action_id": "end_workflow",
             "parent_action_id": "check_doneActions",
@@ -476,7 +476,7 @@
         },
         "parallel_tool_calls": true,
         "conversation": {
-          "id": "conv_7cd85a9503292b9100MV3C7akrvRwvl4Lpgx3t0xKC4jrEXi27"
+          "id": "conv_ee13ea1c437f2eaa00oqxRbay3YHl27e32nxE6ifqqVOIp2m22"
         },
         "agent_reference": {
           "type": "agent_reference",
@@ -486,7 +486,7 @@
       }
     },
     {
-      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/v1/conversations/conv_7cd85a9503292b9100MV3C7akrvRwvl4Lpgx3t0xKC4jrEXi27",
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/v1/conversations/conv_ee13ea1c437f2eaa00oqxRbay3YHl27e32nxE6ifqqVOIp2m22",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -498,26 +498,26 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "1bac83d0-9fe6-4e06-b1de-daf0fa1c89bb",
+        "apim-request-id": "7cd15ea1-7f37-4a57-9a80-5ab132f15007",
         "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 22 Feb 2026 06:34:21 GMT",
+        "Date": "Sun, 22 Feb 2026 06:52:12 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "3",
+        "x-http2-stream-id": "19",
         "x-ms-region": "West US 2",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "48b5007fb35650ebe81ed9a47a0f5cdf"
+        "X-Request-ID": "3fa01536f91f8797944e6fe96f57f8e5"
       },
       "ResponseBody": {
         "object": "conversation.deleted",
         "deleted": true,
-        "id": "conv_7cd85a9503292b9100MV3C7akrvRwvl4Lpgx3t0xKC4jrEXi27"
+        "id": "conv_ee13ea1c437f2eaa00oqxRbay3YHl27e32nxE6ifqqVOIp2m22"
       }
     },
     {
@@ -533,21 +533,21 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "2a8e943c-5bf2-4437-88ce-703234f560fc",
+        "apim-request-id": "37e25813-0fde-41e7-83fd-9094def24b44",
         "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 22 Feb 2026 06:34:21 GMT",
+        "Date": "Sun, 22 Feb 2026 06:52:13 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "3",
+        "x-http2-stream-id": "7",
         "x-ms-region": "West US 2",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "2fa52588918629b7228bd092f153067f"
+        "X-Request-ID": "dd983619752fd8d3013c3c4ebaed6d37"
       },
       "ResponseBody": {
         "object": "agent.version.deleted",
@@ -569,21 +569,21 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "d37bce03-c384-4c76-93d6-3ff4d8379c31",
+        "apim-request-id": "44ee41bf-f295-423c-93c4-ef724ce01d7b",
         "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 22 Feb 2026 06:34:21 GMT",
+        "Date": "Sun, 22 Feb 2026 06:52:12 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "5",
+        "x-http2-stream-id": "9",
         "x-ms-region": "West US 2",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "64635281a6a40358e8f4f7980675cf23"
+        "X-Request-ID": "7ac69205ef1c860d82d3270ac85bd0c6"
       },
       "ResponseBody": {
         "object": "agent.version.deleted",
@@ -605,21 +605,21 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "c0ba81b4-de95-4bc2-b129-eceed008be77",
+        "apim-request-id": "68c77760-a54c-4f28-88c8-1007f57819ba",
         "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sun, 22 Feb 2026 06:34:21 GMT",
+        "Date": "Sun, 22 Feb 2026 06:52:13 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "5",
+        "x-http2-stream-id": "21",
         "x-ms-region": "West US 2",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "dba63fa5e3ab6df422c93fce4784f54e"
+        "X-Request-ID": "fd7d619ba9e094aba1c1eb11af44e8b5"
       },
       "ResponseBody": {
         "object": "agent.version.deleted",
@@ -634,13 +634,13 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Connection": "keep-alive",
-        "Content-Length": "2463",
+        "Content-Length": "2130",
         "Content-Type": "application/json",
         "User-Agent": "AIProjectClient OpenAI/Python 2.6.1"
       },
       "RequestBody": {
         "input": "sanitized-print-output",
-        "instructions": "We just ran Python code and captured a Python array of print statements.\nValidate whether sample execution/output is correct for an agents workflow under `samples/agents`\n(top-level samples only, excluding sub-folders like `samples/agents/tools`).\n\nFor agents scenarios, successful output typically shows one or more of:\n- Agent/run/thread creation or execution progress.\n- Assistant response content, streamed events, or structured output.\n- Retrieval/context-aware response behavior when the sample asks for it.\n\nCheck input/output correspondence:\n- If the printed output contains a user prompt/request/question, the final assistant output should\n    clearly address that input and stay on-topic.\n- If the sample expects structured output, the printed result should match that structure.\n- Minor wording differences are acceptable as long as the response is relevant and logically consistent.\n\nMark `correct = false` for:\n- Exceptions, stack traces, explicit error/failure messages.\n- Timeout/auth/connection/service errors that prevent normal completion.\n- Malformed/corrupted output indicating broken processing.\n- Agent run/tool/retrieval failures where the sample cannot proceed as designed.\n\nImportant distinction:\n- Intermediate/partial prints during streaming can be valid and should not automatically fail.\n- Empty or brief intermediate payloads by themselves can be valid if the run still completes successfully.\n- Payload snippets like \"<generator object ...>\" in logged request bodies can appear as SDK/logging serialization artifacts;\n    do not treat this text alone as a failure signal if agent API calls succeed.\n- But explicit inability/failure to execute the intended agent workflow should be marked `correct = false`.\n\nMark `correct = true` when execution succeeds and the output is consistent with the sample's intended\nagent behavior, including reasonable correspondence between input prompt(s) and final output.\n\nAlways include `reason` with a concise explanation tied to the observed print output.",
+        "instructions": "We just ran Python code and captured a Python array of print statements.\nValidate whether sample execution/output is correct.\n\nFor agents scenarios, successful output typically shows one or more of:\n- Agent/run/thread creation or execution progress.\n- Assistant response content, streamed events, or structured output.\n- Retrieval/context-aware response behavior when the sample asks for it.\n\nCheck input/output correspondence:\n- If the printed output contains a user prompt/request/question, the final assistant output should\n    clearly address that input and stay on-topic.\n- If the sample expects structured output, the printed result should match that structure.\n- Minor wording differences are acceptable as long as the response is relevant and logically consistent.\n\nMark `correct = false` for:\n- Exceptions, stack traces, explicit error/failure messages.\n- Timeout/auth/connection/service errors that prevent normal completion.\n- Malformed/corrupted output indicating broken processing.\n- Agent run/tool/retrieval failures where the sample cannot proceed as designed.\n\nImportant distinction:\n- Intermediate/partial prints during streaming can be valid and should not automatically fail.\n- Empty or brief intermediate payloads by themselves can be valid if the run still completes successfully.\n- But explicit inability/failure to execute the intended agent workflow should be marked `correct = false`.\n\nMark `correct = true` when execution succeeds and the output is consistent with the sample's intended\nagent behavior, including reasonable correspondence between input prompt(s) and final output.\n\nAlways include `reason` with a concise explanation tied to the observed print output.",
         "model": "sanitized-gpt-agent",
         "text": {
           "format": {
@@ -672,17 +672,17 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "53be970b-8a07-45f2-8b9e-e4d8dcdc58f0",
+        "apim-request-id": "9053da59-c721-4662-b5c3-620868d2561e",
         "azureai-processed-tier": "default",
         "azureai-requested-tier": "default",
         "azureml-internal-forward-count": "1",
-        "azureml-served-by-cluster": "hyena-stage-eastus2-01,hyena-westus2-02",
+        "azureml-served-by-cluster": "hyena-stage-eastus2-01,hyena-westus2-01",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Sun, 22 Feb 2026 06:34:25 GMT",
-        "openai-client-partition-id": "0d170bd118f745c18d240ad625da3c2d53be970b-8a07-45f2-8b9e-e4d8dcdc58f0",
+        "Date": "Sun, 22 Feb 2026 06:52:16 GMT",
+        "openai-client-partition-id": "0d170bd118f745c18d240ad625da3c2d9053da59-c721-4662-b5c3-620868d2561e",
         "openai-organization": "0d170bd118f745c18d240ad625da3c2d",
-        "openai-processing-ms": "15407",
+        "openai-processing-ms": "15601",
         "openai-project": "5bf8b3da-a423-486e-a915-6ef0c8aa438e",
         "openai-version": "2020-10-01",
         "request-context": "appId=",
@@ -692,16 +692,16 @@
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "5",
+        "x-http2-stream-id": "29",
         "x-ms-region": "West US 2",
         "x-ms-response-type": "standard",
         "x-ratelimit-limit-requests": "22700",
         "x-ratelimit-limit-tokens": "2270000",
         "x-ratelimit-remaining-requests": "22696",
-        "x-ratelimit-remaining-tokens": "2264520",
+        "x-ratelimit-remaining-tokens": "2264602",
         "x-ratelimit-reset-requests": "0",
         "x-ratelimit-reset-tokens": "0",
-        "X-Request-ID": "56f235b3-a90c-454f-b261-f050f8a88eff"
+        "X-Request-ID": "0a53995f-1445-4d29-bb3d-e7be9d13d0f4"
       },
       "ResponseBody": {
         "metadata": {},
@@ -745,23 +745,23 @@
         "tools": [],
         "tool_choice": "auto",
         "truncation": "disabled",
-        "id": "resp_01b0e88d4541204000699aa3723b308197aa59a3612b8fff1a",
+        "id": "resp_04b4be3d568241f500699aa7a122cc8193864c194ae9c0fa80",
         "object": "response",
         "status": "completed",
-        "created_at": 1771742066,
-        "completed_at": 1771742080,
+        "created_at": 1771743137,
+        "completed_at": 1771743151,
         "error": null,
         "incomplete_details": null,
         "output": [
           {
             "type": "message",
-            "id": "msg_01b0e88d4541204000699aa379435c8197949246b72f78b10e",
-            "response_id": "resp_01b0e88d4541204000699aa3723b308197aa59a3612b8fff1a",
+            "id": "msg_04b4be3d568241f500699aa7a874408193ab7c5903b2a35173",
+            "response_id": "resp_04b4be3d568241f500699aa7a122cc8193864c194ae9c0fa80",
             "role": "assistant",
             "content": [
               {
                 "type": "output_text",
-                "text": "{\"correct\":true,\"reason\":\"The run successfully performs the intended agents workflow: creates teacher and student prompt agents and a workflow agent (all POSTs return 200), creates a conversation, invokes the workflow via streamed /responses, shows workflow action progress events, produces an on-topic assistant message answering the prompt \\\"1 + 1 = ?\\\" with \\\"Correct! 1 + 1 = 2. **[COMPLETE]**\\\" (matching the teacher instructions to end on correct answer), completes the response, fetches the final response successfully (200), and then cleans up by deleting the conversation and all agent versions (DELETEs return 200). No errors/exceptions are present.\"}",
+                "text": "{\"correct\":true,\"reason\":\"The logs show successful end-to-end execution of the intended Azure AI Projects Agents workflow: OpenAI client created via Entra ID, teacher and student agents created (HTTP 200), workflow agent created (HTTP 200), a conversation created (HTTP 200), a streamed /responses run executed with workflow action events and completion, and the assistant output text appropriately answers the input \\\"1 + 1 = ?\\\" with \\\"Correct! 1 + 1 = 2. **[COMPLETE]**\\\" matching the teacher instructions. Cleanup also succeeds (conversation and all agent versions deleted with HTTP 200). No exceptions or failures are present.\"}",
                 "annotations": [],
                 "logprobs": []
               }
@@ -769,17 +769,17 @@
             "status": "completed"
           }
         ],
-        "instructions": "We just ran Python code and captured a Python array of print statements.\nValidate whether sample execution/output is correct for an agents workflow under `samples/agents`\n(top-level samples only, excluding sub-folders like `samples/agents/tools`).\n\nFor agents scenarios, successful output typically shows one or more of:\n- Agent/run/thread creation or execution progress.\n- Assistant response content, streamed events, or structured output.\n- Retrieval/context-aware response behavior when the sample asks for it.\n\nCheck input/output correspondence:\n- If the printed output contains a user prompt/request/question, the final assistant output should\n    clearly address that input and stay on-topic.\n- If the sample expects structured output, the printed result should match that structure.\n- Minor wording differences are acceptable as long as the response is relevant and logically consistent.\n\nMark `correct = false` for:\n- Exceptions, stack traces, explicit error/failure messages.\n- Timeout/auth/connection/service errors that prevent normal completion.\n- Malformed/corrupted output indicating broken processing.\n- Agent run/tool/retrieval failures where the sample cannot proceed as designed.\n\nImportant distinction:\n- Intermediate/partial prints during streaming can be valid and should not automatically fail.\n- Empty or brief intermediate payloads by themselves can be valid if the run still completes successfully.\n- Payload snippets like \"<generator object ...>\" in logged request bodies can appear as SDK/logging serialization artifacts;\n    do not treat this text alone as a failure signal if agent API calls succeed.\n- But explicit inability/failure to execute the intended agent workflow should be marked `correct = false`.\n\nMark `correct = true` when execution succeeds and the output is consistent with the sample's intended\nagent behavior, including reasonable correspondence between input prompt(s) and final output.\n\nAlways include `reason` with a concise explanation tied to the observed print output.",
+        "instructions": "We just ran Python code and captured a Python array of print statements.\nValidate whether sample execution/output is correct.\n\nFor agents scenarios, successful output typically shows one or more of:\n- Agent/run/thread creation or execution progress.\n- Assistant response content, streamed events, or structured output.\n- Retrieval/context-aware response behavior when the sample asks for it.\n\nCheck input/output correspondence:\n- If the printed output contains a user prompt/request/question, the final assistant output should\n    clearly address that input and stay on-topic.\n- If the sample expects structured output, the printed result should match that structure.\n- Minor wording differences are acceptable as long as the response is relevant and logically consistent.\n\nMark `correct = false` for:\n- Exceptions, stack traces, explicit error/failure messages.\n- Timeout/auth/connection/service errors that prevent normal completion.\n- Malformed/corrupted output indicating broken processing.\n- Agent run/tool/retrieval failures where the sample cannot proceed as designed.\n\nImportant distinction:\n- Intermediate/partial prints during streaming can be valid and should not automatically fail.\n- Empty or brief intermediate payloads by themselves can be valid if the run still completes successfully.\n- But explicit inability/failure to execute the intended agent workflow should be marked `correct = false`.\n\nMark `correct = true` when execution succeeds and the output is consistent with the sample's intended\nagent behavior, including reasonable correspondence between input prompt(s) and final output.\n\nAlways include `reason` with a concise explanation tied to the observed print output.",
         "usage": {
-          "input_tokens": 19623,
+          "input_tokens": 19823,
           "input_tokens_details": {
             "cached_tokens": 0
           },
-          "output_tokens": 148,
+          "output_tokens": 145,
           "output_tokens_details": {
             "reasoning_tokens": 0
           },
-          "total_tokens": 19771
+          "total_tokens": 19968
         },
         "parallel_tool_calls": true,
         "agent_reference": null
