@@ -4,17 +4,31 @@
       "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes?api-version=2025-11-01-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        "Accept": "application/json; odata.metadata=minimal",
+        "Accept": "application/json;odata.metadata=minimal",
         "api-key": "Sanitized",
         "Content-Length": "869",
         "Content-Type": "application/json",
-        "traceparent": "00-3ba3f2769bab4b0fbf84d3bcf243bbda-34ab4537c02241df-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.22631)",
+        "traceparent": "00-78f7fcf4ab6f19134574e68b5a28d33e-db8c2d6bbfe2b84a-00",
+        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20260225.1 (.NET 10.0.3; Microsoft Windows 10.0.22631)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
-        "name": "xilxrels",
+        "name": "iuodpdam",
+        "vectorSearch": {
+          "profiles": [
+            {
+              "name": "my-vector-profile",
+              "algorithm": "my-hsnw-vector-config"
+            }
+          ],
+          "algorithms": [
+            {
+              "name": "my-hsnw-vector-config",
+              "kind": "hnsw"
+            }
+          ]
+        },
         "fields": [
           {
             "name": "Id",
@@ -60,33 +74,19 @@
             "dimensions": 1536,
             "vectorSearchProfile": "my-vector-profile"
           }
-        ],
-        "vectorSearch": {
-          "profiles": [
-            {
-              "name": "my-vector-profile",
-              "algorithm": "my-hsnw-vector-config"
-            }
-          ],
-          "algorithms": [
-            {
-              "name": "my-hsnw-vector-config",
-              "kind": "hnsw"
-            }
-          ]
-        }
+        ]
       },
       "StatusCode": 201,
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Fri, 31 Oct 2025 01:34:02 GMT",
-        "elapsed-time": "626",
-        "ETag": "\"0x8DE181D925A69E2\"",
-        "Location": "https://azs-net-azssdktest.search.windows.net/indexes('xilxrels')?api-version=2025-11-01-preview",
+        "Date": "Thu, 26 Feb 2026 00:08:50 GMT",
+        "elapsed-time": "711",
+        "ETag": "\"0x8DE74CB3895934A\"",
+        "Location": "https://azs-net-azssdktest.search.windows.net/indexes('iuodpdam')?api-version=2025-11-01-preview",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "e9737141-d8d2-d8c8-2cbf-b241c65b02cc",
+        "request-id": "854258cc-56c6-5a9d-025b-e494af60fe25",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -96,12 +96,12 @@
       },
       "ResponseBody": {
         "@odata.context": "https://azs-net-azssdktest.search.windows.net/$metadata#indexes/$entity",
-        "@odata.etag": "\"0x8DE181D925A69E2\"",
-        "name": "xilxrels",
+        "@odata.etag": "\"0x8DE74CB3895934A\"",
+        "name": "iuodpdam",
         "description": null,
         "defaultScoringProfile": null,
         "permissionFilterOption": null,
-        "purviewEnabled": null,
+        "purviewEnabled": false,
         "fields": [
           {
             "name": "Id",
@@ -231,21 +231,54 @@
       }
     },
     {
-      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('xilxrels')?allowIndexDowntime=false&api-version=2025-11-01-preview",
+      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('iuodpdam')?api-version=2025-11-01-preview&allowIndexDowntime=false",
       "RequestMethod": "PUT",
       "RequestHeaders": {
-        "Accept": "application/json; odata.metadata=minimal",
+        "Accept": "application/json;odata.metadata=minimal",
         "api-key": "Sanitized",
-        "Content-Length": "1340",
+        "Content-Length": "1363",
         "Content-Type": "application/json",
         "Prefer": "return=representation",
-        "traceparent": "00-bb241efed53f9042e22dd9c9b2542e02-4fa5544895b50518-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.22631)",
+        "traceparent": "00-ad494a3fcc8edb83c121ca1abfc42957-08a5deeb28cdb793-00",
+        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20260225.1 (.NET 10.0.3; Microsoft Windows 10.0.22631)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
-        "name": "xilxrels",
+        "name": "iuodpdam",
+        "scoringProfiles": [],
+        "suggesters": [],
+        "analyzers": [],
+        "tokenizers": [],
+        "tokenFilters": [],
+        "charFilters": [],
+        "normalizers": [],
+        "similarity": {
+          "@odata.type": "#Microsoft.Azure.Search.BM25Similarity"
+        },
+        "vectorSearch": {
+          "profiles": [
+            {
+              "name": "updating-vector-profile-name",
+              "algorithm": "my-hsnw-vector-config"
+            }
+          ],
+          "algorithms": [
+            {
+              "name": "my-hsnw-vector-config",
+              "kind": "hnsw",
+              "hnswParameters": {
+                "m": 4,
+                "efConstruction": 400,
+                "efSearch": 500,
+                "metric": "cosine"
+              }
+            }
+          ],
+          "vectorizers": [],
+          "compressions": []
+        },
+        "purviewEnabled": false,
         "fields": [
           {
             "name": "Id",
@@ -299,39 +332,7 @@
             "synonymMaps": []
           }
         ],
-        "scoringProfiles": [],
-        "suggesters": [],
-        "analyzers": [],
-        "tokenizers": [],
-        "tokenFilters": [],
-        "charFilters": [],
-        "normalizers": [],
-        "similarity": {
-          "@odata.type": "#Microsoft.Azure.Search.BM25Similarity"
-        },
-        "vectorSearch": {
-          "profiles": [
-            {
-              "name": "updating-vector-profile-name",
-              "algorithm": "my-hsnw-vector-config"
-            }
-          ],
-          "algorithms": [
-            {
-              "name": "my-hsnw-vector-config",
-              "kind": "hnsw",
-              "hnswParameters": {
-                "m": 4,
-                "efConstruction": 400,
-                "efSearch": 500,
-                "metric": "cosine"
-              }
-            }
-          ],
-          "vectorizers": [],
-          "compressions": []
-        },
-        "@odata.etag": "\"0x8DE181D925A69E2\""
+        "@odata.etag": "\"0x8DE74CB3895934A\""
       },
       "StatusCode": 400,
       "ResponseHeaders": {
@@ -340,11 +341,11 @@
         "Content-Language": "en",
         "Content-Length": "430",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 31 Oct 2025 01:34:02 GMT",
-        "elapsed-time": "44",
+        "Date": "Thu, 26 Feb 2026 00:08:50 GMT",
+        "elapsed-time": "64",
         "Expires": "-1",
         "Pragma": "no-cache",
-        "request-id": "4394a88f-5d02-1918-0078-e59fcac9d795",
+        "request-id": "3e1bf6ab-3675-4704-e3de-5af6acb98c0a",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "x-ms-client-request-id": "Sanitized"
       },
@@ -362,13 +363,13 @@
       }
     },
     {
-      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('xilxrels')?api-version=2025-11-01-preview",
+      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('iuodpdam')?api-version=2025-11-01-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
-        "Accept": "application/json; odata.metadata=minimal",
+        "Accept": "application/json;odata.metadata=minimal",
         "api-key": "Sanitized",
-        "traceparent": "00-5c13c011e06896afa1702f6511a285e4-d11f1eaca38b62e8-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20251030.1 (.NET 9.0.10; Microsoft Windows 10.0.22631)",
+        "traceparent": "00-ae9bd723a882fd77c5dc8259f2067497-975257263309e19b-00",
+        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20260225.1 (.NET 10.0.3; Microsoft Windows 10.0.22631)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
@@ -376,10 +377,10 @@
       "StatusCode": 204,
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
-        "Date": "Fri, 31 Oct 2025 01:34:02 GMT",
-        "elapsed-time": "144",
+        "Date": "Thu, 26 Feb 2026 00:08:50 GMT",
+        "elapsed-time": "183",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "4834ebab-5fb0-7ce8-60fe-afd5f4c013c3",
+        "request-id": "babae123-6b1b-a46a-ea9c-13599d705540",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -390,8 +391,8 @@
     }
   ],
   "Variables": {
-    "RandomSeed": "1495311433",
-    "SearchIndexName": "xilxrels",
+    "RandomSeed": "533947441",
+    "SearchIndexName": "iuodpdam",
     "SEARCH_ADMIN_API_KEY": "Sanitized",
     "SEARCH_ENDPOINT_SUFFIX": "search.windows.net",
     "SEARCH_SERVICE_NAME": "azs-net-azssdktest"

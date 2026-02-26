@@ -4,17 +4,90 @@
       "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes?api-version=2025-11-01-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        "Accept": "application/json; odata.metadata=minimal",
+        "Accept": "application/json;odata.metadata=minimal",
         "api-key": "Sanitized",
         "Content-Length": "4933",
         "Content-Type": "application/json",
-        "traceparent": "00-1ef6c11d3c2a7d203f2725b7508c3b93-a8d35d0bc52c4c9a-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20251106.1 (.NET 9.0.10; Microsoft Windows 10.0.22631)",
+        "traceparent": "00-8e47e5bdff6655609bb868103146c0c3-7059322ac1c42417-00",
+        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20260225.1 (.NET 10.0.3; Microsoft Windows 10.0.22631)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
-        "name": "ahpmpysy",
+        "name": "acuqvvdn",
+        "scoringProfiles": [
+          {
+            "name": "nearest",
+            "functions": [
+              {
+                "fieldName": "location",
+                "boost": 2,
+                "type": "distance",
+                "distance": {
+                  "referencePointParameter": "myloc",
+                  "boostingDistance": 100
+                }
+              },
+              {
+                "fieldName": "geoLocation",
+                "boost": 2,
+                "type": "distance",
+                "distance": {
+                  "referencePointParameter": "mygeoloc",
+                  "boostingDistance": 100
+                }
+              }
+            ],
+            "functionAggregation": "sum"
+          }
+        ],
+        "suggesters": [
+          {
+            "name": "sg",
+            "searchMode": "analyzingInfixMatching",
+            "sourceFields": [
+              "description",
+              "hotelName"
+            ]
+          }
+        ],
+        "semantic": {
+          "defaultConfiguration": "my-semantic-config",
+          "configurations": [
+            {
+              "name": "my-semantic-config",
+              "prioritizedFields": {
+                "titleField": {
+                  "fieldName": "hotelName"
+                },
+                "prioritizedContentFields": [
+                  {
+                    "fieldName": "description"
+                  }
+                ],
+                "prioritizedKeywordsFields": [
+                  {
+                    "fieldName": "category"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "vectorSearch": {
+          "profiles": [
+            {
+              "name": "my-vector-profile",
+              "algorithm": "my-hsnw-vector-config"
+            }
+          ],
+          "algorithms": [
+            {
+              "name": "my-hsnw-vector-config",
+              "kind": "hnsw"
+            }
+          ]
+        },
         "fields": [
           {
             "name": "hotelId",
@@ -291,92 +364,19 @@
               }
             ]
           }
-        ],
-        "scoringProfiles": [
-          {
-            "name": "nearest",
-            "functions": [
-              {
-                "type": "distance",
-                "fieldName": "location",
-                "boost": 2,
-                "distance": {
-                  "referencePointParameter": "myloc",
-                  "boostingDistance": 100
-                }
-              },
-              {
-                "type": "distance",
-                "fieldName": "geoLocation",
-                "boost": 2,
-                "distance": {
-                  "referencePointParameter": "mygeoloc",
-                  "boostingDistance": 100
-                }
-              }
-            ],
-            "functionAggregation": "sum"
-          }
-        ],
-        "suggesters": [
-          {
-            "name": "sg",
-            "searchMode": "analyzingInfixMatching",
-            "sourceFields": [
-              "description",
-              "hotelName"
-            ]
-          }
-        ],
-        "semantic": {
-          "defaultConfiguration": "my-semantic-config",
-          "configurations": [
-            {
-              "name": "my-semantic-config",
-              "prioritizedFields": {
-                "titleField": {
-                  "fieldName": "hotelName"
-                },
-                "prioritizedContentFields": [
-                  {
-                    "fieldName": "description"
-                  }
-                ],
-                "prioritizedKeywordsFields": [
-                  {
-                    "fieldName": "category"
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        "vectorSearch": {
-          "profiles": [
-            {
-              "name": "my-vector-profile",
-              "algorithm": "my-hsnw-vector-config"
-            }
-          ],
-          "algorithms": [
-            {
-              "name": "my-hsnw-vector-config",
-              "kind": "hnsw"
-            }
-          ]
-        }
+        ]
       },
       "StatusCode": 201,
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Mon, 10 Nov 2025 22:29:28 GMT",
-        "elapsed-time": "780",
-        "ETag": "\"0x8DE20A89CAA538E\"",
-        "Location": "https://azs-net-azssdktest.search.windows.net/indexes('ahpmpysy')?api-version=2025-11-01-preview",
+        "Date": "Wed, 25 Feb 2026 23:29:44 GMT",
+        "elapsed-time": "643",
+        "ETag": "\"0x8DE74C5C223A339\"",
+        "Location": "https://azs-net-azssdktest.search.windows.net/indexes('acuqvvdn')?api-version=2025-11-01-preview",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "2900e4a3-cf7f-803e-3a78-6c99a3bf9864",
+        "request-id": "51e82dfb-01d5-25f6-4120-af5735836be6",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -386,12 +386,12 @@
       },
       "ResponseBody": {
         "@odata.context": "https://azs-net-azssdktest.search.windows.net/$metadata#indexes/$entity",
-        "@odata.etag": "\"0x8DE20A89CAA538E\"",
-        "name": "ahpmpysy",
+        "@odata.etag": "\"0x8DE74C5C223A339\"",
+        "name": "acuqvvdn",
         "description": null,
         "defaultScoringProfile": null,
         "permissionFilterOption": null,
-        "purviewEnabled": null,
+        "purviewEnabled": false,
         "fields": [
           {
             "name": "hotelId",
@@ -1062,22 +1062,128 @@
       }
     },
     {
-      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('ahpmpysy')?allowIndexDowntime=true&api-version=2025-11-01-preview",
+      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('acuqvvdn')?api-version=2025-11-01-preview&allowIndexDowntime=true",
       "RequestMethod": "PUT",
       "RequestHeaders": {
-        "Accept": "application/json; odata.metadata=minimal",
+        "Accept": "application/json;odata.metadata=minimal",
         "api-key": "Sanitized",
-        "Content-Length": "6576",
+        "Content-Length": "6599",
         "Content-Type": "application/json",
-        "If-Match": "\"0x8DE20A89CAA538E\"",
+        "If-Match": "\"0x8DE74C5C223A339\"",
         "Prefer": "return=representation",
-        "traceparent": "00-d4c6cd791d14875d4c6cf580762a9963-a1ba715522666ff6-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20251106.1 (.NET 9.0.10; Microsoft Windows 10.0.22631)",
+        "traceparent": "00-ac245113fe717256b99ad7bc80ed1938-46fdf3147025834e-00",
+        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20260225.1 (.NET 10.0.3; Microsoft Windows 10.0.22631)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
-        "name": "ahpmpysy",
+        "name": "acuqvvdn",
+        "scoringProfiles": [
+          {
+            "name": "nearest",
+            "functions": [
+              {
+                "fieldName": "location",
+                "boost": 2,
+                "interpolation": "linear",
+                "type": "distance",
+                "distance": {
+                  "referencePointParameter": "myloc",
+                  "boostingDistance": 100
+                }
+              },
+              {
+                "fieldName": "geoLocation",
+                "boost": 2,
+                "interpolation": "linear",
+                "type": "distance",
+                "distance": {
+                  "referencePointParameter": "mygeoloc",
+                  "boostingDistance": 100
+                }
+              }
+            ],
+            "functionAggregation": "sum"
+          }
+        ],
+        "suggesters": [
+          {
+            "name": "sg",
+            "searchMode": "analyzingInfixMatching",
+            "sourceFields": [
+              "description",
+              "hotelName"
+            ]
+          }
+        ],
+        "analyzers": [
+          {
+            "@odata.type": "#Microsoft.Azure.Search.PatternAnalyzer",
+            "name": "asciiTags",
+            "pattern": "[0-9a-z]+",
+            "flags": "CASE_INSENSITIVE|MULTILINE",
+            "stopwords": [
+              "a",
+              "and",
+              "the"
+            ]
+          }
+        ],
+        "tokenizers": [],
+        "tokenFilters": [],
+        "charFilters": [],
+        "normalizers": [],
+        "similarity": {
+          "@odata.type": "#Microsoft.Azure.Search.BM25Similarity"
+        },
+        "semantic": {
+          "defaultConfiguration": "my-semantic-config",
+          "configurations": [
+            {
+              "name": "my-semantic-config",
+              "prioritizedFields": {
+                "titleField": {
+                  "fieldName": "hotelName"
+                },
+                "prioritizedContentFields": [
+                  {
+                    "fieldName": "description"
+                  }
+                ],
+                "prioritizedKeywordsFields": [
+                  {
+                    "fieldName": "category"
+                  }
+                ]
+              },
+              "rankingOrder": "BoostedRerankerScore",
+              "flightingOptIn": false
+            }
+          ]
+        },
+        "vectorSearch": {
+          "profiles": [
+            {
+              "name": "my-vector-profile",
+              "algorithm": "my-hsnw-vector-config"
+            }
+          ],
+          "algorithms": [
+            {
+              "name": "my-hsnw-vector-config",
+              "kind": "hnsw",
+              "hnswParameters": {
+                "m": 4,
+                "efConstruction": 400,
+                "efSearch": 500,
+                "metric": "cosine"
+              }
+            }
+          ],
+          "vectorizers": [],
+          "compressions": []
+        },
+        "purviewEnabled": false,
         "fields": [
           {
             "name": "hotelId",
@@ -1422,123 +1528,18 @@
             "analyzer": "asciiTags"
           }
         ],
-        "scoringProfiles": [
-          {
-            "name": "nearest",
-            "functions": [
-              {
-                "type": "distance",
-                "fieldName": "location",
-                "boost": 2,
-                "interpolation": "linear",
-                "distance": {
-                  "referencePointParameter": "myloc",
-                  "boostingDistance": 100
-                }
-              },
-              {
-                "type": "distance",
-                "fieldName": "geoLocation",
-                "boost": 2,
-                "interpolation": "linear",
-                "distance": {
-                  "referencePointParameter": "mygeoloc",
-                  "boostingDistance": 100
-                }
-              }
-            ],
-            "functionAggregation": "sum"
-          }
-        ],
-        "suggesters": [
-          {
-            "name": "sg",
-            "searchMode": "analyzingInfixMatching",
-            "sourceFields": [
-              "description",
-              "hotelName"
-            ]
-          }
-        ],
-        "analyzers": [
-          {
-            "@odata.type": "#Microsoft.Azure.Search.PatternAnalyzer",
-            "name": "asciiTags",
-            "pattern": "[0-9a-z]+",
-            "flags": "CASE_INSENSITIVE|MULTILINE",
-            "stopwords": [
-              "a",
-              "and",
-              "the"
-            ]
-          }
-        ],
-        "tokenizers": [],
-        "tokenFilters": [],
-        "charFilters": [],
-        "normalizers": [],
-        "similarity": {
-          "@odata.type": "#Microsoft.Azure.Search.BM25Similarity"
-        },
-        "semantic": {
-          "defaultConfiguration": "my-semantic-config",
-          "configurations": [
-            {
-              "name": "my-semantic-config",
-              "prioritizedFields": {
-                "titleField": {
-                  "fieldName": "hotelName"
-                },
-                "prioritizedContentFields": [
-                  {
-                    "fieldName": "description"
-                  }
-                ],
-                "prioritizedKeywordsFields": [
-                  {
-                    "fieldName": "category"
-                  }
-                ]
-              },
-              "rankingOrder": "BoostedRerankerScore",
-              "flightingOptIn": false
-            }
-          ]
-        },
-        "vectorSearch": {
-          "profiles": [
-            {
-              "name": "my-vector-profile",
-              "algorithm": "my-hsnw-vector-config"
-            }
-          ],
-          "algorithms": [
-            {
-              "name": "my-hsnw-vector-config",
-              "kind": "hnsw",
-              "hnswParameters": {
-                "m": 4,
-                "efConstruction": 400,
-                "efSearch": 500,
-                "metric": "cosine"
-              }
-            }
-          ],
-          "vectorizers": [],
-          "compressions": []
-        },
-        "@odata.etag": "\"0x8DE20A89CAA538E\""
+        "@odata.etag": "\"0x8DE74C5C223A339\""
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Mon, 10 Nov 2025 22:29:30 GMT",
-        "elapsed-time": "1345",
-        "ETag": "\"0x8DE20A89D79B29D\"",
+        "Date": "Wed, 25 Feb 2026 23:29:44 GMT",
+        "elapsed-time": "759",
+        "ETag": "\"0x8DE74C5C2951F12\"",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "567c3870-d13a-e4a6-9cc4-86dec7deb151",
+        "request-id": "b35a450a-49ac-f05b-6182-00401398eaf4",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -1548,12 +1549,12 @@
       },
       "ResponseBody": {
         "@odata.context": "https://azs-net-azssdktest.search.windows.net/$metadata#indexes/$entity",
-        "@odata.etag": "\"0x8DE20A89D79B29D\"",
-        "name": "ahpmpysy",
+        "@odata.etag": "\"0x8DE74C5C2951F12\"",
+        "name": "acuqvvdn",
         "description": null,
         "defaultScoringProfile": null,
         "permissionFilterOption": null,
-        "purviewEnabled": null,
+        "purviewEnabled": false,
         "fields": [
           {
             "name": "hotelId",
@@ -2258,13 +2259,13 @@
       }
     },
     {
-      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('ahpmpysy')?api-version=2025-11-01-preview",
+      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('acuqvvdn')?api-version=2025-11-01-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
-        "Accept": "application/json; odata.metadata=minimal",
+        "Accept": "application/json;odata.metadata=minimal",
         "api-key": "Sanitized",
-        "traceparent": "00-54e77abf2b1f2b48de0fd54de9cfe1d9-e07867637d9e0dad-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20251106.1 (.NET 9.0.10; Microsoft Windows 10.0.22631)",
+        "traceparent": "00-31ee5fd719781b9c3bd8cf8da905a2ff-bd83b248c48a6c90-00",
+        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20260225.1 (.NET 10.0.3; Microsoft Windows 10.0.22631)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
@@ -2272,10 +2273,10 @@
       "StatusCode": 204,
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
-        "Date": "Mon, 10 Nov 2025 22:29:30 GMT",
-        "elapsed-time": "202",
+        "Date": "Wed, 25 Feb 2026 23:29:45 GMT",
+        "elapsed-time": "177",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "3aed8063-50ad-48f8-d84d-87557b2e699e",
+        "request-id": "3d903635-4d3f-bad3-dec9-b6a4dc40696b",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -2286,8 +2287,8 @@
     }
   ],
   "Variables": {
-    "RandomSeed": "1271212882",
-    "SearchIndexName": "ahpmpysy",
+    "RandomSeed": "1352405190",
+    "SearchIndexName": "acuqvvdn",
     "SEARCH_ADMIN_API_KEY": "Sanitized",
     "SEARCH_ENDPOINT_SUFFIX": "search.windows.net",
     "SEARCH_SERVICE_NAME": "azs-net-azssdktest"
