@@ -14,15 +14,15 @@
         "Accept-Ranges": "bytes",
         "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
         "Connection": "keep-alive",
-        "Content-Length": "2243",
+        "Content-Length": "2863",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 02 Mar 2026 08:04:01 GMT",
-        "mise-correlation-id": "062356de-e366-4b56-9156-10b07dd5f70c",
+        "Date": "Mon, 02 Mar 2026 21:55:40 GMT",
+        "mise-correlation-id": "078b92d9-927e-4ba4-8f85-736b73123316",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "x-azure-ref": "Sanitized",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "7864f0aa-a80d-4176-bf4a-619b0c503726"
+        "x-ms-correlation-request-id": "c83343fb-608e-4311-b397-bdde9bbaa7a3"
       },
       "ResponseBody": {
         "columns": [
@@ -49,22 +49,28 @@
         ],
         "rows": {
           "1": {
-            "Title": "Fluctuating Response Time Under Load",
-            "Insight": "For the endpoint Homepage, response time remained **elevated and unstable** as [requests per second](#ClientMetrics) grew, indicating backend performance variability.",
-            "Details": "[Virtual users](#ClientMetrics) held steady at 10 from 11:08 AM UTC to 11:10 AM UTC. [Requests per second](#ClientMetrics) peaked at **6.4 RPS at 11:09 AM UTC**, with fluctuations throughout the run. [Response time](#ClientMetrics) dropped from 3590ms at 11:08 AM UTC to 2220ms at 11:08 AM UTC, then fluctuated between 1920ms and 2430ms until 11:10 AM UTC, with a minimum of **1920ms at 11:09 AM UTC**.",
-            "Recommendation": "Consider profiling the server application for bottlenecks and reviewing resource allocation during traffic spikes. Investigate asynchronous processing, database latency, or caching to stabilize and reduce response time."
+            "Title": "Response Time Spike Correlates With RPS Increase",
+            "Insight": "Response time for Homepage peaked at **2840ms** as requests per second also reached its highest value (**6.2 RPS**). This suggests the server may not handle increased load efficiently.",
+            "Details": "[Response time](#ClientMetrics) for Homepage spiked from 1890ms at 9:25 PM UTC to **2840ms at 9:25 PM UTC**, then decreased to 1840ms by 9:26 PM UTC. [Requests per second](#ClientMetrics) climbed from 3.0 RPS at 9:24 PM UTC to a peak of **6.2 RPS at 9:25 PM UTC**, then declined back to 3.0 RPS at 9:26 PM UTC.",
+            "Recommendation": "Consider optimizing server-side resources or backend processing to handle increased load more efficiently. You may also review server scaling and caching strategies to prevent latency spikes under high RPS."
           },
           "2": {
-            "Title": "Load Pattern Impact on Throughput",
-            "Insight": "Throughput for [requests per second](#ClientMetrics) rose with constant [virtual user](#ClientMetrics) count but dropped temporarily before recovering, possibly reflecting backend throttling or transient resource limits at peak load for Homepage.",
-            "Details": "[Requests per second](#ClientMetrics) increased from 2.1 RPS at 11:08 AM UTC to **6.4 RPS at 11:09 AM UTC**, then fell to 4.6 RPS at 11:09 AM UTC, rebounded to 5.9 RPS at 11:09 AM UTC and N/A, and ended at 2.9 RPS by 11:10 AM UTC. [Virtual users](#ClientMetrics) remained stable, only dropping from 10 to 8 at the end.",
-            "Recommendation": "May review server-side request handling limits and monitor for any throttling or overload protection mechanisms during peak load intervals. Implement server autoscaling or optimize backend logic for improved throughput consistency."
+            "Title": "Stabilization After Initial Latency Drop",
+            "Insight": "Client response time for Homepage dropped significantly from **3430ms** to under **1900ms**, coinciding with moderate increases in RPS. This reflects improved performance, possibly as traffic transitioned or warmed-up.",
+            "Details": "[Response time](#ClientMetrics) decreased from **3430ms at 9:24 PM UTC** to 2080ms by 9:25 PM UTC, and further down to 1890ms at 9:25 PM UTC. [Requests per second](#ClientMetrics) increased steadily from 3.0 RPS at 9:24 PM UTC to 6.2 RPS at 9:25 PM UTC.",
+            "Recommendation": "Consider further tuning for initial request processing or warming up the application before peak load, especially if cold-starts or initial resource allocation is a bottleneck."
           },
           "3": {
-            "Summary": "Load test (2 min, 10 VUs) ran successfully with minor latency spikes. Response times fluctuated between 1.9s and 2.4s with no errors, indicating stable client-side performance under load."
+            "Title": "Periodic Latency Volatility During Load",
+            "Insight": "During sustained traffic, response time for Homepage exhibited volatility, rising to **2310ms** before stabilizing below **1900ms**. This aligns with fluctuating RPS and indicates transient server bottlenecking.",
+            "Details": "[Response time](#ClientMetrics) fluctuated between 9:25 PM UTC and 9:26 PM UTC, rising to **2310ms at 9:26 PM UTC** before stabilizing below 1900ms at 9:26 PM UTC and 9:26 PM UTC. [Requests per second](#ClientMetrics) also showed minor fluctuations in the same interval.",
+            "Recommendation": "Monitor backend resource utilization and review auto-scaling configuration. If possible, increase server scaling responsiveness or optimize middleware for smoother traffic handling."
+          },
+          "4": {
+            "Summary": "Load test (2 min, 40 sec, 652 VUs) completed with minor latency spikes but met all defined criteria. Client-side response times briefly peaked above 3s before stabilizing, with throughput showing fluctuations; root cause unclear due to missing server metrics."
           }
         },
-        "version": 4,
+        "version": 3,
         "status": "Succeeded"
       }
     }

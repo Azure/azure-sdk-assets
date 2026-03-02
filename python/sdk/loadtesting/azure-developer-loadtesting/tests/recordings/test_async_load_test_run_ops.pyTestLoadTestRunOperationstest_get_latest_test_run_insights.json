@@ -13,15 +13,15 @@
         "Accept-Ranges": "bytes",
         "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
         "Connection": "keep-alive",
-        "Content-Length": "3148",
+        "Content-Length": "1510",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 02 Mar 2026 07:46:22 GMT",
-        "mise-correlation-id": "83d21129-2413-442f-b449-b2baf8c4de57",
+        "Date": "Mon, 02 Mar 2026 21:47:23 GMT",
+        "mise-correlation-id": "d4963ed5-65a2-4dff-973d-2fe535f87545",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "x-azure-ref": "Sanitized",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "53ebd5ff-47e4-4dc2-ad2a-86505e30cfc1"
+        "x-ms-correlation-request-id": "46ff027e-40a4-4a26-96ef-df15ac2d7924"
       },
       "ResponseBody": {
         "columns": [
@@ -48,28 +48,16 @@
         ],
         "rows": {
           "1": {
-            "Title": "Fluctuating Response Time Under Steady Load",
-            "Insight": "For Homepage, response time showed **persistent oscillations** between 1920ms and 2430ms while [virtual users](#ClientMetrics) remained steady, indicating inconsistent server performance despite stable simulated traffic.",
-            "Details": "[Response time](#ClientMetrics) initially decreased from 3590ms at 11:08 AM UTC to 2220ms at 11:08 AM UTC, then alternated between **1920ms and 2430ms** from 11:08 AM UTC to 11:10 AM UTC. [Virtual users](#ClientMetrics) held constant at 10 from 11:08 AM UTC to 11:10 AM UTC, suggesting the server should have had consistent processing load. [Requests per second](#ClientMetrics) remained within 4.6 to 6.4 RPS during this period.",
-            "Recommendation": "Consider profiling the server for thread starvation, intermittent resource contention (such as DB or cache bottlenecks), or balancing issues. Review server logs for time intervals with high response time spikes."
+            "Title": "Response Time Improves, Then Spikes",
+            "Insight": "For the endpoint Homepage, a dramatic decrease in response time alongside an increase in RPS suggests initial server inefficiency followed by optimization or stabilization, but a spike later indicates a temporary bottleneck.",
+            "Details": "[Response time](#ClientMetrics) started at **3430ms** at 9:24 PM UTC, dropped to 1890ms at 9:25 PM UTC, and stabilized between 1840ms–1850ms from 9:26 PM UTC–9:26 PM UTC. A spike to **2840ms** occurred at 9:25 PM UTC. [Requests per second](#ClientMetrics) rose steadily from 3.0 to **6.2 RPS (at t10)**, then dipped to 3.0 RPS at 9:26 PM UTC, suggesting that the server initially struggled with the load but adapted before facing a brief performance bottleneck.",
+            "Recommendation": "Consider reviewing server auto-scaling settings and application bottlenecks causing temporary response time spikes. Analyze logs around 9:25 PM UTC for possible resource contention or transient issues affecting latency."
           },
           "2": {
-            "Title": "RPS Drop at End of Test",
-            "Insight": "Requests per second for [ALT-Sampler-4dd9ff6d-477e-43dc-b4bb-111238174586](#ResourceLink) fell from **6.4 to 2.9 RPS** at the end of the test, coinciding with a reduction in [virtual users](#ClientMetrics) from 10 to 8. This may indicate either test ramp-down or potential client resource constraints.",
-            "Details": "[Requests per second](#ClientMetrics) dropped from 6.4 at 11:10 AM UTC to **2.9 at 11:10 AM UTC**. [Virtual users](#ClientMetrics) decreased from 10 at 11:10 AM UTC to 8 at 11:10 AM UTC. [Response time](#ClientMetrics) persisted in the same fluctuating range despite user decrease.",
-            "Recommendation": "If this drop was not intentional, consider reviewing the load test client CPU and memory usage, as well as test configuration for user ramp-down triggers. If test intended, ignore; otherwise, validate engine health near end of test."
-          },
-          "3": {
-            "Title": "Response Time Decrease After Initial Spike",
-            "Insight": "Initial response time for [ALT-Sampler-4dd9ff6d-477e-43dc-b4bb-111238174586](#ResourceLink) started high at **3590ms**, then decreased and stabilized, indicating either cold start delays or initial server ramp-up effects.",
-            "Details": "[Response time](#ClientMetrics) was **3590ms at 11:08 AM UTC**, dropped to 2220ms at 11:08 AM UTC, then oscillated between 1920ms and 2430ms for the remainder of the run. [Virtual users](#ClientMetrics) was constant at 10 during this phase.",
-            "Recommendation": "Review application cold start behavior, initialization routines, or early resource allocation. Consider adding warm-up steps before starting measurement phase in future tests to smooth out startup latency."
-          },
-          "4": {
-            "Summary": "Load test (2 min, 10 VUs) ran successfully with occasional latency fluctuations. Response times remained elevated with minor oscillations, and throughput showed slight drops towards the end, indicating potential backend constraints."
+            "Summary": "Load test (2 min, 44 sec, peak 652 VUs) completed with minor latency spikes, passing all test criteria. Client-side response times peaked at 3,430 ms initially before stabilizing; throughput fluctuated but no errors occurred."
           }
         },
-        "version": 3,
+        "version": 2,
         "status": "Succeeded"
       }
     }
