@@ -13,15 +13,15 @@
         "Accept-Ranges": "bytes",
         "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
         "Connection": "keep-alive",
-        "Content-Length": "1510",
+        "Content-Length": "2964",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 02 Mar 2026 21:47:23 GMT",
-        "mise-correlation-id": "d4963ed5-65a2-4dff-973d-2fe535f87545",
+        "Date": "Tue, 03 Mar 2026 11:05:43 GMT",
+        "mise-correlation-id": "f42f6db6-1aff-42d7-bece-1815706f8c8a",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "x-azure-ref": "Sanitized",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "46ff027e-40a4-4a26-96ef-df15ac2d7924"
+        "x-ms-correlation-request-id": "881c4d68-579e-4bfb-ae56-6f6933ff4320"
       },
       "ResponseBody": {
         "columns": [
@@ -48,16 +48,28 @@
         ],
         "rows": {
           "1": {
-            "Title": "Response Time Improves, Then Spikes",
-            "Insight": "For the endpoint Homepage, a dramatic decrease in response time alongside an increase in RPS suggests initial server inefficiency followed by optimization or stabilization, but a spike later indicates a temporary bottleneck.",
-            "Details": "[Response time](#ClientMetrics) started at **3430ms** at 9:24 PM UTC, dropped to 1890ms at 9:25 PM UTC, and stabilized between 1840ms–1850ms from 9:26 PM UTC–9:26 PM UTC. A spike to **2840ms** occurred at 9:25 PM UTC. [Requests per second](#ClientMetrics) rose steadily from 3.0 to **6.2 RPS (at t10)**, then dipped to 3.0 RPS at 9:26 PM UTC, suggesting that the server initially struggled with the load but adapted before facing a brief performance bottleneck.",
-            "Recommendation": "Consider reviewing server auto-scaling settings and application bottlenecks causing temporary response time spikes. Analyze logs around 9:25 PM UTC for possible resource contention or transient issues affecting latency."
+            "Title": "Response Time Fluctuates Under Stable Load",
+            "Insight": "For Homepage, despite [virtual users](#ClientMetrics) remaining constant and [requests per second](#ClientMetrics) increasing, response time showed significant fluctuation, indicating possible backend resource contention or intermittent bottlenecks.",
+            "Details": "[Virtual users](#ClientMetrics) remained steady at 10 from 9:24 PM UTC to 9:26 PM UTC. [Requests per second](#ClientMetrics) climbed from 3.0 at 9:24 PM UTC to a peak of **6.2 requests/sec** by 9:25 PM UTC. [Response time](#ClientMetrics) dropped from 3430 ms at 9:24 PM UTC to 1890 ms at 9:25 PM UTC, spiked to 2840 ms at 9:25 PM UTC, then fluctuated between **1840 ms and 2310 ms** from 9:26 PM UTC to 9:26 PM UTC.",
+            "Recommendation": "Consider investigating underlying server health or resource limits during load fluctuations, focusing on database or API latency and potential saturation points when RPS spikes."
           },
           "2": {
-            "Summary": "Load test (2 min, 44 sec, peak 652 VUs) completed with minor latency spikes, passing all test criteria. Client-side response times peaked at 3,430 ms initially before stabilizing; throughput fluctuated but no errors occurred."
+            "Title": "Transient Response Time Spikes Observed",
+            "Insight": "A brief spike in response time for [ALT-Sampler-3da67308-8367-4179-a4c5-ed67f5ae3e30](#ResourceLink) coincided with the highest [requests per second](#ClientMetrics), implying potential backend strain during load surges.",
+            "Details": "[Requests per second](#ClientMetrics) peaked at **6.2 requests/sec** at 9:25 PM UTC. [Response time](#ClientMetrics) spiked from 1890 ms at 9:25 PM UTC to **2840 ms at 9:25 PM UTC**, despite [virtual users](#ClientMetrics) remaining stable at 10.",
+            "Recommendation": "Consider reviewing server-side performance and autoscaling triggers at moments of peak traffic, and investigate application logs for delays or exceptions during those times."
+          },
+          "3": {
+            "Title": "Stable Virtual Users, Variable RPS",
+            "Insight": "With [virtual users](#ClientMetrics) held constant, variations in [requests per second](#ClientMetrics) indicate potential client-side pacing or backend responsiveness issues for [ALT-Sampler-3da67308-8367-4179-a4c5-ed67f5ae3e30](#ResourceLink).",
+            "Details": "[Virtual users](#ClientMetrics) maintained at 10 between 9:24 PM UTC–9:26 PM UTC, dropped to 8 at 9:26 PM UTC. [Requests per second](#ClientMetrics) ranged from 3.0 to **6.2 requests/sec**, then fluctuated between 4.8 and 5.9 requests/sec after 9:26 PM UTC.",
+            "Recommendation": "Consider auditing client test configuration for pacing logic and monitoring backend throughput limits. If backend metrics become available, correlate request handling latency during these fluctuations."
+          },
+          "4": {
+            "Summary": "Load test (2 min, 10 VUs) completed with performance degradation. Client-side response times fluctuated between 1,840 ms and 3,430 ms, indicating latency spikes likely due to backend constraints."
           }
         },
-        "version": 2,
+        "version": 5,
         "status": "Succeeded"
       }
     }
