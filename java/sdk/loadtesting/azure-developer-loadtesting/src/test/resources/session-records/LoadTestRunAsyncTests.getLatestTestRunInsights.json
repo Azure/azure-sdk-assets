@@ -1,0 +1,88 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/test-runs/sample-test-run-id/insights/latest?api-version=2025-11-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Tue, 03 Mar 2026 22:11:53 GMT",
+        "User-Agent": "azsdk-java-azure-developer-loadtesting/1.1.0-beta.2 (25.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
+        "Connection": "keep-alive",
+        "Content-Length": "3512",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 03 Mar 2026 22:11:56 GMT",
+        "mise-correlation-id": "313ae32b-23d1-463e-95f9-7590fd51b8ff",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "cc9ad3dc-661b-4f06-80f2-88900f22c2cd"
+      },
+      "ResponseBody": {
+        "columns": [
+          {
+            "name": "Insight",
+            "dataType": "String"
+          },
+          {
+            "name": "Details",
+            "dataType": "String"
+          },
+          {
+            "name": "Title",
+            "dataType": "String"
+          },
+          {
+            "name": "Summary",
+            "dataType": "String"
+          },
+          {
+            "name": "Recommendation",
+            "dataType": "String"
+          }
+        ],
+        "rows": {
+          "1": {
+            "Title": "Sustained Latency Under Stable Load",
+            "Insight": "With stable virtual users for Homepage, response time increased and plateaued at **over 4200ms**, indicating the server struggled under steady load.",
+            "Details": "[Virtual users](#ClientMetrics) for Homepage held at 10 from 9:42 PM UTC to 9:44 PM UTC. [Response time](#ClientMetrics) decreased initially but then rose sharply, reaching a peak of **4320ms at 9:43 PM UTC** and plateauing, despite virtual users remaining constant until 9:44 PM UTC.",
+            "Recommendation": "Consider investigating server-side resource saturation (CPU, DB, cache) or application bottlenecks under sustained virtual user load. Evaluate backend autoscaling and request processing logic for potential latency sources."
+          },
+          "2": {
+            "Title": "RPS Drop With Latency Spike",
+            "Insight": "The decline in requests per second from **5.7 RPS to 2.2 RPS** was strongly correlated with response time climbing past **4200ms** between 9:43 PM UTC and 9:44 PM UTC for [ALT-Sampler-f5c85a11-72bc-46aa-934d-fa02842827d7](#ResourceLink), signifying throughput limits due to backend slowness.",
+            "Details": "[Requests per second](#ClientMetrics) for Homepage dropped from 5.7 at 9:43 PM UTC to 2.2 by 9:44 PM UTC. [Response time](#ClientMetrics) spiked to **4320ms at 9:43 PM UTC**, remaining elevated (3760–4210ms) until 9:44 PM UTC.",
+            "Recommendation": "Consider profiling backend latency and resource utilization. Prioritize optimizing server response under load, such as by improving DB query performance or scaling application instances."
+          },
+          "3": {
+            "Title": "Sharp Latency Increase at t6",
+            "Insight": "A sudden jump in response time for [ALT-Sampler-f5c85a11-72bc-46aa-934d-fa02842827d7](#ResourceLink) to **2890ms** at 9:43 PM UTC coincided with a drop in requests per second, suggesting a performance tipping point.",
+            "Details": "[Response time](#ClientMetrics) for Homepage rose sharply to **2890ms at 9:43 PM UTC**. [Requests per second](#ClientMetrics) declined alongside this latency spike, with 5.7 RPS at 9:43 PM UTC dropping further after.",
+            "Recommendation": "Consider analyzing server logs and resource metrics around 9:43 PM UTC to identify underlying bottlenecks or resource exhaustion. Application-level circuit breakers or throttling may also contribute."
+          },
+          "4": {
+            "Title": "Virtual User Drop as RPS Declines",
+            "Insight": "Virtual users for [ALT-Sampler-f5c85a11-72bc-46aa-934d-fa02842827d7](#ResourceLink) decreased from **10 to 7** at 9:44 PM UTC, mirroring the lowest RPS point (**2.2 RPS**), indicative of persistent failures or test engine throttling.",
+            "Details": "[Virtual users](#ClientMetrics) stepped down to **7 at 9:44 PM UTC** after being constant at 10. [Requests per second](#ClientMetrics) reached its minimum (**2.2 RPS**) at the same time, after sustained response time elevation.",
+            "Recommendation": "Consider checking test configuration and error handling behavior to determine if persistent latency or errors caused virtual users to drop. Ensure enough client capacity and review engine health metrics if available."
+          },
+          "5": {
+            "Summary": "Load test (2 min, 10 VUs) completed with performance degradation. Client-side symptoms included declining throughput and response time spikes peaking above 4s, likely indicating backend constraints."
+          }
+        },
+        "version": 1,
+        "status": "Succeeded"
+      }
+    }
+  ],
+  "Variables": {}
+}
