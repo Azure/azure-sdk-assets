@@ -6,7 +6,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Connection": "keep-alive",
-        "User-Agent": "azsdk-python-developer-loadtesting/1.1.0b1 Python/3.13.12 (Windows-11-10.0.26200-SP0)"
+        "User-Agent": "azsdk-python-developer-loadtesting/1.2.0b1 Python/3.13.12 (Windows-11-10.0.26200-SP0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -14,15 +14,15 @@
         "Accept-Ranges": "bytes",
         "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
         "Connection": "keep-alive",
-        "Content-Length": "2964",
+        "Content-Length": "1927",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 03 Mar 2026 11:13:44 GMT",
-        "mise-correlation-id": "0ff9221a-6c62-4d40-a49f-c0f25b32d6f1",
+        "Date": "Thu, 05 Mar 2026 08:52:19 GMT",
+        "mise-correlation-id": "129385cd-9092-45f2-b727-0c91a7aad708",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "x-azure-ref": "Sanitized",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "3097bfa9-a216-4ec3-878d-6bead8c887a8"
+        "x-ms-correlation-request-id": "88adcab9-2586-4b3e-bb97-e7b81aae0fef"
       },
       "ResponseBody": {
         "columns": [
@@ -49,28 +49,22 @@
         ],
         "rows": {
           "1": {
-            "Title": "Response Time Fluctuates Under Stable Load",
-            "Insight": "For Homepage, despite [virtual users](#ClientMetrics) remaining constant and [requests per second](#ClientMetrics) increasing, response time showed significant fluctuation, indicating possible backend resource contention or intermittent bottlenecks.",
-            "Details": "[Virtual users](#ClientMetrics) remained steady at 10 from 9:24 PM UTC to 9:26 PM UTC. [Requests per second](#ClientMetrics) climbed from 3.0 at 9:24 PM UTC to a peak of **6.2 requests/sec** by 9:25 PM UTC. [Response time](#ClientMetrics) dropped from 3430 ms at 9:24 PM UTC to 1890 ms at 9:25 PM UTC, spiked to 2840 ms at 9:25 PM UTC, then fluctuated between **1840 ms and 2310 ms** from 9:26 PM UTC to 9:26 PM UTC.",
-            "Recommendation": "Consider investigating underlying server health or resource limits during load fluctuations, focusing on database or API latency and potential saturation points when RPS spikes."
+            "Title": "Response Time Improves with Load",
+            "Insight": "For endpoint Homepage, response time decreased dramatically as [requests per second](#ClientMetrics) increased, indicating possible initial server cold start optimization.",
+            "Details": "[Requests per second](#ClientMetrics) rose from 1.0 RPS at 8:42 AM UTC **to 6.0 RPS by 8:42 AM UTC**, then plateaued between 5.4 and 5.8 RPS until 8:44 AM UTC. [Response time](#ClientMetrics) dropped sharply from **23210ms at 8:42 AM UTC to 2430ms by 8:42 AM UTC**, then fluctuated between 1880ms and 2770ms during the sustained load.",
+            "Recommendation": "Consider investigating server startup or warm-up behavior for this endpoint. Review application initialization routines, caching strategies, and ensure readiness before ramping up load."
           },
           "2": {
-            "Title": "Transient Response Time Spikes Observed",
-            "Insight": "A brief spike in response time for [ALT-Sampler-3da67308-8367-4179-a4c5-ed67f5ae3e30](#ResourceLink) coincided with the highest [requests per second](#ClientMetrics), implying potential backend strain during load surges.",
-            "Details": "[Requests per second](#ClientMetrics) peaked at **6.2 requests/sec** at 9:25 PM UTC. [Response time](#ClientMetrics) spiked from 1890 ms at 9:25 PM UTC to **2840 ms at 9:25 PM UTC**, despite [virtual users](#ClientMetrics) remaining stable at 10.",
-            "Recommendation": "Consider reviewing server-side performance and autoscaling triggers at moments of peak traffic, and investigate application logs for delays or exceptions during those times."
+            "Title": "Latency Remains High Under Load",
+            "Insight": "Despite higher [requests per second](#ClientMetrics), the response time for Homepage stabilizes at a relatively high level, suggesting potential backend inefficiency under sustained throughput.",
+            "Details": "[Response time](#ClientMetrics) fluctuated between **1880ms and 2770ms** from 8:42 AM UTC to 8:44 AM UTC while [requests per second](#ClientMetrics) maintained a plateau around 5.4–5.8 RPS. No server metrics were provided.",
+            "Recommendation": "May review backend processing, optimize heavy computations, or profile database interactions. Consider instrumenting server-side metrics for deeper diagnosis."
           },
           "3": {
-            "Title": "Stable Virtual Users, Variable RPS",
-            "Insight": "With [virtual users](#ClientMetrics) held constant, variations in [requests per second](#ClientMetrics) indicate potential client-side pacing or backend responsiveness issues for [ALT-Sampler-3da67308-8367-4179-a4c5-ed67f5ae3e30](#ResourceLink).",
-            "Details": "[Virtual users](#ClientMetrics) maintained at 10 between 9:24 PM UTC–9:26 PM UTC, dropped to 8 at 9:26 PM UTC. [Requests per second](#ClientMetrics) ranged from 3.0 to **6.2 requests/sec**, then fluctuated between 4.8 and 5.9 requests/sec after 9:26 PM UTC.",
-            "Recommendation": "Consider auditing client test configuration for pacing logic and monitoring backend throughput limits. If backend metrics become available, correlate request handling latency during these fluctuations."
-          },
-          "4": {
-            "Summary": "Load test (2 min, 10 VUs) completed with performance degradation. Client-side response times fluctuated between 1,840 ms and 3,430 ms, indicating latency spikes likely due to backend constraints."
+            "Summary": "Load test (2 min, 563 VUs) completed with performance degradation. Client-side response times fluctuated heavily with peaks above 23s, suggesting slow responses and possible backend constraints."
           }
         },
-        "version": 5,
+        "version": 1,
         "status": "Succeeded"
       }
     }
