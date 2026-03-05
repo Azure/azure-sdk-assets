@@ -1,13 +1,13 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/test-runs/994a3c73-fd60-4ecc-a7bb-d000847a402d/insights/latest?api-version=2025-11-01-preview",
+      "RequestUri": "https://REDACTED/test-runs/33334444-1234-1234-1234-123456789012/insights/latest?api-version=2025-11-01-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Tue, 03 Mar 2026 22:09:51 GMT",
+        "Date": "Thu, 05 Mar 2026 21:41:12 GMT",
         "User-Agent": "azsdk-java-azure-developer-loadtesting/1.1.0-beta.2 (25.0.2; Windows 11; 10.0)",
         "x-ms-client-request-id": "Sanitized"
       },
@@ -16,16 +16,16 @@
       "ResponseHeaders": {
         "Accept-Ranges": "bytes",
         "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
-        "Connection": "keep-alive",
-        "Content-Length": "2480",
+        "Connection": "close",
+        "Content-Length": "2438",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 03 Mar 2026 22:09:53 GMT",
-        "mise-correlation-id": "74e367cf-7cd5-43a6-9f5d-c99d2e266ba8",
+        "Date": "Thu, 05 Mar 2026 21:41:15 GMT",
+        "mise-correlation-id": "4a9d170e-31b3-4021-97c6-46a675a148f8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "x-azure-ref": "Sanitized",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "8ac00c1d-c7ac-40b8-8084-baa80644e966"
+        "x-ms-correlation-request-id": "4778e628-3ea2-4222-ab91-05e07b4f016d"
       },
       "ResponseBody": {
         "columns": [
@@ -52,19 +52,19 @@
         ],
         "rows": {
           "1": {
-            "Title": "RPS Drop Despite Steady Users",
-            "Insight": "While virtual users for Homepage remained constant at **10**, [response time](#ClientMetrics) fluctuated significantly and [requests per second](#ClientMetrics) dropped to **2.0 RPS** by 9:20 PM UTC. This correlated slowdown suggests the server experienced increasing latency, likely due to resource contention or backend limitations.",
-            "Details": "[Virtual users](#ClientMetrics) were stable at **10** from 9:18 PM UTC to 9:20 PM UTC, dropping to **7** at 9:20 PM UTC. [Requests per second](#ClientMetrics) started at 3.6 RPS at 9:18 PM UTC, peaked at 6.4 RPS by 9:19 PM UTC, and declined to 2.0 RPS at 9:20 PM UTC despite stable user counts. [Response time](#ClientMetrics) fluctuated between 1840ms and 2430ms from 9:19 PM UTC to 9:20 PM UTC, with a trough at **1840ms** at 9:20 PM UTC.",
-            "Recommendation": "Consider investigating server-side bottlenecks—such as database, network, or compute resource limitations. Profile application performance at higher RPS levels and review backend scaling configurations."
+            "Title": "Response Time Fluctuates With RPS",
+            "Insight": "For Homepage, response time exhibited cyclic peaks when requests per second increased, indicating possible backend or network throttling. Both metrics fluctuated while virtual users remained steady, suggesting the server wasn't keeping up with incoming traffic.",
+            "Details": "[Response time](#ClientMetrics) decreased from **4160ms at 8:51 PM UTC** to 2300ms at 8:51 PM UTC, then rose to **3350ms at 8:52 PM UTC** before dropping to 2420ms at 8:52 PM UTC. [Requests per second](#ClientMetrics) rose from 1.0 RPS at 8:51 PM UTC to a peak of **5.0 RPS at 8:51 PM UTC** and 8:53 PM UTC, with dips coinciding with response time peaks. [Virtual users](#ClientMetrics) were stable at 10 until dropping to 8 at 8:53 PM UTC, showing server-side response time was the limiting factor.",
+            "Recommendation": "Consider reviewing server resource allocation and application concurrency handling. If possible, enable server-side metrics to diagnose root causes such as CPU, memory, or database bottlenecks during load peaks."
           },
           "2": {
-            "Title": "Response Time Fluctuation Under Load",
-            "Insight": "Observed substantial [response time](#ClientMetrics) variability for Homepage with peaks up to **2430ms** and troughs as low as **1840ms**, while virtual users remained stable. This suggests inconsistent server responsiveness under load.",
-            "Details": "[Response time](#ClientMetrics) dropped from 3240ms at 9:18 PM UTC to 2090ms at 9:19 PM UTC, then fluctuated between 1840ms and 2430ms from 9:19 PM UTC to 9:20 PM UTC. Notable peaks were observed at 9:19 PM UTC (**2400ms**), 9:20 PM UTC (**2250ms**), and 9:20 PM UTC (**2430ms**). [Requests per second](#ClientMetrics) varied but remained between 5.0 and 6.1 RPS during these response time fluctuations.",
-            "Recommendation": "Consider enabling server-side monitoring and logging during load tests to pinpoint bottlenecks. Review application code for inefficient operations that may cause periodic delays under concurrent access."
+            "Title": "Request Throughput Drops at End",
+            "Insight": "A notable decrease in request throughput for [ALT-Sampler-05bff399-db67-47a4-b930-dc370c8bbacc](#ResourceLink) occurred at the end of the test, while virtual users dropped only slightly, suggesting a bottleneck or throttling event.",
+            "Details": "[Requests per second](#ClientMetrics) dropped sharply from **5.0 RPS at 8:53 PM UTC** to 2.8 RPS at 8:53 PM UTC. [Virtual users](#ClientMetrics) decreased from 10 to 8 only at 8:53 PM UTC. [Response time](#ClientMetrics) increased to 2700ms at 8:53 PM UTC, indicating server or network saturation impacting throughput.",
+            "Recommendation": "Investigate server-side logs and resource utilization around 8:53 PM UTC for possible saturation or throttling events. If this pattern repeats, consider scaling backend resources or optimizing request processing logic at peak times."
           },
           "3": {
-            "Summary": "Load test (2 min, 10 VUs) completed with performance degradation. Response times fluctuated with multiple peaks, while throughput dropped toward the end, indicating potential backend constraints."
+            "Summary": "Load test (2 min, 10 VUs) completed with performance degradation. Response times fluctuated with frequent spikes and throughput dips, suggesting backend latency under load; root cause unclear due to missing server metrics."
           }
         },
         "version": 3,
