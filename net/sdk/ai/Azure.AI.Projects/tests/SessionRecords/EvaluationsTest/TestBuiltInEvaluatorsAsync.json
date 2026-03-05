@@ -1,0 +1,3050 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/evaluators?api-version=v1&type=builtin",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260305.1 (.NET 9.0.13; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Length": "27093",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 05 Mar 2026 18:41:21 GMT",
+        "mise-correlation-id": "db54e33e-beb3-4546-802a-9374ac91e448",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "33",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.198"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.regex_match/versions/2",
+            "name": "builtin.regex_match",
+            "display_name": "Regex-Match-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Evaluates whether a model response matches one or more regex patterns. Patterns can include {{ground_truth}} which is resolved per-row from the ground_truth parameter. Returns True if any pattern matches, False otherwise. Designed for benchmarking tasks where correctness is determined by pattern matching.",
+            "version": "2",
+            "created_by": "azureml",
+            "created_at": "2026-02-27T15:36:28.2368191+00:00",
+            "modified_at": "2026-02-27T15:36:28.2368191+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-870d5302-d118-5d96-9977-cb042d55854d",
+              "init_parameters": {
+                "required": [
+                  "patterns"
+                ],
+                "type": "object",
+                "properties": {
+                  "patterns": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "A list of regex patterns to try sequentially against the response. Evaluation stops at the first match. Patterns may include {{ground_truth}} to be resolved per-row.",
+                    "minItems": 1
+                  }
+                }
+              },
+              "metrics": {
+                "regex_match": {
+                  "type": "boolean",
+                  "desirable_direction": "increase",
+                  "min_value": null,
+                  "max_value": null
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "response": {
+                    "type": "string",
+                    "description": "The raw model output text to evaluate."
+                  },
+                  "ground_truth": {
+                    "type": "string",
+                    "description": "The expected answer value used to resolve {{ground_truth}} in patterns."
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.tool_selection/versions/7",
+            "name": "builtin.tool_selection",
+            "display_name": "Tool-Selection-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Evaluates whether an AI agent selected the most appropriate and efficient tools for a given task, avoiding redundancy or missing essentials. Use it to assess tool choice quality in agent-based systems, orchestration platforms, and AI assistants that must pick the right tools from available options.",
+            "version": "7",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:45.0023485+00:00",
+            "modified_at": "2026-02-25T21:57:45.0023485+00:00",
+            "categories": [
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-b79a95b8-0b17-5f95-b28e-abb407ba15db",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "metrics": {
+                "tool_selection": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "tool_definitions"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "response": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "tool_calls": {
+                    "anyOf": [
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "tool_definitions": {
+                    "anyOf": [
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.tool_output_utilization/versions/4",
+            "name": "builtin.tool_output_utilization",
+            "display_name": "Tool-Output-Utilization-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Checks if an agent correctly interprets and contextually uses the outputs returned by invoked tools (e.g., APIs, DB queries, search results) without fabrication or omission. Use it to validate that agents accurately reuse and represent tool outputs in their responses across tool-dependent systems.",
+            "version": "4",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:41.8280271+00:00",
+            "modified_at": "2026-02-25T21:57:41.8280271+00:00",
+            "categories": [
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-5c387a5e-9547-5fb5-a7bf-2666d3ef778e",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "metrics": {
+                "tool_output_utilization": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response",
+                  "tool_definitions"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "response": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "tool_definitions": {
+                    "anyOf": [
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.tool_input_accuracy/versions/9",
+            "name": "builtin.tool_input_accuracy",
+            "display_name": "Tool-Input-Accuracy-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "A binary evaluator (0 or 1) that checks whether all parameters in an agent’s tool call are correct, validating grounding, type, format, completeness, and contextual appropriateness using LLM-based analysis. Use it to verify agent tool usage, API integration tests, or to ensure tool call parameters are fully correct in AI workflows.",
+            "version": "9",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:38.3579454+00:00",
+            "modified_at": "2026-02-25T21:57:38.3579454+00:00",
+            "categories": [
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-4f868846-0489-59f9-b35c-64cfc884af68",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "metrics": {
+                "tool_input_accuracy": {
+                  "type": "boolean",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response",
+                  "tool_definitions"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "response": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "tool_definitions": {
+                    "anyOf": [
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.tool_call_success/versions/4",
+            "name": "builtin.tool_call_success",
+            "display_name": "Tool-Call-Success-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Evaluates whether all tool calls were successful or not. It checks all tool calls to determine if any of these resulted in technical failure like exception, error or timeout. This evaluator is useful for when you want to evaluate the tool calls generated by an AI agent for being successful.",
+            "version": "4",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:33.7790379+00:00",
+            "modified_at": "2026-02-25T21:57:33.7790379+00:00",
+            "categories": [
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-be97c39e-e862-57df-b19f-3b40b9fec728",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "metrics": {
+                "tool_call_success": {
+                  "type": "boolean",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "tool_definitions": {
+                    "anyOf": [
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "response": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.tool_call_accuracy/versions/7",
+            "name": "builtin.tool_call_accuracy",
+            "display_name": "Tool-Call-Accuracy-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Measures whether the agent selects the correct tool calls, applies the correct parameters, and tracks inefficient or missing too calls, in order to resolve a user's request. This is an umbrella evaluators that assessing overall tool call quality. Use this metric in agent-based systems, and AI assistants that rely on tool integration.",
+            "version": "7",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:30.7345982+00:00",
+            "modified_at": "2026-02-25T21:57:30.7345982+00:00",
+            "categories": [
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-788a3f9f-8ff8-51b7-a5a2-76ecd7db8560",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "tool_call_accuracy": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 1.0,
+                  "max_value": 5.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "tool_definitions"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "tool_definitions": {
+                    "anyOf": [
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "tool_calls": {
+                    "anyOf": [
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "response": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.task_navigation_efficiency/versions/7",
+            "name": "builtin.task_navigation_efficiency",
+            "display_name": "Task-Navigation-Efficiency-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Determines whether an agent’s sequence of steps (e.g., tool calls and parameters) matches an optimal or expected path of actions for completing a task. Use it to evaluate how effectively an agent follows expected sequence of actions and executes multi-step workflows.",
+            "version": "7",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:27.6564987+00:00",
+            "modified_at": "2026-02-25T21:57:27.6564987+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-54325032-4695-5b6c-ab71-01e7fbb05376",
+              "init_parameters": {
+                "required": [],
+                "type": "object",
+                "properties": {
+                  "matching_mode": {
+                    "type": "string",
+                    "enum": [
+                      "exact_match",
+                      "in_order_match",
+                      "any_order_match"
+                    ]
+                  }
+                }
+              },
+              "metrics": {
+                "task_navigation_efficiency": {
+                  "type": "boolean",
+                  "desirable_direction": "increase",
+                  "min_value": null,
+                  "max_value": null
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "actions",
+                  "expected_actions"
+                ],
+                "type": "object",
+                "properties": {
+                  "actions": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "expected_actions": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      {
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          {
+                            "type": "object"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.task_completion/versions/7",
+            "name": "builtin.task_completion",
+            "display_name": "Task-Completion-Evaluator",
+            "metadata": {},
+            "description": "Evaluates whether an AI agent successfully completed the requested task end to end by analyzing the conversation history and agent response to determine if all task requirements were met, ignoring rule adherence or intent understanding. This evaluator is useful for assessing agent effectiveness in task-oriented scenarios, workflow automation, and goal-oriented AI interactions.",
+            "version": "7",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:24.6284993+00:00",
+            "modified_at": "2026-02-25T21:57:24.6284993+00:00",
+            "categories": [
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-f41c96fc-ac5c-5c03-8a54-f4c2e9e0ce78",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "metrics": {
+                "task_completion": {
+                  "type": "boolean",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "response": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "tool_definitions": {
+                    "anyOf": [
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.task_adherence/versions/7",
+            "name": "builtin.task_adherence",
+            "display_name": "Task-Adherence-Evaluator",
+            "metadata": {
+              "provider": "Microsoft",
+              "scenario": "red_team",
+              "azure_ai_agent_default": "true"
+            },
+            "description": "Evaluates whether the agent completed the task within the confines of the instructions given to the agentic system. Higher scores indicate better compliance with the instructions. This evaluator is useful when useful for end-to-end system-level task evaluation for agents. Example outputs include actions such as updating a database and textual responses such as writing a report.",
+            "version": "7",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:21.546887+00:00",
+            "modified_at": "2026-02-25T21:57:21.546887+00:00",
+            "categories": [
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-d66d9f62-7b9d-5cbc-a9a4-1fc927cb51ca",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "task_adherence": {
+                  "type": "boolean",
+                  "desirable_direction": "increase",
+                  "min_value": null,
+                  "max_value": null
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "response": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "tool_definitions": {
+                    "anyOf": [
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.similarity/versions/3",
+            "name": "builtin.similarity",
+            "display_name": "Similarity-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Measures how closely two pieces of text resemble each other in meaning. Higher scores indicate greater semantic similarity. It’s best used for NLP tasks with a user query. Use it when you want an objective evaluation of an AI model's performance, particularly in text generation tasks where you have access to ground truth responses.",
+            "version": "3",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:18.5086947+00:00",
+            "modified_at": "2026-02-25T21:57:18.5086947+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-085c5fed-456e-5dc9-af33-e7daee0b2853",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "similarity": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 1.0,
+                  "max_value": 5.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response",
+                  "ground_truth"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  },
+                  "ground_truth": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "continuationToken": "H4sIAAAAAAAAA1XOuwrCQBBA0X-Z1sTMxvd2YhQsFCXpxGIwoy5uNrKZFR_478ZGsD5wuS_YBvaPXEi4Ab17QX4mXy5L0DB9Bs85kz-ck1WwYoQdOUkQVUJfq2x8w3gCEaz5LvnFXEErjGDZbCy5-Z0PQUztstox6CPZhiPITPmHCzL2h0UtZGd1cNKGeuq9j2BhfCMbOnG76KUwVZuCFNNhjL0YB4Ua677Sqeqq8VD1R4MOokaE9wcRwrtB2QAAAA",
+        "nextLink": "https://agentsv2-ga-bugbash-tip.services.ai.azure.com/api/projects/project2/evaluators?api-version=v1&type=builtin&continuationToken=H4sIAAAAAAAAA1XOuwrCQBBA0X-Z1sTMxvd2YhQsFCXpxGIwoy5uNrKZFR_478ZGsD5wuS_YBvaPXEi4Ab17QX4mXy5L0DB9Bs85kz-ck1WwYoQdOUkQVUJfq2x8w3gCEaz5LvnFXEErjGDZbCy5-Z0PQUztstox6CPZhiPITPmHCzL2h0UtZGd1cNKGeuq9j2BhfCMbOnG76KUwVZuCFNNhjL0YB4Ua677Sqeqq8VD1R4MOokaE9wcRwrtB2QAAAA"
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/evaluators?api-version=v1&type=builtin&continuationToken=H4sIAAAAAAAAA1XOuwrCQBBA0X-Z1sTMxvd2YhQsFCXpxGIwoy5uNrKZFR_478ZGsD5wuS_YBvaPXEi4Ab17QX4mXy5L0DB9Bs85kz-ck1WwYoQdOUkQVUJfq2x8w3gCEaz5LvnFXEErjGDZbCy5-Z0PQUztstox6CPZhiPITPmHCzL2h0UtZGd1cNKGeuq9j2BhfCMbOnG76KUwVZuCFNNhjL0YB4Ua677Sqeqq8VD1R4MOokaE9wcRwrtB2QAAAA",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260305.1 (.NET 9.0.13; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-westus2-01",
+        "Content-Length": "26762",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 05 Mar 2026 18:41:23 GMT",
+        "mise-correlation-id": "25a2228f-572b-4588-87ef-6aa89689499d",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "55",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.158"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.rouge_score/versions/2",
+            "name": "builtin.rouge_score",
+            "display_name": "Rouge-Score-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Compares the overlap of words or phrases between model output and reference text. Higher scores indicate closer alignment. Reccomended use cases include text summarization and document comparison, especially when focusing on recall and the ability to capture relevant information from the reference text.",
+            "version": "2",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:15.43853+00:00",
+            "modified_at": "2026-02-25T21:57:15.43853+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-dd33dffa-d3a6-5475-b40a-77cd37f05200",
+              "init_parameters": {
+                "required": [
+                  "rouge_type"
+                ],
+                "type": "object",
+                "properties": {
+                  "rouge_type": {
+                    "type": "string",
+                    "enum": [
+                      "rouge1",
+                      "rouge2",
+                      "rouge3",
+                      "rouge4",
+                      "rouge5",
+                      "rougeL"
+                    ]
+                  },
+                  "f1_score_threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "multipleOf": 0.1
+                  },
+                  "precision_threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "multipleOf": 0.1
+                  },
+                  "recall_threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "multipleOf": 0.1
+                  }
+                }
+              },
+              "metrics": {
+                "rouge_precision": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                },
+                "rouge_recall": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                },
+                "rouge_f1_score": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "ground_truth",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "ground_truth": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.retrieval/versions/8",
+            "name": "builtin.retrieval",
+            "display_name": "Retrieval-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Measures how effectively the system retrieves relevant data or content. Higher scores mean better recall of useful information. It’s best used for the quality of search in information retrieval and retrieval augmented generation, when you don't have ground truth for chunk retrieval rankings. Use the retrieval score when you want to assess to what extent the context chunks retrieved are highly relevant and ranked at the top for answering your users' queries.",
+            "version": "8",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:12.1646218+00:00",
+            "modified_at": "2026-02-25T21:57:12.1646218+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-eec8f954-6b40-50a4-bc6c-f130e448a9c3",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "retrieval": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 1.0,
+                  "max_value": 5.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "context"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "context": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.response_completeness/versions/5",
+            "name": "builtin.response_completeness",
+            "display_name": "Response-Completeness-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Assesses whether the response covers all key aspects of the question. Higher scores indicate more thorough and complete answers. This evaluator is useful when evaluating chatbots, virtual assistants, and QA systems where full and informative responses are critical.",
+            "version": "5",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:08.953933+00:00",
+            "modified_at": "2026-02-25T21:57:08.953933+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-8ee63834-d641-5bfa-848f-fe4ddf81d320",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "response_completeness": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 1.0,
+                  "max_value": 5.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "ground_truth",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "ground_truth": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.relevance/versions/8",
+            "name": "builtin.relevance",
+            "display_name": "Relevance-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Assesses how well the response matches the user’s intent or question. Higher scores mean better alignment with the prompt. It’s best used for generative business writing such as summarizing meeting notes, creating marketing materials, and drafting email.",
+            "version": "8",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:04.64076+00:00",
+            "modified_at": "2026-02-25T21:57:04.64076+00:00",
+            "categories": [
+              "quality",
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-cb4f1d74-23b3-5fc1-bf83-275a7ef3d56e",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "relevance": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 1.0,
+                  "max_value": 5.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "response": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.intent_resolution/versions/5",
+            "name": "builtin.intent_resolution",
+            "display_name": "Intent-Resolution-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Checks whether the model correctly interprets and resolves user intent. Ensures the response aligns with what the user asked. Use this metric in conversational AI assistants, and customer support bots where understanding user intent is essential.",
+            "version": "5",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:57:01.5893779+00:00",
+            "modified_at": "2026-02-25T21:57:01.5893779+00:00",
+            "categories": [
+              "agents",
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-49149424-9512-555a-ad39-666824658a0c",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "intent_resolution": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 1.0,
+                  "max_value": 5.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "response": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "tool_definitions": {
+                    "anyOf": [
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.groundedness_pro/versions/6",
+            "name": "builtin.groundedness_pro",
+            "display_name": "Service-Groundedness-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Checks if the response is properly grounded in provided sources. A true result means it aligns with reliable context. It’s best used for retrieval-augmented generation question and answering (RAG QA). Use the groundedness pro metric when you need to verify that AI-generated responses align with and are validated by the provided context.",
+            "version": "6",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:56:58.5071993+00:00",
+            "modified_at": "2026-02-25T21:56:58.5071993+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "service",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-b5a780e2-9235-535d-b086-7d3f1699aac3",
+              "init_parameters": {
+                "required": [
+                  "azure_ai_project"
+                ],
+                "type": "object",
+                "properties": {
+                  "azure_ai_project": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "groundedness_pro": {
+                  "type": "boolean",
+                  "desirable_direction": "increase",
+                  "min_value": null,
+                  "max_value": null
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response",
+                  "context"
+                ],
+                "type": "object",
+                "properties": {
+                  "context": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  },
+                  "query": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.groundedness/versions/8",
+            "name": "builtin.groundedness",
+            "display_name": "Groundedness-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Assesses whether the response stays true to the given context in a retrieval-augmented generation scenario. It’s best used for retrieval-augmented generation (RAG) scenarios, including question and answering and summarization. Use the groundedness metric when you need to verify that ai-generated responses align with and are validated by the provided context.",
+            "version": "8",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:56:57.6096812+00:00",
+            "modified_at": "2026-02-25T21:56:57.6096812+00:00",
+            "categories": [
+              "quality",
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-be37934e-333a-592a-94ab-633a33169bc9",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "groundedness": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 1.0,
+                  "max_value": 5.0
+                }
+              },
+              "data_schema": {
+                "required": [],
+                "anyOf": [
+                  {
+                    "required": [
+                      "response",
+                      "context"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "query",
+                      "response"
+                    ]
+                  }
+                ],
+                "type": "object",
+                "properties": {
+                  "context": {
+                    "type": "string"
+                  },
+                  "query": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "response": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "tool_definitions": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.fluency/versions/5",
+            "name": "builtin.fluency",
+            "display_name": "Fluency-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Evaluates how natural and grammatically correct the response sounds. Higher scores indicate smoother and clearer language. It’s best used for generative business writing such as summarizing meeting notes, creating marketing materials, and drafting email.",
+            "version": "5",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:56:54.4226062+00:00",
+            "modified_at": "2026-02-25T21:56:54.4226062+00:00",
+            "categories": [
+              "quality",
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-a5033e87-7e84-5f5f-a61c-13d60286d57a",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "fluency": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 1.0,
+                  "max_value": 5.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.document_retrieval/versions/2",
+            "name": "builtin.document_retrieval",
+            "display_name": "Document-Retrieval-Evaluator",
+            "metadata": {
+              "provider": "Microsoft",
+              "enable_evaluation_ui": "False"
+            },
+            "description": "Checks how accurately relevant documents are retrieved. Higher scores mean better matching to user intent. Use this metric when assessing search engines, recommendation systems, or any system tasked with retrieving documents from a large dataset.",
+            "version": "2",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:56:51.2466643+00:00",
+            "modified_at": "2026-02-25T21:56:51.2466643+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-aa7cd47e-6459-5c07-a0f8-f4716f866a89",
+              "init_parameters": {
+                "required": [],
+                "type": "object",
+                "properties": {
+                  "ground_truth_label_min": {
+                    "type": "integer"
+                  },
+                  "ground_truth_label_max": {
+                    "type": "integer"
+                  },
+                  "ndcg_threshold": {
+                    "type": "number"
+                  },
+                  "xdcg_threshold": {
+                    "type": "number"
+                  },
+                  "fidelity_threshold": {
+                    "type": "number"
+                  },
+                  "top1_relevance_threshold": {
+                    "type": "number"
+                  },
+                  "top3_max_relevance_threshold": {
+                    "type": "number"
+                  },
+                  "total_retrieved_documents_threshold": {
+                    "type": "integer"
+                  },
+                  "total_ground_truth_documents_threshold": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "metrics": {
+                "ndcg@3": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                },
+                "xdcg@3": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                },
+                "fidelity": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                },
+                "top1_relevance": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                },
+                "top3_max_relevance": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                },
+                "holes": {
+                  "type": "ordinal",
+                  "desirable_direction": "decrease",
+                  "min_value": 0.0,
+                  "max_value": null
+                },
+                "holes_ratio": {
+                  "type": "continuous",
+                  "desirable_direction": "decrease",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                },
+                "total_retrieved_documents": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": null
+                },
+                "total_ground_truth_documents": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": null
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "retrieval_ground_truth",
+                  "retrieved_documents"
+                ],
+                "type": "object",
+                "properties": {
+                  "retrieval_ground_truth": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "document_id": {
+                          "type": "string"
+                        },
+                        "query_relevance_label": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "document_id",
+                        "query_relevance_label"
+                      ]
+                    }
+                  },
+                  "retrieved_documents": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "document_id": {
+                          "type": "string"
+                        },
+                        "relevance_score": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "document_id",
+                        "relevance_score"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.coherence/versions/4",
+            "name": "builtin.coherence",
+            "display_name": "Coherence-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Evaluates how logically connected and consistent the response is. Ensures ideas flow naturally and make sense together. It’s best used for generative business writing such as summarizing meeting notes, creating marketing materials, and drafting emails.",
+            "version": "4",
+            "created_by": "azureml",
+            "created_at": "2026-02-25T21:56:48.113844+00:00",
+            "modified_at": "2026-02-25T21:56:48.113844+00:00",
+            "categories": [
+              "quality",
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-f146e6ca-c385-518b-adb9-7fb72b4f270a",
+              "init_parameters": {
+                "required": [
+                  "deployment_name"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "coherence": {
+                  "type": "ordinal",
+                  "desirable_direction": "increase",
+                  "min_value": 1.0,
+                  "max_value": 5.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "continuationToken": "H4sIAAAAAAAAA1XOuwrCQBBA0X-Z1sTMJj63Ex9goShJJxZDMuriZiObWfGB_642gvWBy33CNrC_50LCLejdE_IT-WpZgYbJI3jOmXx5SlbBihF25CRBVAl9rbbxFeMxRLDmm-RncwGdYgTLdmPJzW9cBjGNmzWOQR_IthzBzFR_uCBjf1g0QnbaBCegVaZe-wgWxreyoSN_Fr0Upv6kIMV0EGMWY79QI91TOlVdNRqo3rDfQdSI8HoDn7p4ANkAAAA",
+        "nextLink": "https://agentsv2-ga-bugbash-tip.services.ai.azure.com/api/projects/project2/evaluators?api-version=v1&type=builtin&continuationToken=H4sIAAAAAAAAA1XOuwrCQBBA0X-Z1sTMJj63Ex9goShJJxZDMuriZiObWfGB_642gvWBy33CNrC_50LCLejdE_IT-WpZgYbJI3jOmXx5SlbBihF25CRBVAl9rbbxFeMxRLDmm-RncwGdYgTLdmPJzW9cBjGNmzWOQR_IthzBzFR_uCBjf1g0QnbaBCegVaZe-wgWxreyoSN_Fr0Upv6kIMV0EGMWY79QI91TOlVdNRqo3rDfQdSI8HoDn7p4ANkAAAA"
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/evaluators?api-version=v1&type=builtin&continuationToken=H4sIAAAAAAAAA1XOuwrCQBBA0X-Z1sTMJj63Ex9goShJJxZDMuriZiObWfGB_642gvWBy33CNrC_50LCLejdE_IT-WpZgYbJI3jOmXx5SlbBihF25CRBVAl9rbbxFeMxRLDmm-RncwGdYgTLdmPJzW9cBjGNmzWOQR_IthzBzFR_uCBjf1g0QnbaBCegVaZe-wgWxreyoSN_Fr0Upv6kIMV0EGMWY79QI91TOlVdNRqo3rDfQdSI8HoDn7p4ANkAAAA",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260305.1 (.NET 9.0.13; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-westus2-02",
+        "Content-Length": "20107",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 05 Mar 2026 18:41:26 GMT",
+        "mise-correlation-id": "83377def-bbf0-4987-84e4-65db09eae911",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "9",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "1.201"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.python_grader/versions/1",
+            "name": "builtin.python_grader",
+            "display_name": "Python-Grader-Evaluator",
+            "metadata": {
+              "provider": "Microsoft",
+              "enable_evaluation_ui": "False"
+            },
+            "description": "This grader allows you to execute arbitrary python code to grade the model output. The grader expects a grade function to be present that takes in two arguments and outputs a float value. Any other result (exception, invalid float value, etc.) will be marked as invalid and return a 0 grade.",
+            "version": "1",
+            "created_by": "azureml",
+            "created_at": "2026-02-19T20:50:24.2810342+00:00",
+            "modified_at": "2026-02-19T20:50:24.2810342+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "openai_graders",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-ef42a6d4-dd1f-53c8-a114-078d38da66c4",
+              "init_parameters": {
+                "required": [
+                  "type",
+                  "source",
+                  "name"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "image_tag": {
+                    "type": "string"
+                  },
+                  "pass_threshold": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                }
+              },
+              "metrics": {
+                "python_grader": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                }
+              },
+              "data_schema": {
+                "required": [],
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.text_similarity/versions/2",
+            "name": "builtin.text_similarity",
+            "display_name": "Text-Similarity-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Assesses how similar two texts are in content and structure. Higher scores indicate better alignment with the reference. Use this metric in paraphrase detection, translation evaluation, and response comparison.",
+            "version": "2",
+            "created_by": "azureml",
+            "created_at": "2025-12-08T19:41:29.02966+00:00",
+            "modified_at": "2025-12-08T19:41:29.02966+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "openai_graders",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-aad8b8fb-4458-581f-ae89-4f16f2a44a85",
+              "init_parameters": {
+                "required": [
+                  "name",
+                  "input",
+                  "reference",
+                  "type",
+                  "evaluation_metric",
+                  "pass_threshold"
+                ],
+                "type": "object",
+                "properties": {
+                  "input": {
+                    "type": "string"
+                  },
+                  "reference": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "evaluation_metric": {
+                    "type": "string",
+                    "enum": [
+                      "fuzzy_match",
+                      "cosine"
+                    ]
+                  },
+                  "pass_threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "multipleOf": 0.1
+                  }
+                }
+              },
+              "metrics": {
+                "similarity": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                }
+              },
+              "data_schema": {
+                "required": [],
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.string_check/versions/2",
+            "name": "builtin.string_check",
+            "display_name": "String-Check-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Compares exact text strings to verify presence or match. Useful for confirming fixed outputs or keywords. Use this metric in form validation, structured output generation, and data extraction.",
+            "version": "2",
+            "created_by": "azureml",
+            "created_at": "2025-12-08T19:41:27.7867075+00:00",
+            "modified_at": "2025-12-08T19:41:27.7867075+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "openai_graders",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-162dd5d6-edb7-51ee-b434-6a74b0da4a82",
+              "init_parameters": {
+                "required": [
+                  "name",
+                  "input",
+                  "reference",
+                  "type",
+                  "operation"
+                ],
+                "type": "object",
+                "properties": {
+                  "input": {
+                    "type": "string"
+                  },
+                  "reference": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "operation": {
+                    "type": "string",
+                    "enum": [
+                      "eq",
+                      "ne",
+                      "like",
+                      "ilike"
+                    ]
+                  }
+                }
+              },
+              "metrics": {
+                "string_check": {
+                  "type": "boolean",
+                  "desirable_direction": "increase",
+                  "min_value": null,
+                  "max_value": null
+                }
+              },
+              "data_schema": {
+                "required": [],
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.violence/versions/2",
+            "name": "builtin.violence",
+            "display_name": "Violence-Content-Evaluator",
+            "metadata": {
+              "provider": "Microsoft",
+              "scenario": "red_team",
+              "azure_ai_model_default": "true",
+              "azure_ai_agent_default": "true"
+            },
+            "description": "Detects violent or threatening language in the response. Lower scores indicate safer, non‑violent communication.",
+            "version": "2",
+            "created_by": "azureml",
+            "created_at": "2025-11-03T23:49:58.6148826+00:00",
+            "modified_at": "2025-11-13T19:04:39.0085958+00:00",
+            "categories": [
+              "safety",
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "service",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-6e4a5772-4298-58d1-b730-b86615cd2312",
+              "init_parameters": {
+                "required": [
+                  "azure_ai_project"
+                ],
+                "type": "object",
+                "properties": {
+                  "azure_ai_project": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 7,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "violence": {
+                  "type": "ordinal",
+                  "desirable_direction": "decrease",
+                  "min_value": 0.0,
+                  "max_value": 7.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.ungrounded_attributes/versions/2",
+            "name": "builtin.ungrounded_attributes",
+            "display_name": "Ungrounded-Attributes-Evaluator",
+            "metadata": {
+              "provider": "Microsoft",
+              "scenario": "red_team"
+            },
+            "description": "Identifies details added by the model that are not supported by provided data. Helps catch hallucinated or made‑up information. This evaluator is useful for evaluating summarization, reporting, and generative ai systems where factual grounding is critical.",
+            "version": "2",
+            "created_by": "azureml",
+            "created_at": "2025-11-03T23:49:57.6705589+00:00",
+            "modified_at": "2025-11-13T19:04:38.1582468+00:00",
+            "categories": [
+              "safety",
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "service",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-96909f6b-f2bc-5090-b2de-1d7515c83e21",
+              "init_parameters": {
+                "required": [
+                  "azure_ai_project"
+                ],
+                "type": "object",
+                "properties": {
+                  "azure_ai_project": {
+                    "type": "string"
+                  }
+                }
+              },
+              "metrics": {
+                "ungrounded_attributes": {
+                  "type": "boolean",
+                  "desirable_direction": "decrease",
+                  "min_value": null,
+                  "max_value": null
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response",
+                  "context"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  },
+                  "context": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.sexual/versions/2",
+            "name": "builtin.sexual",
+            "display_name": "Sexual-Content-Evaluator",
+            "metadata": {
+              "provider": "Microsoft",
+              "scenario": "red_team",
+              "azure_ai_model_default": "true",
+              "azure_ai_agent_default": "true"
+            },
+            "description": "Detects sexual or explicit content in responses. Lower scores indicate safer and more appropriate language.",
+            "version": "2",
+            "created_by": "azureml",
+            "created_at": "2025-11-03T23:49:38.5206037+00:00",
+            "modified_at": "2025-11-13T19:04:28.5327925+00:00",
+            "categories": [
+              "safety",
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "service",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-465de088-e0dc-58e9-9b04-e8d83e2e4861",
+              "init_parameters": {
+                "required": [
+                  "azure_ai_project"
+                ],
+                "type": "object",
+                "properties": {
+                  "azure_ai_project": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 7,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "sexual": {
+                  "type": "ordinal",
+                  "desirable_direction": "decrease",
+                  "min_value": 0.0,
+                  "max_value": 7.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.self_harm/versions/2",
+            "name": "builtin.self_harm",
+            "display_name": "Self-Harm-Related-Content-Evaluator",
+            "metadata": {
+              "provider": "Microsoft",
+              "scenario": "red_team",
+              "azure_ai_model_default": "true",
+              "azure_ai_agent_default": "true"
+            },
+            "description": "Detects language that promotes or discusses self‑harm. Lower scores indicate safer, more supportive content.",
+            "version": "2",
+            "created_by": "azureml",
+            "created_at": "2025-11-03T23:49:36.8025625+00:00",
+            "modified_at": "2025-11-13T19:04:26.8646541+00:00",
+            "categories": [
+              "safety",
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "service",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-4ad3ca74-012a-5a7b-bc74-75d8ff019aaf",
+              "init_parameters": {
+                "required": [
+                  "azure_ai_project"
+                ],
+                "type": "object",
+                "properties": {
+                  "azure_ai_project": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 7,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "self_harm": {
+                  "type": "ordinal",
+                  "desirable_direction": "decrease",
+                  "min_value": 0.0,
+                  "max_value": 7.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.protected_material/versions/2",
+            "name": "builtin.protected_material",
+            "display_name": "Protected-Material-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Detects use of copyrighted or proprietary content in responses. Ensures generated text stays within acceptable use boundaries.",
+            "version": "2",
+            "created_by": "azureml",
+            "created_at": "2025-11-03T23:48:46.048344+00:00",
+            "modified_at": "2025-11-13T19:03:33.2546326+00:00",
+            "categories": [
+              "safety",
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "service",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-aa7a73d1-1643-563d-a17a-d311dafcc2cf",
+              "init_parameters": {
+                "required": [
+                  "azure_ai_project"
+                ],
+                "type": "object",
+                "properties": {
+                  "azure_ai_project": {
+                    "type": "string"
+                  }
+                }
+              },
+              "metrics": {
+                "protected_material": {
+                  "type": "boolean",
+                  "desirable_direction": "decrease",
+                  "min_value": null,
+                  "max_value": null
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.indirect_attack/versions/2",
+            "name": "builtin.indirect_attack",
+            "display_name": "Indirect-Attack-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Identifies subtle or indirect attacks toward individuals or groups. Lower scores indicate more respectful and non‑aggressive tone.",
+            "version": "2",
+            "created_by": "azureml",
+            "created_at": "2025-11-03T23:48:42.1566344+00:00",
+            "modified_at": "2025-11-13T19:03:25.8817586+00:00",
+            "categories": [
+              "safety",
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "service",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-f8a3256f-ad2e-5202-9adf-81517c48bbb5",
+              "init_parameters": {
+                "required": [
+                  "azure_ai_project"
+                ],
+                "type": "object",
+                "properties": {
+                  "azure_ai_project": {
+                    "type": "string"
+                  }
+                }
+              },
+              "metrics": {
+                "xpia": {
+                  "type": "boolean",
+                  "desirable_direction": "decrease",
+                  "min_value": null,
+                  "max_value": null
+                },
+                "xpia_manipulated_content": {
+                  "type": "boolean",
+                  "desirable_direction": "decrease",
+                  "min_value": null,
+                  "max_value": null
+                },
+                "xpia_intrusion": {
+                  "type": "boolean",
+                  "desirable_direction": "decrease",
+                  "min_value": null,
+                  "max_value": null
+                },
+                "xpia_information_gathering": {
+                  "type": "boolean",
+                  "desirable_direction": "decrease",
+                  "min_value": null,
+                  "max_value": null
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.hate_unfairness/versions/2",
+            "name": "builtin.hate_unfairness",
+            "display_name": "Hate-and-Unfairness-Evaluator",
+            "metadata": {
+              "provider": "Microsoft",
+              "scenario": "red_team",
+              "azure_ai_model_default": "true",
+              "azure_ai_agent_default": "true"
+            },
+            "description": "Detects hateful, biased, or unfair language in the response. Lower scores indicate more neutral and inclusive content.",
+            "version": "2",
+            "created_by": "azureml",
+            "created_at": "2025-11-03T23:48:40.7618802+00:00",
+            "modified_at": "2025-11-13T19:03:24.9701719+00:00",
+            "categories": [
+              "safety",
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "service",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-06c76e02-0629-500d-9aaf-5076c4cb3613",
+              "init_parameters": {
+                "required": [
+                  "azure_ai_project"
+                ],
+                "type": "object",
+                "properties": {
+                  "azure_ai_project": {
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 7,
+                    "multipleOf": 1
+                  }
+                }
+              },
+              "metrics": {
+                "hate_unfairness": {
+                  "type": "ordinal",
+                  "desirable_direction": "decrease",
+                  "min_value": 0.0,
+                  "max_value": 7.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "continuationToken": "H4sIAAAAAAAAA1XOTWvCQBCA4f8yV5NmJpo07k38AA8WJbmVHgYzrYvrpmxmS1Ty37WXQs8PvLx3OEQJ11pZpQfzfof6xKHdtmBgcYtBauFwPGW76NSqePaaIVLGv3Zx6Q-mc0jgTQatz_YbTEUJbPu9Y78e5BjVdn7VeQHzya6XBFa2_Ycbtu4Pm07ZLbvoFQxNafxIYGNDr3v-kudi0MZeninIMS9TnKZYNFSZGZmcXqgqafZaTBANIowPXAisq9kAAAA",
+        "nextLink": "https://agentsv2-ga-bugbash-tip.services.ai.azure.com/api/projects/project2/evaluators?api-version=v1&type=builtin&continuationToken=H4sIAAAAAAAAA1XOTWvCQBCA4f8yV5NmJpo07k38AA8WJbmVHgYzrYvrpmxmS1Ty37WXQs8PvLx3OEQJ11pZpQfzfof6xKHdtmBgcYtBauFwPGW76NSqePaaIVLGv3Zx6Q-mc0jgTQatz_YbTEUJbPu9Y78e5BjVdn7VeQHzya6XBFa2_Ycbtu4Pm07ZLbvoFQxNafxIYGNDr3v-kudi0MZeninIMS9TnKZYNFSZGZmcXqgqafZaTBANIowPXAisq9kAAAA"
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/evaluators?api-version=v1&type=builtin&continuationToken=H4sIAAAAAAAAA1XOTWvCQBCA4f8yV5NmJpo07k38AA8WJbmVHgYzrYvrpmxmS1Ty37WXQs8PvLx3OEQJ11pZpQfzfof6xKHdtmBgcYtBauFwPGW76NSqePaaIVLGv3Zx6Q-mc0jgTQatz_YbTEUJbPu9Y78e5BjVdn7VeQHzya6XBFa2_Ycbtu4Pm07ZLbvoFQxNafxIYGNDr3v-kudi0MZeninIMS9TnKZYNFSZGZmcXqgqafZaTBANIowPXAisq9kAAAA",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260305.1 (.NET 9.0.13; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-westus2-02",
+        "Content-Length": "16473",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 05 Mar 2026 18:41:29 GMT",
+        "mise-correlation-id": "6e4687e7-d9b7-472c-a624-6df850abfcf3",
+        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "11",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.621"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.code_vulnerability/versions/2",
+            "name": "builtin.code_vulnerability",
+            "display_name": "Code-Vulnerability-Evaluator",
+            "metadata": {
+              "provider": "Microsoft",
+              "scenario": "red_team"
+            },
+            "description": "Assesses whether generated code contains potential security flaws. Lower scores indicate safer, more secure code. Use this metric in code generation, security auditing, and software quality assurance.",
+            "version": "2",
+            "created_by": "azureml",
+            "created_at": "2025-11-03T23:48:27.3570827+00:00",
+            "modified_at": "2025-11-13T19:03:14.5732312+00:00",
+            "categories": [
+              "safety",
+              "agents"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "service",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-97df441f-c6ac-5f69-9f3c-ba41b0d72e72",
+              "init_parameters": {
+                "required": [
+                  "azure_ai_project"
+                ],
+                "type": "object",
+                "properties": {
+                  "azure_ai_project": {
+                    "type": "string"
+                  }
+                }
+              },
+              "metrics": {
+                "code_vulnerability": {
+                  "type": "boolean",
+                  "desirable_direction": "decrease",
+                  "min_value": null,
+                  "max_value": null
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.score_model/versions/1",
+            "name": "builtin.score_model",
+            "display_name": "Score-Model-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Evaluates the model’s overall performance across relevant criteria by comparing model-assigned scores to human annotated using correlation metrics. Useful for comparing quality between different model runs. Use this metric in ranking systems, evaluation pipelines, and model calibration.",
+            "version": "1",
+            "created_by": "azureml",
+            "created_at": "2025-10-16T20:25:29.8885692+00:00",
+            "modified_at": "2025-11-13T19:04:25.9216489+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "openai_graders",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-f0bf7d83-1730-5971-b13e-d8e0a81d7b08",
+              "init_parameters": {
+                "required": [
+                  "deployment_name",
+                  "model",
+                  "name",
+                  "input",
+                  "type",
+                  "range",
+                  "pass_threshold"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "input": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "content": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "content",
+                        "role"
+                      ]
+                    },
+                    "minItems": 2
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "range": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "pass_threshold": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                }
+              },
+              "metrics": {
+                "score_model": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                }
+              },
+              "data_schema": {
+                "required": [],
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.label_model/versions/1",
+            "name": "builtin.label_model",
+            "display_name": "Label-Model-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Compares model predictions against reference labels and returns structured results with explanations for why each label was chosen. Measures how closely results match expected outcomes. Use this metric in classification tasks, tagging systems, and intent detection.",
+            "version": "1",
+            "created_by": "azureml",
+            "created_at": "2025-10-16T20:25:25.789346+00:00",
+            "modified_at": "2025-11-13T19:03:30.1565024+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "openai_graders",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-c093ea66-2cbe-53a4-a9d5-1faae7e756ba",
+              "init_parameters": {
+                "required": [
+                  "deployment_name",
+                  "model",
+                  "name",
+                  "input",
+                  "type",
+                  "labels",
+                  "passing_labels"
+                ],
+                "type": "object",
+                "properties": {
+                  "deployment_name": {
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "input": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "content": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "content",
+                        "role"
+                      ]
+                    }
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "labels": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "passing_labels": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "metrics": {
+                "label_model": {
+                  "type": "boolean",
+                  "desirable_direction": "increase",
+                  "min_value": null,
+                  "max_value": null
+                }
+              },
+              "data_schema": {
+                "required": [],
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.meteor_score/versions/1",
+            "name": "builtin.meteor_score",
+            "display_name": "Meteor-Score-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Evaluates similarity between generated and reference text using flexible matching. Higher scores indicate better linguistic overlap. It’s best used for natural language processing (NLP) tasks. It addresses limitations of other metrics like BLEU by considering synonyms, stemming, and paraphrasing.",
+            "version": "1",
+            "created_by": "azureml",
+            "created_at": "2025-10-13T18:11:07.7703565+00:00",
+            "modified_at": "2025-11-13T19:03:31.2341066+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-a1b4d44f-134d-5e24-8e17-a9e209bdff31",
+              "init_parameters": {
+                "required": [],
+                "type": "object",
+                "properties": {
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "multipleOf": 0.1
+                  }
+                }
+              },
+              "metrics": {
+                "meteor": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "ground_truth",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "ground_truth": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.gleu_score/versions/1",
+            "name": "builtin.gleu_score",
+            "display_name": "Gleu-Score-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Compares generated text to reference text for overlap and phrasing consistency. Higher scores suggest closer similarity. It’s best used for natural language processing (NLP) tasks. This balanced evaluation, designed for sentence-level assessment, makes it ideal for detailed analysis of translation quality, text summarization, and text generation.",
+            "version": "1",
+            "created_by": "azureml",
+            "created_at": "2025-10-13T18:10:58.0197454+00:00",
+            "modified_at": "2025-11-13T19:03:22.0021851+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-1bbec6d2-65c3-559d-afd4-1e498d67e5fa",
+              "init_parameters": {
+                "required": [],
+                "type": "object",
+                "properties": {
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "multipleOf": 0.1
+                  }
+                }
+              },
+              "metrics": {
+                "gleu": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "ground_truth",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "ground_truth": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.f1_score/versions/1",
+            "name": "builtin.f1_score",
+            "display_name": "F1Score-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Balances correctness and completeness when comparing predictions to true results. Higher scores indicate better overall accuracy. It’s best used for natural language processing (NLP) tasks. Use the F1 score evaluator when you want a single comprehensive metric that combines both recall and precision in your model's responses.",
+            "version": "1",
+            "created_by": "azureml",
+            "created_at": "2025-10-13T18:10:51.5762345+00:00",
+            "modified_at": "2025-11-13T19:03:20.162797+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-d01569da-2ec3-559f-884d-8f44ac977a25",
+              "init_parameters": {
+                "required": [],
+                "type": "object",
+                "properties": {
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "multipleOf": 0.1
+                  }
+                }
+              },
+              "metrics": {
+                "f1_score": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "ground_truth",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "ground_truth": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.eci/versions/1",
+            "name": "builtin.eci",
+            "display_name": "ECI-Evaluator",
+            "metadata": {
+              "provider": "Microsoft",
+              "preview-1P": "true"
+            },
+            "description": "Determines whether key or critical information is captured correctly. Ensures important details are not omitted.",
+            "version": "1",
+            "created_by": "azureml",
+            "created_at": "2025-10-13T18:10:48.3374289+00:00",
+            "modified_at": "2025-11-13T01:49:38.1064555+00:00",
+            "categories": [
+              "safety"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "service",
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-3fea53ef-c07f-5e51-8c70-376c2a1e7c37",
+              "init_parameters": {
+                "required": [
+                  "azure_ai_project"
+                ],
+                "type": "object",
+                "properties": {
+                  "azure_ai_project": {
+                    "type": "string"
+                  }
+                }
+              },
+              "metrics": {
+                "eci": {
+                  "type": "boolean",
+                  "desirable_direction": "decrease",
+                  "min_value": null,
+                  "max_value": null
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "query",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "azureml://registries/azureml/evaluators/builtin.bleu_score/versions/1",
+            "name": "builtin.bleu_score",
+            "display_name": "Bleu-Score-Evaluator",
+            "metadata": {
+              "provider": "Microsoft"
+            },
+            "description": "Measures how similar the model’s output is to a reference text. Useful for assessing alignment between generated and expected responses. It’s best used for natural language processing (NLP) tasks, including text summarization and text generation use cases.",
+            "version": "1",
+            "created_by": "azureml",
+            "created_at": "2025-10-13T18:10:39.4342199+00:00",
+            "modified_at": "2025-11-13T19:03:13.576301+00:00",
+            "categories": [
+              "quality"
+            ],
+            "evaluator_type": "builtin",
+            "definition": {
+              "type": "code",
+              "code_text": null,
+              "blob_uri": "https://amlwlrt4use01.blob.core.windows.net:443/azureml-3e920422-fb60-512e-b629-e138252bf913",
+              "init_parameters": {
+                "required": [],
+                "type": "object",
+                "properties": {
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "multipleOf": 0.1
+                  }
+                }
+              },
+              "metrics": {
+                "bleu": {
+                  "type": "continuous",
+                  "desirable_direction": "increase",
+                  "min_value": 0.0,
+                  "max_value": 1.0
+                }
+              },
+              "data_schema": {
+                "required": [
+                  "ground_truth",
+                  "response"
+                ],
+                "type": "object",
+                "properties": {
+                  "ground_truth": {
+                    "type": "string"
+                  },
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "nextLink": ""
+      }
+    }
+  ],
+  "Variables": {
+    "PROJECT_ENDPOINT": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project"
+  }
+}
