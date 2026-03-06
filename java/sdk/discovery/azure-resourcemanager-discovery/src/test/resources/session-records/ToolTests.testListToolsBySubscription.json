@@ -1,0 +1,2139 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Discovery/tools?api-version=2026-02-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Fri, 06 Mar 2026 00:03:42 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/2.51 (17.0.17; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "48547",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 06 Mar 2026 00:03:46 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "9c2f6024-da35-493a-8382-6f71a916bfc1",
+        "x-ms-original-request-ids": [
+          "706ba4c6-94bc-4555-b089-64542c15d08f",
+          "03e9cc95-b8db-445e-8dbc-fe7d92cf2660",
+          "09e1e172-fd7a-4f11-8965-4aafd1b267ba",
+          "2304f547-1ddf-4e93-827e-fb13d052367d",
+          "7f1bc8a8-fda7-4704-a0a2-5ca261ee789a",
+          "82914c25-e8bd-4d2b-b21d-cd09fd3f6f3c"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": "1099",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "EASTUS2EUAP:20260306T000346Z:9c2f6024-da35-493a-8382-6f71a916bfc1",
+        "x-ms-throttling-version": "v2",
+        "X-MSEdge-Ref": "Ref A: 3FCC4D3EEFC04A028D9E1779B28EFEC7 Ref B: SN4AA2022304045 Ref C: 2026-03-06T00:03:45Z"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-devslice-uksouth/providers/Microsoft.Discovery/tools/itmolptluks1",
+            "name": "itmolptluks1",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "Application",
+              "createdAt": "2025-09-16T11:09:11.8986542Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "Application",
+              "lastModifiedAt": "2025-09-16T11:18:07.8437828Z"
+            },
+            "properties": {
+              "environmentVariables": {
+                "LOGP_ENDPOINT_ID": "/subscriptions/8bd6cf1f-7ca2-4b66-8ec3-3a7620027b80/resourceGroups/alzam-westus-gpu/providers/Microsoft.MachineLearningServices/workspaces/alzam-westus-gpu-ws/onlineEndpoints/molpredictor-logp",
+                "BOILING_ENDPOINT_ID": "/subscriptions/8bd6cf1f-7ca2-4b66-8ec3-3a7620027b80/resourceGroups/alzam-westus-gpu/providers/Microsoft.MachineLearningServices/workspaces/alzam-westus-gpu-ws/onlineEndpoints/molpredictor-bp",
+                "CRITICAL_ENDPOINT_ID": "/subscriptions/8bd6cf1f-7ca2-4b66-8ec3-3a7620027b80/resourceGroups/alzam-westus-gpu/providers/Microsoft.MachineLearningServices/workspaces/alzam-westus-gpu-ws/onlineEndpoints/molpredictor-tc",
+                "DENSITY_ENDPOINT_ID": "/subscriptions/8bd6cf1f-7ca2-4b66-8ec3-3a7620027b80/resourceGroups/alzam-westus-gpu/providers/Microsoft.MachineLearningServices/workspaces/alzam-westus-gpu-ws/onlineEndpoints/molpredictor-density",
+                "SOLUBILITY_ENDPOINT_ID": "/subscriptions/8bd6cf1f-7ca2-4b66-8ec3-3a7620027b80/resourceGroups/alzam-westus-gpu/providers/Microsoft.MachineLearningServices/workspaces/alzam-westus-gpu-ws/onlineEndpoints/molpredictor-solubility"
+              },
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "molpredictor",
+                "description": "Molecular property prediction for single SMILES strings.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "name": "worker",
+                    "infra_type": "container",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/molpredictor:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "1Gi",
+                        "storage": "32",
+                        "gpu": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "1Gi",
+                        "storage": "64",
+                        "gpu": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "name": "predict",
+                    "description": "Predict molecular properties for SMILES strings read from .txt files in a directory. Note, input mount path where the SMILES data will be stored for the computation is \"/app/input_smiles\". Multiple smiles may be processed within the same run as long as they are mounted to the same input path. Outputs will be stored in \"/app/outputs\"\".",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "action": {
+                          "type": "string",
+                          "description": "The property to predict. Must be one of [log_p, boiling_point, solubility, density, critical_point]"
+                        }
+                      },
+                      "required": [
+                        "action"
+                      ]
+                    },
+                    "command": "python molpredictor.py --action {{ action }}",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rp114-rg/providers/Microsoft.Discovery/tools/itmolptlrp114",
+            "name": "itmolptlrp114",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "Application",
+              "createdAt": "2026-01-15T00:40:15.3174601Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "Application",
+              "lastModifiedAt": "2026-01-15T00:49:16.0537055Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "molpredictor",
+                "description": "Molecular property prediction for single SMILES strings.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "name": "worker",
+                    "infra_type": "container",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/molpredictor:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "1Gi",
+                        "storage": "32",
+                        "gpu": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "1Gi",
+                        "storage": "64",
+                        "gpu": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "name": "predict",
+                    "description": "Predict molecular properties for SMILES strings read from .txt files in a directory. Note, input mount path where the SMILES data will be stored for the computation is \"/app/input_smiles\". Multiple smiles may be processed within the same run as long as they are mounted to the same input path. Outputs will be stored in \"/app/outputs\"\".",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "action": {
+                          "type": "string",
+                          "description": "The property to predict. Must be one of [log_p, boiling_point, solubility, density, critical_point]"
+                        }
+                      },
+                      "required": [
+                        "action"
+                      ]
+                    },
+                    "command": "python molpredictor.py --action {{ action }}",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {
+                "LOGP_ENDPOINT_ID": "/subscriptions/8bd6cf1f-7ca2-4b66-8ec3-3a7620027b80/resourceGroups/alzam-westus-gpu/providers/Microsoft.MachineLearningServices/workspaces/alzam-westus-gpu-ws/onlineEndpoints/molpredictor-logp",
+                "BOILING_ENDPOINT_ID": "/subscriptions/8bd6cf1f-7ca2-4b66-8ec3-3a7620027b80/resourceGroups/alzam-westus-gpu/providers/Microsoft.MachineLearningServices/workspaces/alzam-westus-gpu-ws/onlineEndpoints/molpredictor-bp",
+                "CRITICAL_ENDPOINT_ID": "/subscriptions/8bd6cf1f-7ca2-4b66-8ec3-3a7620027b80/resourceGroups/alzam-westus-gpu/providers/Microsoft.MachineLearningServices/workspaces/alzam-westus-gpu-ws/onlineEndpoints/molpredictor-tc",
+                "DENSITY_ENDPOINT_ID": "/subscriptions/8bd6cf1f-7ca2-4b66-8ec3-3a7620027b80/resourceGroups/alzam-westus-gpu/providers/Microsoft.MachineLearningServices/workspaces/alzam-westus-gpu-ws/onlineEndpoints/molpredictor-density",
+                "SOLUBILITY_ENDPOINT_ID": "/subscriptions/8bd6cf1f-7ca2-4b66-8ec3-3a7620027b80/resourceGroups/alzam-westus-gpu/providers/Microsoft.MachineLearningServices/workspaces/alzam-westus-gpu-ws/onlineEndpoints/molpredictor-solubility"
+              },
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rp114-rg/providers/Microsoft.Discovery/tools/itcorpythtlrp114",
+            "name": "itcorpythtlrp114",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "Application",
+              "createdAt": "2026-01-15T00:40:39.3470173Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "Application",
+              "lastModifiedAt": "2026-01-15T00:48:18.2325096Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "corepython",
+                "description": "This is the coding tool for CorePython cheminformatics operations.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "infra_type": "container",
+                    "name": "worker",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/corepython:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "2Gi",
+                        "gpu": "0",
+                        "storage": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "4Gi",
+                        "storage": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "code_environments": [
+                  {
+                    "language": "python",
+                    "command": "python3 \"/{{ scriptName }}\"",
+                    "description": "Python code environment with RDKit for molecular manipulation, cheminformatics, and property calculations, as well as general Python code execution. Note: All file outputs should be written to directory /app/outputs. DO NOT FORGET THIS. DO NOT WRITE OUTPUTS TO ANY OTHER DIRECTORY. Utilize the outputMounts parameter to make sure this is mounted correctly and captured after script execution.",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rp114-rg/providers/Microsoft.Discovery/tools/ittestiotlrp114",
+            "name": "ittestiotlrp114",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "Application",
+              "createdAt": "2026-01-15T00:41:02.0050284Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "Application",
+              "lastModifiedAt": "2026-01-15T00:48:19.5365998Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "testiotool",
+                "description": "This tool is used to test inline files and output mount configurations.",
+                "version": "1.0.0",
+                "category": "testing",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "name": "worker",
+                    "infra_type": "container",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/testiotool:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "1Gi",
+                        "gpu": "0",
+                        "storage": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "2Gi",
+                        "storage": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "name": "test_inline_and_output",
+                    "description": "Test action to validate inline file input and output mount functionality.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "test_inline_file": {
+                          "type": "string",
+                          "description": "This is a test inline file, you should provide some dummy text"
+                        }
+                      },
+                      "required": [
+                        "test_inline_file"
+                      ]
+                    },
+                    "command": "python test_io_script.py",
+                    "inline_files": [
+                      {
+                        "mount_path": "/app/input/test_file.txt",
+                        "content": "{{{ test_inline_file }}}"
+                      }
+                    ],
+                    "output_mount_configurations": [
+                      {
+                        "mount_path": "/app/outputs/",
+                        "auto_promote": true,
+                        "output_name": "testiooutput",
+                        "output_description": "Test output files generated from processing the inline input file"
+                      }
+                    ],
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rp114-rg/providers/Microsoft.Discovery/tools/molpredictor4h74wc",
+            "name": "molpredictor4h74wc",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2026-02-12T20:02:50.7457408Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "Application",
+              "lastModifiedAt": "2026-02-12T20:03:17.4513262Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "molpredictor",
+                "description": "Molecular property prediction for single SMILES strings.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "name": "worker",
+                    "infra_type": "container",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/molpredictor:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "1Gi",
+                        "storage": "32",
+                        "gpu": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "1Gi",
+                        "storage": "64",
+                        "gpu": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "name": "predict",
+                    "description": "Predict molecular properties for SMILES strings read from .txt files in a directory. Note, input mount path where the SMILES data will be stored for the computation is \"/app/input_smiles\". Multiple smiles may be processed within the same run as long as they are mounted to the same input path. Outputs will be stored in \"/app/outputs\".",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "action": {
+                          "type": "string",
+                          "description": "The property to predict. Must be one of [log_p, boiling_point, solubility, density, critical_point]"
+                        }
+                      },
+                      "required": [
+                        "action"
+                      ]
+                    },
+                    "command": "python molpredictor.py --action {{ action }}",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rp114-rg/providers/Microsoft.Discovery/tools/itcorpythtl4h74wc",
+            "name": "itcorpythtl4h74wc",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2026-02-12T20:02:50.8238918Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "Application",
+              "lastModifiedAt": "2026-02-12T20:03:53.4456326Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "corepython",
+                "description": "This is the coding tool for CorePython cheminformatics operations.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "infra_type": "container",
+                    "name": "worker",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/corepython:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "2Gi",
+                        "gpu": "0",
+                        "storage": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "4Gi",
+                        "storage": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "code_environments": [
+                  {
+                    "language": "python",
+                    "command": "python3 \"/{{ scriptName }}\"",
+                    "description": "Python code environment with RDKit for molecular manipulation, cheminformatics, and property calculations, as well as general Python code execution. Note: All file outputs should be written to directory /app/outputs. DO NOT FORGET THIS. DO NOT WRITE OUTPUTS TO ANY OTHER DIRECTORY. Utilize the outputMounts parameter to make sure this is mounted correctly and captured after script execution.",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rp114-rg/providers/Microsoft.Discovery/tools/itcorpythtlpujupx",
+            "name": "itcorpythtlpujupx",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2026-02-13T17:13:37.8488789Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "Application",
+              "lastModifiedAt": "2026-02-13T17:14:12.587767Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "corepython",
+                "description": "This is the coding tool for CorePython cheminformatics operations.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "infra_type": "container",
+                    "name": "worker",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/corepython:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "2Gi",
+                        "gpu": "0",
+                        "storage": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "4Gi",
+                        "storage": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "code_environments": [
+                  {
+                    "language": "python",
+                    "command": "python3 \"/{{ scriptName }}\"",
+                    "description": "Python code environment with RDKit for molecular manipulation, cheminformatics, and property calculations, as well as general Python code execution. Note: All file outputs should be written to directory /app/outputs. DO NOT FORGET THIS. DO NOT WRITE OUTPUTS TO ANY OTHER DIRECTORY. Utilize the outputMounts parameter to make sure this is mounted correctly and captured after script execution.",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rp114-rg/providers/Microsoft.Discovery/tools/molpredictorpujupx",
+            "name": "molpredictorpujupx",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2026-02-13T17:13:38.3175742Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "Application",
+              "lastModifiedAt": "2026-02-13T17:13:58.3227152Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "molpredictor",
+                "description": "Molecular property prediction for single SMILES strings.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "name": "worker",
+                    "infra_type": "container",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/molpredictor:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "1Gi",
+                        "storage": "32",
+                        "gpu": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "1Gi",
+                        "storage": "64",
+                        "gpu": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "name": "predict",
+                    "description": "Predict molecular properties for SMILES strings read from .txt files in a directory. Note, input mount path where the SMILES data will be stored for the computation is \"/app/input_smiles\". Multiple smiles may be processed within the same run as long as they are mounted to the same input path. Outputs will be stored in \"/app/outputs\".",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "action": {
+                          "type": "string",
+                          "description": "The property to predict. Must be one of [log_p, boiling_point, solubility, density, critical_point]"
+                        }
+                      },
+                      "required": [
+                        "action"
+                      ]
+                    },
+                    "command": "python molpredictor.py --action {{ action }}",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rp114-rg/providers/Microsoft.Discovery/tools/itcorpythtlhjyoch",
+            "name": "itcorpythtlhjyoch",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2026-02-14T01:12:40.1293186Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "Application",
+              "lastModifiedAt": "2026-02-14T01:13:00.4649916Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "corepython",
+                "description": "This is the coding tool for CorePython cheminformatics operations.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "infra_type": "container",
+                    "name": "worker",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/corepython:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "2Gi",
+                        "gpu": "0",
+                        "storage": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "4Gi",
+                        "storage": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "code_environments": [
+                  {
+                    "language": "python",
+                    "command": "python3 \"/{{ scriptName }}\"",
+                    "description": "Python code environment with RDKit for molecular manipulation, cheminformatics, and property calculations, as well as general Python code execution. Note: All file outputs should be written to directory /app/outputs. DO NOT FORGET THIS. DO NOT WRITE OUTPUTS TO ANY OTHER DIRECTORY. Utilize the outputMounts parameter to make sure this is mounted correctly and captured after script execution.",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rp114-rg/providers/Microsoft.Discovery/tools/molpredictorhjyoch",
+            "name": "molpredictorhjyoch",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2026-02-14T01:12:40.4886867Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "Application",
+              "lastModifiedAt": "2026-02-14T01:13:14.7006469Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "molpredictor",
+                "description": "Molecular property prediction for single SMILES strings.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "name": "worker",
+                    "infra_type": "container",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/molpredictor:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "1Gi",
+                        "storage": "32",
+                        "gpu": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "1Gi",
+                        "storage": "64",
+                        "gpu": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "name": "predict",
+                    "description": "Predict molecular properties for SMILES strings read from .txt files in a directory. Note, input mount path where the SMILES data will be stored for the computation is \"/app/input_smiles\". Multiple smiles may be processed within the same run as long as they are mounted to the same input path. Outputs will be stored in \"/app/outputs\".",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "action": {
+                          "type": "string",
+                          "description": "The property to predict. Must be one of [log_p, boiling_point, solubility, density, critical_point]"
+                        }
+                      },
+                      "required": [
+                        "action"
+                      ]
+                    },
+                    "command": "python molpredictor.py --action {{ action }}",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/shekhmishra-test/providers/Microsoft.Discovery/tools/mooCSVTool",
+            "name": "mooCSVTool",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2026-02-17T13:36:57.2052466Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "User",
+              "lastModifiedAt": "2026-02-17T13:36:57.2052466Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "mooCSVTool",
+                "description": "MOO (Multi-Parameter Optimization) Tool provides antibody engineering capabilities for sequence validation, developability prediction, liability analysis, and optimization. It validates antibody sequences (VHH and conventional IgG), predicts developability metrics like expression and stability, analyzes manufacturability liabilities, and performs multi-parameter optimization to generate improved variants. Results include detailed scores, mutations, and recommendations for antibody design.",
+                "version": "1.0.0",
+                "category": "Scientific Computing",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "name": "worker",
+                    "infra_type": "container",
+                    "image": {
+                      "acr": "acrantibodydev.azurecr.io/moo-client-csv:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "4Gi",
+                        "storage": "8Gi",
+                        "gpu": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "8Gi",
+                        "storage": "32Gi",
+                        "gpu": "0"
+                      },
+                      "infiniband": false,
+                      "recommended_sku": [
+                        "Standard_D4s_v3"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "name": "validate_sequences",
+                    "description": "Validate antibody sequences and return parsed data. Supports both VHH (single domain) and conventional IgG (heavy+light chain) formats. Returns validation status and parsed sequences with sequence lengths.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "csvFile": {
+                          "type": "string",
+                          "description": "(Optional) Path to a CSV file inside the container to build sequences from (e.g., /app/inputs/sequences.csv)."
+                        },
+                        "csvLimit": {
+                          "type": "integer",
+                          "description": "(Optional) Only process the first N rows of the CSV."
+                        },
+                        "outputDir": {
+                          "type": "string",
+                          "description": "(Optional) Output directory inside the container for annotated CSV outputs (default: ./output)."
+                        },
+                        "outputFile": {
+                          "type": "string",
+                          "description": "(Optional) Output filename (or absolute path) for annotated CSV outputs."
+                        },
+                        "sequenceName": {
+                          "type": "string",
+                          "description": "Name for the sequence (e.g., \"my-vhh\", \"my-igg\")."
+                        },
+                        "format": {
+                          "type": "string",
+                          "enum": [
+                            "vhh",
+                            "conventional"
+                          ],
+                          "description": "Sequence format: 'vhh' for single domain antibodies or 'conventional' for IgG with heavy and light chains."
+                        },
+                        "vhhSequence": {
+                          "type": "string",
+                          "description": "VHH sequence string (required when format is 'vhh')."
+                        },
+                        "heavyChain": {
+                          "type": "string",
+                          "description": "Heavy chain sequence (required when format is 'conventional')."
+                        },
+                        "lightChain": {
+                          "type": "string",
+                          "description": "Light chain sequence (required when format is 'conventional')."
+                        }
+                      },
+                      "required": [
+                        "format"
+                      ]
+                    },
+                    "command": "python main.py -a validate{{#if sequenceName}} -n '{{sequenceName}}'{{/if}} -f '{{format}}'{{#if csvFile}} --csv-file '{{csvFile}}'{{/if}}{{#if csvLimit}} --csv-limit {{csvLimit}}{{/if}}{{#if outputDir}} --output-dir '{{outputDir}}'{{/if}}{{#if outputFile}} --output-file '{{outputFile}}'{{/if}}{{#if vhhSequence}} --vhh-sequence '{{vhhSequence}}'{{/if}}{{#if heavyChain}} --heavy-chain '{{heavyChain}}'{{/if}}{{#if lightChain}} --light-chain '{{lightChain}}'{{/if}}",
+                    "infra_node": "worker"
+                  },
+                  {
+                    "name": "predict_developability",
+                    "description": "Predict sequence developability metrics including expression, HIC retention, ECM, and BV.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "csvFile": {
+                          "type": "string",
+                          "description": "Path to a CSV file inside the container to build sequences from."
+                        },
+                        "format": {
+                          "type": "string",
+                          "description": "Sequence format: 'vhh' or 'conventional'."
+                        }
+                      },
+                      "required": [
+                        "format",
+                        "csvFile"
+                      ]
+                    },
+                    "command": "python main.py -a developability -f '{{format}}' --csv-file '{{csvFile}}'",
+                    "infra_node": "worker",
+                    "output_mount_configurations": [
+                      {
+                        "mount_path": "/app/outputs/",
+                        "auto_promote": true,
+                        "output_name": "DevelopabilityResults",
+                        "output_description": "The results of developability predictions including expression, HIC retention, ECM, and BV metrics."
+                      }
+                    ]
+                  },
+                  {
+                    "name": "analyze_liabilities",
+                    "description": "Analyze sequences for potential manufacturability liabilities such as oxidation sites, aggregation risks, and structural issues.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "csvFile": {
+                          "type": "string"
+                        },
+                        "csvLimit": {
+                          "type": "integer"
+                        },
+                        "outputDir": {
+                          "type": "string"
+                        },
+                        "outputFile": {
+                          "type": "string"
+                        },
+                        "liabilitiesSeqColumn": {
+                          "type": "string"
+                        },
+                        "sequence": {
+                          "type": "string"
+                        },
+                        "chain": {
+                          "type": "string",
+                          "enum": [
+                            "vhh",
+                            "heavy",
+                            "light"
+                          ]
+                        },
+                        "includeStructural": {
+                          "type": "boolean"
+                        },
+                        "scheme": {
+                          "type": "string"
+                        },
+                        "filterGermline": {
+                          "type": "boolean"
+                        },
+                        "regionScope": {
+                          "type": "string",
+                          "enum": [
+                            "ALL",
+                            "CDR"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "chain"
+                      ]
+                    },
+                    "command": "python main.py -a liabilities -c '{{chain}}'",
+                    "infra_node": "worker"
+                  },
+                  {
+                    "name": "submit_optimization",
+                    "description": "Submit sequences for multi-parameter optimization and return a job ID.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "csvFile": {
+                          "type": "string"
+                        },
+                        "csvLimit": {
+                          "type": "integer"
+                        },
+                        "sequenceName": {
+                          "type": "string"
+                        },
+                        "format": {
+                          "type": "string",
+                          "enum": [
+                            "vhh",
+                            "conventional"
+                          ]
+                        },
+                        "vhhSequence": {
+                          "type": "string"
+                        },
+                        "heavyChain": {
+                          "type": "string"
+                        },
+                        "lightChain": {
+                          "type": "string"
+                        },
+                        "strategy": {
+                          "type": "string",
+                          "enum": [
+                            "aggressive",
+                            "balanced",
+                            "conservative"
+                          ]
+                        },
+                        "maxVariants": {
+                          "type": "integer"
+                        },
+                        "mutationDepth": {
+                          "type": "integer"
+                        },
+                        "excludeRegions": {
+                          "type": "string"
+                        },
+                        "includeOnlyRegions": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "format"
+                      ]
+                    },
+                    "command": "python main.py -a optimize -f '{{format}}'",
+                    "infra_node": "worker"
+                  },
+                  {
+                    "name": "get_optimization_status",
+                    "description": "Check the status of an optimization job.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "jobId": {
+                          "type": "string",
+                          "description": "Job identifier string from optimization submission."
+                        }
+                      },
+                      "required": [
+                        "jobId"
+                      ]
+                    },
+                    "command": "python main.py -a status --job-id '{{jobId}}'",
+                    "infra_node": "worker"
+                  },
+                  {
+                    "name": "get_optimization_results",
+                    "description": "Retrieve results for a completed optimization job.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "jobId": {
+                          "type": "string",
+                          "description": "Job identifier string from optimization submission."
+                        }
+                      },
+                      "required": [
+                        "jobId"
+                      ]
+                    },
+                    "command": "python main.py -a results --job-id '{{jobId}}'",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/shekhmishra-test/providers/Microsoft.Discovery/tools/mooCSVTool1",
+            "name": "mooCSVTool1",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2026-02-17T13:44:17.1956309Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "User",
+              "lastModifiedAt": "2026-02-17T13:44:17.1956309Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "mooCSVTool1",
+                "description": "MOO (Multi-Parameter Optimization) Tool provides antibody engineering capabilities for sequence validation, developability prediction, liability analysis, and optimization. It validates antibody sequences (VHH and conventional IgG), predicts developability metrics like expression and stability, analyzes manufacturability liabilities, and performs multi-parameter optimization to generate improved variants. Results include detailed scores, mutations, and recommendations for antibody design.",
+                "version": "1.0.0",
+                "category": "Scientific Computing",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "name": "worker",
+                    "infra_type": "container",
+                    "image": {
+                      "acr": "acrantibodydev.azurecr.io/moo-client-csv:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "4Gi",
+                        "storage": "8Gi",
+                        "gpu": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "8Gi",
+                        "storage": "32Gi",
+                        "gpu": "0"
+                      },
+                      "infiniband": false,
+                      "recommended_sku": [
+                        "Standard_D4s_v3"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "name": "validate_sequences",
+                    "description": "Validate antibody sequences and return parsed data. Supports both VHH (single domain) and conventional IgG (heavy+light chain) formats. Returns validation status and parsed sequences with sequence lengths.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "csvFile": {
+                          "type": "string",
+                          "description": "(Optional) Path to a CSV file inside the container to build sequences from (e.g., /app/inputs/sequences.csv)."
+                        },
+                        "csvLimit": {
+                          "type": "integer",
+                          "description": "(Optional) Only process the first N rows of the CSV."
+                        },
+                        "outputDir": {
+                          "type": "string",
+                          "description": "(Optional) Output directory inside the container for annotated CSV outputs (default: ./output)."
+                        },
+                        "outputFile": {
+                          "type": "string",
+                          "description": "(Optional) Output filename (or absolute path) for annotated CSV outputs."
+                        },
+                        "sequenceName": {
+                          "type": "string",
+                          "description": "Name for the sequence (e.g., \"my-vhh\", \"my-igg\")."
+                        },
+                        "format": {
+                          "type": "string",
+                          "enum": [
+                            "vhh",
+                            "conventional"
+                          ],
+                          "description": "Sequence format: 'vhh' for single domain antibodies or 'conventional' for IgG with heavy and light chains."
+                        },
+                        "vhhSequence": {
+                          "type": "string",
+                          "description": "VHH sequence string (required when format is 'vhh')."
+                        },
+                        "heavyChain": {
+                          "type": "string",
+                          "description": "Heavy chain sequence (required when format is 'conventional')."
+                        },
+                        "lightChain": {
+                          "type": "string",
+                          "description": "Light chain sequence (required when format is 'conventional')."
+                        }
+                      },
+                      "required": [
+                        "format"
+                      ]
+                    },
+                    "command": "python main.py -a validate{{#if sequenceName}} -n '{{sequenceName}}'{{/if}} -f '{{format}}'{{#if csvFile}} --csv-file '{{csvFile}}'{{/if}}{{#if csvLimit}} --csv-limit {{csvLimit}}{{/if}}{{#if outputDir}} --output-dir '{{outputDir}}'{{/if}}{{#if outputFile}} --output-file '{{outputFile}}'{{/if}}{{#if vhhSequence}} --vhh-sequence '{{vhhSequence}}'{{/if}}{{#if heavyChain}} --heavy-chain '{{heavyChain}}'{{/if}}{{#if lightChain}} --light-chain '{{lightChain}}'{{/if}}",
+                    "infra_node": "worker"
+                  },
+                  {
+                    "name": "predict_developability",
+                    "description": "Predict sequence developability metrics including expression, HIC retention, ECM, and BV.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "csvFile": {
+                          "type": "string",
+                          "description": "Path to a CSV file inside the container to build sequences from."
+                        },
+                        "format": {
+                          "type": "string",
+                          "description": "Sequence format: 'vhh' or 'conventional'."
+                        }
+                      },
+                      "required": [
+                        "format",
+                        "csvFile"
+                      ]
+                    },
+                    "command": "python main.py -a developability -f '{{format}}' --csv-file '{{csvFile}}'",
+                    "infra_node": "worker",
+                    "output_mount_configurations": [
+                      {
+                        "mount_path": "/app/outputs/",
+                        "auto_promote": true,
+                        "output_name": "DevelopabilityResults",
+                        "output_description": "The results of developability predictions including expression, HIC retention, ECM, and BV metrics."
+                      }
+                    ]
+                  },
+                  {
+                    "name": "analyze_liabilities",
+                    "description": "Analyze sequences for potential manufacturability liabilities such as oxidation sites, aggregation risks, and structural issues.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "csvFile": {
+                          "type": "string"
+                        },
+                        "csvLimit": {
+                          "type": "integer"
+                        },
+                        "outputDir": {
+                          "type": "string"
+                        },
+                        "outputFile": {
+                          "type": "string"
+                        },
+                        "liabilitiesSeqColumn": {
+                          "type": "string"
+                        },
+                        "sequence": {
+                          "type": "string"
+                        },
+                        "chain": {
+                          "type": "string",
+                          "enum": [
+                            "vhh",
+                            "heavy",
+                            "light"
+                          ]
+                        },
+                        "includeStructural": {
+                          "type": "boolean"
+                        },
+                        "scheme": {
+                          "type": "string"
+                        },
+                        "filterGermline": {
+                          "type": "boolean"
+                        },
+                        "regionScope": {
+                          "type": "string",
+                          "enum": [
+                            "ALL",
+                            "CDR"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "chain"
+                      ]
+                    },
+                    "command": "python main.py -a liabilities -c '{{chain}}'",
+                    "infra_node": "worker"
+                  },
+                  {
+                    "name": "submit_optimization",
+                    "description": "Submit sequences for multi-parameter optimization and return a job ID.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "csvFile": {
+                          "type": "string"
+                        },
+                        "csvLimit": {
+                          "type": "integer"
+                        },
+                        "sequenceName": {
+                          "type": "string"
+                        },
+                        "format": {
+                          "type": "string",
+                          "enum": [
+                            "vhh",
+                            "conventional"
+                          ]
+                        },
+                        "vhhSequence": {
+                          "type": "string"
+                        },
+                        "heavyChain": {
+                          "type": "string"
+                        },
+                        "lightChain": {
+                          "type": "string"
+                        },
+                        "strategy": {
+                          "type": "string",
+                          "enum": [
+                            "aggressive",
+                            "balanced",
+                            "conservative"
+                          ]
+                        },
+                        "maxVariants": {
+                          "type": "integer"
+                        },
+                        "mutationDepth": {
+                          "type": "integer"
+                        },
+                        "excludeRegions": {
+                          "type": "string"
+                        },
+                        "includeOnlyRegions": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "format"
+                      ]
+                    },
+                    "command": "python main.py -a optimize -f '{{format}}'",
+                    "infra_node": "worker"
+                  },
+                  {
+                    "name": "get_optimization_status",
+                    "description": "Check the status of an optimization job.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "jobId": {
+                          "type": "string",
+                          "description": "Job identifier string from optimization submission."
+                        }
+                      },
+                      "required": [
+                        "jobId"
+                      ]
+                    },
+                    "command": "python main.py -a status --job-id '{{jobId}}'",
+                    "infra_node": "worker"
+                  },
+                  {
+                    "name": "get_optimization_results",
+                    "description": "Retrieve results for a completed optimization job.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "jobId": {
+                          "type": "string",
+                          "description": "Job identifier string from optimization submission."
+                        }
+                      },
+                      "required": [
+                        "jobId"
+                      ]
+                    },
+                    "command": "python main.py -a results --job-id '{{jobId}}'",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/shekhmishra-test/providers/Microsoft.Discovery/tools/mooCSVToolOgApi",
+            "name": "mooCSVToolOgApi",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2026-02-17T13:50:19.5978763Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "User",
+              "lastModifiedAt": "2026-02-17T13:50:19.5978763Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "mooCSVToolOgApi",
+                "description": "MOO (Multi-Parameter Optimization) Tool provides antibody engineering capabilities for sequence validation, developability prediction, liability analysis, and optimization. It validates antibody sequences (VHH and conventional IgG), predicts developability metrics like expression and stability, analyzes manufacturability liabilities, and performs multi-parameter optimization to generate improved variants. Results include detailed scores, mutations, and recommendations for antibody design.",
+                "version": "1.0.0",
+                "category": "Scientific Computing",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "name": "worker",
+                    "infra_type": "container",
+                    "image": {
+                      "acr": "acrantibodydev.azurecr.io/moo-client-csv:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "4Gi",
+                        "storage": "8Gi",
+                        "gpu": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "8Gi",
+                        "storage": "32Gi",
+                        "gpu": "0"
+                      },
+                      "infiniband": false,
+                      "recommended_sku": [
+                        "Standard_D4s_v3"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "name": "validate_sequences",
+                    "description": "Validate antibody sequences and return parsed data. Supports both VHH (single domain) and conventional IgG (heavy+light chain) formats. Returns validation status and parsed sequences with sequence lengths.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "csvFile": {
+                          "type": "string",
+                          "description": "(Optional) Path to a CSV file inside the container to build sequences from (e.g., /app/inputs/sequences.csv)."
+                        },
+                        "csvLimit": {
+                          "type": "integer",
+                          "description": "(Optional) Only process the first N rows of the CSV."
+                        },
+                        "outputDir": {
+                          "type": "string",
+                          "description": "(Optional) Output directory inside the container for annotated CSV outputs (default: ./output)."
+                        },
+                        "outputFile": {
+                          "type": "string",
+                          "description": "(Optional) Output filename (or absolute path) for annotated CSV outputs."
+                        },
+                        "sequenceName": {
+                          "type": "string",
+                          "description": "Name for the sequence (e.g., \"my-vhh\", \"my-igg\")."
+                        },
+                        "format": {
+                          "type": "string",
+                          "enum": [
+                            "vhh",
+                            "conventional"
+                          ],
+                          "description": "Sequence format: 'vhh' for single domain antibodies or 'conventional' for IgG with heavy and light chains."
+                        },
+                        "vhhSequence": {
+                          "type": "string",
+                          "description": "VHH sequence string (required when format is 'vhh')."
+                        },
+                        "heavyChain": {
+                          "type": "string",
+                          "description": "Heavy chain sequence (required when format is 'conventional')."
+                        },
+                        "lightChain": {
+                          "type": "string",
+                          "description": "Light chain sequence (required when format is 'conventional')."
+                        }
+                      },
+                      "required": [
+                        "format"
+                      ]
+                    },
+                    "command": "python main.py -a validate{{#if sequenceName}} -n '{{sequenceName}}'{{/if}} -f '{{format}}'{{#if csvFile}} --csv-file '{{csvFile}}'{{/if}}{{#if csvLimit}} --csv-limit {{csvLimit}}{{/if}}{{#if outputDir}} --output-dir '{{outputDir}}'{{/if}}{{#if outputFile}} --output-file '{{outputFile}}'{{/if}}{{#if vhhSequence}} --vhh-sequence '{{vhhSequence}}'{{/if}}{{#if heavyChain}} --heavy-chain '{{heavyChain}}'{{/if}}{{#if lightChain}} --light-chain '{{lightChain}}'{{/if}}",
+                    "infra_node": "worker"
+                  },
+                  {
+                    "name": "predict_developability",
+                    "description": "Predict sequence developability metrics including expression, HIC retention, ECM, and BV.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "csvFile": {
+                          "type": "string",
+                          "description": "Path to a CSV file inside the container to build sequences from."
+                        },
+                        "format": {
+                          "type": "string",
+                          "description": "Sequence format: 'vhh' or 'conventional'."
+                        }
+                      },
+                      "required": [
+                        "format",
+                        "csvFile"
+                      ]
+                    },
+                    "command": "python main.py -a developability -f '{{format}}' --csv-file '{{csvFile}}'",
+                    "infra_node": "worker",
+                    "output_mount_configurations": [
+                      {
+                        "mount_path": "/app/outputs/",
+                        "auto_promote": true,
+                        "output_name": "DevelopabilityResults",
+                        "output_description": "The results of developability predictions including expression, HIC retention, ECM, and BV metrics."
+                      }
+                    ]
+                  },
+                  {
+                    "name": "analyze_liabilities",
+                    "description": "Analyze sequences for potential manufacturability liabilities such as oxidation sites, aggregation risks, and structural issues.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "csvFile": {
+                          "type": "string"
+                        },
+                        "csvLimit": {
+                          "type": "integer"
+                        },
+                        "outputDir": {
+                          "type": "string"
+                        },
+                        "outputFile": {
+                          "type": "string"
+                        },
+                        "liabilitiesSeqColumn": {
+                          "type": "string"
+                        },
+                        "sequence": {
+                          "type": "string"
+                        },
+                        "chain": {
+                          "type": "string",
+                          "enum": [
+                            "vhh",
+                            "heavy",
+                            "light"
+                          ]
+                        },
+                        "includeStructural": {
+                          "type": "boolean"
+                        },
+                        "scheme": {
+                          "type": "string"
+                        },
+                        "filterGermline": {
+                          "type": "boolean"
+                        },
+                        "regionScope": {
+                          "type": "string",
+                          "enum": [
+                            "ALL",
+                            "CDR"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "chain"
+                      ]
+                    },
+                    "command": "python main.py -a liabilities -c '{{chain}}'",
+                    "infra_node": "worker"
+                  },
+                  {
+                    "name": "submit_optimization",
+                    "description": "Submit sequences for multi-parameter optimization and return a job ID.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "csvFile": {
+                          "type": "string"
+                        },
+                        "csvLimit": {
+                          "type": "integer"
+                        },
+                        "sequenceName": {
+                          "type": "string"
+                        },
+                        "format": {
+                          "type": "string",
+                          "enum": [
+                            "vhh",
+                            "conventional"
+                          ]
+                        },
+                        "vhhSequence": {
+                          "type": "string"
+                        },
+                        "heavyChain": {
+                          "type": "string"
+                        },
+                        "lightChain": {
+                          "type": "string"
+                        },
+                        "strategy": {
+                          "type": "string",
+                          "enum": [
+                            "aggressive",
+                            "balanced",
+                            "conservative"
+                          ]
+                        },
+                        "maxVariants": {
+                          "type": "integer"
+                        },
+                        "mutationDepth": {
+                          "type": "integer"
+                        },
+                        "excludeRegions": {
+                          "type": "string"
+                        },
+                        "includeOnlyRegions": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "format"
+                      ]
+                    },
+                    "command": "python main.py -a optimize -f '{{format}}'",
+                    "infra_node": "worker"
+                  },
+                  {
+                    "name": "get_optimization_status",
+                    "description": "Check the status of an optimization job.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "jobId": {
+                          "type": "string",
+                          "description": "Job identifier string from optimization submission."
+                        }
+                      },
+                      "required": [
+                        "jobId"
+                      ]
+                    },
+                    "command": "python main.py -a status --job-id '{{jobId}}'",
+                    "infra_node": "worker"
+                  },
+                  {
+                    "name": "get_optimization_results",
+                    "description": "Retrieve results for a completed optimization job.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "jobId": {
+                          "type": "string",
+                          "description": "Job identifier string from optimization submission."
+                        }
+                      },
+                      "required": [
+                        "jobId"
+                      ]
+                    },
+                    "command": "python main.py -a results --job-id '{{jobId}}'",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/alchocro-test-copilotsandbox/providers/Microsoft.Discovery/tools/testukstool",
+            "name": "testukstool",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2026-02-26T02:02:25.3606852Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "User",
+              "lastModifiedAt": "2026-02-26T02:02:25.3606852Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "corepython",
+                "description": "This is the coding tool for CorePython cheminformatics operations.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "infra_type": "container",
+                    "name": "worker",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/corepython:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "2Gi",
+                        "gpu": "0",
+                        "storage": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "4Gi",
+                        "storage": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "code_environments": [
+                  {
+                    "language": "python",
+                    "command": "python3 \"/{{ scriptName }}\"",
+                    "description": "Python code environment with RDKit for molecular manipulation, cheminformatics, and property calculations, as well as general Python code execution. Note: All file outputs should be written to directory /app/outputs. DO NOT FORGET THIS. DO NOT WRITE OUTPUTS TO ANY OTHER DIRECTORY. Utilize the outputMounts parameter to make sure this is mounted correctly and captured after script execution.",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/olawal/providers/Microsoft.Discovery/tools/test-tool-50d87c62",
+            "name": "test-tool-50d87c62",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2026-03-05T16:59:40.0258391Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "User",
+              "lastModifiedAt": "2026-03-05T16:59:40.0258391Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "molpredictor",
+                "description": "Molecular property prediction for single SMILES strings.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "name": "worker",
+                    "infra_type": "container",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/molpredictor:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "1Gi",
+                        "storage": "32",
+                        "gpu": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "1Gi",
+                        "storage": "64",
+                        "gpu": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "name": "predict",
+                    "description": "Predict molecular properties for SMILES strings.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "action": {
+                          "type": "string",
+                          "description": "The property to predict. Must be one of [log_p, boiling_point, solubility, density, critical_point]"
+                        }
+                      },
+                      "required": [
+                        "action"
+                      ]
+                    },
+                    "command": "python molpredictor.py --action {{ action }}",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/olawal/providers/Microsoft.Discovery/tools/test-tool-java01",
+            "name": "test-tool-java01",
+            "type": "microsoft.discovery/tools",
+            "location": "uksouth",
+            "tags": {
+              "SkipAutoDeleteTill": "2026-12-31"
+            },
+            "systemData": {
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "User",
+              "lastModifiedAt": "2026-03-06T00:03:12.7422911Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "license": "MIT",
+                "name": "molpredictor",
+                "description": "Molecular property prediction for single SMILES strings.",
+                "infra": [
+                  {
+                    "name": "worker",
+                    "infra_type": "container",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/molpredictor:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "1Gi",
+                        "storage": "32",
+                        "gpu": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "1Gi",
+                        "storage": "64",
+                        "gpu": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "category": "cheminformatics",
+                "version": "1.0.0",
+                "actions": [
+                  {
+                    "name": "predict",
+                    "description": "Predict molecular properties for SMILES strings.",
+                    "input_schema": {
+                      "type": "object",
+                      "properties": {
+                        "action": {
+                          "type": "string",
+                          "description": "The property to predict."
+                        }
+                      },
+                      "required": [
+                        "action"
+                      ]
+                    },
+                    "command": "python molpredictor.py --action {{ action }}",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/alchocro-test-copilotsandbox/providers/Microsoft.Discovery/tools/tooltestpublicprev2",
+            "name": "tooltestpublicprev2",
+            "type": "microsoft.discovery/tools",
+            "location": "eastus2euap",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2026-02-27T21:13:22.6154699Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "User",
+              "lastModifiedAt": "2026-02-27T21:13:22.6154699Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "corepython",
+                "description": "This is the coding tool for CorePython cheminformatics operations.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "infra_type": "container",
+                    "name": "worker",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/corepython:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "2Gi",
+                        "gpu": "0",
+                        "storage": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "4Gi",
+                        "storage": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "code_environments": [
+                  {
+                    "language": "python",
+                    "command": "python3 \"/{{ scriptName }}\"",
+                    "description": "Python code environment with RDKit for molecular manipulation, cheminformatics, and property calculations, as well as general Python code execution. Note: All file outputs should be written to directory /app/outputs. DO NOT FORGET THIS. DO NOT WRITE OUTPUTS TO ANY OTHER DIRECTORY. Utilize the outputMounts parameter to make sure this is mounted correctly and captured after script execution.",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/bookshelf-indexing-eastus2/providers/Microsoft.Discovery/tools/indexing-prod",
+            "name": "indexing-prod",
+            "type": "microsoft.discovery/tools",
+            "location": "eastus2",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2025-08-22T17:39:43.5552623Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "User",
+              "lastModifiedAt": "2025-08-22T18:10:26.5363936Z"
+            },
+            "properties": {
+              "environmentVariables": {},
+              "version": "0.0.1",
+              "definitionContent": {
+                "name": "bookshelf",
+                "version": "1.0",
+                "infra": [
+                  {
+                    "name": "indexing",
+                    "image": {
+                      "acr": "acrbslftestprod.azurecr.io/bookshelf-indexing-service:3902098"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "4Gi",
+                        "gpu": 0
+                      },
+                      "max_resources": {
+                        "cpu": "4",
+                        "ram": "8Gi",
+                        "gpu": 0
+                      }
+                    }
+                  }
+                ]
+              },
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/bookshelf-indexing-eastus2/providers/Microsoft.Discovery/tools/indexing-canary",
+            "name": "indexing-canary",
+            "type": "microsoft.discovery/tools",
+            "location": "eastus2",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2025-08-22T17:42:21.2183803Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "User",
+              "lastModifiedAt": "2025-08-22T17:42:21.2183803Z"
+            },
+            "properties": {
+              "environmentVariables": {},
+              "version": "0.0.1",
+              "definitionContent": {
+                "name": "bookshelf",
+                "version": "1.0",
+                "infra": [
+                  {
+                    "name": "indexing",
+                    "image": {
+                      "acr": "acrbslftestprod.azurecr.io/bookshelf-indexing-service-canary:3908498"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "4Gi",
+                        "gpu": 0
+                      },
+                      "max_resources": {
+                        "cpu": "4",
+                        "ram": "8Gi",
+                        "gpu": 0
+                      }
+                    }
+                  }
+                ]
+              },
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/alchocro-test-copilotsandbox/providers/Microsoft.Discovery/tools/testeustool",
+            "name": "testeustool",
+            "type": "microsoft.discovery/tools",
+            "location": "eastus",
+            "tags": {},
+            "systemData": {
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "User",
+              "lastModifiedAt": "2026-02-26T02:07:20.087512Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "corepython",
+                "description": "This is the coding tool for CorePython cheminformatics operations.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "infra_type": "container",
+                    "name": "worker",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/corepython:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "2Gi",
+                        "gpu": "0",
+                        "storage": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "4Gi",
+                        "storage": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "code_environments": [
+                  {
+                    "language": "python",
+                    "command": "python3 \"/{{ scriptName }}\"",
+                    "description": "Python code environment with RDKit for molecular manipulation, cheminformatics, and property calculations, as well as general Python code execution. Note: All file outputs should be written to directory /app/outputs. DO NOT FORGET THIS. DO NOT WRITE OUTPUTS TO ANY OTHER DIRECTORY. Utilize the outputMounts parameter to make sure this is mounted correctly and captured after script execution.",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/alchocro-test-copilotsandbox/providers/Microsoft.Discovery/tools/tooltestpublicprev4",
+            "name": "tooltestpublicprev4",
+            "type": "microsoft.discovery/tools",
+            "location": "eastus",
+            "tags": {},
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2026-02-27T21:16:19.3888378Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "User",
+              "lastModifiedAt": "2026-02-27T21:16:19.3888378Z"
+            },
+            "properties": {
+              "version": "1.0.0",
+              "definitionContent": {
+                "name": "corepython",
+                "description": "This is the coding tool for CorePython cheminformatics operations.",
+                "version": "1.0.0",
+                "category": "cheminformatics",
+                "license": "MIT",
+                "infra": [
+                  {
+                    "infra_type": "container",
+                    "name": "worker",
+                    "image": {
+                      "acr": "demodiscoveryacr.azurecr.io/corepython:latest"
+                    },
+                    "compute": {
+                      "min_resources": {
+                        "cpu": "1",
+                        "ram": "2Gi",
+                        "gpu": "0",
+                        "storage": "0"
+                      },
+                      "max_resources": {
+                        "cpu": "2",
+                        "ram": "4Gi",
+                        "storage": "0"
+                      },
+                      "recommended_sku": [
+                        "Standard_D4s_v6"
+                      ],
+                      "pool_type": "static",
+                      "pool_size": 1
+                    }
+                  }
+                ],
+                "code_environments": [
+                  {
+                    "language": "python",
+                    "command": "python3 \"/{{ scriptName }}\"",
+                    "description": "Python code environment with RDKit for molecular manipulation, cheminformatics, and property calculations, as well as general Python code execution. Note: All file outputs should be written to directory /app/outputs. DO NOT FORGET THIS. DO NOT WRITE OUTPUTS TO ANY OTHER DIRECTORY. Utilize the outputMounts parameter to make sure this is mounted correctly and captured after script execution.",
+                    "infra_node": "worker"
+                  }
+                ]
+              },
+              "environmentVariables": {},
+              "provisioningState": "Succeeded"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {
+    "0": "javadiscoveryrg51227"
+  }
+}
