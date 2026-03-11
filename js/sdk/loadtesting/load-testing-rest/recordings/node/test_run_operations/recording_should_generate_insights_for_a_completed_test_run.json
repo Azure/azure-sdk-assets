@@ -1,0 +1,578 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.eastus2euap.cnt-canary.loadtesting.azure.com/test-runs/1af08830-76aa-48d2-b3d4-09b5ca556017/insights:generate?api-version=2025-11-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-js-load-testing-rest/1.0.1 core-rest-pipeline/1.23.1 Node/22.15.0 (Windows_NT 10.0.26200; x64)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
+        "Connection": "keep-alive",
+        "Content-Length": "70",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 11 Mar 2026 21:59:04 GMT",
+        "Location": "https://00000000-0000-0000-0000-000000000000.eastus2euap.cnt-canary.loadtesting.azure.com/test-runs/1af08830-76aa-48d2-b3d4-09b5ca556017/insights/latest?api-version=2025-11-01-preview",
+        "mise-correlation-id": "54db44d9-a991-4ef6-abb8-e1440d4723e7",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "c50523c6-47b8-4c5b-94f4-d53fc0f0fb97"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "kind": "GenerateTestRunInsights",
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.eastus2euap.cnt-canary.loadtesting.azure.com/test-runs/1af08830-76aa-48d2-b3d4-09b5ca556017/insights/latest?api-version=2025-11-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-js-load-testing-rest/1.0.1 core-rest-pipeline/1.23.1 Node/22.15.0 (Windows_NT 10.0.26200; x64)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
+        "Connection": "keep-alive",
+        "Content-Length": "2845",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 11 Mar 2026 21:59:04 GMT",
+        "mise-correlation-id": "ee06ecca-51bf-4d70-a8a9-d2623e05352e",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "0a7ae602-9d1c-41a8-84b4-a212869996d6"
+      },
+      "ResponseBody": {
+        "columns": [
+          {
+            "name": "Insight",
+            "dataType": "String"
+          },
+          {
+            "name": "Details",
+            "dataType": "String"
+          },
+          {
+            "name": "Title",
+            "dataType": "String"
+          },
+          {
+            "name": "Summary",
+            "dataType": "String"
+          },
+          {
+            "name": "Recommendation",
+            "dataType": "String"
+          }
+        ],
+        "rows": {
+          "1": {
+            "Title": "Response Time Volatility Under Load",
+            "Insight": "For Homepage, response time showed **significant volatility** with peaks up to **4470ms** while virtual users remained almost constant, suggesting the server struggled to consistently handle sustained load.",
+            "Details": "[Response time](#ClientMetrics) dropped from 4580ms at 12:15 PM UTC to 2960ms at 12:15 PM UTC, stabilized near 2900ms between 12:15 PM UTC and 12:15 PM UTC, then increased to 3560ms at 12:15 PM UTC, and peaked at **4470ms** at 12:16 PM UTC, before decreasing again. [Virtual users](#ClientMetrics) for the same request remained steady at 10 from 12:15 PM UTC to 12:16 PM UTC, dropping only after 12:17 PM UTC.",
+            "Recommendation": "Consider reviewing server-side resource allocation and backend bottlenecks, as consistently high response times under stable concurrency may indicate a need for better scaling or performance tuning."
+          },
+          "2": {
+            "Title": "Sharp RPS Decline With User Reduction",
+            "Insight": "Observed a steep **drop in requests per second** for Homepage when virtual users decreased from 10 to 2 after 12:17 PM UTC, highlighting a direct dependency between concurrency and throughput.",
+            "Details": "[Requests per second](#ClientMetrics) fluctuated between 2.0 and 4.0 RPS from 12:15 PM UTC to 12:17 PM UTC and then dropped sharply to **0.3 RPS** at 12:17 PM UTC. [Virtual users](#ClientMetrics) for this sampler fell from 10 at 12:16 PM UTC to 2 at 12:17 PM UTC.",
+            "Recommendation": "Review the load test ramp-down logic and ensure the server can deliver consistent throughput even with fewer concurrent users, or adjust test design to better simulate realistic traffic patterns."
+          },
+          "3": {
+            "Title": "Transient Response Time Spikes",
+            "Insight": "Noted **transient spikes** in response time reaching **4470ms**, not strictly correlated with higher RPS or virtual user count, suggesting likely server-side processing delays or external bottlenecks.",
+            "Details": "[Response time](#ClientMetrics) spiked to **4470ms** at 12:16 PM UTC while [Virtual users](#ClientMetrics) remained steady. [Requests per second](#ClientMetrics) did not show corresponding increase, with RPS staying between 2.0 and 4.0.",
+            "Recommendation": "Consider capturing server logs or enabling tracing during peak periods for further diagnosis, focusing on application code paths or external dependencies such as database or API calls."
+          },
+          "4": {
+            "Summary": "Load test (2 min, 10 VUs) completed with performance degradation. Client-side response times peaked above 4,000 ms and throughput dropped sharply at the end, suggesting potential backend constraints."
+          }
+        },
+        "version": 5,
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.eastus2euap.cnt-canary.loadtesting.azure.com/test-runs/1af08830-76aa-48d2-b3d4-09b5ca556017/insights/latest?api-version=2025-11-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-js-load-testing-rest/1.0.1 core-rest-pipeline/1.23.1 Node/22.15.0 (Windows_NT 10.0.26200; x64)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
+        "Connection": "keep-alive",
+        "Content-Length": "2845",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 11 Mar 2026 21:59:06 GMT",
+        "mise-correlation-id": "b86b222d-04fb-44f5-83d5-70c4672d0319",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "6b4a3dfa-82ec-4a44-9fda-ea42f8908f9b"
+      },
+      "ResponseBody": {
+        "columns": [
+          {
+            "name": "Insight",
+            "dataType": "String"
+          },
+          {
+            "name": "Details",
+            "dataType": "String"
+          },
+          {
+            "name": "Title",
+            "dataType": "String"
+          },
+          {
+            "name": "Summary",
+            "dataType": "String"
+          },
+          {
+            "name": "Recommendation",
+            "dataType": "String"
+          }
+        ],
+        "rows": {
+          "1": {
+            "Title": "Response Time Volatility Under Load",
+            "Insight": "For Homepage, response time showed **significant volatility** with peaks up to **4470ms** while virtual users remained almost constant, suggesting the server struggled to consistently handle sustained load.",
+            "Details": "[Response time](#ClientMetrics) dropped from 4580ms at 12:15 PM UTC to 2960ms at 12:15 PM UTC, stabilized near 2900ms between 12:15 PM UTC and 12:15 PM UTC, then increased to 3560ms at 12:15 PM UTC, and peaked at **4470ms** at 12:16 PM UTC, before decreasing again. [Virtual users](#ClientMetrics) for the same request remained steady at 10 from 12:15 PM UTC to 12:16 PM UTC, dropping only after 12:17 PM UTC.",
+            "Recommendation": "Consider reviewing server-side resource allocation and backend bottlenecks, as consistently high response times under stable concurrency may indicate a need for better scaling or performance tuning."
+          },
+          "2": {
+            "Title": "Sharp RPS Decline With User Reduction",
+            "Insight": "Observed a steep **drop in requests per second** for Homepage when virtual users decreased from 10 to 2 after 12:17 PM UTC, highlighting a direct dependency between concurrency and throughput.",
+            "Details": "[Requests per second](#ClientMetrics) fluctuated between 2.0 and 4.0 RPS from 12:15 PM UTC to 12:17 PM UTC and then dropped sharply to **0.3 RPS** at 12:17 PM UTC. [Virtual users](#ClientMetrics) for this sampler fell from 10 at 12:16 PM UTC to 2 at 12:17 PM UTC.",
+            "Recommendation": "Review the load test ramp-down logic and ensure the server can deliver consistent throughput even with fewer concurrent users, or adjust test design to better simulate realistic traffic patterns."
+          },
+          "3": {
+            "Title": "Transient Response Time Spikes",
+            "Insight": "Noted **transient spikes** in response time reaching **4470ms**, not strictly correlated with higher RPS or virtual user count, suggesting likely server-side processing delays or external bottlenecks.",
+            "Details": "[Response time](#ClientMetrics) spiked to **4470ms** at 12:16 PM UTC while [Virtual users](#ClientMetrics) remained steady. [Requests per second](#ClientMetrics) did not show corresponding increase, with RPS staying between 2.0 and 4.0.",
+            "Recommendation": "Consider capturing server logs or enabling tracing during peak periods for further diagnosis, focusing on application code paths or external dependencies such as database or API calls."
+          },
+          "4": {
+            "Summary": "Load test (2 min, 10 VUs) completed with performance degradation. Client-side response times peaked above 4,000 ms and throughput dropped sharply at the end, suggesting potential backend constraints."
+          }
+        },
+        "version": 5,
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.eastus2euap.cnt-canary.loadtesting.azure.com/test-runs/1af08830-76aa-48d2-b3d4-09b5ca556017/insights/latest?api-version=2025-11-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-js-load-testing-rest/1.0.1 core-rest-pipeline/1.23.1 Node/22.15.0 (Windows_NT 10.0.26200; x64)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
+        "Connection": "keep-alive",
+        "Content-Length": "2845",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 11 Mar 2026 21:59:09 GMT",
+        "mise-correlation-id": "6ab194af-c87a-4208-8c6b-2b86292b145d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "556f5541-aa59-4d71-b6ed-039351f7d5fc"
+      },
+      "ResponseBody": {
+        "columns": [
+          {
+            "name": "Insight",
+            "dataType": "String"
+          },
+          {
+            "name": "Details",
+            "dataType": "String"
+          },
+          {
+            "name": "Title",
+            "dataType": "String"
+          },
+          {
+            "name": "Summary",
+            "dataType": "String"
+          },
+          {
+            "name": "Recommendation",
+            "dataType": "String"
+          }
+        ],
+        "rows": {
+          "1": {
+            "Title": "Response Time Volatility Under Load",
+            "Insight": "For Homepage, response time showed **significant volatility** with peaks up to **4470ms** while virtual users remained almost constant, suggesting the server struggled to consistently handle sustained load.",
+            "Details": "[Response time](#ClientMetrics) dropped from 4580ms at 12:15 PM UTC to 2960ms at 12:15 PM UTC, stabilized near 2900ms between 12:15 PM UTC and 12:15 PM UTC, then increased to 3560ms at 12:15 PM UTC, and peaked at **4470ms** at 12:16 PM UTC, before decreasing again. [Virtual users](#ClientMetrics) for the same request remained steady at 10 from 12:15 PM UTC to 12:16 PM UTC, dropping only after 12:17 PM UTC.",
+            "Recommendation": "Consider reviewing server-side resource allocation and backend bottlenecks, as consistently high response times under stable concurrency may indicate a need for better scaling or performance tuning."
+          },
+          "2": {
+            "Title": "Sharp RPS Decline With User Reduction",
+            "Insight": "Observed a steep **drop in requests per second** for Homepage when virtual users decreased from 10 to 2 after 12:17 PM UTC, highlighting a direct dependency between concurrency and throughput.",
+            "Details": "[Requests per second](#ClientMetrics) fluctuated between 2.0 and 4.0 RPS from 12:15 PM UTC to 12:17 PM UTC and then dropped sharply to **0.3 RPS** at 12:17 PM UTC. [Virtual users](#ClientMetrics) for this sampler fell from 10 at 12:16 PM UTC to 2 at 12:17 PM UTC.",
+            "Recommendation": "Review the load test ramp-down logic and ensure the server can deliver consistent throughput even with fewer concurrent users, or adjust test design to better simulate realistic traffic patterns."
+          },
+          "3": {
+            "Title": "Transient Response Time Spikes",
+            "Insight": "Noted **transient spikes** in response time reaching **4470ms**, not strictly correlated with higher RPS or virtual user count, suggesting likely server-side processing delays or external bottlenecks.",
+            "Details": "[Response time](#ClientMetrics) spiked to **4470ms** at 12:16 PM UTC while [Virtual users](#ClientMetrics) remained steady. [Requests per second](#ClientMetrics) did not show corresponding increase, with RPS staying between 2.0 and 4.0.",
+            "Recommendation": "Consider capturing server logs or enabling tracing during peak periods for further diagnosis, focusing on application code paths or external dependencies such as database or API calls."
+          },
+          "4": {
+            "Summary": "Load test (2 min, 10 VUs) completed with performance degradation. Client-side response times peaked above 4,000 ms and throughput dropped sharply at the end, suggesting potential backend constraints."
+          }
+        },
+        "version": 5,
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.eastus2euap.cnt-canary.loadtesting.azure.com/test-runs/1af08830-76aa-48d2-b3d4-09b5ca556017/insights/latest?api-version=2025-11-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-js-load-testing-rest/1.0.1 core-rest-pipeline/1.23.1 Node/22.15.0 (Windows_NT 10.0.26200; x64)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
+        "Connection": "keep-alive",
+        "Content-Length": "2845",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 11 Mar 2026 21:59:11 GMT",
+        "mise-correlation-id": "edf85551-7be1-4236-b4f6-5b5b1c14a8d2",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "2dfa8d35-c9c2-4769-8f85-19dd0d71c88d"
+      },
+      "ResponseBody": {
+        "columns": [
+          {
+            "name": "Insight",
+            "dataType": "String"
+          },
+          {
+            "name": "Details",
+            "dataType": "String"
+          },
+          {
+            "name": "Title",
+            "dataType": "String"
+          },
+          {
+            "name": "Summary",
+            "dataType": "String"
+          },
+          {
+            "name": "Recommendation",
+            "dataType": "String"
+          }
+        ],
+        "rows": {
+          "1": {
+            "Title": "Response Time Volatility Under Load",
+            "Insight": "For Homepage, response time showed **significant volatility** with peaks up to **4470ms** while virtual users remained almost constant, suggesting the server struggled to consistently handle sustained load.",
+            "Details": "[Response time](#ClientMetrics) dropped from 4580ms at 12:15 PM UTC to 2960ms at 12:15 PM UTC, stabilized near 2900ms between 12:15 PM UTC and 12:15 PM UTC, then increased to 3560ms at 12:15 PM UTC, and peaked at **4470ms** at 12:16 PM UTC, before decreasing again. [Virtual users](#ClientMetrics) for the same request remained steady at 10 from 12:15 PM UTC to 12:16 PM UTC, dropping only after 12:17 PM UTC.",
+            "Recommendation": "Consider reviewing server-side resource allocation and backend bottlenecks, as consistently high response times under stable concurrency may indicate a need for better scaling or performance tuning."
+          },
+          "2": {
+            "Title": "Sharp RPS Decline With User Reduction",
+            "Insight": "Observed a steep **drop in requests per second** for Homepage when virtual users decreased from 10 to 2 after 12:17 PM UTC, highlighting a direct dependency between concurrency and throughput.",
+            "Details": "[Requests per second](#ClientMetrics) fluctuated between 2.0 and 4.0 RPS from 12:15 PM UTC to 12:17 PM UTC and then dropped sharply to **0.3 RPS** at 12:17 PM UTC. [Virtual users](#ClientMetrics) for this sampler fell from 10 at 12:16 PM UTC to 2 at 12:17 PM UTC.",
+            "Recommendation": "Review the load test ramp-down logic and ensure the server can deliver consistent throughput even with fewer concurrent users, or adjust test design to better simulate realistic traffic patterns."
+          },
+          "3": {
+            "Title": "Transient Response Time Spikes",
+            "Insight": "Noted **transient spikes** in response time reaching **4470ms**, not strictly correlated with higher RPS or virtual user count, suggesting likely server-side processing delays or external bottlenecks.",
+            "Details": "[Response time](#ClientMetrics) spiked to **4470ms** at 12:16 PM UTC while [Virtual users](#ClientMetrics) remained steady. [Requests per second](#ClientMetrics) did not show corresponding increase, with RPS staying between 2.0 and 4.0.",
+            "Recommendation": "Consider capturing server logs or enabling tracing during peak periods for further diagnosis, focusing on application code paths or external dependencies such as database or API calls."
+          },
+          "4": {
+            "Summary": "Load test (2 min, 10 VUs) completed with performance degradation. Client-side response times peaked above 4,000 ms and throughput dropped sharply at the end, suggesting potential backend constraints."
+          }
+        },
+        "version": 5,
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.eastus2euap.cnt-canary.loadtesting.azure.com/test-runs/1af08830-76aa-48d2-b3d4-09b5ca556017/insights/latest?api-version=2025-11-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-js-load-testing-rest/1.0.1 core-rest-pipeline/1.23.1 Node/22.15.0 (Windows_NT 10.0.26200; x64)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
+        "Connection": "keep-alive",
+        "Content-Length": "2845",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 11 Mar 2026 21:59:14 GMT",
+        "mise-correlation-id": "f284bcff-9a0f-465f-a104-9456ec6245d7",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "d5b69f54-e68f-4527-9720-97df116b3e45"
+      },
+      "ResponseBody": {
+        "columns": [
+          {
+            "name": "Insight",
+            "dataType": "String"
+          },
+          {
+            "name": "Details",
+            "dataType": "String"
+          },
+          {
+            "name": "Title",
+            "dataType": "String"
+          },
+          {
+            "name": "Summary",
+            "dataType": "String"
+          },
+          {
+            "name": "Recommendation",
+            "dataType": "String"
+          }
+        ],
+        "rows": {
+          "1": {
+            "Title": "Response Time Volatility Under Load",
+            "Insight": "For Homepage, response time showed **significant volatility** with peaks up to **4470ms** while virtual users remained almost constant, suggesting the server struggled to consistently handle sustained load.",
+            "Details": "[Response time](#ClientMetrics) dropped from 4580ms at 12:15 PM UTC to 2960ms at 12:15 PM UTC, stabilized near 2900ms between 12:15 PM UTC and 12:15 PM UTC, then increased to 3560ms at 12:15 PM UTC, and peaked at **4470ms** at 12:16 PM UTC, before decreasing again. [Virtual users](#ClientMetrics) for the same request remained steady at 10 from 12:15 PM UTC to 12:16 PM UTC, dropping only after 12:17 PM UTC.",
+            "Recommendation": "Consider reviewing server-side resource allocation and backend bottlenecks, as consistently high response times under stable concurrency may indicate a need for better scaling or performance tuning."
+          },
+          "2": {
+            "Title": "Sharp RPS Decline With User Reduction",
+            "Insight": "Observed a steep **drop in requests per second** for Homepage when virtual users decreased from 10 to 2 after 12:17 PM UTC, highlighting a direct dependency between concurrency and throughput.",
+            "Details": "[Requests per second](#ClientMetrics) fluctuated between 2.0 and 4.0 RPS from 12:15 PM UTC to 12:17 PM UTC and then dropped sharply to **0.3 RPS** at 12:17 PM UTC. [Virtual users](#ClientMetrics) for this sampler fell from 10 at 12:16 PM UTC to 2 at 12:17 PM UTC.",
+            "Recommendation": "Review the load test ramp-down logic and ensure the server can deliver consistent throughput even with fewer concurrent users, or adjust test design to better simulate realistic traffic patterns."
+          },
+          "3": {
+            "Title": "Transient Response Time Spikes",
+            "Insight": "Noted **transient spikes** in response time reaching **4470ms**, not strictly correlated with higher RPS or virtual user count, suggesting likely server-side processing delays or external bottlenecks.",
+            "Details": "[Response time](#ClientMetrics) spiked to **4470ms** at 12:16 PM UTC while [Virtual users](#ClientMetrics) remained steady. [Requests per second](#ClientMetrics) did not show corresponding increase, with RPS staying between 2.0 and 4.0.",
+            "Recommendation": "Consider capturing server logs or enabling tracing during peak periods for further diagnosis, focusing on application code paths or external dependencies such as database or API calls."
+          },
+          "4": {
+            "Summary": "Load test (2 min, 10 VUs) completed with performance degradation. Client-side response times peaked above 4,000 ms and throughput dropped sharply at the end, suggesting potential backend constraints."
+          }
+        },
+        "version": 5,
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.eastus2euap.cnt-canary.loadtesting.azure.com/test-runs/1af08830-76aa-48d2-b3d4-09b5ca556017/insights/latest?api-version=2025-11-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-js-load-testing-rest/1.0.1 core-rest-pipeline/1.23.1 Node/22.15.0 (Windows_NT 10.0.26200; x64)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
+        "Connection": "keep-alive",
+        "Content-Length": "2974",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 11 Mar 2026 21:59:16 GMT",
+        "mise-correlation-id": "bcfb469c-b9b5-457d-adcd-598436fcca3d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "327e3b86-8006-42c3-91f9-74316ef0f9af"
+      },
+      "ResponseBody": {
+        "columns": [
+          {
+            "name": "Insight",
+            "dataType": "String"
+          },
+          {
+            "name": "Details",
+            "dataType": "String"
+          },
+          {
+            "name": "Title",
+            "dataType": "String"
+          },
+          {
+            "name": "Summary",
+            "dataType": "String"
+          },
+          {
+            "name": "Recommendation",
+            "dataType": "String"
+          }
+        ],
+        "rows": {
+          "1": {
+            "Title": "Alternating Response Time Pattern",
+            "Insight": "For Homepage, response time showed **alternating rises and falls** despite steady [virtual users](#ClientMetrics) and [requests per second](#ClientMetrics), indicating inconsistent server responsiveness under load.",
+            "Details": "[Response time](#ClientMetrics) ranged from 4580ms at 12:15 PM UTC to a low of 2790ms at 12:16 PM UTC, then peaked again at **4470ms at 12:16 PM UTC** before dropping to 2460ms at 12:17 PM UTC. [Virtual users](#ClientMetrics) remained constant at 10 until 12:16 PM UTC, then dropped to 2 at 12:17 PM UTC. [Requests per second](#ClientMetrics) fluctuated between 2.0 and 4.0 RPS until 12:17 PM UTC, then decreased sharply to 0.3 RPS at 12:17 PM UTC.",
+            "Recommendation": "Consider reviewing server performance during periods of response time fluctuation; inconsistent backend scaling or network delays may be contributing. Investigate application logs for spikes and configure more granular monitoring."
+          },
+          "2": {
+            "Title": "Sharp Performance Drop at End",
+            "Insight": "A sudden decrease in [virtual users](#ClientMetrics) and [requests per second](#ClientMetrics) at **12:17 PM UTC** for Homepage coincided with a drop in response time, likely reflecting reduced load or a recovery after strain.",
+            "Details": "[Virtual users](#ClientMetrics) dropped from 9 to 2 at 12:17 PM UTC. [Requests per second](#ClientMetrics) decreased from 3.0 RPS at 12:17 PM UTC to **0.3 RPS at 12:17 PM UTC**. [Response time](#ClientMetrics) dropped from 3830ms at 12:17 PM UTC to 2460ms at 12:17 PM UTC.",
+            "Recommendation": "Consider investigating whether this drop was intentional (e.g., ramp-down phase), or due to client/server issues; review scaling patterns and test configuration for abrupt changes."
+          },
+          "3": {
+            "Title": "Response Time Peaks Despite Stable Load",
+            "Insight": "There were multiple **response time peaks above 4000ms** for Homepage even while [virtual users](#ClientMetrics) and [requests per second](#ClientMetrics) were steady, suggesting that the backend may not efficiently handle sustained load.",
+            "Details": "[Response time](#ClientMetrics) peaked at **4360ms at 12:15 PM UTC**, 4080ms at 12:16 PM UTC, and **4470ms at 12:16 PM UTC** with 10 virtual users and RPS between 2.0–4.0. This occurred even as the [virtual users](#ClientMetrics) and [requests per second](#ClientMetrics) metrics were stable.",
+            "Recommendation": "Consider tuning backend capacity or identifying bottlenecks in server components. Add profiling tools to pinpoint high-latency periods."
+          },
+          "4": {
+            "Summary": "Load test (2 min, 10 VUs) completed with performance degradation. Alternating response time spikes and throughput drops were observed, likely indicating backend constraints."
+          }
+        },
+        "version": 5,
+        "status": "Succeeded"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.eastus2euap.cnt-canary.loadtesting.azure.com/test-runs/1af08830-76aa-48d2-b3d4-09b5ca556017/insights/latest?api-version=2025-11-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-js-load-testing-rest/1.0.1 core-rest-pipeline/1.23.1 Node/22.15.0 (Windows_NT 10.0.26200; x64)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "api-supported-versions": "2022-11-01, 2023-04-01-preview, 2024-03-01-preview, 2024-05-01-preview, 2024-07-01-preview, 2024-12-01-preview, 2025-03-01-preview, 2025-11-01-preview",
+        "Connection": "keep-alive",
+        "Content-Length": "2974",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 11 Mar 2026 21:59:16 GMT",
+        "mise-correlation-id": "700faddd-c1a2-426a-8ff8-f38774748cc6",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "e649c561-aaab-4ff0-8931-0a05671807b6"
+      },
+      "ResponseBody": {
+        "columns": [
+          {
+            "name": "Insight",
+            "dataType": "String"
+          },
+          {
+            "name": "Details",
+            "dataType": "String"
+          },
+          {
+            "name": "Title",
+            "dataType": "String"
+          },
+          {
+            "name": "Summary",
+            "dataType": "String"
+          },
+          {
+            "name": "Recommendation",
+            "dataType": "String"
+          }
+        ],
+        "rows": {
+          "1": {
+            "Title": "Alternating Response Time Pattern",
+            "Insight": "For Homepage, response time showed **alternating rises and falls** despite steady [virtual users](#ClientMetrics) and [requests per second](#ClientMetrics), indicating inconsistent server responsiveness under load.",
+            "Details": "[Response time](#ClientMetrics) ranged from 4580ms at 12:15 PM UTC to a low of 2790ms at 12:16 PM UTC, then peaked again at **4470ms at 12:16 PM UTC** before dropping to 2460ms at 12:17 PM UTC. [Virtual users](#ClientMetrics) remained constant at 10 until 12:16 PM UTC, then dropped to 2 at 12:17 PM UTC. [Requests per second](#ClientMetrics) fluctuated between 2.0 and 4.0 RPS until 12:17 PM UTC, then decreased sharply to 0.3 RPS at 12:17 PM UTC.",
+            "Recommendation": "Consider reviewing server performance during periods of response time fluctuation; inconsistent backend scaling or network delays may be contributing. Investigate application logs for spikes and configure more granular monitoring."
+          },
+          "2": {
+            "Title": "Sharp Performance Drop at End",
+            "Insight": "A sudden decrease in [virtual users](#ClientMetrics) and [requests per second](#ClientMetrics) at **12:17 PM UTC** for Homepage coincided with a drop in response time, likely reflecting reduced load or a recovery after strain.",
+            "Details": "[Virtual users](#ClientMetrics) dropped from 9 to 2 at 12:17 PM UTC. [Requests per second](#ClientMetrics) decreased from 3.0 RPS at 12:17 PM UTC to **0.3 RPS at 12:17 PM UTC**. [Response time](#ClientMetrics) dropped from 3830ms at 12:17 PM UTC to 2460ms at 12:17 PM UTC.",
+            "Recommendation": "Consider investigating whether this drop was intentional (e.g., ramp-down phase), or due to client/server issues; review scaling patterns and test configuration for abrupt changes."
+          },
+          "3": {
+            "Title": "Response Time Peaks Despite Stable Load",
+            "Insight": "There were multiple **response time peaks above 4000ms** for Homepage even while [virtual users](#ClientMetrics) and [requests per second](#ClientMetrics) were steady, suggesting that the backend may not efficiently handle sustained load.",
+            "Details": "[Response time](#ClientMetrics) peaked at **4360ms at 12:15 PM UTC**, 4080ms at 12:16 PM UTC, and **4470ms at 12:16 PM UTC** with 10 virtual users and RPS between 2.0–4.0. This occurred even as the [virtual users](#ClientMetrics) and [requests per second](#ClientMetrics) metrics were stable.",
+            "Recommendation": "Consider tuning backend capacity or identifying bottlenecks in server components. Add profiling tools to pinpoint high-latency periods."
+          },
+          "4": {
+            "Summary": "Load test (2 min, 10 VUs) completed with performance degradation. Alternating response time spikes and throughput drops were observed, likely indicating backend constraints."
+          }
+        },
+        "version": 5,
+        "status": "Succeeded"
+      }
+    }
+  ],
+  "Variables": {}
+}
