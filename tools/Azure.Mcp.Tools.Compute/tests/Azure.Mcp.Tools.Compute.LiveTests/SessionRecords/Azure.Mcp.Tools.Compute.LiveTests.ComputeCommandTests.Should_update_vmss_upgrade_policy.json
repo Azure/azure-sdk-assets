@@ -16,7 +16,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "288",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 09 Mar 2026 14:07:13 GMT",
+        "Date": "Mon, 16 Mar 2026 16:41:53 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -26,8 +26,8 @@
         "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
         "x-ms-ratelimit-remaining-subscription-reads": "1099",
         "x-ms-request-id": "Sanitized",
-        "x-ms-routing-request-id": "EASTUS2:20260309T140714Z:00000000-0000-0000-0000-000000000000",
-        "X-MSEdge-Ref": "Ref A: A06500588BCE40078E5B68C09C52453A Ref B: BN1AA2051012025 Ref C: 2026-03-09T14:07:14Z"
+        "x-ms-routing-request-id": "EASTUS2:20260316T164153Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 63FEB2B2DD9944D9B79BC6956DEB6A56 Ref B: BN1AA2051014011 Ref C: 2026-03-16T16:41:53Z"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sanitized",
@@ -36,7 +36,7 @@
         "location": "eastus2",
         "tags": {
           "Owners": "haagha",
-          "DeleteAfter": "2026-02-14T07:29:52.0329721Z"
+          "DeleteAfter": "2026-03-17T04:02:08.7838186Z"
         },
         "properties": {
           "provisioningState": "Succeeded"
@@ -57,10 +57,10 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2874",
+        "Content-Length": "3009",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 09 Mar 2026 14:07:13 GMT",
-        "ETag": "\"25\"",
+        "Date": "Mon, 16 Mar 2026 16:41:53 GMT",
+        "ETag": "\"3\"",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -69,12 +69,12 @@
         "x-ms-client-request-id": "Sanitized",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-need-to-refresh-epl-cache": "False",
-        "x-ms-ratelimit-remaining-resource": "Microsoft.Compute/GetVMScaleSetSubscriptionMaximum;2390,Microsoft.Compute/GetVMScaleSetResource;35",
+        "x-ms-ratelimit-remaining-resource": "Microsoft.Compute/GetVMScaleSetSubscriptionMaximum;2397,Microsoft.Compute/GetVMScaleSetResource;35",
         "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
         "x-ms-ratelimit-remaining-subscription-reads": "1099",
         "x-ms-request-id": "Sanitized",
-        "x-ms-routing-request-id": "EASTUS2:20260309T140714Z:00000000-0000-0000-0000-000000000000",
-        "X-MSEdge-Ref": "Ref A: F26AD066F48B4574AE4D6B88F09FA6A0 Ref B: BN1AA2051012025 Ref C: 2026-03-09T14:07:14Z"
+        "x-ms-routing-request-id": "EASTUS2:20260316T164153Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: F452B568E0F5413CADD5FF1F43AC3FFC Ref B: BN1AA2051014011 Ref C: 2026-03-16T16:41:53Z"
       },
       "ResponseBody": {
         "name": "Sanitized",
@@ -82,8 +82,6 @@
         "type": "Microsoft.Compute/virtualMachineScaleSets",
         "location": "eastus2",
         "tags": {
-          "testkey": "testvalue",
-          "environment": "livetests",
           "azsecpack": "nonprod",
           "platformsettings.host_environment.service.platform_optedin_for_rootcerts": "true"
         },
@@ -106,7 +104,7 @@
           "singlePlacementGroup": true,
           "orchestrationMode": "Uniform",
           "upgradePolicy": {
-            "mode": "Automatic"
+            "mode": "Manual"
           },
           "virtualMachineProfile": {
             "osProfile": {
@@ -114,7 +112,8 @@
               "adminUsername": "azureuser",
               "linuxConfiguration": {
                 "disablePasswordAuthentication": false,
-                "provisionVMAgent": true
+                "provisionVMAgent": true,
+                "enableVMAgentPlatformUpdates": true
               },
               "secrets": [],
               "allowExtensionOperations": true,
@@ -172,11 +171,14 @@
                   "properties": {
                     "autoUpgradeMinorVersion": true,
                     "enableAutomaticUpgrade": true,
-                    "publisher": "Microsoft.Azure.Monitor",
-                    "type": "AzureMonitorLinuxAgent",
-                    "typeHandlerVersion": "1.0",
+                    "suppressFailures": true,
+                    "publisher": "Microsoft.Azure.Security.Monitoring",
+                    "type": "AzureSecurityLinuxAgent",
+                    "typeHandlerVersion": "2.0",
                     "settings": {
-                      "GCS_AUTO_CONFIG": true
+                      "enableGenevaUpload": true,
+                      "enableAutoConfig": true,
+                      "reportSuccessOnUnsupportedDistro": true
                     }
                   }
                 },
@@ -185,9 +187,13 @@
                   "properties": {
                     "autoUpgradeMinorVersion": true,
                     "enableAutomaticUpgrade": true,
-                    "publisher": "Microsoft.Azure.Security.Monitoring",
-                    "type": "AzureSecurityLinuxAgent",
-                    "typeHandlerVersion": "2.33"
+                    "suppressFailures": true,
+                    "publisher": "Microsoft.Azure.Monitor",
+                    "type": "AzureMonitorLinuxAgent",
+                    "typeHandlerVersion": "1.0",
+                    "settings": {
+                      "GCS_AUTO_CONFIG": true
+                    }
                   }
                 }
               ]
@@ -199,14 +205,14 @@
               },
               "securityType": "TrustedLaunch"
             },
-            "timeCreated": "2026-02-27T16:18:00.5899301+00:00"
+            "timeCreated": "2026-03-16T16:10:47.9754181+00:00"
           },
           "provisioningState": "Succeeded",
           "overprovision": false,
           "doNotRunExtensionsOnOverprovisionedVMs": false,
           "uniqueId": "00000000-0000-0000-0000-000000000000",
           "platformFaultDomainCount": 5,
-          "timeCreated": "2026-01-27T22:28:09.8555277+00:00"
+          "timeCreated": "2026-03-16T16:02:19.1189989+00:00"
         }
       }
     },
@@ -232,12 +238,12 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "azure-asyncnotification": "Enabled",
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/operations/00000000-0000-0000-0000-000000000000?p=00000000-0000-0000-0000-000000000000&api-version=2024-11-01&t=639086620348608045&c=MIIHlDCCBnygAwIBAgIQW7S9mIRniur0NlR57d718DANBgkqhkiG9w0BAQsFADA2MTQwMgYDVQQDEytDQ01FIEcxIFRMUyBSU0EgMjA0OCBTSEEyNTYgMjA0OSBFVVMyIENBIDAxMB4XDTI2MDMwNjE3MDQyM1oXDTI2MDkwMTIzMDQyM1owQDE-MDwGA1UEAxM1YXN5bmNvcGVyYXRpb25zaWduaW5nY2VydGlmaWNhdGUubWFuYWdlbWVudC5henVyZS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDHzVVoe0O55dormbd1g__i9CChuNndwa-cF9gSr0vo9yAkcz9YezWxXIpeUjaQ4mEBrHtzOwhn8kvgBXg5JAqNIf8uLHM5DxbknrKa1depnO4Tuax07zeRiJDdFA7B5H9IEVpxM3qhnAmzQJemWxy9Z3i_n35NeiiQXMb3Z3LSr9_6AyZ496sFBm2f7jlMEE_5SePxP1YS_BX-ANbLVy6NMdUaRDdhO-5zEX_fKnhXSIh6tmQRoh10pok-x0izIudmYuNtGTMmN7QaVF6iNuMUeJkQ1_1vtyJeQqXOqxSjOmAsAHvTikKayvaQViadVVNKLm31l4Xe3hrgI-aRPcY9AgMBAAGjggSSMIIEjjCBnQYDVR0gBIGVMIGSMAwGCisGAQQBgjd7AQEwZgYKKwYBBAGCN3sCAjBYMFYGCCsGAQUFBwICMEoeSAAzADMAZQAwADEAOQAyADEALQA0AGQANgA0AC0ANABmADgAYwAtAGEAMAA1ADUALQA1AGIAZABhAGYAZgBkADUAZQAzADMAZDAMBgorBgEEAYI3ewMCMAwGCisGAQQBgjd7BAIwDAYDVR0TAQH_BAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDgYDVR0PAQH_BAQDAgWgMB0GA1UdDgQWBBTpqT3j26R3MVGBnlo3Rls2Z23A0DAfBgNVHSMEGDAWgBT87D7bqnwfgh4FuKEG-UPnArMKuTCCAbIGA1UdHwSCAakwggGlMGmgZ6BlhmNodHRwOi8vcHJpbWFyeS1jZG4ucGtpLmNvcmUud2luZG93cy5uZXQvZWFzdHVzMi9jcmxzL2NjbWVlYXN0dXMycGtpL2NjbWVlYXN0dXMyaWNhMDEvNjQvY3VycmVudC5jcmwwa6BpoGeGZWh0dHA6Ly9zZWNvbmRhcnktY2RuLnBraS5jb3JlLndpbmRvd3MubmV0L2Vhc3R1czIvY3Jscy9jY21lZWFzdHVzMnBraS9jY21lZWFzdHVzMmljYTAxLzY0L2N1cnJlbnQuY3JsMFqgWKBWhlRodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vZWFzdHVzMi9jcmxzL2NjbWVlYXN0dXMycGtpL2NjbWVlYXN0dXMyaWNhMDEvNjQvY3VycmVudC5jcmwwb6BtoGuGaWh0dHA6Ly9jY21lZWFzdHVzMnBraS5lYXN0dXMyLnBraS5jb3JlLndpbmRvd3MubmV0L2NlcnRpZmljYXRlQXV0aG9yaXRpZXMvY2NtZWVhc3R1czJpY2EwMS82NC9jdXJyZW50LmNybDCCAbcGCCsGAQUFBwEBBIIBqTCCAaUwbAYIKwYBBQUHMAKGYGh0dHA6Ly9wcmltYXJ5LWNkbi5wa2kuY29yZS53aW5kb3dzLm5ldC9lYXN0dXMyL2NhY2VydHMvY2NtZWVhc3R1czJwa2kvY2NtZWVhc3R1czJpY2EwMS9jZXJ0LmNlcjBuBggrBgEFBQcwAoZiaHR0cDovL3NlY29uZGFyeS1jZG4ucGtpLmNvcmUud2luZG93cy5uZXQvZWFzdHVzMi9jYWNlcnRzL2NjbWVlYXN0dXMycGtpL2NjbWVlYXN0dXMyaWNhMDEvY2VydC5jZXIwXQYIKwYBBQUHMAKGUWh0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9lYXN0dXMyL2NhY2VydHMvY2NtZWVhc3R1czJwa2kvY2NtZWVhc3R1czJpY2EwMS9jZXJ0LmNlcjBmBggrBgEFBQcwAoZaaHR0cDovL2NjbWVlYXN0dXMycGtpLmVhc3R1czIucGtpLmNvcmUud2luZG93cy5uZXQvY2VydGlmaWNhdGVBdXRob3JpdGllcy9jY21lZWFzdHVzMmljYTAxMA0GCSqGSIb3DQEBCwUAA4IBAQBSmezIVTrW4CFudU_EKu4_ma1QX-ow6R0LolPxxG3Suyd_xEIzyf9b_xi5vFuSZuL4g5a2kcRyjfZcovDn3kEYxrwpu8OvzeS1OFo7YA_YjBjWIdK1FCHyEMEJGcrA-qcCjtVcODhiqYioWQbSoYDSTLvsxfRMBmRvR9dQ7Zc0xpmo04Gp-LkeoUgLrB8Nw7Cxe5nDIdMI10K8eYMjJLfOZMoNuosUoCrkU4fYlp5pWxUcGeRe1etTW-g4h-Qt9QfyGWyKl4RsAr_-vNC_euNlydIZ_wNTti8Zy_XOpM4G0-hCjf4GEIhuFm0NraKKXe4AahRxVuDyknO8YQizDuS3&s=p_81e__toAYMK7b7y-IfgXpTQsfYBDMsCoU9PuuyV-YEDnj3CEH23lxMBMrvsl9P_PCkLSFPijFLt6xlEI3w1GAnQbmMbo9cE59D84TX0VzKuyhF_2UVeQo-8j_ZI1fPx4F9bj_I1aIbs8Rw4UKSa_kIY7zyzEPTkIgRqpw_3sKjiHo_NrGlNuq40Ahnq3VikLejXWwYqbnONeQdqwEyUfeZkf2TzLQtI2hvjjEUFnSedOFcUiVKoec1_ZAV9HrytcJWmDC302Cz3t1vP79U6R2wilcbjDZp0nXZR95hLtK1HehMWQP_SEeNjflA9kfQoZwrPAAvTQt9sk1W36J8hA&h=0WINNeMZ71H5fxtR0X1Rh2Gx0q-Ij4qtUh0Z7JkQTbg",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/operations/00000000-0000-0000-0000-000000000000?p=00000000-0000-0000-0000-000000000000&api-version=2024-11-01&t=639092761139874760&c=MIIHlDCCBnygAwIBAgIQW7S9mIRniur0NlR57d718DANBgkqhkiG9w0BAQsFADA2MTQwMgYDVQQDEytDQ01FIEcxIFRMUyBSU0EgMjA0OCBTSEEyNTYgMjA0OSBFVVMyIENBIDAxMB4XDTI2MDMwNjE3MDQyM1oXDTI2MDkwMTIzMDQyM1owQDE-MDwGA1UEAxM1YXN5bmNvcGVyYXRpb25zaWduaW5nY2VydGlmaWNhdGUubWFuYWdlbWVudC5henVyZS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDHzVVoe0O55dormbd1g__i9CChuNndwa-cF9gSr0vo9yAkcz9YezWxXIpeUjaQ4mEBrHtzOwhn8kvgBXg5JAqNIf8uLHM5DxbknrKa1depnO4Tuax07zeRiJDdFA7B5H9IEVpxM3qhnAmzQJemWxy9Z3i_n35NeiiQXMb3Z3LSr9_6AyZ496sFBm2f7jlMEE_5SePxP1YS_BX-ANbLVy6NMdUaRDdhO-5zEX_fKnhXSIh6tmQRoh10pok-x0izIudmYuNtGTMmN7QaVF6iNuMUeJkQ1_1vtyJeQqXOqxSjOmAsAHvTikKayvaQViadVVNKLm31l4Xe3hrgI-aRPcY9AgMBAAGjggSSMIIEjjCBnQYDVR0gBIGVMIGSMAwGCisGAQQBgjd7AQEwZgYKKwYBBAGCN3sCAjBYMFYGCCsGAQUFBwICMEoeSAAzADMAZQAwADEAOQAyADEALQA0AGQANgA0AC0ANABmADgAYwAtAGEAMAA1ADUALQA1AGIAZABhAGYAZgBkADUAZQAzADMAZDAMBgorBgEEAYI3ewMCMAwGCisGAQQBgjd7BAIwDAYDVR0TAQH_BAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDgYDVR0PAQH_BAQDAgWgMB0GA1UdDgQWBBTpqT3j26R3MVGBnlo3Rls2Z23A0DAfBgNVHSMEGDAWgBT87D7bqnwfgh4FuKEG-UPnArMKuTCCAbIGA1UdHwSCAakwggGlMGmgZ6BlhmNodHRwOi8vcHJpbWFyeS1jZG4ucGtpLmNvcmUud2luZG93cy5uZXQvZWFzdHVzMi9jcmxzL2NjbWVlYXN0dXMycGtpL2NjbWVlYXN0dXMyaWNhMDEvNjQvY3VycmVudC5jcmwwa6BpoGeGZWh0dHA6Ly9zZWNvbmRhcnktY2RuLnBraS5jb3JlLndpbmRvd3MubmV0L2Vhc3R1czIvY3Jscy9jY21lZWFzdHVzMnBraS9jY21lZWFzdHVzMmljYTAxLzY0L2N1cnJlbnQuY3JsMFqgWKBWhlRodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vZWFzdHVzMi9jcmxzL2NjbWVlYXN0dXMycGtpL2NjbWVlYXN0dXMyaWNhMDEvNjQvY3VycmVudC5jcmwwb6BtoGuGaWh0dHA6Ly9jY21lZWFzdHVzMnBraS5lYXN0dXMyLnBraS5jb3JlLndpbmRvd3MubmV0L2NlcnRpZmljYXRlQXV0aG9yaXRpZXMvY2NtZWVhc3R1czJpY2EwMS82NC9jdXJyZW50LmNybDCCAbcGCCsGAQUFBwEBBIIBqTCCAaUwbAYIKwYBBQUHMAKGYGh0dHA6Ly9wcmltYXJ5LWNkbi5wa2kuY29yZS53aW5kb3dzLm5ldC9lYXN0dXMyL2NhY2VydHMvY2NtZWVhc3R1czJwa2kvY2NtZWVhc3R1czJpY2EwMS9jZXJ0LmNlcjBuBggrBgEFBQcwAoZiaHR0cDovL3NlY29uZGFyeS1jZG4ucGtpLmNvcmUud2luZG93cy5uZXQvZWFzdHVzMi9jYWNlcnRzL2NjbWVlYXN0dXMycGtpL2NjbWVlYXN0dXMyaWNhMDEvY2VydC5jZXIwXQYIKwYBBQUHMAKGUWh0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9lYXN0dXMyL2NhY2VydHMvY2NtZWVhc3R1czJwa2kvY2NtZWVhc3R1czJpY2EwMS9jZXJ0LmNlcjBmBggrBgEFBQcwAoZaaHR0cDovL2NjbWVlYXN0dXMycGtpLmVhc3R1czIucGtpLmNvcmUud2luZG93cy5uZXQvY2VydGlmaWNhdGVBdXRob3JpdGllcy9jY21lZWFzdHVzMmljYTAxMA0GCSqGSIb3DQEBCwUAA4IBAQBSmezIVTrW4CFudU_EKu4_ma1QX-ow6R0LolPxxG3Suyd_xEIzyf9b_xi5vFuSZuL4g5a2kcRyjfZcovDn3kEYxrwpu8OvzeS1OFo7YA_YjBjWIdK1FCHyEMEJGcrA-qcCjtVcODhiqYioWQbSoYDSTLvsxfRMBmRvR9dQ7Zc0xpmo04Gp-LkeoUgLrB8Nw7Cxe5nDIdMI10K8eYMjJLfOZMoNuosUoCrkU4fYlp5pWxUcGeRe1etTW-g4h-Qt9QfyGWyKl4RsAr_-vNC_euNlydIZ_wNTti8Zy_XOpM4G0-hCjf4GEIhuFm0NraKKXe4AahRxVuDyknO8YQizDuS3&s=HFTXD2G4fvM8p9ttooGnFo3mQLzN4Tc1btMT2hrtNszhcNZYLJgrRcX3chKhRP5MGAtfZhJLxsZLeRTwyYu5sx32H-AHBHQO-AIEom0afXRMPiFCCkNIttfmOWhZvgGgOkOIwkEVwc4PZSRPkCUH0msjZxDfUaFoewlRg87o8ZENHm5OJdBb1_ad3OPIv0VXdL72h5o8-JLmo47fMWseCl6VG7-smSowaXMEv4K43L9qGQ1rPGCJNxlOLRx43-ZlodhZIW66z80mv8XN8TlfxOxi5gRGtzplxrzOuWDOX-9_xLPEF22ulTjJLK658dpQDfo21BWvoLQeL4_8OJFCmA&h=kCgRh9mUH6wwMzThTnvv9wgu_4XVTCFR23FdXTRst8k",
         "Cache-Control": "no-cache",
-        "Content-Length": "2873",
+        "Content-Length": "3011",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 09 Mar 2026 14:07:14 GMT",
-        "ETag": "\"25\"",
+        "Date": "Mon, 16 Mar 2026 16:41:54 GMT",
+        "ETag": "\"4\"",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Retry-After": "10",
@@ -248,13 +254,13 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-need-to-refresh-epl-cache": "False",
         "x-ms-operation-identifier": "tenantId=00000000-0000-0000-0000-000000000000,objectId=00000000-0000-0000-0000-000000000000/eastus2/00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-resource": "Microsoft.Compute/VMScaleSetActionsSubscriptionMaximum;1499,Microsoft.Compute/VMScaleSetActionsResource;11,Microsoft.Compute/VMScaleSetBatchedVMRequestsSubscriptionMaximum;6000,Microsoft.Compute/VmssQueuedVMOperations;0",
+        "x-ms-ratelimit-remaining-resource": "Microsoft.Compute/VMScaleSetActionsSubscriptionMaximum;1499,Microsoft.Compute/VMScaleSetActionsResource;11,Microsoft.Compute/VMScaleSetBatchedVMRequestsSubscriptionMaximum;5999,Microsoft.Compute/VmssQueuedVMOperations;0",
         "x-ms-ratelimit-remaining-subscription-global-writes": "11999",
         "x-ms-ratelimit-remaining-subscription-writes": "799",
-        "x-ms-request-charge": "0",
+        "x-ms-request-charge": "1",
         "x-ms-request-id": "Sanitized",
-        "x-ms-routing-request-id": "EASTUS2:20260309T140714Z:00000000-0000-0000-0000-000000000000",
-        "X-MSEdge-Ref": "Ref A: 376C39A687E84928ABC8A5EEAE9B8154 Ref B: BN1AA2051012025 Ref C: 2026-03-09T14:07:14Z"
+        "x-ms-routing-request-id": "EASTUS2:20260316T164154Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 97ADFDEDDDD040CC8DB82ABC1DF81D5A Ref B: BN1AA2051014011 Ref C: 2026-03-16T16:41:53Z"
       },
       "ResponseBody": {
         "name": "Sanitized",
@@ -262,8 +268,6 @@
         "type": "Microsoft.Compute/virtualMachineScaleSets",
         "location": "eastus2",
         "tags": {
-          "testkey": "testvalue",
-          "environment": "livetests",
           "azsecpack": "nonprod",
           "platformsettings.host_environment.service.platform_optedin_for_rootcerts": "true"
         },
@@ -294,7 +298,8 @@
               "adminUsername": "azureuser",
               "linuxConfiguration": {
                 "disablePasswordAuthentication": false,
-                "provisionVMAgent": true
+                "provisionVMAgent": true,
+                "enableVMAgentPlatformUpdates": true
               },
               "secrets": [],
               "allowExtensionOperations": true,
@@ -352,11 +357,14 @@
                   "properties": {
                     "autoUpgradeMinorVersion": true,
                     "enableAutomaticUpgrade": true,
-                    "publisher": "Microsoft.Azure.Monitor",
-                    "type": "AzureMonitorLinuxAgent",
-                    "typeHandlerVersion": "1.0",
+                    "suppressFailures": true,
+                    "publisher": "Microsoft.Azure.Security.Monitoring",
+                    "type": "AzureSecurityLinuxAgent",
+                    "typeHandlerVersion": "2.0",
                     "settings": {
-                      "GCS_AUTO_CONFIG": true
+                      "enableGenevaUpload": true,
+                      "enableAutoConfig": true,
+                      "reportSuccessOnUnsupportedDistro": true
                     }
                   }
                 },
@@ -365,9 +373,13 @@
                   "properties": {
                     "autoUpgradeMinorVersion": true,
                     "enableAutomaticUpgrade": true,
-                    "publisher": "Microsoft.Azure.Security.Monitoring",
-                    "type": "AzureSecurityLinuxAgent",
-                    "typeHandlerVersion": "2.33"
+                    "suppressFailures": true,
+                    "publisher": "Microsoft.Azure.Monitor",
+                    "type": "AzureMonitorLinuxAgent",
+                    "typeHandlerVersion": "1.0",
+                    "settings": {
+                      "GCS_AUTO_CONFIG": true
+                    }
                   }
                 }
               ]
@@ -379,14 +391,14 @@
               },
               "securityType": "TrustedLaunch"
             },
-            "timeCreated": "2026-02-27T16:18:00.5899301+00:00"
+            "timeCreated": "2026-03-16T16:10:47.9754181+00:00"
           },
           "provisioningState": "Updating",
           "overprovision": false,
           "doNotRunExtensionsOnOverprovisionedVMs": false,
           "uniqueId": "00000000-0000-0000-0000-000000000000",
           "platformFaultDomainCount": 5,
-          "timeCreated": "2026-01-27T22:28:09.8555277+00:00"
+          "timeCreated": "2026-03-16T16:02:19.1189989+00:00"
         }
       }
     },
@@ -403,10 +415,10 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2874",
+        "Content-Length": "3011",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 09 Mar 2026 14:07:14 GMT",
-        "ETag": "\"25\"",
+        "Date": "Mon, 16 Mar 2026 16:41:54 GMT",
+        "ETag": "\"4\"",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -415,12 +427,12 @@
         "x-ms-client-request-id": "Sanitized",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-need-to-refresh-epl-cache": "False",
-        "x-ms-ratelimit-remaining-resource": "Microsoft.Compute/GetVMScaleSetSubscriptionMaximum;2387,Microsoft.Compute/GetVMScaleSetResource;32",
+        "x-ms-ratelimit-remaining-resource": "Microsoft.Compute/GetVMScaleSetSubscriptionMaximum;2394,Microsoft.Compute/GetVMScaleSetResource;32",
         "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
         "x-ms-ratelimit-remaining-subscription-reads": "1099",
         "x-ms-request-id": "Sanitized",
-        "x-ms-routing-request-id": "EASTUS2:20260309T140714Z:00000000-0000-0000-0000-000000000000",
-        "X-MSEdge-Ref": "Ref A: 271B465E88C14BCFA9D987C1FF3CE2B1 Ref B: BN1AA2051012025 Ref C: 2026-03-09T14:07:14Z"
+        "x-ms-routing-request-id": "EASTUS2:20260316T164154Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 8C6264403DB34790A37401B9D2D31271 Ref B: BN1AA2051014011 Ref C: 2026-03-16T16:41:54Z"
       },
       "ResponseBody": {
         "name": "Sanitized",
@@ -428,8 +440,6 @@
         "type": "Microsoft.Compute/virtualMachineScaleSets",
         "location": "eastus2",
         "tags": {
-          "testkey": "testvalue",
-          "environment": "livetests",
           "azsecpack": "nonprod",
           "platformsettings.host_environment.service.platform_optedin_for_rootcerts": "true"
         },
@@ -460,7 +470,8 @@
               "adminUsername": "azureuser",
               "linuxConfiguration": {
                 "disablePasswordAuthentication": false,
-                "provisionVMAgent": true
+                "provisionVMAgent": true,
+                "enableVMAgentPlatformUpdates": true
               },
               "secrets": [],
               "allowExtensionOperations": true,
@@ -518,11 +529,14 @@
                   "properties": {
                     "autoUpgradeMinorVersion": true,
                     "enableAutomaticUpgrade": true,
-                    "publisher": "Microsoft.Azure.Monitor",
-                    "type": "AzureMonitorLinuxAgent",
-                    "typeHandlerVersion": "1.0",
+                    "suppressFailures": true,
+                    "publisher": "Microsoft.Azure.Security.Monitoring",
+                    "type": "AzureSecurityLinuxAgent",
+                    "typeHandlerVersion": "2.0",
                     "settings": {
-                      "GCS_AUTO_CONFIG": true
+                      "enableGenevaUpload": true,
+                      "enableAutoConfig": true,
+                      "reportSuccessOnUnsupportedDistro": true
                     }
                   }
                 },
@@ -531,9 +545,13 @@
                   "properties": {
                     "autoUpgradeMinorVersion": true,
                     "enableAutomaticUpgrade": true,
-                    "publisher": "Microsoft.Azure.Security.Monitoring",
-                    "type": "AzureSecurityLinuxAgent",
-                    "typeHandlerVersion": "2.33"
+                    "suppressFailures": true,
+                    "publisher": "Microsoft.Azure.Monitor",
+                    "type": "AzureMonitorLinuxAgent",
+                    "typeHandlerVersion": "1.0",
+                    "settings": {
+                      "GCS_AUTO_CONFIG": true
+                    }
                   }
                 }
               ]
@@ -545,14 +563,186 @@
               },
               "securityType": "TrustedLaunch"
             },
-            "timeCreated": "2026-02-27T16:18:00.5899301+00:00"
+            "timeCreated": "2026-03-16T16:10:47.9754181+00:00"
+          },
+          "provisioningState": "Updating",
+          "overprovision": false,
+          "doNotRunExtensionsOnOverprovisionedVMs": false,
+          "uniqueId": "00000000-0000-0000-0000-000000000000",
+          "platformFaultDomainCount": 5,
+          "timeCreated": "2026-03-16T16:02:19.1189989+00:00"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sanitized/providers/Microsoft.Compute/virtualMachineScaleSets/sanitized-vmss?api-version=2024-11-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Authorization": "Sanitized",
+        "User-Agent": "azmcp/1.0.0.0 azmcp-stdio/1.0.0.0 (.NETCoreApp,Version=v10.0; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "3012",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 16 Mar 2026 16:41:55 GMT",
+        "ETag": "\"4\"",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-need-to-refresh-epl-cache": "False",
+        "x-ms-ratelimit-remaining-resource": "Microsoft.Compute/GetVMScaleSetSubscriptionMaximum;2392,Microsoft.Compute/GetVMScaleSetResource;30",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
+        "x-ms-ratelimit-remaining-subscription-reads": "1099",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "EASTUS2:20260316T164155Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 45DF6626F06B46059FC6368B11EE6956 Ref B: BN1AA2051014011 Ref C: 2026-03-16T16:41:55Z"
+      },
+      "ResponseBody": {
+        "name": "Sanitized",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sanitized/providers/Microsoft.Compute/virtualMachineScaleSets/sanitized-vmss",
+        "type": "Microsoft.Compute/virtualMachineScaleSets",
+        "location": "eastus2",
+        "tags": {
+          "azsecpack": "nonprod",
+          "platformsettings.host_environment.service.platform_optedin_for_rootcerts": "true"
+        },
+        "identity": {
+          "type": "UserAssigned",
+          "userAssignedIdentities": {
+            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/AzSecPackAutoConfigUA-eastus2": {
+              "principalId": "00000000-0000-0000-0000-000000000000",
+              "clientId": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        "sku": {
+          "name": "Sanitized",
+          "tier": "Standard",
+          "capacity": 1
+        },
+        "etag": "Sanitized",
+        "properties": {
+          "singlePlacementGroup": true,
+          "orchestrationMode": "Uniform",
+          "upgradePolicy": {
+            "mode": "Automatic"
+          },
+          "virtualMachineProfile": {
+            "osProfile": {
+              "computerNamePrefix": "sanitized-",
+              "adminUsername": "azureuser",
+              "linuxConfiguration": {
+                "disablePasswordAuthentication": false,
+                "provisionVMAgent": true,
+                "enableVMAgentPlatformUpdates": true
+              },
+              "secrets": [],
+              "allowExtensionOperations": true,
+              "requireGuestProvisionSignal": true
+            },
+            "storageProfile": {
+              "osDisk": {
+                "osType": "Linux",
+                "createOption": "FromImage",
+                "caching": "None",
+                "managedDisk": {
+                  "storageAccountType": "Standard_LRS"
+                },
+                "diskSizeGB": 30
+              },
+              "imageReference": {
+                "publisher": "Canonical",
+                "offer": "0001-com-ubuntu-server-jammy",
+                "sku": "22_04-lts-gen2",
+                "version": "latest"
+              },
+              "diskControllerType": "SCSI"
+            },
+            "networkProfile": {
+              "networkInterfaceConfigurations": [
+                {
+                  "name": "Sanitized",
+                  "properties": {
+                    "primary": true,
+                    "enableAcceleratedNetworking": false,
+                    "disableTcpStateTracking": false,
+                    "dnsSettings": {
+                      "dnsServers": []
+                    },
+                    "enableIPForwarding": false,
+                    "ipConfigurations": [
+                      {
+                        "name": "Sanitized",
+                        "properties": {
+                          "subnet": {
+                            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sanitized/providers/Microsoft.Network/virtualNetworks/sanitized-vnet/subnets/default"
+                          },
+                          "privateIPAddressVersion": "IPv4"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "extensionProfile": {
+              "extensions": [
+                {
+                  "name": "Sanitized",
+                  "properties": {
+                    "autoUpgradeMinorVersion": true,
+                    "enableAutomaticUpgrade": true,
+                    "suppressFailures": true,
+                    "publisher": "Microsoft.Azure.Security.Monitoring",
+                    "type": "AzureSecurityLinuxAgent",
+                    "typeHandlerVersion": "2.0",
+                    "settings": {
+                      "enableGenevaUpload": true,
+                      "enableAutoConfig": true,
+                      "reportSuccessOnUnsupportedDistro": true
+                    }
+                  }
+                },
+                {
+                  "name": "Sanitized",
+                  "properties": {
+                    "autoUpgradeMinorVersion": true,
+                    "enableAutomaticUpgrade": true,
+                    "suppressFailures": true,
+                    "publisher": "Microsoft.Azure.Monitor",
+                    "type": "AzureMonitorLinuxAgent",
+                    "typeHandlerVersion": "1.0",
+                    "settings": {
+                      "GCS_AUTO_CONFIG": true
+                    }
+                  }
+                }
+              ]
+            },
+            "securityProfile": {
+              "uefiSettings": {
+                "secureBootEnabled": true,
+                "vTpmEnabled": true
+              },
+              "securityType": "TrustedLaunch"
+            },
+            "timeCreated": "2026-03-16T16:10:47.9754181+00:00"
           },
           "provisioningState": "Succeeded",
           "overprovision": false,
           "doNotRunExtensionsOnOverprovisionedVMs": false,
           "uniqueId": "00000000-0000-0000-0000-000000000000",
           "platformFaultDomainCount": 5,
-          "timeCreated": "2026-01-27T22:28:09.8555277+00:00"
+          "timeCreated": "2026-03-16T16:02:19.1189989+00:00"
         }
       }
     }
