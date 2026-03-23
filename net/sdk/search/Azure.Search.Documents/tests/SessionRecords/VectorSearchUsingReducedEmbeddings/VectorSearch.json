@@ -4,17 +4,44 @@
       "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes?api-version=2024-07-01",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        "Accept": "application/json; odata.metadata=minimal",
+        "Accept": "application/json;odata.metadata=minimal",
         "api-key": "Sanitized",
-        "Content-Length": "1331",
+        "Content-Length": "1306",
         "Content-Type": "application/json",
-        "traceparent": "00-02e923c14446ff22bda48600b6b74d47-5e02c696b47c81a9-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20251023.1 (.NET 9.0.10; Microsoft Windows 10.0.22631)",
+        "traceparent": "00-05f01175f5fd68ecdb816025786f2322-5bf8dd4b71a00ef2-00",
+        "User-Agent": "azsdk-net-Search.Documents/12.0.0-alpha.20260320.1 (.NET 10.0.4; Microsoft Windows 10.0.22631)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
-        "name": "eeqollnu",
+        "name": "tintakpf",
+        "vectorSearch": {
+          "profiles": [
+            {
+              "name": "vector-profile",
+              "algorithm": "hsnw-vector-config",
+              "vectorizer": "openai"
+            }
+          ],
+          "algorithms": [
+            {
+              "name": "hsnw-vector-config",
+              "kind": "hnsw"
+            }
+          ],
+          "vectorizers": [
+            {
+              "name": "openai",
+              "kind": "azureOpenAI",
+              "azureOpenAIParameters": {
+                "resourceUri": "https://azssdktestoai.openai.azure.com/",
+                "deploymentId": "text-embedding-3-small",
+                "apiKey": "Sanitized",
+                "modelName": "text-embedding-3-small"
+              }
+            }
+          ]
+        },
         "fields": [
           {
             "name": "HotelId",
@@ -52,7 +79,7 @@
             "retrievable": true,
             "searchable": true,
             "dimensions": 256,
-            "vectorSearchProfile": "my-vector-profile"
+            "vectorSearchProfile": "vector-profile"
           },
           {
             "name": "Category",
@@ -70,48 +97,21 @@
             "retrievable": true,
             "searchable": true,
             "dimensions": 256,
-            "vectorSearchProfile": "my-vector-profile"
+            "vectorSearchProfile": "vector-profile"
           }
-        ],
-        "vectorSearch": {
-          "profiles": [
-            {
-              "name": "my-vector-profile",
-              "algorithm": "my-hsnw-vector-config",
-              "vectorizer": "openai"
-            }
-          ],
-          "algorithms": [
-            {
-              "name": "my-hsnw-vector-config",
-              "kind": "hnsw"
-            }
-          ],
-          "vectorizers": [
-            {
-              "name": "openai",
-              "kind": "azureOpenAI",
-              "azureOpenAIParameters": {
-                "resourceUri": "https://azs-sdk-net-test-oai.openai.azure.com/",
-                "deploymentId": "my-text-embedding-3-small",
-                "apiKey": "Sanitized",
-                "modelName": "text-embedding-3-small"
-              }
-            }
-          ]
-        }
+        ]
       },
       "StatusCode": 201,
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
-        "Date": "Fri, 24 Oct 2025 21:24:02 GMT",
-        "elapsed-time": "794",
-        "ETag": "\"0x8DE1343A7902FEE\"",
-        "Location": "https://azs-net-azssdktest.search.windows.net/indexes('eeqollnu')?api-version=2024-07-01",
+        "Date": "Fri, 20 Mar 2026 20:01:53 GMT",
+        "elapsed-time": "1028",
+        "ETag": "\"0x8DE86BB8838DC13\"",
+        "Location": "https://azs-net-azssdktest.search.windows.net/indexes('tintakpf')?api-version=2024-07-01",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "bf73a922-855b-4b43-7519-d13f9a549a54",
+        "request-id": "643adb1e-1b5f-df7d-6eba-cd84129197f4",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -121,8 +121,8 @@
       },
       "ResponseBody": {
         "@odata.context": "https://azs-net-azssdktest.search.windows.net/$metadata#indexes/$entity",
-        "@odata.etag": "\"0x8DE1343A7902FEE\"",
-        "name": "eeqollnu",
+        "@odata.etag": "\"0x8DE86BB8838DC13\"",
+        "name": "tintakpf",
         "defaultScoringProfile": null,
         "fields": [
           {
@@ -193,7 +193,7 @@
             "searchAnalyzer": null,
             "analyzer": null,
             "dimensions": 256,
-            "vectorSearchProfile": "my-vector-profile",
+            "vectorSearchProfile": "vector-profile",
             "vectorEncoding": null,
             "synonymMaps": []
           },
@@ -229,7 +229,7 @@
             "searchAnalyzer": null,
             "analyzer": null,
             "dimensions": 256,
-            "vectorSearchProfile": "my-vector-profile",
+            "vectorSearchProfile": "vector-profile",
             "vectorEncoding": null,
             "synonymMaps": []
           }
@@ -251,7 +251,7 @@
         "vectorSearch": {
           "algorithms": [
             {
-              "name": "my-hsnw-vector-config",
+              "name": "hsnw-vector-config",
               "kind": "hnsw",
               "hnswParameters": {
                 "metric": "cosine",
@@ -264,8 +264,8 @@
           ],
           "profiles": [
             {
-              "name": "my-vector-profile",
-              "algorithm": "my-hsnw-vector-config",
+              "name": "vector-profile",
+              "algorithm": "hsnw-vector-config",
               "vectorizer": "openai",
               "compression": null
             }
@@ -275,8 +275,8 @@
               "name": "openai",
               "kind": "azureOpenAI",
               "azureOpenAIParameters": {
-                "resourceUri": "https://azs-sdk-net-test-oai.openai.azure.com",
-                "deploymentId": "my-text-embedding-3-small",
+                "resourceUri": "https://azssdktestoai.openai.azure.com",
+                "deploymentId": "text-embedding-3-small",
                 "apiKey": "Sanitized",
                 "modelName": "text-embedding-3-small",
                 "authIdentity": null
@@ -289,15 +289,15 @@
       }
     },
     {
-      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('eeqollnu')/docs/search.index?api-version=2024-07-01",
+      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('tintakpf')/docs/search.index?api-version=2024-07-01",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json; odata.metadata=none",
         "api-key": "Sanitized",
         "Content-Length": "32551",
         "Content-Type": "application/json",
-        "traceparent": "00-a019493d33d9ef772ba21065871420a6-ecd77b836f59481b-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20251023.1 (.NET 9.0.10; Microsoft Windows 10.0.22631)",
+        "traceparent": "00-89b279d56f5cb0313d36fefde7bd7cc0-013436d526b2ba15-00",
+        "User-Agent": "azsdk-net-Search.Documents/12.0.0-alpha.20260320.1 (.NET 10.0.4; Microsoft Windows 10.0.22631)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
@@ -2924,11 +2924,11 @@
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=none; odata.streaming=true; charset=utf-8",
-        "Date": "Fri, 24 Oct 2025 21:24:02 GMT",
-        "elapsed-time": "97",
+        "Date": "Fri, 20 Mar 2026 20:01:53 GMT",
+        "elapsed-time": "172",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "004951bf-9cab-0a99-836f-08b8099e29b5",
+        "request-id": "8bf099de-3aa3-e536-ae4d-1f31874ea420",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -2972,24 +2972,24 @@
       }
     },
     {
-      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('eeqollnu')/docs/search.post.search?api-version=2024-07-01",
+      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('tintakpf')/docs/search.post.search?api-version=2024-07-01",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        "Accept": "application/json; odata.metadata=none",
+        "Accept": "application/json;odata.metadata=none",
         "api-key": "Sanitized",
         "Content-Length": "101",
         "Content-Type": "application/json",
-        "traceparent": "00-ed0c3942401b8bdb383385ce2cedeb19-47307f752776f7f6-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20251023.1 (.NET 9.0.10; Microsoft Windows 10.0.22631)",
+        "traceparent": "00-6528308923d1768c822824dd2408b430-b2a15aebcbabe3dd-00",
+        "User-Agent": "azsdk-net-Search.Documents/12.0.0-alpha.20260320.1 (.NET 10.0.4; Microsoft Windows 10.0.22631)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
         "vectorQueries": [
           {
-            "kind": "text",
             "k": 3,
             "fields": "DescriptionVector",
+            "kind": "text",
             "text": "Luxury hotels in town"
           }
         ]
@@ -2998,11 +2998,11 @@
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
         "Content-Type": "application/json; odata.metadata=none; odata.streaming=true; charset=utf-8",
-        "Date": "Fri, 24 Oct 2025 21:24:04 GMT",
-        "elapsed-time": "188",
+        "Date": "Fri, 20 Mar 2026 20:01:54 GMT",
+        "elapsed-time": "67",
         "OData-Version": "4.0",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "955b3f93-c6ff-540e-4a16-2cba83c0af69",
+        "request-id": "f5a8033b-9bc2-8260-a7d9-0a33a3fc6555",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -3013,7 +3013,7 @@
       "ResponseBody": {
         "value": [
           {
-            "@search.score": 0.72732353,
+            "@search.score": 0.7273235,
             "HotelId": "1",
             "HotelName": "Fancy Stay",
             "Description": "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.",
@@ -4585,13 +4585,49 @@
       }
     },
     {
-      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('eeqollnu')?api-version=2024-07-01",
+      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('tintakpf')?api-version=2024-07-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
-        "Accept": "application/json; odata.metadata=minimal",
+        "Accept": "application/json;odata.metadata=minimal",
         "api-key": "Sanitized",
-        "traceparent": "00-5e7e9f5225df717ee2c40d26fcc15039-a764e022ac017387-00",
-        "User-Agent": "azsdk-net-Search.Documents/11.8.0-alpha.20251023.1 (.NET 9.0.10; Microsoft Windows 10.0.22631)",
+        "traceparent": "00-6d454fe7170b86178ca4ba75c7ac27b7-1bab884d219cf6a1-00",
+        "User-Agent": "azsdk-net-Search.Documents/12.0.0-alpha.20260320.1 (.NET 10.0.4; Microsoft Windows 10.0.22631)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 503,
+      "ResponseHeaders": {
+        "client-request-id": "Sanitized",
+        "Content-Language": "en",
+        "Content-Length": "92",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 20 Mar 2026 20:02:07 GMT",
+        "elapsed-time": "12696",
+        "Preference-Applied": "odata.include-annotations=\"*\"",
+        "request-id": "58f681ca-4abc-e412-a454-b512fb4c581f",
+        "Strict-Transport-Security": [
+          "max-age=2592000",
+          "max-age=15724800; includeSubDomains"
+        ],
+        "throttle-reason": "rateLimitExceeded",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "",
+          "message": "You are sending too many requests. Please try again later."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://azs-net-azssdktest.search.windows.net/indexes('tintakpf')?api-version=2024-07-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json;odata.metadata=minimal",
+        "api-key": "Sanitized",
+        "traceparent": "00-6d454fe7170b86178ca4ba75c7ac27b7-1bab884d219cf6a1-00",
+        "User-Agent": "azsdk-net-Search.Documents/12.0.0-alpha.20260320.1 (.NET 10.0.4; Microsoft Windows 10.0.22631)",
         "x-ms-client-request-id": "Sanitized",
         "x-ms-return-client-request-id": "true"
       },
@@ -4599,10 +4635,10 @@
       "StatusCode": 204,
       "ResponseHeaders": {
         "client-request-id": "Sanitized",
-        "Date": "Fri, 24 Oct 2025 21:24:04 GMT",
-        "elapsed-time": "171",
+        "Date": "Fri, 20 Mar 2026 20:02:08 GMT",
+        "elapsed-time": "197",
         "Preference-Applied": "odata.include-annotations=\"*\"",
-        "request-id": "674aadb5-5ed2-85da-0f69-3ceb7c8a41d6",
+        "request-id": "58f681ca-4abc-e412-a454-b512fb4c581f",
         "Strict-Transport-Security": [
           "max-age=2592000",
           "max-age=15724800; includeSubDomains"
@@ -4613,9 +4649,9 @@
     }
   ],
   "Variables": {
-    "OPENAI_ENDPOINT": "https://azs-sdk-net-test-oai.openai.azure.com/",
+    "OPENAI_ENDPOINT": "https://azssdktestoai.openai.azure.com/",
     "OPENAI_KEY": "Sanitized",
-    "RandomSeed": "1671176183",
+    "RandomSeed": "839548753",
     "SearchIndexName": null,
     "SEARCH_ADMIN_API_KEY": "Sanitized",
     "SEARCH_ENDPOINT_SUFFIX": "search.windows.net",
