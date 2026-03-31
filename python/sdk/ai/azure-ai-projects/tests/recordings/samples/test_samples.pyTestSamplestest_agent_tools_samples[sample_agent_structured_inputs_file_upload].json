@@ -1,36 +1,119 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/agents/MyAgent/versions?api-version=v1",
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/v1/files",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Connection": "keep-alive",
-        "Content-Length": "245",
+        "Content-Length": "357",
+        "Content-Type": "multipart/form-data; boundary=8e7214bd71a3fafb42de6b38f383a929",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.24.0"
+      },
+      "RequestBody": [
+        "--8e7214bd71a3fafb42de6b38f383a929\r\n",
+        "Content-Disposition: form-data; name=\"purpose\"\r\n",
+        "\r\n",
+        "b64:YXNzaXN0YW50cw==",
+        "\r\n",
+        "--8e7214bd71a3fafb42de6b38f383a929\r\n",
+        "Content-Disposition: form-data; name=\"file\"; filename=\"quarterly_results.csv\"\r\n",
+        "Content-Type: text/csv\r\n",
+        "\r\n",
+        "sector,operating_profit\n",
+        "TRANSPORTATION,10\n",
+        "TRANSPORTATION,15\n",
+        "RETAIL,7\n",
+        "RETAIL,3\n",
+        "\r\n",
+        "--8e7214bd71a3fafb42de6b38f383a929--\r\n"
+      ],
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "apim-request-id": "1d7f8001-27a5-46d1-855a-9895eb6be699",
+        "azureml-served-by-cluster": "hyena-westus2-01",
+        "Content-Encoding": "gzip",
         "Content-Type": "application/json",
+        "Date": "Tue, 31 Mar 2026 22:18:47 GMT",
+        "openai-processing-ms": "5259",
+        "openai-version": "2020-10-01",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-middleware-request-id": "1d7f8001-27a5-46d1-855a-9895eb6be699",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "d61778e5-fc09-41b4-b77d-fcbd298a3d3b"
+      },
+      "ResponseBody": {
+        "object": "file",
+        "id": "assistant-RU1nyPPbQV7FtAC5cRSXFB",
+        "purpose": "assistants",
+        "filename": "quarterly_results.csv",
+        "bytes": 78,
+        "created_at": 1774995522,
+        "expires_at": null,
+        "status": "processed",
+        "status_details": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/agents/MyStructuredInputsFileUploadAgent/versions?api-version=v1",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "Content-Length": "655",
+        "Content-Type": "application/json",
+        "Foundry-Features": "HostedAgents=V1Preview,WorkflowAgents=V1Preview,AgentEndpoints=V1Preview",
         "User-Agent": "azsdk-python-ai-projects/2.0.2 Python/3.14.3 (Windows-11-10.0.26100-SP0)"
       },
       "RequestBody": {
         "definition": {
           "model": "sanitized-model-deployment-name",
-          "instructions": "You are a helpful assistant.",
+          "instructions": "You are a helpful assistant. Use the code interpreter to analyze the uploaded CSV named {{data_file_name}}.",
           "tools": [
             {
+              "container": {
+                "type": "auto",
+                "file_ids": [
+                  "{{data_file_id}}"
+                ]
+              },
               "type": "code_interpreter"
             }
           ],
+          "structured_inputs": {
+            "data_file_id": {
+              "description": "The uploaded file id to analyze",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            "data_file_name": {
+              "description": "The uploaded file name (for prompt context)",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
           "kind": "prompt"
         },
-        "description": "Code interpreter agent for data analysis and visualization."
+        "description": "Agent showing structured_inputs for an uploaded file id."
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "43064c5d-2582-468d-aa12-60eef0b5a66d",
+        "apim-request-id": "27acc5b5-439e-42f6-8799-a24dfecd6f39",
         "azureml-served-by-cluster": "hyena-westus2-01",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 31 Mar 2026 22:07:10 GMT",
+        "Date": "Tue, 31 Mar 2026 22:18:49 GMT",
         "request-context": "appId=",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
@@ -38,25 +121,47 @@
         "X-Content-Type-Options": "nosniff",
         "x-ms-region": "West Central US",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "81070f501a4d37551fa39769a734f601"
+        "X-Request-ID": "05c0b9e6e726e2c7ebe92a7dff95208c"
       },
       "ResponseBody": {
         "metadata": {},
         "object": "agent.version",
-        "id": "MyAgent:44",
-        "name": "MyAgent",
-        "version": "44",
-        "description": "Code interpreter agent for data analysis and visualization.",
-        "created_at": 1774994831,
+        "id": "MyStructuredInputsFileUploadAgent:1",
+        "name": "MyStructuredInputsFileUploadAgent",
+        "version": "1",
+        "description": "Agent showing structured_inputs for an uploaded file id.",
+        "created_at": 1774995530,
         "definition": {
           "kind": "prompt",
           "model": "sanitized-model-deployment-name",
-          "instructions": "You are a helpful assistant.",
+          "instructions": "You are a helpful assistant. Use the code interpreter to analyze the uploaded CSV named {{data_file_name}}.",
           "tools": [
             {
-              "type": "code_interpreter"
+              "type": "code_interpreter",
+              "container": {
+                "type": "auto",
+                "file_ids": [
+                  "{{data_file_id}}"
+                ]
+              }
             }
-          ]
+          ],
+          "structured_inputs": {
+            "data_file_id": {
+              "description": "The uploaded file id to analyze",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            },
+            "data_file_name": {
+              "description": "The uploaded file name (for prompt context)",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          }
         },
         "status": "active"
       }
@@ -75,11 +180,11 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "3b106d83-e5a6-418a-8854-8114435b03df",
+        "apim-request-id": "51d6dd1c-b35b-4168-b77c-96849f78dde1",
         "azureml-served-by-cluster": "hyena-westus2-01",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 31 Mar 2026 22:07:13 GMT",
+        "Date": "Tue, 31 Mar 2026 22:18:49 GMT",
         "request-context": "appId=",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
@@ -87,13 +192,13 @@
         "X-Content-Type-Options": "nosniff",
         "x-ms-region": "West Central US",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "f5fc901491440eff4b5884eafa720efa"
+        "X-Request-ID": "1d6febc066a88306d2e0d914b3789b48"
       },
       "ResponseBody": {
-        "id": "conv_7e7fcb4210d555f900tx3maI8rpk6PJCv2Yn6w1Ew1FXdLimwU",
+        "id": "conv_85506f327e80e8ae00XxZyGOeUEUwG9jeQdSK8K5leYA2Uzalx",
         "object": "conversation",
         "metadata": {},
-        "created_at": 1774994833
+        "created_at": 1774995530
       }
     },
     {
@@ -102,31 +207,34 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Connection": "keep-alive",
-        "Content-Length": "292",
+        "Content-Length": "411",
         "Content-Type": "application/json",
         "User-Agent": "AIProjectClient OpenAI/Python 2.24.0"
       },
       "RequestBody": {
-        "conversation": "conv_7e7fcb4210d555f900tx3maI8rpk6PJCv2Yn6w1Ew1FXdLimwU",
-        "input": "Could you please generate a multiplication chart showing the products for 1-10 multiplied by 1-10 (a 10x10 times table)?",
-        "tool_choice": "required",
+        "conversation": "conv_85506f327e80e8ae00XxZyGOeUEUwG9jeQdSK8K5leYA2Uzalx",
+        "input": "Using the code interpreter, compute the total operating_profit by sector from the uploaded CSV and return the result as JSON.",
         "agent_reference": {
-          "name": "MyAgent",
+          "name": "MyStructuredInputsFileUploadAgent",
           "type": "agent_reference"
+        },
+        "structured_inputs": {
+          "data_file_id": "assistant-RU1nyPPbQV7FtAC5cRSXFB",
+          "data_file_name": "quarterly_results.csv"
         }
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "371745e3-bced-40f9-ab62-e039c2159d45",
+        "apim-request-id": "86c82525-9251-4334-9061-007a0b842a29",
         "azureml-internal-forward-count": "1",
         "azureml-served-by-cluster": "hyena-stage-eastus2-01,hyena-westus2-01",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 31 Mar 2026 22:07:19 GMT",
-        "openai-client-partition-id": "0d170bd118f745c18d240ad625da3c2d371745e3-bced-40f9-ab62-e039c2159d45",
+        "Date": "Tue, 31 Mar 2026 22:18:59 GMT",
+        "openai-client-partition-id": "0d170bd118f745c18d240ad625da3c2d86c82525-9251-4334-9061-007a0b842a29",
         "openai-organization": "0d170bd118f745c18d240ad625da3c2d",
-        "openai-processing-ms": "5895",
+        "openai-processing-ms": "9016",
         "openai-project": "5bf8b3da-a423-486e-a915-6ef0c8aa438e",
         "openai-version": "2020-10-01",
         "request-context": "appId=",
@@ -141,13 +249,13 @@
         "x-ratelimit-abusepenalty-active": "False",
         "x-ratelimit-limit-requests": "308",
         "x-ratelimit-limit-tokens": "308000",
-        "x-ratelimit-remaining-requests": "307",
-        "x-ratelimit-remaining-tokens": "302387",
+        "x-ratelimit-remaining-requests": "306",
+        "x-ratelimit-remaining-tokens": "307550",
         "x-ratelimit-renewalperiod-requests": "10",
         "x-ratelimit-renewalperiod-tokens": "60",
         "x-ratelimit-reset-requests": "0",
         "x-ratelimit-reset-tokens": "0",
-        "X-Request-ID": "5760bea8-6a52-40a6-9180-8c4373c37f8b"
+        "X-Request-ID": "c339e205-f7f1-40fc-aad7-b208b90f15b7"
       },
       "ResponseBody": {
         "metadata": {},
@@ -168,89 +276,130 @@
           {
             "type": "code_interpreter",
             "container": {
-              "type": "auto"
+              "type": "auto",
+              "file_ids": [
+                "assistant-RU1nyPPbQV7FtAC5cRSXFB"
+              ]
             }
           }
         ],
-        "tool_choice": "required",
+        "tool_choice": "auto",
         "truncation": "disabled",
-        "id": "resp_7e7fcb4210d555f90069cc4591fbf081908a58b146eab07856",
+        "id": "resp_85506f327e80e8ae0069cc484b451c81909eb29143705c7269",
         "object": "response",
         "status": "completed",
-        "created_at": 1774994834,
-        "completed_at": 1774994839,
+        "created_at": 1774995531,
+        "completed_at": 1774995539,
         "error": null,
         "incomplete_details": null,
         "output": [
           {
             "type": "code_interpreter_call",
-            "id": "ci_7e7fcb4210d555f90069cc45942ac88190a432028cd441c98e",
+            "id": "ci_85506f327e80e8ae0069cc4850174c819092ca6a8710f22ba8",
             "agent_reference": {
               "type": "agent_reference",
-              "name": "MyAgent",
-              "version": "44"
+              "name": "MyStructuredInputsFileUploadAgent",
+              "version": "1"
             },
-            "response_id": "resp_7e7fcb4210d555f90069cc4591fbf081908a58b146eab07856",
+            "response_id": "resp_85506f327e80e8ae0069cc484b451c81909eb29143705c7269",
             "status": "completed",
-            "container_id": "cntr_69cc4592ef948190ab104cb8dd8a46c507617069d8a959c7",
-            "code": "import numpy as np\r\nimport pandas as pd\r\n\r\n# Generating multiplication chart (1-10 x 1-10)\r\nmultiplication_chart = np.outer(range(1, 11), range(1, 11))\r\nmultiplication_chart_df = pd.DataFrame(multiplication_chart, index=range(1, 11), columns=range(1, 11))\r\n\r\n# Naming rows and columns for better readability\r\nmultiplication_chart_df.index.name = 'x'\r\nmultiplication_chart_df.columns.name = 'y'\r\n\r\n# Creating a file to download the chart\r\nfile_path = '/mnt/data/multiplication_chart_1_to_10.csv'\r\nmultiplication_chart_df.to_csv(file_path)\r\n\r\nfile_path",
+            "container_id": "cntr_69cc484c07088190b2e0517da13d99cd0c24cb7163e5abd3",
+            "code": "import pandas as pd\n\n# Load the uploaded CSV file\nfile_path = '/mnt/data/assistant-RU1nyPPbQV7FtAC5cRSXFB-quarterly_results.csv'\ndata = pd.read_csv(file_path)\n\n# Display the first few rows to understand the structure of the data\ndata.head()",
+            "outputs": null
+          },
+          {
+            "type": "code_interpreter_call",
+            "id": "ci_85506f327e80e8ae0069cc4851d76c8190af59e050b73c958a",
+            "agent_reference": {
+              "type": "agent_reference",
+              "name": "MyStructuredInputsFileUploadAgent",
+              "version": "1"
+            },
+            "response_id": "resp_85506f327e80e8ae0069cc484b451c81909eb29143705c7269",
+            "status": "completed",
+            "container_id": "cntr_69cc484c07088190b2e0517da13d99cd0c24cb7163e5abd3",
+            "code": "# Compute the total operating profit by sector\ntotal_operating_profit = data.groupby('sector')['operating_profit'].sum().to_dict()\n\n# Return the result as JSON\nimport json\njson_result = json.dumps(total_operating_profit, indent=2)\njson_result",
             "outputs": null
           },
           {
             "type": "message",
-            "id": "msg_7e7fcb4210d555f90069cc459677b8819081798652870503df",
+            "id": "msg_85506f327e80e8ae0069cc485341b48190a56a4703faf707de",
             "agent_reference": {
               "type": "agent_reference",
-              "name": "MyAgent",
-              "version": "44"
+              "name": "MyStructuredInputsFileUploadAgent",
+              "version": "1"
             },
-            "response_id": "resp_7e7fcb4210d555f90069cc4591fbf081908a58b146eab07856",
+            "response_id": "resp_85506f327e80e8ae0069cc484b451c81909eb29143705c7269",
             "role": "assistant",
             "content": [
               {
                 "type": "output_text",
-                "text": "I have created the multiplication chart for numbers 1-10 multiplied by 1-10. You can download the chart using the following link:\n\n[Download the Multiplication Chart](sandbox:/mnt/data/multiplication_chart_1_to_10.csv)",
-                "annotations": [
-                  {
-                    "type": "container_file_citation",
-                    "container_id": "cntr_69cc4592ef948190ab104cb8dd8a46c507617069d8a959c7",
-                    "file_id": "cfile_69cc4596dca0819086b6138645f5de57",
-                    "start_index": 167,
-                    "end_index": 217,
-                    "filename": "multiplication_chart_1_to_10.csv"
-                  }
-                ],
+                "text": "The total operating profit by sector is as follows:\n\n```json\n{\n  \"RETAIL\": 10,\n  \"TRANSPORTATION\": 25\n}\n```",
+                "annotations": [],
                 "logprobs": []
               }
             ],
             "status": "completed"
           }
         ],
-        "instructions": "You are a helpful assistant.",
+        "instructions": "You are a helpful assistant. Use the code interpreter to analyze the uploaded CSV named quarterly_results.csv.",
         "usage": {
-          "input_tokens": 373,
+          "input_tokens": 464,
           "input_tokens_details": {
             "cached_tokens": 0
           },
-          "output_tokens": 201,
+          "output_tokens": 166,
           "output_tokens_details": {
             "reasoning_tokens": 0
           },
-          "total_tokens": 574
+          "total_tokens": 630
         },
         "parallel_tool_calls": true,
         "conversation": {
-          "id": "conv_7e7fcb4210d555f900tx3maI8rpk6PJCv2Yn6w1Ew1FXdLimwU"
+          "id": "conv_85506f327e80e8ae00XxZyGOeUEUwG9jeQdSK8K5leYA2Uzalx"
         },
         "agent_reference": {
           "type": "agent_reference",
-          "name": "MyAgent",
-          "version": "44"
+          "name": "MyStructuredInputsFileUploadAgent",
+          "version": "1"
         }
       }
     },
     {
-      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/agents/MyAgent/versions/44?api-version=v1",
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/openai/v1/conversations/conv_85506f327e80e8ae00XxZyGOeUEUwG9jeQdSK8K5leYA2Uzalx",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json",
+        "User-Agent": "AIProjectClient OpenAI/Python 2.24.0"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "c1c299bb-a423-4076-ab77-6c30b90f1d7c",
+        "azureml-served-by-cluster": "hyena-westus2-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 31 Mar 2026 22:19:00 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "ed0b5b75dd6d56bd572e54a202d3707d"
+      },
+      "ResponseBody": {
+        "object": "conversation.deleted",
+        "deleted": true,
+        "id": "conv_85506f327e80e8ae00XxZyGOeUEUwG9jeQdSK8K5leYA2Uzalx"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.services.ai.azure.com/api/projects/sanitized-project-name/agents/MyStructuredInputsFileUploadAgent/versions/1?api-version=v1",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -262,11 +411,11 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "b5260f09-b9e8-405d-a70d-868e081b0a4d",
-        "azureml-served-by-cluster": "hyena-westus2-01",
+        "apim-request-id": "c2214a11-9885-45c6-b030-e47863ab4dc3",
+        "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 31 Mar 2026 22:07:23 GMT",
+        "Date": "Tue, 31 Mar 2026 22:19:02 GMT",
         "request-context": "appId=",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
@@ -274,12 +423,12 @@
         "X-Content-Type-Options": "nosniff",
         "x-ms-region": "West Central US",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "ba343907f845ca082d299474b6841125"
+        "X-Request-ID": "3e0b104466bae77215b1b7e10ab5ab4b"
       },
       "ResponseBody": {
         "object": "agent.version.deleted",
-        "name": "MyAgent",
-        "version": "44",
+        "name": "MyStructuredInputsFileUploadAgent",
+        "version": "1",
         "deleted": true
       }
     },
@@ -349,15 +498,15 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "ded4e7a2-f801-40c9-ab22-4da8b84592ea",
+        "apim-request-id": "7ed34486-e593-432f-8c5a-ab71ae8cafa7",
         "azureml-internal-forward-count": "1",
         "azureml-served-by-cluster": "hyena-swedencentral-02,hyena-swedencentral-02",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 31 Mar 2026 22:07:54 GMT",
-        "openai-client-partition-id": "15e5adadbfb246f48a45d0a19c809d5cded4e7a2-f801-40c9-ab22-4da8b84592ea",
+        "Date": "Tue, 31 Mar 2026 22:19:36 GMT",
+        "openai-client-partition-id": "15e5adadbfb246f48a45d0a19c809d5c7ed34486-e593-432f-8c5a-ab71ae8cafa7",
         "openai-organization": "15e5adadbfb246f48a45d0a19c809d5c",
-        "openai-processing-ms": "13541",
+        "openai-processing-ms": "15785",
         "openai-project": "e188f3bd-2a3c-4c7d-932a-b263ac4b411f",
         "openai-version": "2020-10-01",
         "request-context": "appId=",
@@ -372,13 +521,13 @@
         "x-ratelimit-abusepenalty-active": "False",
         "x-ratelimit-limit-requests": "25000",
         "x-ratelimit-limit-tokens": "2500000",
-        "x-ratelimit-remaining-requests": "24993",
-        "x-ratelimit-remaining-tokens": "2481591",
+        "x-ratelimit-remaining-requests": "24995",
+        "x-ratelimit-remaining-tokens": "2485424",
         "x-ratelimit-renewalperiod-requests": "60",
         "x-ratelimit-renewalperiod-tokens": "60",
         "x-ratelimit-reset-requests": "0",
         "x-ratelimit-reset-tokens": "0",
-        "X-Request-ID": "90a7506b-4e1d-46c9-822a-b603d1856d4e"
+        "X-Request-ID": "9a1edca0-11fd-4598-a3c3-5a99ba510ee2"
       },
       "ResponseBody": {
         "metadata": {},
@@ -433,50 +582,68 @@
         ],
         "tool_choice": "auto",
         "truncation": "disabled",
-        "id": "resp_0b207c90bafcad180069cc45accc548190a172ba9ae336998a",
+        "id": "resp_0c3af758f716aaa80069cc4869540881948b07e1ac064b1072",
         "object": "response",
         "status": "completed",
-        "created_at": 1774994860,
-        "completed_at": 1774994874,
+        "created_at": 1774995561,
+        "completed_at": 1774995576,
         "error": null,
         "incomplete_details": null,
         "output": [
           {
             "type": "code_interpreter_call",
-            "id": "ci_0b207c90bafcad180069cc45b10840819088000b01721656ca",
-            "response_id": "resp_0b207c90bafcad180069cc45accc548190a172ba9ae336998a",
+            "id": "ci_0c3af758f716aaa80069cc486c74a4819487f545d97eca14a2",
+            "response_id": "resp_0c3af758f716aaa80069cc4869540881948b07e1ac064b1072",
             "status": "completed",
-            "container_id": "cntr_69cc45ad14608190b12009577ee6e25c02e45cb3581f5a24",
-            "code": "log_path=\"/mnt/data/validation_log_file_1-sample_validation_log.txt\"\nprint(open(log_path,'r',encoding='utf-8',errors='replace').read()[:4000])\n",
+            "container_id": "cntr_69cc486987748190a55c4d10e262d7f209a92ea3f741d1e5",
+            "code": "log_path=\"/mnt/data/validation_log_file_1-sample_validation_log.txt\"\nprint(open(log_path,'r',encoding='utf-8').read()[:2000])\n",
             "outputs": null
           },
           {
             "type": "code_interpreter_call",
-            "id": "ci_0b207c90bafcad180069cc45b36f948190bce5d719efcb4061",
-            "response_id": "resp_0b207c90bafcad180069cc45accc548190a172ba9ae336998a",
+            "id": "ci_0c3af758f716aaa80069cc486ec4b881948ba502fd0d5be492",
+            "response_id": "resp_0c3af758f716aaa80069cc4869540881948b07e1ac064b1072",
             "status": "completed",
-            "container_id": "cntr_69cc45ad14608190b12009577ee6e25c02e45cb3581f5a24",
-            "code": "print(open(log_path,'r',encoding='utf-8',errors='replace').read()[4000:8000])\n",
+            "container_id": "cntr_69cc486987748190a55c4d10e262d7f209a92ea3f741d1e5",
+            "code": "print(open(log_path,'r',encoding='utf-8').read()[2000:4000])\n",
             "outputs": null
           },
           {
             "type": "code_interpreter_call",
-            "id": "ci_0b207c90bafcad180069cc45b574dc81908bf5c81f1edae4b4",
-            "response_id": "resp_0b207c90bafcad180069cc45accc548190a172ba9ae336998a",
+            "id": "ci_0c3af758f716aaa80069cc4870bae48194a95e3a04a2fcf903",
+            "response_id": "resp_0c3af758f716aaa80069cc4869540881948b07e1ac064b1072",
             "status": "completed",
-            "container_id": "cntr_69cc45ad14608190b12009577ee6e25c02e45cb3581f5a24",
-            "code": "print(open(log_path,'r',encoding='utf-8',errors='replace').read()[8000:12000])\n",
+            "container_id": "cntr_69cc486987748190a55c4d10e262d7f209a92ea3f741d1e5",
+            "code": "print(open(log_path,'r',encoding='utf-8').read()[4000:8000])\n",
+            "outputs": null
+          },
+          {
+            "type": "code_interpreter_call",
+            "id": "ci_0c3af758f716aaa80069cc4872afcc81949e83b4abed5e52b9",
+            "response_id": "resp_0c3af758f716aaa80069cc4869540881948b07e1ac064b1072",
+            "status": "completed",
+            "container_id": "cntr_69cc486987748190a55c4d10e262d7f209a92ea3f741d1e5",
+            "code": "text=open(log_path,'r',encoding='utf-8').read()\nprint(text[8000:12000])\n",
+            "outputs": null
+          },
+          {
+            "type": "code_interpreter_call",
+            "id": "ci_0c3af758f716aaa80069cc4874c5388194997586ae6a81a3a5",
+            "response_id": "resp_0c3af758f716aaa80069cc4869540881948b07e1ac064b1072",
+            "status": "completed",
+            "container_id": "cntr_69cc486987748190a55c4d10e262d7f209a92ea3f741d1e5",
+            "code": "print(text[12000:16000])\n",
             "outputs": null
           },
           {
             "type": "message",
-            "id": "msg_0b207c90bafcad180069cc45b800ac8190bfe5e12852e55bba",
-            "response_id": "resp_0b207c90bafcad180069cc45accc548190a172ba9ae336998a",
+            "id": "msg_0c3af758f716aaa80069cc4876d7188194906cb6f016849312",
+            "response_id": "resp_0c3af758f716aaa80069cc4869540881948b07e1ac064b1072",
             "role": "assistant",
             "content": [
               {
                 "type": "output_text",
-                "text": "{\"correct\":true,\"reason\":\"Log shows successful end-to-end workflow: agent version created (HTTP 200, status active), conversation created (HTTP 200), response generated (HTTP 200, status completed, error=null) with a completed code_interpreter_call that writes /mnt/data/multiplication_chart_1_to_10.csv and an assistant message providing the sandbox download link. No exceptions/stack traces or failure indicators present.\"}",
+                "text": "{\"correct\":true,\"reason\":\"Log shows successful end-to-end workflow: file upload returns 200 OK with processed file id, agent version created (200), conversation created (200), and /responses call completes (status: completed, error: null). Output includes substantive computed JSON totals (RETAIL: 10, TRANSPORTATION: 25) with no exceptions, stack traces, or failure messages.\"}",
                 "annotations": [],
                 "logprobs": []
               }
@@ -486,15 +653,15 @@
         ],
         "instructions": "We just ran Python code and captured print/log output in an attached log file (TXT).\nValidate whether sample execution/output is correct for a tool-driven assistant workflow.\n\nPrefer matched/substantive data in the final output when available.\n\nMark `correct = false` for:\n- Exceptions, stack traces, explicit error/failure messages.\n- Timeout/auth/connection/service errors that prevent normal completion.\n- Malformed/corrupted output indicating broken processing.\n- Tool invocation failures where the sample cannot proceed as designed.\n\nFollow-up questions are allowed, but only as supplementary behavior.\nIf the output mainly asks follow-up questions without providing matched/substantive data, mark false.\n\nImportant distinction:\n- Empty tool payloads by themselves (for example `[]` or `\"\"`) can be valid and should not automatically fail.\n- But if the assistant explicitly states tool failure/inability (for example \"unable to retrieve ...\"),\n    treat that as a failure signal and mark `correct = false`.\n\nMark `correct = true` when execution succeeds and the output includes matched/substantive data,\neven if it also asks follow-up questions.\n\nAlways include `reason` with a concise explanation tied to the observed print output.",
         "usage": {
-          "input_tokens": 5186,
+          "input_tokens": 6507,
           "input_tokens_details": {
             "cached_tokens": 0
           },
-          "output_tokens": 225,
+          "output_tokens": 258,
           "output_tokens_details": {
-            "reasoning_tokens": 128
+            "reasoning_tokens": 167
           },
-          "total_tokens": 5411
+          "total_tokens": 6765
         },
         "parallel_tool_calls": true,
         "agent_reference": null
