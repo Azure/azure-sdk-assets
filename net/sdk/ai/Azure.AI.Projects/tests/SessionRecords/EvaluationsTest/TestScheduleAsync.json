@@ -1,0 +1,1283 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/datasets/SampleEvaluationDataset-Test/versions/1?api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "628",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 01 Apr 2026 23:17:07 GMT",
+        "mise-correlation-id": "09f8c808-efbd-4ddd-858d-23b4fbb17967",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.076"
+      },
+      "ResponseBody": {
+        "id": "azureai://accounts/sanitized-account/projects/sanitized-project/data/SampleEvaluationDataset-Test/versions/1",
+        "name": "SampleEvaluationDataset-Test",
+        "version": "1",
+        "displayName": "SampleEvaluationDataset-Test",
+        "description": null,
+        "tags": {},
+        "type": "uri_file",
+        "isReference": false,
+        "dataUri": "https://nirovinswestus8660517702.blob.core.windows.net/nirovinsea-88941615-394b-5aa4-98d3-89dd0047f199/sample_data_evaluation.jsonl",
+        "isSingleFile": true,
+        "connectionName": null,
+        "systemData": {
+          "createdAt": "2026-04-01T20:05:42.7045857+00:00",
+          "createdBy": "Sanitized",
+          "createdByType": null,
+          "lastModifiedAt": "2026-04-01T20:05:42.7045857+00:00"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "819",
+        "Content-Type": "application/json",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "name": "Label model test with dataset ID",
+        "data_source_config": {
+          "type": "custom",
+          "item_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string"
+              },
+              "response": {
+                "type": "string"
+              },
+              "context": {
+                "type": "string"
+              },
+              "ground_truth": {
+                "type": "string"
+              }
+            },
+            "required": {}
+          },
+          "include_sample_schema": true
+        },
+        "testing_criteria": [
+          {
+            "type": "azure_ai_evaluator",
+            "name": "violence",
+            "evaluator_name": "builtin.violence",
+            "data_mapping": {
+              "query": "{{item.query}}",
+              "response": "{{item.response}}"
+            },
+            "initialization_parameters": {
+              "deployment_name": "gpt-5.2"
+            }
+          },
+          {
+            "type": "azure_ai_evaluator",
+            "name": "f1",
+            "evaluator_name": "builtin.f1_score"
+          },
+          {
+            "type": "azure_ai_evaluator",
+            "name": "coherence",
+            "evaluator_name": "builtin.coherence",
+            "data_mapping": {
+              "query": "{{item.query}}",
+              "response": "{{item.response}}"
+            },
+            "initialization_parameters": {
+              "deployment_name": "gpt-5.2"
+            }
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "2001",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 01 Apr 2026 23:17:10 GMT",
+        "mise-correlation-id": "8a605ecc-841f-4d9a-8609-233c237fef3e",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.223"
+      },
+      "ResponseBody": {
+        "object": "eval",
+        "created_at": 1775085430,
+        "modified_at": 1775085430,
+        "created_by": "Nikolay Rovinskiy",
+        "id": "eval_6af23d842905464b9c6380ee9f633dde",
+        "name": "Label model test with dataset ID",
+        "metadata": {},
+        "properties": {
+          "evals_run_type": "azure_ai"
+        },
+        "data_source_config": {
+          "type": "custom",
+          "item_schema": {},
+          "include_sample_schema": true,
+          "schema": {
+            "item": {
+              "type": "object",
+              "properties": {
+                "query": {
+                  "type": "string"
+                },
+                "response": {
+                  "type": "string"
+                },
+                "context": {
+                  "type": "string"
+                },
+                "ground_truth": {
+                  "type": "string"
+                }
+              },
+              "required": {}
+            },
+            "sample": {
+              "type": "object",
+              "properties": {
+                "output_text": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "testing_criteria": [
+          {
+            "type": "azure_ai_evaluator",
+            "id": "violence_0de50fe6-34c5-41f4-83a0-11be756e3d11",
+            "name": "violence",
+            "evaluator_name": "builtin.violence",
+            "evaluator_version": "",
+            "initialization_parameters": {
+              "deployment_name": "gpt-5.2"
+            },
+            "data_mapping": {
+              "query": "{{item.query}}",
+              "response": "{{item.response}}"
+            }
+          },
+          {
+            "type": "azure_ai_evaluator",
+            "id": "f1_faf092cc-8d50-4052-ac9e-f0aaf4bc92ca",
+            "name": "f1",
+            "evaluator_name": "builtin.f1_score",
+            "evaluator_version": "",
+            "data_mapping": {}
+          },
+          {
+            "type": "azure_ai_evaluator",
+            "id": "coherence_ea95b8ea-5519-4b31-a904-e7f58bba64a9",
+            "name": "coherence",
+            "evaluator_name": "builtin.coherence",
+            "evaluator_version": "",
+            "initialization_parameters": {
+              "deployment_name": "gpt-5.2"
+            },
+            "data_mapping": {
+              "query": "{{item.query}}",
+              "response": "{{item.response}}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/schedules/dataset-eval-run-schedule-test?api-version=v1",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "569",
+        "Content-Type": "application/json",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "displayName": "Dataset Evaluation Eval Run Schedule",
+        "enabled": true,
+        "trigger": {
+          "type": "Recurrence",
+          "interval": 1,
+          "schedule": {
+            "type": "Daily",
+            "hours": [
+              9
+            ]
+          }
+        },
+        "task": {
+          "type": "Evaluation",
+          "evalId": "eval_6af23d842905464b9c6380ee9f633dde",
+          "evalRun": {
+            "eval_id": "eval_6af23d842905464b9c6380ee9f633dde",
+            "name": "Label model test with dataset ID",
+            "metadata": {
+              "team": "eval-exp",
+              "scenario": "dataset-id-v1"
+            },
+            "data_source": {
+              "type": "jsonl",
+              "source": {
+                "id": "azureai://accounts/sanitized-account/projects/sanitized-project/data/SampleEvaluationDataset-Test/versions/1",
+                "type": "file_id"
+              }
+            }
+          }
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "1278",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 01 Apr 2026 23:17:13 GMT",
+        "mise-correlation-id": "9752802a-bdb8-42fa-bb39-e14cb6d3c2bd",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.282"
+      },
+      "ResponseBody": {
+        "id": "dataset-eval-run-schedule-test",
+        "displayName": "Dataset Evaluation Eval Run Schedule",
+        "description": null,
+        "enabled": true,
+        "provisioningStatus": "Creating",
+        "trigger": {
+          "type": "Recurrence",
+          "schedule": {
+            "type": "Daily",
+            "hours": [
+              9
+            ]
+          },
+          "startTime": null,
+          "endTime": null,
+          "interval": 1,
+          "timezone": "UTC"
+        },
+        "task": {
+          "type": "Evaluation",
+          "evalId": "eval_6af23d842905464b9c6380ee9f633dde",
+          "evalRun": {
+            "object": "eval.run",
+            "created_at": null,
+            "modified_at": null,
+            "created_by": null,
+            "id": "",
+            "eval_id": "eval_6af23d842905464b9c6380ee9f633dde",
+            "status": null,
+            "model": null,
+            "data_source": {
+              "type": "jsonl",
+              "source": {
+                "type": "file_id",
+                "id": "azureai://accounts/sanitized-account/projects/sanitized-project/data/SampleEvaluationDataset-Test/versions/1"
+              }
+            },
+            "metadata": {
+              "team": "eval-exp",
+              "scenario": "dataset-id-v1"
+            },
+            "properties": {},
+            "name": "Label model test with dataset ID",
+            "report_url": null,
+            "result_counts": {
+              "total": 0,
+              "passed": 0,
+              "failed": 0,
+              "errored": 0
+            },
+            "per_model_usage": [],
+            "per_testing_criteria_results": [],
+            "error": {
+              "code": null,
+              "message": null,
+              "correlation_id": null,
+              "inner_error": null
+            }
+          },
+          "configuration": null
+        },
+        "tags": {},
+        "properties": {
+          "trigger_type": "Recurrence",
+          "scenario": "evaluation",
+          "target_type": "",
+          "target": ""
+        },
+        "systemData": {
+          "createdAt": "",
+          "createdBy": "",
+          "modifiedAt": "2026-04-01T23:17:13.5682411Z",
+          "modifiedBy": ""
+        }
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/schedules/dataset-eval-run-schedule-test?api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "1278",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 01 Apr 2026 23:17:16 GMT",
+        "mise-correlation-id": "9a0070fe-08f9-4c03-8882-b7de7564f0ee",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.049"
+      },
+      "ResponseBody": {
+        "id": "dataset-eval-run-schedule-test",
+        "displayName": "Dataset Evaluation Eval Run Schedule",
+        "description": null,
+        "enabled": true,
+        "provisioningStatus": "Creating",
+        "trigger": {
+          "type": "Recurrence",
+          "schedule": {
+            "type": "Daily",
+            "hours": [
+              9
+            ]
+          },
+          "startTime": null,
+          "endTime": null,
+          "interval": 1,
+          "timezone": "UTC"
+        },
+        "task": {
+          "type": "Evaluation",
+          "evalId": "eval_6af23d842905464b9c6380ee9f633dde",
+          "evalRun": {
+            "object": "eval.run",
+            "created_at": null,
+            "modified_at": null,
+            "created_by": null,
+            "id": "",
+            "eval_id": "eval_6af23d842905464b9c6380ee9f633dde",
+            "status": null,
+            "model": null,
+            "data_source": {
+              "type": "jsonl",
+              "source": {
+                "type": "file_id",
+                "id": "azureai://accounts/sanitized-account/projects/sanitized-project/data/SampleEvaluationDataset-Test/versions/1"
+              }
+            },
+            "metadata": {
+              "team": "eval-exp",
+              "scenario": "dataset-id-v1"
+            },
+            "properties": {},
+            "name": "Label model test with dataset ID",
+            "report_url": null,
+            "result_counts": {
+              "total": 0,
+              "passed": 0,
+              "failed": 0,
+              "errored": 0
+            },
+            "per_model_usage": [],
+            "per_testing_criteria_results": [],
+            "error": {
+              "code": null,
+              "message": null,
+              "correlation_id": null,
+              "inner_error": null
+            }
+          },
+          "configuration": null
+        },
+        "tags": {},
+        "properties": {
+          "trigger_type": "Recurrence",
+          "scenario": "evaluation",
+          "target_type": "",
+          "target": ""
+        },
+        "systemData": {
+          "createdAt": "",
+          "createdBy": "",
+          "modifiedAt": "2026-04-01T23:17:13.5682411Z",
+          "modifiedBy": ""
+        }
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/schedules/dataset-eval-run-schedule-test?api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "1278",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 01 Apr 2026 23:17:19 GMT",
+        "mise-correlation-id": "327980c7-2521-4866-981b-935b162f9cf7",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.051"
+      },
+      "ResponseBody": {
+        "id": "dataset-eval-run-schedule-test",
+        "displayName": "Dataset Evaluation Eval Run Schedule",
+        "description": null,
+        "enabled": true,
+        "provisioningStatus": "Creating",
+        "trigger": {
+          "type": "Recurrence",
+          "schedule": {
+            "type": "Daily",
+            "hours": [
+              9
+            ]
+          },
+          "startTime": null,
+          "endTime": null,
+          "interval": 1,
+          "timezone": "UTC"
+        },
+        "task": {
+          "type": "Evaluation",
+          "evalId": "eval_6af23d842905464b9c6380ee9f633dde",
+          "evalRun": {
+            "object": "eval.run",
+            "created_at": null,
+            "modified_at": null,
+            "created_by": null,
+            "id": "",
+            "eval_id": "eval_6af23d842905464b9c6380ee9f633dde",
+            "status": null,
+            "model": null,
+            "data_source": {
+              "type": "jsonl",
+              "source": {
+                "type": "file_id",
+                "id": "azureai://accounts/sanitized-account/projects/sanitized-project/data/SampleEvaluationDataset-Test/versions/1"
+              }
+            },
+            "metadata": {
+              "team": "eval-exp",
+              "scenario": "dataset-id-v1"
+            },
+            "properties": {},
+            "name": "Label model test with dataset ID",
+            "report_url": null,
+            "result_counts": {
+              "total": 0,
+              "passed": 0,
+              "failed": 0,
+              "errored": 0
+            },
+            "per_model_usage": [],
+            "per_testing_criteria_results": [],
+            "error": {
+              "code": null,
+              "message": null,
+              "correlation_id": null,
+              "inner_error": null
+            }
+          },
+          "configuration": null
+        },
+        "tags": {},
+        "properties": {
+          "trigger_type": "Recurrence",
+          "scenario": "evaluation",
+          "target_type": "",
+          "target": ""
+        },
+        "systemData": {
+          "createdAt": "",
+          "createdBy": "",
+          "modifiedAt": "2026-04-01T23:17:13.5682411Z",
+          "modifiedBy": ""
+        }
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/schedules/dataset-eval-run-schedule-test?api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "1278",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 01 Apr 2026 23:17:23 GMT",
+        "mise-correlation-id": "3ee65b82-d5bd-4ae5-bb77-d9b44a23b55b",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.043"
+      },
+      "ResponseBody": {
+        "id": "dataset-eval-run-schedule-test",
+        "displayName": "Dataset Evaluation Eval Run Schedule",
+        "description": null,
+        "enabled": true,
+        "provisioningStatus": "Creating",
+        "trigger": {
+          "type": "Recurrence",
+          "schedule": {
+            "type": "Daily",
+            "hours": [
+              9
+            ]
+          },
+          "startTime": null,
+          "endTime": null,
+          "interval": 1,
+          "timezone": "UTC"
+        },
+        "task": {
+          "type": "Evaluation",
+          "evalId": "eval_6af23d842905464b9c6380ee9f633dde",
+          "evalRun": {
+            "object": "eval.run",
+            "created_at": null,
+            "modified_at": null,
+            "created_by": null,
+            "id": "",
+            "eval_id": "eval_6af23d842905464b9c6380ee9f633dde",
+            "status": null,
+            "model": null,
+            "data_source": {
+              "type": "jsonl",
+              "source": {
+                "type": "file_id",
+                "id": "azureai://accounts/sanitized-account/projects/sanitized-project/data/SampleEvaluationDataset-Test/versions/1"
+              }
+            },
+            "metadata": {
+              "team": "eval-exp",
+              "scenario": "dataset-id-v1"
+            },
+            "properties": {},
+            "name": "Label model test with dataset ID",
+            "report_url": null,
+            "result_counts": {
+              "total": 0,
+              "passed": 0,
+              "failed": 0,
+              "errored": 0
+            },
+            "per_model_usage": [],
+            "per_testing_criteria_results": [],
+            "error": {
+              "code": null,
+              "message": null,
+              "correlation_id": null,
+              "inner_error": null
+            }
+          },
+          "configuration": null
+        },
+        "tags": {},
+        "properties": {
+          "trigger_type": "Recurrence",
+          "scenario": "evaluation",
+          "target_type": "",
+          "target": ""
+        },
+        "systemData": {
+          "createdAt": "",
+          "createdBy": "",
+          "modifiedAt": "2026-04-01T23:17:13.5682411Z",
+          "modifiedBy": ""
+        }
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/schedules/dataset-eval-run-schedule-test?api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "1278",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 01 Apr 2026 23:17:26 GMT",
+        "mise-correlation-id": "1d5411b8-4305-4159-ba71-aec60374a91a",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.045"
+      },
+      "ResponseBody": {
+        "id": "dataset-eval-run-schedule-test",
+        "displayName": "Dataset Evaluation Eval Run Schedule",
+        "description": null,
+        "enabled": true,
+        "provisioningStatus": "Creating",
+        "trigger": {
+          "type": "Recurrence",
+          "schedule": {
+            "type": "Daily",
+            "hours": [
+              9
+            ]
+          },
+          "startTime": null,
+          "endTime": null,
+          "interval": 1,
+          "timezone": "UTC"
+        },
+        "task": {
+          "type": "Evaluation",
+          "evalId": "eval_6af23d842905464b9c6380ee9f633dde",
+          "evalRun": {
+            "object": "eval.run",
+            "created_at": null,
+            "modified_at": null,
+            "created_by": null,
+            "id": "",
+            "eval_id": "eval_6af23d842905464b9c6380ee9f633dde",
+            "status": null,
+            "model": null,
+            "data_source": {
+              "type": "jsonl",
+              "source": {
+                "type": "file_id",
+                "id": "azureai://accounts/sanitized-account/projects/sanitized-project/data/SampleEvaluationDataset-Test/versions/1"
+              }
+            },
+            "metadata": {
+              "team": "eval-exp",
+              "scenario": "dataset-id-v1"
+            },
+            "properties": {},
+            "name": "Label model test with dataset ID",
+            "report_url": null,
+            "result_counts": {
+              "total": 0,
+              "passed": 0,
+              "failed": 0,
+              "errored": 0
+            },
+            "per_model_usage": [],
+            "per_testing_criteria_results": [],
+            "error": {
+              "code": null,
+              "message": null,
+              "correlation_id": null,
+              "inner_error": null
+            }
+          },
+          "configuration": null
+        },
+        "tags": {},
+        "properties": {
+          "trigger_type": "Recurrence",
+          "scenario": "evaluation",
+          "target_type": "",
+          "target": ""
+        },
+        "systemData": {
+          "createdAt": "",
+          "createdBy": "",
+          "modifiedAt": "2026-04-01T23:17:13.5682411Z",
+          "modifiedBy": ""
+        }
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/schedules/dataset-eval-run-schedule-test?api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "1278",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 01 Apr 2026 23:17:29 GMT",
+        "mise-correlation-id": "b05cc8a8-d0a5-4287-8437-dcf4a83b49c1",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.036"
+      },
+      "ResponseBody": {
+        "id": "dataset-eval-run-schedule-test",
+        "displayName": "Dataset Evaluation Eval Run Schedule",
+        "description": null,
+        "enabled": true,
+        "provisioningStatus": "Creating",
+        "trigger": {
+          "type": "Recurrence",
+          "schedule": {
+            "type": "Daily",
+            "hours": [
+              9
+            ]
+          },
+          "startTime": null,
+          "endTime": null,
+          "interval": 1,
+          "timezone": "UTC"
+        },
+        "task": {
+          "type": "Evaluation",
+          "evalId": "eval_6af23d842905464b9c6380ee9f633dde",
+          "evalRun": {
+            "object": "eval.run",
+            "created_at": null,
+            "modified_at": null,
+            "created_by": null,
+            "id": "",
+            "eval_id": "eval_6af23d842905464b9c6380ee9f633dde",
+            "status": null,
+            "model": null,
+            "data_source": {
+              "type": "jsonl",
+              "source": {
+                "type": "file_id",
+                "id": "azureai://accounts/sanitized-account/projects/sanitized-project/data/SampleEvaluationDataset-Test/versions/1"
+              }
+            },
+            "metadata": {
+              "team": "eval-exp",
+              "scenario": "dataset-id-v1"
+            },
+            "properties": {},
+            "name": "Label model test with dataset ID",
+            "report_url": null,
+            "result_counts": {
+              "total": 0,
+              "passed": 0,
+              "failed": 0,
+              "errored": 0
+            },
+            "per_model_usage": [],
+            "per_testing_criteria_results": [],
+            "error": {
+              "code": null,
+              "message": null,
+              "correlation_id": null,
+              "inner_error": null
+            }
+          },
+          "configuration": null
+        },
+        "tags": {},
+        "properties": {
+          "trigger_type": "Recurrence",
+          "scenario": "evaluation",
+          "target_type": "",
+          "target": ""
+        },
+        "systemData": {
+          "createdAt": "",
+          "createdBy": "",
+          "modifiedAt": "2026-04-01T23:17:13.5682411Z",
+          "modifiedBy": ""
+        }
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/schedules/dataset-eval-run-schedule-test?api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "1278",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 01 Apr 2026 23:17:32 GMT",
+        "mise-correlation-id": "24ee39fb-1b4c-47bc-98f0-5fa5cfddc07e",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.029"
+      },
+      "ResponseBody": {
+        "id": "dataset-eval-run-schedule-test",
+        "displayName": "Dataset Evaluation Eval Run Schedule",
+        "description": null,
+        "enabled": true,
+        "provisioningStatus": "Creating",
+        "trigger": {
+          "type": "Recurrence",
+          "schedule": {
+            "type": "Daily",
+            "hours": [
+              9
+            ]
+          },
+          "startTime": null,
+          "endTime": null,
+          "interval": 1,
+          "timezone": "UTC"
+        },
+        "task": {
+          "type": "Evaluation",
+          "evalId": "eval_6af23d842905464b9c6380ee9f633dde",
+          "evalRun": {
+            "object": "eval.run",
+            "created_at": null,
+            "modified_at": null,
+            "created_by": null,
+            "id": "",
+            "eval_id": "eval_6af23d842905464b9c6380ee9f633dde",
+            "status": null,
+            "model": null,
+            "data_source": {
+              "type": "jsonl",
+              "source": {
+                "type": "file_id",
+                "id": "azureai://accounts/sanitized-account/projects/sanitized-project/data/SampleEvaluationDataset-Test/versions/1"
+              }
+            },
+            "metadata": {
+              "team": "eval-exp",
+              "scenario": "dataset-id-v1"
+            },
+            "properties": {},
+            "name": "Label model test with dataset ID",
+            "report_url": null,
+            "result_counts": {
+              "total": 0,
+              "passed": 0,
+              "failed": 0,
+              "errored": 0
+            },
+            "per_model_usage": [],
+            "per_testing_criteria_results": [],
+            "error": {
+              "code": null,
+              "message": null,
+              "correlation_id": null,
+              "inner_error": null
+            }
+          },
+          "configuration": null
+        },
+        "tags": {},
+        "properties": {
+          "trigger_type": "Recurrence",
+          "scenario": "evaluation",
+          "target_type": "",
+          "target": ""
+        },
+        "systemData": {
+          "createdAt": "",
+          "createdBy": "",
+          "modifiedAt": "2026-04-01T23:17:13.5682411Z",
+          "modifiedBy": ""
+        }
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/schedules/dataset-eval-run-schedule-test?api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "1278",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 01 Apr 2026 23:17:35 GMT",
+        "mise-correlation-id": "d334762a-3888-4a52-9a28-f53e314d70a2",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.039"
+      },
+      "ResponseBody": {
+        "id": "dataset-eval-run-schedule-test",
+        "displayName": "Dataset Evaluation Eval Run Schedule",
+        "description": null,
+        "enabled": true,
+        "provisioningStatus": "Creating",
+        "trigger": {
+          "type": "Recurrence",
+          "schedule": {
+            "type": "Daily",
+            "hours": [
+              9
+            ]
+          },
+          "startTime": null,
+          "endTime": null,
+          "interval": 1,
+          "timezone": "UTC"
+        },
+        "task": {
+          "type": "Evaluation",
+          "evalId": "eval_6af23d842905464b9c6380ee9f633dde",
+          "evalRun": {
+            "object": "eval.run",
+            "created_at": null,
+            "modified_at": null,
+            "created_by": null,
+            "id": "",
+            "eval_id": "eval_6af23d842905464b9c6380ee9f633dde",
+            "status": null,
+            "model": null,
+            "data_source": {
+              "type": "jsonl",
+              "source": {
+                "type": "file_id",
+                "id": "azureai://accounts/sanitized-account/projects/sanitized-project/data/SampleEvaluationDataset-Test/versions/1"
+              }
+            },
+            "metadata": {
+              "team": "eval-exp",
+              "scenario": "dataset-id-v1"
+            },
+            "properties": {},
+            "name": "Label model test with dataset ID",
+            "report_url": null,
+            "result_counts": {
+              "total": 0,
+              "passed": 0,
+              "failed": 0,
+              "errored": 0
+            },
+            "per_model_usage": [],
+            "per_testing_criteria_results": [],
+            "error": {
+              "code": null,
+              "message": null,
+              "correlation_id": null,
+              "inner_error": null
+            }
+          },
+          "configuration": null
+        },
+        "tags": {},
+        "properties": {
+          "trigger_type": "Recurrence",
+          "scenario": "evaluation",
+          "target_type": "",
+          "target": ""
+        },
+        "systemData": {
+          "createdAt": "",
+          "createdBy": "",
+          "modifiedAt": "2026-04-01T23:17:13.5682411Z",
+          "modifiedBy": ""
+        }
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/schedules/dataset-eval-run-schedule-test?api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "1352",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 01 Apr 2026 23:17:38 GMT",
+        "mise-correlation-id": "499b5d95-3d32-4670-a7d3-2e835730e22f",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.042"
+      },
+      "ResponseBody": {
+        "id": "dataset-eval-run-schedule-test",
+        "displayName": "Dataset Evaluation Eval Run Schedule",
+        "description": null,
+        "enabled": true,
+        "provisioningStatus": "Succeeded",
+        "trigger": {
+          "type": "Recurrence",
+          "schedule": {
+            "type": "Daily",
+            "hours": [
+              9
+            ]
+          },
+          "startTime": "2026-04-01T23:17:43+00:00",
+          "endTime": null,
+          "interval": 1,
+          "timezone": "UTC"
+        },
+        "task": {
+          "type": "Evaluation",
+          "evalId": "eval_6af23d842905464b9c6380ee9f633dde",
+          "evalRun": {
+            "object": "eval.run",
+            "created_at": null,
+            "modified_at": null,
+            "created_by": null,
+            "id": "",
+            "eval_id": "eval_6af23d842905464b9c6380ee9f633dde",
+            "status": null,
+            "model": null,
+            "data_source": {
+              "type": "jsonl",
+              "source": {
+                "type": "file_id",
+                "id": "azureai://accounts/sanitized-account/projects/sanitized-project/data/SampleEvaluationDataset-Test/versions/1"
+              }
+            },
+            "metadata": {
+              "team": "eval-exp",
+              "scenario": "dataset-id-v1"
+            },
+            "properties": {},
+            "name": "Label model test with dataset ID",
+            "report_url": null,
+            "result_counts": {
+              "total": 0,
+              "passed": 0,
+              "failed": 0,
+              "errored": 0
+            },
+            "per_model_usage": [],
+            "per_testing_criteria_results": [],
+            "error": {
+              "code": null,
+              "message": null,
+              "correlation_id": null,
+              "inner_error": null
+            }
+          },
+          "configuration": null
+        },
+        "tags": {},
+        "properties": {
+          "trigger_type": "Recurrence",
+          "scenario": "evaluation",
+          "target_type": "",
+          "target": ""
+        },
+        "systemData": {
+          "createdAt": "04/01/2026 23:17:39 +00:00",
+          "createdBy": "Sanitized",
+          "modifiedAt": "04/01/2026 23:17:39 +00:00",
+          "modifiedBy": "Nikolay Rovinskiy"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/schedules/dataset-eval-run-schedule-test?api-version=v1",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "0",
+        "Date": "Wed, 01 Apr 2026 23:17:41 GMT",
+        "mise-correlation-id": "178da4a9-eb60-47d9-922b-ead3793a82a9",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.520"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/schedules?api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "17",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 01 Apr 2026 23:17:44 GMT",
+        "mise-correlation-id": "7fe171c7-c5a3-4c89-a0f2-6d2d2dfa5e3c",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.099"
+      },
+      "ResponseBody": {
+        "value": []
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals/eval_6af23d842905464b9c6380ee9f633dde",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260401.1 (.NET 9.0.14; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "vienna-eastus2-01",
+        "Content-Length": "314",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 01 Apr 2026 23:17:47 GMT",
+        "mise-correlation-id": "dde92452-22b4-4811-aa0e-c63207a4f587",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "East US 2",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.659"
+      },
+      "ResponseBody": {
+        "object": "eval.deleted",
+        "deleted": false,
+        "eval_id": "eval_6af23d842905464b9c6380ee9f633dde",
+        "run_id": null,
+        "location": "https://nirovinseastus2.services.ai.azure.com:443/api/projects/nirovinsEastus2Proj/openai/v1/evals/eval_6af23d842905464b9c6380ee9f633dde/eval_6af23d842905464b9c6380ee9f633dde"
+      }
+    }
+  ],
+  "Variables": {
+    "FOUNDRY_MODEL_NAME": "gpt-5.2",
+    "FOUNDRY_PROJECT_ENDPOINT": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project"
+  }
+}
