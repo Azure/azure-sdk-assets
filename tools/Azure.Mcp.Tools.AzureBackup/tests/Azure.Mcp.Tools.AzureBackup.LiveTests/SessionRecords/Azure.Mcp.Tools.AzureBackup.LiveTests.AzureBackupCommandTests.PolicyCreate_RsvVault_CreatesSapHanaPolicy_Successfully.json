@@ -16,19 +16,19 @@
         "Cache-Control": "no-cache",
         "Content-Length": "1159",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sat, 11 Apr 2026 04:07:32 GMT",
+        "Date": "Sat, 11 Apr 2026 04:54:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
         "x-ms-client-request-id": "Sanitized",
-        "x-ms-correlation-request-id": "6deae72a-4666-4481-8851-d2ef0f26b5d5",
+        "x-ms-correlation-request-id": "0e2cfd0f-41d2-4868-90ce-6687dcfa3bc3",
         "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
         "x-ms-ratelimit-remaining-subscription-reads": "1099",
         "x-ms-request-id": "Sanitized",
-        "x-ms-routing-request-id": "EASTUS:20260411T040732Z:6deae72a-4666-4481-8851-d2ef0f26b5d5",
-        "X-MSEdge-Ref": "Ref A: ED65A0AB5C0A4F5EBEDF9C5B1B823B93 Ref B: MAA211070114031 Ref C: 2026-04-11T04:07:32Z"
+        "x-ms-routing-request-id": "EASTUS:20260411T045432Z:0e2cfd0f-41d2-4868-90ce-6687dcfa3bc3",
+        "X-MSEdge-Ref": "Ref A: 8B35C08643754075BD628159436E919B Ref B: MAA211070116042 Ref C: 2026-04-11T04:54:32Z"
       },
       "ResponseBody": {
         "location": "eastus",
@@ -95,19 +95,19 @@
         "Cache-Control": "no-cache",
         "Content-Length": "1159",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sat, 11 Apr 2026 04:07:49 GMT",
+        "Date": "Sat, 11 Apr 2026 04:54:53 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
         "x-ms-client-request-id": "Sanitized",
-        "x-ms-correlation-request-id": "c844b63a-eda2-4c04-8488-5d59e761c5f9",
+        "x-ms-correlation-request-id": "b529afea-94ff-4b77-8a75-c479b10c7e48",
         "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
         "x-ms-ratelimit-remaining-subscription-reads": "1099",
         "x-ms-request-id": "Sanitized",
-        "x-ms-routing-request-id": "EASTUS:20260411T040750Z:c844b63a-eda2-4c04-8488-5d59e761c5f9",
-        "X-MSEdge-Ref": "Ref A: 2FF8FC915FFF4A87A767D30066CAB17A Ref B: MAA211070114031 Ref C: 2026-04-11T04:07:50Z"
+        "x-ms-routing-request-id": "EASTUS:20260411T045454Z:b529afea-94ff-4b77-8a75-c479b10c7e48",
+        "X-MSEdge-Ref": "Ref A: CBDD77203CD6401CA597DB9608BC357B Ref B: MAA211070116042 Ref C: 2026-04-11T04:54:54Z"
       },
       "ResponseBody": {
         "location": "eastus",
@@ -159,12 +159,12 @@
       }
     },
     {
-      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzureBackupRG_mcp-test/providers/Microsoft.RecoveryServices/vaults/Sanitized-rsv/backupPolicies/test-policy-8261475775663687261?api-version=2025-02-01",
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzureBackupRG_mcp-test/providers/Microsoft.RecoveryServices/vaults/Sanitized-rsv/backupPolicies/test-hana-6578284054619765193?api-version=2025-02-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "410",
+        "Content-Length": "799",
         "Content-Type": "application/json",
         "User-Agent": "azmcp/1.0.0.0 azmcp-stdio/1.0.0.0 (.NETCoreApp,Version=v10.0; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized",
@@ -173,82 +173,130 @@
       "RequestBody": {
         "location": "eastus",
         "properties": {
-          "backupManagementType": "AzureIaasVM",
-          "schedulePolicy": {
-            "schedulePolicyType": "SimpleSchedulePolicy",
-            "scheduleRunFrequency": "Daily",
-            "scheduleRunTimes": [
-              "2026-04-11T02:00:00.0000000Z"
-            ]
+          "backupManagementType": "AzureWorkload",
+          "workLoadType": "SAPHanaDatabase",
+          "settings": {
+            "timeZone": "UTC",
+            "issqlcompression": false,
+            "isCompression": false
           },
-          "retentionPolicy": {
-            "retentionPolicyType": "LongTermRetentionPolicy",
-            "dailySchedule": {
-              "retentionTimes": [
-                "2026-04-11T02:00:00.0000000Z"
-              ],
-              "retentionDuration": {
-                "count": 30,
-                "durationType": "Days"
+          "subProtectionPolicy": [
+            {
+              "policyType": "Full",
+              "schedulePolicy": {
+                "schedulePolicyType": "SimpleSchedulePolicy",
+                "scheduleRunFrequency": "Daily",
+                "scheduleRunTimes": [
+                  "2026-04-11T02:00:00.0000000Z"
+                ]
+              },
+              "retentionPolicy": {
+                "retentionPolicyType": "LongTermRetentionPolicy",
+                "dailySchedule": {
+                  "retentionTimes": [
+                    "2026-04-11T02:00:00.0000000Z"
+                  ],
+                  "retentionDuration": {
+                    "count": 30,
+                    "durationType": "Days"
+                  }
+                }
+              }
+            },
+            {
+              "policyType": "Log",
+              "schedulePolicy": {
+                "schedulePolicyType": "LogSchedulePolicy",
+                "scheduleFrequencyInMins": 60
+              },
+              "retentionPolicy": {
+                "retentionPolicyType": "SimpleRetentionPolicy",
+                "retentionDuration": {
+                  "count": 15,
+                  "durationType": "Days"
+                }
               }
             }
-          }
+          ]
         }
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "761",
+        "Content-Length": "1092",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Sat, 11 Apr 2026 04:07:50 GMT",
+        "Date": "Sat, 11 Apr 2026 04:54:54 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
         "x-ms-client-request-id": "Sanitized",
-        "x-ms-correlation-request-id": "4ec934a4-f64e-49cf-a4e4-59f3c86a7f7d",
-        "x-ms-operation-identifier": "tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47,objectId=8aad5e75-2d49-428a-ae13-c0fbf0dae6f0/eastus/0f7a891c-9e19-42ba-8f77-af80eb6a1af1",
+        "x-ms-correlation-request-id": "b1293e0f-4de1-403d-a381-4b1d50860a30",
+        "x-ms-operation-identifier": "tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47,objectId=8aad5e75-2d49-428a-ae13-c0fbf0dae6f0/eastus/123179ba-10c6-43f7-bed3-820b6ba6063a",
         "x-ms-ratelimit-remaining-subscription-global-writes": "11999",
         "x-ms-ratelimit-remaining-subscription-writes": "799",
         "x-ms-request-id": "Sanitized",
-        "x-ms-routing-request-id": "EASTUS:20260411T040751Z:4ec934a4-f64e-49cf-a4e4-59f3c86a7f7d",
-        "X-MSEdge-Ref": "Ref A: DF47F613B89240DCB6DF09BC8DB8B20F Ref B: MAA211070114031 Ref C: 2026-04-11T04:07:50Z"
+        "x-ms-routing-request-id": "EASTUS:20260411T045455Z:b1293e0f-4de1-403d-a381-4b1d50860a30",
+        "X-MSEdge-Ref": "Ref A: D251E24DB409444190B7FA3D7301DB79 Ref B: MAA211070116042 Ref C: 2026-04-11T04:54:54Z"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzureBackupRG_mcp-test/providers/Microsoft.RecoveryServices/vaults/Sanitized-rsv/backupPolicies/test-policy-8261475775663687261",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzureBackupRG_mcp-test/providers/Microsoft.RecoveryServices/vaults/Sanitized-rsv/backupPolicies/test-hana-6578284054619765193",
         "name": "Sanitized",
         "type": "Microsoft.RecoveryServices/vaults/backupPolicies",
         "properties": {
-          "backupManagementType": "AzureIaasVM",
-          "instantRPDetails": {},
-          "schedulePolicy": {
-            "schedulePolicyType": "SimpleSchedulePolicy",
-            "scheduleRunFrequency": "Daily",
-            "scheduleRunTimes": [
-              "2026-04-11T02:00:00Z"
-            ],
-            "scheduleWeeklyFrequency": 0
+          "backupManagementType": "AzureWorkload",
+          "workLoadType": "SAPHanaDatabase",
+          "settings": {
+            "timeZone": "UTC",
+            "issqlcompression": false,
+            "isCompression": false
           },
-          "retentionPolicy": {
-            "retentionPolicyType": "LongTermRetentionPolicy",
-            "dailySchedule": {
-              "retentionTimes": [
-                "2026-04-11T02:00:00Z"
-              ],
-              "retentionDuration": {
-                "count": 30,
-                "durationType": "Days"
+          "subProtectionPolicy": [
+            {
+              "policyType": "Full",
+              "schedulePolicy": {
+                "schedulePolicyType": "SimpleSchedulePolicy",
+                "scheduleRunFrequency": "Daily",
+                "scheduleRunTimes": [
+                  "2026-04-11T02:00:00Z"
+                ],
+                "scheduleWeeklyFrequency": 0
+              },
+              "retentionPolicy": {
+                "retentionPolicyType": "LongTermRetentionPolicy",
+                "dailySchedule": {
+                  "retentionTimes": [
+                    "2026-04-11T02:00:00Z"
+                  ],
+                  "retentionDuration": {
+                    "count": 30,
+                    "durationType": "Days"
+                  }
+                }
+              }
+            },
+            {
+              "policyType": "Log",
+              "schedulePolicy": {
+                "schedulePolicyType": "LogSchedulePolicy",
+                "scheduleFrequencyInMins": 60
+              },
+              "retentionPolicy": {
+                "retentionPolicyType": "SimpleRetentionPolicy",
+                "retentionDuration": {
+                  "count": 15,
+                  "durationType": "Days"
+                }
               }
             }
-          },
-          "instantRpRetentionRangeInDays": 2,
+          ],
           "protectedItemsCount": 0
         }
       }
     }
   ],
   "Variables": {
-    "createdPolicyName": "test-policy-8261475775663687261"
+    "createdHanaPolicyName": "test-hana-6578284054619765193"
   }
 }
