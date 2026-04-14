@@ -7,7 +7,7 @@
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview",
-        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260217.1 (.NET Framework 4.8.9221.0; Microsoft Windows 10.0.26200 )",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260413.1 (.NET 10.0.4; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
@@ -15,114 +15,322 @@
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "hyena-westus2-02",
+        "azureml-served-by-cluster": "hyena-westus2-01",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 17 Feb 2026 21:05:42 GMT",
+        "Date": "Tue, 14 Apr 2026 02:57:00 GMT",
         "request-context": "appId=",
-        "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "143",
-        "x-ms-region": "West US 2",
+        "x-ms-region": "West Central US",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "3dc87c5db29e26f7116a6e9265f1e714"
+        "X-Request-ID": "37bcf477a710d63cb11a9b85917129f7"
       },
       "ResponseBody": {
         "data": [
           {
             "object": "agent",
-            "id": "my-Tip-Agent",
-            "name": "my-Tip-Agent",
+            "id": "openapi-agent",
+            "name": "openapi-agent",
             "versions": {
               "latest": {
                 "metadata": {},
                 "object": "agent.version",
-                "id": "my-Tip-Agent:1",
-                "name": "my-Tip-Agent",
+                "id": "openapi-agent:1",
+                "name": "openapi-agent",
                 "version": "1",
-                "description": "",
-                "created_at": 1770924728,
+                "description": "Agent for testing OpenAPI tool capabilities.",
+                "created_at": 1772611859,
                 "definition": {
                   "kind": "prompt",
-                  "model": "gpt-4.1",
-                  "instructions": "You are a foo bar agent. In EVERY response you give, ALWAYS include both `foo` and `bar` strings somewhere in the response."
-                }
-              }
-            }
-          },
-          {
-            "object": "agent",
-            "id": "code-int-agent",
-            "name": "code-int-agent",
-            "versions": {
-              "latest": {
-                "metadata": {},
-                "object": "agent.version",
-                "id": "code-int-agent:1",
-                "name": "code-int-agent",
-                "version": "1",
-                "description": "Code interpreter agent",
-                "created_at": 1770924991,
-                "definition": {
-                  "kind": "prompt",
-                  "model": "gpt-4.1",
-                  "instructions": "You are a personal math tutor. When asked a math question, write and run code using the python tool to answer the question.",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "You are a helpful assistant.",
                   "tools": [
                     {
-                      "type": "code_interpreter",
-                      "container": {
-                        "type": "auto"
+                      "type": "openapi",
+                      "openapi": {
+                        "name": "get_weather",
+                        "description": "Retrieve weather information for a location.",
+                        "spec": {
+                          "openapi": "3.1.0",
+                          "info": {
+                            "title": "get weather data",
+                            "description": "Retrieves current weather data for a location based on wttr.in.",
+                            "version": "v1.0.0"
+                          },
+                          "servers": [
+                            {
+                              "url": "https://wttr.in"
+                            }
+                          ],
+                          "auth": [],
+                          "paths": {
+                            "/{location}": {
+                              "get": {
+                                "description": "Get weather information for a specific location",
+                                "operationId": "GetCurrentWeather",
+                                "parameters": [
+                                  {
+                                    "name": "location",
+                                    "in": "path",
+                                    "description": "City or location to retrieve the weather for",
+                                    "required": true,
+                                    "schema": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  {
+                                    "name": "format",
+                                    "in": "query",
+                                    "description": "Always use j1 value for this parameter",
+                                    "required": true,
+                                    "schema": {
+                                      "type": "string",
+                                      "default": "j1"
+                                    }
+                                  }
+                                ],
+                                "responses": {
+                                  "200": {
+                                    "description": "Successful response",
+                                    "content": {
+                                      "text/plain": {
+                                        "schema": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "404": {
+                                    "description": "Location not found"
+                                  }
+                                },
+                                "deprecated": false
+                              }
+                            }
+                          },
+                          "components": {
+                            "schemes": {}
+                          }
+                        },
+                        "auth": {
+                          "type": "anonymous"
+                        }
                       }
                     }
                   ]
-                }
+                },
+                "status": "active"
               }
             }
           },
           {
             "object": "agent",
-            "id": "wsagent",
-            "name": "wsagent",
+            "id": "MyAgent123",
+            "name": "MyAgent123",
             "versions": {
               "latest": {
                 "metadata": {},
                 "object": "agent.version",
-                "id": "wsagent:1",
-                "name": "wsagent",
-                "version": "1",
-                "description": "Web Search agent",
-                "created_at": 1770925336,
+                "id": "MyAgent123:3",
+                "name": "MyAgent123",
+                "version": "3",
+                "description": "",
+                "created_at": 1772760648,
                 "definition": {
                   "kind": "prompt",
-                  "model": "gpt-4.1",
-                  "instructions": "You are a helpful assistant that can search the web",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "You are a helpful assistant.",
                   "tools": [
                     {
-                      "type": "web_search"
+                      "type": "azure_function",
+                      "azure_function": {
+                        "function": {
+                          "name": "queue_trigger",
+                          "description": "Get weather for a given location",
+                          "parameters": {
+                            "type": "object",
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "description": "location to determine weather for"
+                              }
+                            },
+                            "required": [
+                              "location"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "input_binding": {
+                          "type": "storage_queue",
+                          "storage_queue": {
+                            "queue_service_endpoint": "https://balapvstorage123.queue.core.windows.net/",
+                            "queue_name": "weather-input-queue"
+                          }
+                        },
+                        "output_binding": {
+                          "type": "storage_queue",
+                          "storage_queue": {
+                            "queue_service_endpoint": "https://balapvstorage123.queue.core.windows.net/",
+                            "queue_name": "weather-output-queue"
+                          }
+                        }
+                      }
                     }
                   ]
-                }
+                },
+                "status": "active"
               }
             }
           },
           {
             "object": "agent",
-            "id": "mcp-agent",
-            "name": "mcp-agent",
+            "id": "teacher-agent",
+            "name": "teacher-agent",
             "versions": {
               "latest": {
                 "metadata": {},
                 "object": "agent.version",
-                "id": "mcp-agent:1",
-                "name": "mcp-agent",
-                "version": "1",
-                "description": "MCP agent",
-                "created_at": 1770925697,
+                "id": "teacher-agent:3",
+                "name": "teacher-agent",
+                "version": "3",
+                "description": "",
+                "created_at": 1772827543,
                 "definition": {
                   "kind": "prompt",
-                  "model": "gpt-4.1",
-                  "instructions": "You are a helpful agent that can use MCP tools to assist users. Use the available MCP tools to answer questions and perform tasks.",
+                  "model": "gpt-4o-mini",
+                  "instructions": "You are a teacher that create pre-school math question for student and check answer. \n                            If the answer is correct, you stop the conversation by saying [COMPLETE]. \n                            If the answer is wrong, you ask student to fix it."
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "student-agent",
+            "name": "student-agent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "student-agent:3",
+                "name": "student-agent",
+                "version": "3",
+                "description": "",
+                "created_at": 1772827544,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4o-mini",
+                  "instructions": "You are a student who answers questions from the teacher. \n                            When the teacher gives you a question, you answer it."
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "student-teacher-workflow",
+            "name": "student-teacher-workflow",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "student-teacher-workflow:1",
+                "name": "student-teacher-workflow",
+                "version": "1",
+                "description": "",
+                "created_at": 1773080449,
+                "definition": {
+                  "kind": "workflow",
+                  "workflow": "\nkind: workflow\ntrigger:\n  kind: OnConversationStart\n  id: my_workflow\n  actions:\n    - kind: SetVariable\n      id: set_variable_input_task\n      variable: Local.LatestMessage\n      value: \"=UserMessage(System.LastMessageText)\"\n\n    - kind: CreateConversation\n      id: create_student_conversation\n      conversationId: Local.StudentConversationId\n\n    - kind: CreateConversation\n      id: create_teacher_conversation\n      conversationId: Local.TeacherConversationId\n\n    - kind: InvokeAzureAgent\n      id: student_agent\n      description: The student node\n      conversationId: \"=Local.StudentConversationId\"\n      agent:\n        name: student-agent\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: InvokeAzureAgent\n      id: teacher_agent\n      description: The teacher node\n      conversationId: \"=Local.TeacherConversationId\"\n      agent:\n        name: teacher-agent\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: SendActivity\n      id: send_teacher_reply\n      activity: \"{Last(Local.LatestMessage).Text}\"                \n\n    - kind: SetVariable\n      id: set_variable_turncount\n      variable: Local.TurnCount\n      value: \"=Local.TurnCount + 1\"\n\n    - kind: ConditionGroup\n      id: completion_check\n      conditions:\n        - condition: '=!IsBlank(Find(\"[COMPLETE]\", Upper(Last(Local.LatestMessage).Text)))'\n          id: check_done\n          actions:\n            - kind: EndConversation\n              id: end_workflow\n\n        - condition: \"=Local.TurnCount >= 4\"\n          id: check_turn_count_exceeded\n          actions:\n            - kind: SendActivity\n              id: send_activity_tired\n              activity: \"Let's try again later...I am tired.\"\n\n      elseActions:\n        - kind: GotoAction\n          id: goto_student_agent\n          actionId: student_agent\n"
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "teacher-agent3",
+            "name": "teacher-agent3",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "teacher-agent3:1",
+                "name": "teacher-agent3",
+                "version": "1",
+                "description": "",
+                "created_at": 1773768931,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "You are a teacher that create pre-school math question for student and check answer.\n                            If the answer is correct, you stop the conversation by saying [COMPLETE].\n                            If the answer is wrong, you ask student to fix it."
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "student-agent3",
+            "name": "student-agent3",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "student-agent3:1",
+                "name": "student-agent3",
+                "version": "1",
+                "description": "",
+                "created_at": 1773768932,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "You are a student who answers questions from the teacher.\n                            When the teacher gives you a question, you answer it."
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "student-teacher-workflow3",
+            "name": "student-teacher-workflow3",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "student-teacher-workflow3:1",
+                "name": "student-teacher-workflow3",
+                "version": "1",
+                "description": "",
+                "created_at": 1773768933,
+                "definition": {
+                  "kind": "workflow",
+                  "workflow": "\nkind: workflow\ntrigger:\n  kind: OnConversationStart\n  id: my_workflow\n  actions:\n    - kind: SetVariable\n      id: set_variable_input_task\n      variable: Local.LatestMessage\n      value: \"=UserMessage(System.LastMessageText)\"\n\n    - kind: CreateConversation\n      id: create_student_conversation\n      conversationId: Local.StudentConversationId\n\n    - kind: CreateConversation\n      id: create_teacher_conversation\n      conversationId: Local.TeacherConversationId\n\n    - kind: InvokeAzureAgent\n      id: student_agent\n      description: The student node\n      conversationId: \"=Local.StudentConversationId\"\n      agent:\n        name: {student_agent.name}\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: InvokeAzureAgent\n      id: teacher_agent\n      description: The teacher node\n      conversationId: \"=Local.TeacherConversationId\"\n      agent:\n        name: {teacher_agent.name}\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: SendActivity\n      id: send_teacher_reply\n      activity: \"{{Last(Local.LatestMessage).Text}}\"\n\n    - kind: SetVariable\n      id: set_variable_turncount\n      variable: Local.TurnCount\n      value: \"=Local.TurnCount + 1\"\n\n    - kind: ConditionGroup\n      id: completion_check\n      conditions:\n        - condition: '=!IsBlank(Find(\"[COMPLETE]\", Upper(Last(Local.LatestMessage).Text)))'\n          id: check_done\n          actions:\n            - kind: EndConversation\n              id: end_workflow\n\n        - condition: \"=Local.TurnCount >= 4\"\n          id: check_turn_count_exceeded\n          actions:\n            - kind: SendActivity\n              id: send_activity_tired\n              activity: \"Let's try again later...I am tired.\"\n\n      elseActions:\n        - kind: GotoAction\n          id: goto_student_agent\n          actionId: student_agent\n"
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "teacher-agent2",
+            "name": "teacher-agent2",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "teacher-agent2:1",
+                "name": "teacher-agent2",
+                "version": "1",
+                "description": "",
+                "created_at": 1773769024,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "You are a teacher that create Foundry project question for student and check answer.\n                            Verify student's answer from mcp tools.\n                            If the answer is correct, you stop the conversation by saying [COMPLETE].\n                            If the answer is wrong, you ask student to fix it.",
                   "tools": [
                     {
                       "type": "mcp",
@@ -131,384 +339,28 @@
                       "require_approval": "never"
                     }
                   ]
-                }
+                },
+                "status": "active"
               }
             }
           },
           {
             "object": "agent",
-            "id": "salman-test-agent1",
-            "name": "salman-test-agent1",
+            "id": "student-agent2",
+            "name": "student-agent2",
             "versions": {
               "latest": {
                 "metadata": {},
                 "object": "agent.version",
-                "id": "salman-test-agent1:1",
-                "name": "salman-test-agent1",
+                "id": "student-agent2:1",
+                "name": "student-agent2",
                 "version": "1",
                 "description": "",
-                "created_at": 1770930953,
+                "created_at": 1773769025,
                 "definition": {
                   "kind": "prompt",
                   "model": "gpt-4.1-mini",
-                  "instructions": "You are a foo bar agent. In EVERY response you give, ALWAYS include both `foo` and `bar` strings somewhere in the response."
-                }
-              }
-            }
-          },
-          {
-            "object": "agent",
-            "id": "elvistran-bugbash-test",
-            "name": "elvistran-bugbash-test",
-            "versions": {
-              "latest": {
-                "metadata": {},
-                "object": "agent.version",
-                "id": "elvistran-bugbash-test:1",
-                "name": "elvistran-bugbash-test",
-                "version": "1",
-                "description": "",
-                "created_at": 1770930989,
-                "definition": {
-                  "kind": "prompt",
-                  "model": "gpt-4.1",
-                  "instructions": "You are a foo bar agent. In EVERY response you give, ALWAYS include both `foo` and `bar` strings somewhere in the response."
-                }
-              }
-            }
-          },
-          {
-            "object": "agent",
-            "id": "my-agent",
-            "name": "my-agent",
-            "versions": {
-              "latest": {
-                "metadata": {},
-                "object": "agent.version",
-                "id": "my-agent:1",
-                "name": "my-agent",
-                "version": "1",
-                "description": "",
-                "created_at": 1770931109,
-                "definition": {
-                  "kind": "prompt",
-                  "model": "gpt-4o",
-                  "instructions": "You are a foo bar agent. In EVERY response you give, ALWAYS include both `foo` and `bar` strings somewhere in the response."
-                }
-              }
-            }
-          },
-          {
-            "object": "agent",
-            "id": "elvistran-bugbash-code-interpreter",
-            "name": "elvistran-bugbash-code-interpreter",
-            "versions": {
-              "latest": {
-                "metadata": {},
-                "object": "agent.version",
-                "id": "elvistran-bugbash-code-interpreter:1",
-                "name": "elvistran-bugbash-code-interpreter",
-                "version": "1",
-                "description": "Code interpreter agent",
-                "created_at": 1770931276,
-                "definition": {
-                  "kind": "prompt",
-                  "model": "gpt-4.1",
-                  "instructions": "You are a personal math tutor. When asked a math question, write and run code using the python tool to answer the question.",
-                  "tools": [
-                    {
-                      "type": "code_interpreter",
-                      "container": {
-                        "type": "auto"
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          {
-            "object": "agent",
-            "id": "salman-web-search",
-            "name": "salman-web-search",
-            "versions": {
-              "latest": {
-                "metadata": {},
-                "object": "agent.version",
-                "id": "salman-web-search:1",
-                "name": "salman-web-search",
-                "version": "1",
-                "description": "Web Search agent",
-                "created_at": 1770931316,
-                "definition": {
-                  "kind": "prompt",
-                  "model": "gpt-4.1-mini",
-                  "instructions": "You are a helpful assistant that can search the web",
-                  "tools": [
-                    {
-                      "type": "web_search"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          {
-            "object": "agent",
-            "id": "agent-0212-01",
-            "name": "agent-0212-01",
-            "versions": {
-              "latest": {
-                "metadata": {},
-                "object": "agent.version",
-                "id": "agent-0212-01:1",
-                "name": "agent-0212-01",
-                "version": "1",
-                "description": "",
-                "created_at": 1770931355,
-                "definition": {
-                  "kind": "prompt",
-                  "model": "gpt-4.1",
-                  "instructions": "You are a foo bar agent. In EVERY response you give, ALWAYS include both `foo` and `bar` strings somewhere in the response."
-                }
-              }
-            }
-          }
-        ],
-        "first_id": "my-Tip-Agent",
-        "last_id": "agent-0212-01",
-        "has_more": true,
-        "object": "list"
-      }
-    },
-    {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents?limit=10&order=asc&after=agent-0212-01&before=my-Tip-Agent&api-version=v1",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview",
-        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260217.1 (.NET Framework 4.8.9221.0; Microsoft Windows 10.0.26200 )",
-        "x-ms-client-request-id": "Sanitized"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "hyena-westus2-02",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 17 Feb 2026 21:05:43 GMT",
-        "request-context": "appId=",
-        "Server": "istio-envoy",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "135",
-        "x-ms-region": "West US 2",
-        "x-ms-response-type": "standard",
-        "X-Request-ID": "9c7265977f90e4cecc77ed5e740b1897"
-      },
-      "ResponseBody": {
-        "data": [],
-        "has_more": false,
-        "object": "list"
-      }
-    },
-    {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents?limit=2&order=asc&before=salman-test-agent1&api-version=v1",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview",
-        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260217.1 (.NET Framework 4.8.9221.0; Microsoft Windows 10.0.26200 )",
-        "x-ms-client-request-id": "Sanitized"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "hyena-westus2-02",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 17 Feb 2026 21:05:44 GMT",
-        "request-context": "appId=",
-        "Server": "istio-envoy",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "137",
-        "x-ms-region": "West US 2",
-        "x-ms-response-type": "standard",
-        "X-Request-ID": "dd33372782b95099c07533e9a9603d0c"
-      },
-      "ResponseBody": {
-        "data": [
-          {
-            "object": "agent",
-            "id": "my-Tip-Agent",
-            "name": "my-Tip-Agent",
-            "versions": {
-              "latest": {
-                "metadata": {},
-                "object": "agent.version",
-                "id": "my-Tip-Agent:1",
-                "name": "my-Tip-Agent",
-                "version": "1",
-                "description": "",
-                "created_at": 1770924728,
-                "definition": {
-                  "kind": "prompt",
-                  "model": "gpt-4.1",
-                  "instructions": "You are a foo bar agent. In EVERY response you give, ALWAYS include both `foo` and `bar` strings somewhere in the response."
-                }
-              }
-            }
-          },
-          {
-            "object": "agent",
-            "id": "code-int-agent",
-            "name": "code-int-agent",
-            "versions": {
-              "latest": {
-                "metadata": {},
-                "object": "agent.version",
-                "id": "code-int-agent:1",
-                "name": "code-int-agent",
-                "version": "1",
-                "description": "Code interpreter agent",
-                "created_at": 1770924991,
-                "definition": {
-                  "kind": "prompt",
-                  "model": "gpt-4.1",
-                  "instructions": "You are a personal math tutor. When asked a math question, write and run code using the python tool to answer the question.",
-                  "tools": [
-                    {
-                      "type": "code_interpreter",
-                      "container": {
-                        "type": "auto"
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        ],
-        "first_id": "my-Tip-Agent",
-        "last_id": "code-int-agent",
-        "has_more": true,
-        "object": "list"
-      }
-    },
-    {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents?limit=2&order=asc&after=code-int-agent&before=my-Tip-Agent&api-version=v1",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview",
-        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260217.1 (.NET Framework 4.8.9221.0; Microsoft Windows 10.0.26200 )",
-        "x-ms-client-request-id": "Sanitized"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "hyena-westus2-02",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 17 Feb 2026 21:05:45 GMT",
-        "request-context": "appId=",
-        "Server": "istio-envoy",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "129",
-        "x-ms-region": "West US 2",
-        "x-ms-response-type": "standard",
-        "X-Request-ID": "e01cc5f345becd70d63cc3aa36269aef"
-      },
-      "ResponseBody": {
-        "data": [],
-        "has_more": false,
-        "object": "list"
-      }
-    },
-    {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents?limit=2&order=asc&after=code-int-agent&api-version=v1",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview",
-        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260217.1 (.NET Framework 4.8.9221.0; Microsoft Windows 10.0.26200 )",
-        "x-ms-client-request-id": "Sanitized"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
-        "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "hyena-westus2-02",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 17 Feb 2026 21:05:47 GMT",
-        "request-context": "appId=",
-        "Server": "istio-envoy",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "131",
-        "x-ms-region": "West US 2",
-        "x-ms-response-type": "standard",
-        "X-Request-ID": "d1685217bf22868295146cad0ddae373"
-      },
-      "ResponseBody": {
-        "data": [
-          {
-            "object": "agent",
-            "id": "wsagent",
-            "name": "wsagent",
-            "versions": {
-              "latest": {
-                "metadata": {},
-                "object": "agent.version",
-                "id": "wsagent:1",
-                "name": "wsagent",
-                "version": "1",
-                "description": "Web Search agent",
-                "created_at": 1770925336,
-                "definition": {
-                  "kind": "prompt",
-                  "model": "gpt-4.1",
-                  "instructions": "You are a helpful assistant that can search the web",
-                  "tools": [
-                    {
-                      "type": "web_search"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          {
-            "object": "agent",
-            "id": "mcp-agent",
-            "name": "mcp-agent",
-            "versions": {
-              "latest": {
-                "metadata": {},
-                "object": "agent.version",
-                "id": "mcp-agent:1",
-                "name": "mcp-agent",
-                "version": "1",
-                "description": "MCP agent",
-                "created_at": 1770925697,
-                "definition": {
-                  "kind": "prompt",
-                  "model": "gpt-4.1",
-                  "instructions": "You are a helpful agent that can use MCP tools to assist users. Use the available MCP tools to answer questions and perform tasks.",
+                  "instructions": "You are a student who answers questions from the teacher.\n                            When the teacher gives you a question, you answer it using mcp tool.",
                   "tools": [
                     {
                       "type": "mcp",
@@ -517,25 +369,26 @@
                       "require_approval": "never"
                     }
                   ]
-                }
+                },
+                "status": "active"
               }
             }
           }
         ],
-        "first_id": "wsagent",
-        "last_id": "mcp-agent",
+        "first_id": "openapi-agent",
+        "last_id": "student-agent2",
         "has_more": true,
         "object": "list"
       }
     },
     {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents?limit=2&order=asc&after=mcp-agent&before=wsagent&api-version=v1",
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents?limit=10&order=asc&after=student-agent2&api-version=v1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview",
-        "User-Agent": "Azure.AI.Projects/1.2.0-alpha.20260217.1 (.NET Framework 4.8.9221.0; Microsoft Windows 10.0.26200 )",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260413.1 (.NET 10.0.4; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
@@ -543,21 +396,885 @@
       "ResponseHeaders": {
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "hyena-westus2-02",
+        "azureml-served-by-cluster": "hyena-westus2-01",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 17 Feb 2026 21:05:49 GMT",
+        "Date": "Tue, 14 Apr 2026 02:57:02 GMT",
         "request-context": "appId=",
-        "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "149",
-        "x-ms-region": "West US 2",
+        "x-ms-region": "West Central US",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "d36ca635bb984a075b7f9fd2a0ab0587"
+        "X-Request-ID": "3ac6d8f8a016872bfb6174dc06916e68"
       },
       "ResponseBody": {
-        "data": [],
+        "data": [
+          {
+            "object": "agent",
+            "id": "MyAgent7",
+            "name": "MyAgent7",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "MyAgent7:1",
+                "name": "MyAgent7",
+                "version": "1",
+                "description": "",
+                "created_at": 1773856935,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "Use MCP tools as needed",
+                  "tools": [
+                    {
+                      "type": "mcp",
+                      "server_label": "api-specs",
+                      "server_url": "https://api.githubcopilot.com/mcp",
+                      "require_approval": "always",
+                      "project_connection_id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sanitized-rg/providers/Microsoft.CognitiveServices/accounts/sanitized-account/projects/sanitized-project/connections/sanitizedconnection"
+                    }
+                  ]
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "MyAgent",
+            "name": "MyAgent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "MyAgent:56",
+                "name": "MyAgent",
+                "version": "56",
+                "description": "You are a helpful agent.",
+                "created_at": 1774996243,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "You are a helpful assistant. You must always provide citations for\n            answers using the tool and render them as: `【message_idx:search_idx†source】`.",
+                  "tools": [
+                    {
+                      "type": "azure_ai_search",
+                      "azure_ai_search": {
+                        "indexes": [
+                          {
+                            "project_connection_id": "",
+                            "index_name": "",
+                            "query_type": "simple"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "myAgent",
+            "name": "myAgent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "myAgent:7",
+                "name": "myAgent",
+                "version": "7",
+                "description": "",
+                "created_at": 1775689807,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1",
+                  "instructions": "You are a prompt agent."
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "myHostedAgent",
+            "name": "myHostedAgent",
+            "versions": {
+              "latest": {
+                "metadata": {
+                  "enableVnextExperience": "true"
+                },
+                "object": "agent.version",
+                "id": "myHostedAgent:1",
+                "name": "myHostedAgent",
+                "version": "1",
+                "description": "",
+                "created_at": 1775876988,
+                "definition": {
+                  "kind": "hosted",
+                  "container_protocol_versions": [
+                    {
+                      "protocol": "responses",
+                      "version": "1.0.0"
+                    }
+                  ],
+                  "cpu": "0.5",
+                  "memory": "1Gi",
+                  "environment_variables": {
+                    "AZURE_OPENAI_ENDPOINT": "https://sanitized.cognitiveservices.azure.com/",
+                    "AZURE_OPENAI_CHAT_DEPLOYMENT_NAME": "gpt-4.1"
+                  },
+                  "image": "balapvregistry.azurecr.io/balapvregistry/sample-agent:latest"
+                },
+                "status": "active",
+                "instance_identity": {
+                  "principal_id": "a35b959e-45f0-404d-9957-3cbf4db3fff0",
+                  "client_id": "b2942fd3-d5f3-48fc-a487-d4a72d29650a"
+                },
+                "blueprint": {
+                  "principal_id": "a35b959e-45f0-404d-9957-3cbf4db3fff0",
+                  "client_id": "a35b959e-45f0-404d-9957-3cbf4db3fff0"
+                },
+                "blueprint_reference": {
+                  "type": "ManagedAgentIdentityBlueprint",
+                  "blueprint_id": "myHostedAgent-6f08f"
+                }
+              }
+            }
+          }
+        ],
+        "first_id": "MyAgent7",
+        "last_id": "myHostedAgent",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents?limit=2&order=asc&before=student-teacher-workflow&api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260413.1 (.NET 10.0.4; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Apr 2026 02:57:06 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "fe90163fcf15421d6e7ed9d92ea2e1a0"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "object": "agent",
+            "id": "openapi-agent",
+            "name": "openapi-agent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "openapi-agent:1",
+                "name": "openapi-agent",
+                "version": "1",
+                "description": "Agent for testing OpenAPI tool capabilities.",
+                "created_at": 1772611859,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "You are a helpful assistant.",
+                  "tools": [
+                    {
+                      "type": "openapi",
+                      "openapi": {
+                        "name": "get_weather",
+                        "description": "Retrieve weather information for a location.",
+                        "spec": {
+                          "openapi": "3.1.0",
+                          "info": {
+                            "title": "get weather data",
+                            "description": "Retrieves current weather data for a location based on wttr.in.",
+                            "version": "v1.0.0"
+                          },
+                          "servers": [
+                            {
+                              "url": "https://wttr.in"
+                            }
+                          ],
+                          "auth": [],
+                          "paths": {
+                            "/{location}": {
+                              "get": {
+                                "description": "Get weather information for a specific location",
+                                "operationId": "GetCurrentWeather",
+                                "parameters": [
+                                  {
+                                    "name": "location",
+                                    "in": "path",
+                                    "description": "City or location to retrieve the weather for",
+                                    "required": true,
+                                    "schema": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  {
+                                    "name": "format",
+                                    "in": "query",
+                                    "description": "Always use j1 value for this parameter",
+                                    "required": true,
+                                    "schema": {
+                                      "type": "string",
+                                      "default": "j1"
+                                    }
+                                  }
+                                ],
+                                "responses": {
+                                  "200": {
+                                    "description": "Successful response",
+                                    "content": {
+                                      "text/plain": {
+                                        "schema": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "404": {
+                                    "description": "Location not found"
+                                  }
+                                },
+                                "deprecated": false
+                              }
+                            }
+                          },
+                          "components": {
+                            "schemes": {}
+                          }
+                        },
+                        "auth": {
+                          "type": "anonymous"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "MyAgent123",
+            "name": "MyAgent123",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "MyAgent123:3",
+                "name": "MyAgent123",
+                "version": "3",
+                "description": "",
+                "created_at": 1772760648,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "You are a helpful assistant.",
+                  "tools": [
+                    {
+                      "type": "azure_function",
+                      "azure_function": {
+                        "function": {
+                          "name": "queue_trigger",
+                          "description": "Get weather for a given location",
+                          "parameters": {
+                            "type": "object",
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "description": "location to determine weather for"
+                              }
+                            },
+                            "required": [
+                              "location"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "input_binding": {
+                          "type": "storage_queue",
+                          "storage_queue": {
+                            "queue_service_endpoint": "https://balapvstorage123.queue.core.windows.net/",
+                            "queue_name": "weather-input-queue"
+                          }
+                        },
+                        "output_binding": {
+                          "type": "storage_queue",
+                          "storage_queue": {
+                            "queue_service_endpoint": "https://balapvstorage123.queue.core.windows.net/",
+                            "queue_name": "weather-output-queue"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "status": "active"
+              }
+            }
+          }
+        ],
+        "first_id": "openapi-agent",
+        "last_id": "MyAgent123",
+        "has_more": true,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents?limit=2&order=asc&after=MyAgent123&before=student-teacher-workflow&api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260413.1 (.NET 10.0.4; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Apr 2026 02:57:09 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "64d19cfbbd36d75254e1691244e61ea4"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "object": "agent",
+            "id": "teacher-agent",
+            "name": "teacher-agent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "teacher-agent:3",
+                "name": "teacher-agent",
+                "version": "3",
+                "description": "",
+                "created_at": 1772827543,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4o-mini",
+                  "instructions": "You are a teacher that create pre-school math question for student and check answer. \n                            If the answer is correct, you stop the conversation by saying [COMPLETE]. \n                            If the answer is wrong, you ask student to fix it."
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "student-agent",
+            "name": "student-agent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "student-agent:3",
+                "name": "student-agent",
+                "version": "3",
+                "description": "",
+                "created_at": 1772827544,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4o-mini",
+                  "instructions": "You are a student who answers questions from the teacher. \n                            When the teacher gives you a question, you answer it."
+                },
+                "status": "active"
+              }
+            }
+          }
+        ],
+        "first_id": "teacher-agent",
+        "last_id": "student-agent",
+        "has_more": false,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents?limit=2&order=asc&after=student-agent&api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260413.1 (.NET 10.0.4; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Apr 2026 02:57:11 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "81239727281c194693d35aeedb041f7e"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "object": "agent",
+            "id": "student-teacher-workflow",
+            "name": "student-teacher-workflow",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "student-teacher-workflow:1",
+                "name": "student-teacher-workflow",
+                "version": "1",
+                "description": "",
+                "created_at": 1773080449,
+                "definition": {
+                  "kind": "workflow",
+                  "workflow": "\nkind: workflow\ntrigger:\n  kind: OnConversationStart\n  id: my_workflow\n  actions:\n    - kind: SetVariable\n      id: set_variable_input_task\n      variable: Local.LatestMessage\n      value: \"=UserMessage(System.LastMessageText)\"\n\n    - kind: CreateConversation\n      id: create_student_conversation\n      conversationId: Local.StudentConversationId\n\n    - kind: CreateConversation\n      id: create_teacher_conversation\n      conversationId: Local.TeacherConversationId\n\n    - kind: InvokeAzureAgent\n      id: student_agent\n      description: The student node\n      conversationId: \"=Local.StudentConversationId\"\n      agent:\n        name: student-agent\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: InvokeAzureAgent\n      id: teacher_agent\n      description: The teacher node\n      conversationId: \"=Local.TeacherConversationId\"\n      agent:\n        name: teacher-agent\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: SendActivity\n      id: send_teacher_reply\n      activity: \"{Last(Local.LatestMessage).Text}\"                \n\n    - kind: SetVariable\n      id: set_variable_turncount\n      variable: Local.TurnCount\n      value: \"=Local.TurnCount + 1\"\n\n    - kind: ConditionGroup\n      id: completion_check\n      conditions:\n        - condition: '=!IsBlank(Find(\"[COMPLETE]\", Upper(Last(Local.LatestMessage).Text)))'\n          id: check_done\n          actions:\n            - kind: EndConversation\n              id: end_workflow\n\n        - condition: \"=Local.TurnCount >= 4\"\n          id: check_turn_count_exceeded\n          actions:\n            - kind: SendActivity\n              id: send_activity_tired\n              activity: \"Let's try again later...I am tired.\"\n\n      elseActions:\n        - kind: GotoAction\n          id: goto_student_agent\n          actionId: student_agent\n"
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "teacher-agent3",
+            "name": "teacher-agent3",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "teacher-agent3:1",
+                "name": "teacher-agent3",
+                "version": "1",
+                "description": "",
+                "created_at": 1773768931,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "You are a teacher that create pre-school math question for student and check answer.\n                            If the answer is correct, you stop the conversation by saying [COMPLETE].\n                            If the answer is wrong, you ask student to fix it."
+                },
+                "status": "active"
+              }
+            }
+          }
+        ],
+        "first_id": "student-teacher-workflow",
+        "last_id": "teacher-agent3",
+        "has_more": true,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents?limit=2&order=asc&after=teacher-agent3&api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260413.1 (.NET 10.0.4; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Apr 2026 02:57:14 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "1e7979d4f3d81b1d519ef84bbc84ce3b"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "object": "agent",
+            "id": "student-agent3",
+            "name": "student-agent3",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "student-agent3:1",
+                "name": "student-agent3",
+                "version": "1",
+                "description": "",
+                "created_at": 1773768932,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "You are a student who answers questions from the teacher.\n                            When the teacher gives you a question, you answer it."
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "student-teacher-workflow3",
+            "name": "student-teacher-workflow3",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "student-teacher-workflow3:1",
+                "name": "student-teacher-workflow3",
+                "version": "1",
+                "description": "",
+                "created_at": 1773768933,
+                "definition": {
+                  "kind": "workflow",
+                  "workflow": "\nkind: workflow\ntrigger:\n  kind: OnConversationStart\n  id: my_workflow\n  actions:\n    - kind: SetVariable\n      id: set_variable_input_task\n      variable: Local.LatestMessage\n      value: \"=UserMessage(System.LastMessageText)\"\n\n    - kind: CreateConversation\n      id: create_student_conversation\n      conversationId: Local.StudentConversationId\n\n    - kind: CreateConversation\n      id: create_teacher_conversation\n      conversationId: Local.TeacherConversationId\n\n    - kind: InvokeAzureAgent\n      id: student_agent\n      description: The student node\n      conversationId: \"=Local.StudentConversationId\"\n      agent:\n        name: {student_agent.name}\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: InvokeAzureAgent\n      id: teacher_agent\n      description: The teacher node\n      conversationId: \"=Local.TeacherConversationId\"\n      agent:\n        name: {teacher_agent.name}\n      input:\n        messages: \"=Local.LatestMessage\"\n      output:\n        messages: Local.LatestMessage\n\n    - kind: SendActivity\n      id: send_teacher_reply\n      activity: \"{{Last(Local.LatestMessage).Text}}\"\n\n    - kind: SetVariable\n      id: set_variable_turncount\n      variable: Local.TurnCount\n      value: \"=Local.TurnCount + 1\"\n\n    - kind: ConditionGroup\n      id: completion_check\n      conditions:\n        - condition: '=!IsBlank(Find(\"[COMPLETE]\", Upper(Last(Local.LatestMessage).Text)))'\n          id: check_done\n          actions:\n            - kind: EndConversation\n              id: end_workflow\n\n        - condition: \"=Local.TurnCount >= 4\"\n          id: check_turn_count_exceeded\n          actions:\n            - kind: SendActivity\n              id: send_activity_tired\n              activity: \"Let's try again later...I am tired.\"\n\n      elseActions:\n        - kind: GotoAction\n          id: goto_student_agent\n          actionId: student_agent\n"
+                },
+                "status": "active"
+              }
+            }
+          }
+        ],
+        "first_id": "student-agent3",
+        "last_id": "student-teacher-workflow3",
+        "has_more": true,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents?limit=2&order=asc&after=student-teacher-workflow3&api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260413.1 (.NET 10.0.4; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Apr 2026 02:57:16 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "d7ecf55b89e343e29dd56494ec0e2b76"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "object": "agent",
+            "id": "teacher-agent2",
+            "name": "teacher-agent2",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "teacher-agent2:1",
+                "name": "teacher-agent2",
+                "version": "1",
+                "description": "",
+                "created_at": 1773769024,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "You are a teacher that create Foundry project question for student and check answer.\n                            Verify student's answer from mcp tools.\n                            If the answer is correct, you stop the conversation by saying [COMPLETE].\n                            If the answer is wrong, you ask student to fix it.",
+                  "tools": [
+                    {
+                      "type": "mcp",
+                      "server_label": "api-specs",
+                      "server_url": "https://gitmcp.io/Azure/azure-rest-api-specs",
+                      "require_approval": "never"
+                    }
+                  ]
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "student-agent2",
+            "name": "student-agent2",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "student-agent2:1",
+                "name": "student-agent2",
+                "version": "1",
+                "description": "",
+                "created_at": 1773769025,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "You are a student who answers questions from the teacher.\n                            When the teacher gives you a question, you answer it using mcp tool.",
+                  "tools": [
+                    {
+                      "type": "mcp",
+                      "server_label": "api-specs",
+                      "server_url": "https://gitmcp.io/Azure/azure-rest-api-specs",
+                      "require_approval": "never"
+                    }
+                  ]
+                },
+                "status": "active"
+              }
+            }
+          }
+        ],
+        "first_id": "teacher-agent2",
+        "last_id": "student-agent2",
+        "has_more": true,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents?limit=2&order=asc&after=student-agent2&api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260413.1 (.NET 10.0.4; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Apr 2026 02:57:19 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "2de7f9cde33520cefc00ff22e7bf87c2"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "object": "agent",
+            "id": "MyAgent7",
+            "name": "MyAgent7",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "MyAgent7:1",
+                "name": "MyAgent7",
+                "version": "1",
+                "description": "",
+                "created_at": 1773856935,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "Use MCP tools as needed",
+                  "tools": [
+                    {
+                      "type": "mcp",
+                      "server_label": "api-specs",
+                      "server_url": "https://api.githubcopilot.com/mcp",
+                      "require_approval": "always",
+                      "project_connection_id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sanitized-rg/providers/Microsoft.CognitiveServices/accounts/sanitized-account/projects/sanitized-project/connections/sanitizedconnection"
+                    }
+                  ]
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "MyAgent",
+            "name": "MyAgent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "MyAgent:56",
+                "name": "MyAgent",
+                "version": "56",
+                "description": "You are a helpful agent.",
+                "created_at": 1774996243,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1-mini",
+                  "instructions": "You are a helpful assistant. You must always provide citations for\n            answers using the tool and render them as: `【message_idx:search_idx†source】`.",
+                  "tools": [
+                    {
+                      "type": "azure_ai_search",
+                      "azure_ai_search": {
+                        "indexes": [
+                          {
+                            "project_connection_id": "",
+                            "index_name": "",
+                            "query_type": "simple"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "status": "active"
+              }
+            }
+          }
+        ],
+        "first_id": "MyAgent7",
+        "last_id": "MyAgent",
+        "has_more": true,
+        "object": "list"
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/agents?limit=2&order=asc&after=MyAgent&api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260413.1 (.NET 10.0.4; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-01",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Apr 2026 02:57:21 GMT",
+        "request-context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "f4a5364f1a96a898eaf71719abd68827"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "object": "agent",
+            "id": "myAgent",
+            "name": "myAgent",
+            "versions": {
+              "latest": {
+                "metadata": {},
+                "object": "agent.version",
+                "id": "myAgent:7",
+                "name": "myAgent",
+                "version": "7",
+                "description": "",
+                "created_at": 1775689807,
+                "definition": {
+                  "kind": "prompt",
+                  "model": "gpt-4.1",
+                  "instructions": "You are a prompt agent."
+                },
+                "status": "active"
+              }
+            }
+          },
+          {
+            "object": "agent",
+            "id": "myHostedAgent",
+            "name": "myHostedAgent",
+            "versions": {
+              "latest": {
+                "metadata": {
+                  "enableVnextExperience": "true"
+                },
+                "object": "agent.version",
+                "id": "myHostedAgent:1",
+                "name": "myHostedAgent",
+                "version": "1",
+                "description": "",
+                "created_at": 1775876988,
+                "definition": {
+                  "kind": "hosted",
+                  "container_protocol_versions": [
+                    {
+                      "protocol": "responses",
+                      "version": "1.0.0"
+                    }
+                  ],
+                  "cpu": "0.5",
+                  "memory": "1Gi",
+                  "environment_variables": {
+                    "AZURE_OPENAI_ENDPOINT": "https://sanitized.cognitiveservices.azure.com/",
+                    "AZURE_OPENAI_CHAT_DEPLOYMENT_NAME": "gpt-4.1"
+                  },
+                  "image": "balapvregistry.azurecr.io/balapvregistry/sample-agent:latest"
+                },
+                "status": "active",
+                "instance_identity": {
+                  "principal_id": "a35b959e-45f0-404d-9957-3cbf4db3fff0",
+                  "client_id": "b2942fd3-d5f3-48fc-a487-d4a72d29650a"
+                },
+                "blueprint": {
+                  "principal_id": "a35b959e-45f0-404d-9957-3cbf4db3fff0",
+                  "client_id": "a35b959e-45f0-404d-9957-3cbf4db3fff0"
+                },
+                "blueprint_reference": {
+                  "type": "ManagedAgentIdentityBlueprint",
+                  "blueprint_id": "myHostedAgent-6f08f"
+                }
+              }
+            }
+          }
+        ],
+        "first_id": "myAgent",
+        "last_id": "myHostedAgent",
         "has_more": false,
         "object": "list"
       }
