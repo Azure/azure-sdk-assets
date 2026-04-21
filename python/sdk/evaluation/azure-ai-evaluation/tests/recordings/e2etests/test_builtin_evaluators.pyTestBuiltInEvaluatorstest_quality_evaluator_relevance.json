@@ -7,9 +7,9 @@
         "Accept": "application/json",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "8259",
+        "Content-Length": "8955",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.14.0",
+        "User-Agent": "azure-ai-evaluation/1.16.5",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
         "X-Stainless-Lang": "python",
@@ -26,7 +26,7 @@
           },
           {
             "role": "user",
-            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to the CONVERSATION_HISTORY using the Relevance definitions provided.\n\nINPUT\n=====\nCONVERSATION_HISTORY: What is the capital of Japan?\nRESPONSE: The capital of Japan is Tokyo.\n\nCONVERSATION_HISTORY is the full dialogue between the user and the agent up to the user's latest message. For single-turn interactions, this will be just the user's query.\nRESPONSE is the agent's reply to the user's latest message.\n\nTASK\n====\nOutput a JSON object with:\n    1) a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the user's queries in the CONVERSATION_HISTORY.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n\nThe explanation should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"explanation\": \"<15-60 words>\",\n  \"score\": <1-5>\n}\n\n\nEVALUATION STEPS\n================\nA. Read the CONVERSATION_HISTORY and RESPONSE carefully.\nB. Identify the user's query from the latest message (use conversation history for context if needed).\nC. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the user's query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nD. Match the response to the best score from the rubric.\nE. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nCONVERSATION_HISTORY: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"explanation\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1\n}\n\n\n**Example B**\nCONVERSATION_HISTORY: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"explanation\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nCONVERSATION_HISTORY: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"explanation\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2\n}\n\n**Example B**\nCONVERSATION_HISTORY: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"explanation\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"explanation\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"explanation\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"explanation\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"explanation\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5\n}\n\n### Multi-turn Conversation Example\nWhen evaluating responses in a multi-turn conversation, consider the conversation context to understand the user's intent:\n\n**Example - Multi-turn Context**\nCONVERSATION_HISTORY: [{\"role\":\"user\",\"content\":\"I'm planning a vacation to Europe.\"},{\"role\":\"assistant\",\"content\":\"That sounds exciting! What time of year are you thinking of traveling?\"},{\"role\":\"user\",\"content\":\"Probably in July. What's the weather like then?\"}]\nRESPONSE: [{\"role\":\"assistant\",\"content\":\"July is summer in Europe with generally warm and pleasant weather. Most countries have temperatures between 20-25°C (68-77°F). It's a popular travel time, so expect crowds at major tourist attractions and higher accommodation prices.\"}]\n\nExpected Output:\n{\n    \"explanation\": \"The response directly addresses the weather question while providing valuable context about crowds and pricing that's relevant to vacation planning established in the conversation.\",\n    \"score\": 5\n}"
+            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to the CONVERSATION_HISTORY using the Relevance definitions provided.\n\nINPUT\n=====\nCONVERSATION_HISTORY: What is the capital of Japan?\nRESPONSE: The capital of Japan is Tokyo.\n\nCONVERSATION_HISTORY is the full dialogue between the user and the agent up to the user's latest message. For single-turn interactions, this will be just the user's query.\nRESPONSE is the agent's reply to the user's latest message.\n\nTASK\n====\nOutput a JSON object with:\n    1) reasoning: a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the user's queries in the CONVERSATION_HISTORY.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n    3) status: \"completed\" if evaluation was performed, or \"skipped\" if evaluation could not be performed.\n\n**Status: Skipped**\nIf the CONVERSATION_HISTORY or RESPONSE is empty or not provided, return status \"skipped\" immediately without scoring:\n```json\n{\"reason\": \"<explain why evaluation was skipped>\", \"score\": null, \"status\": \"skipped\"}\n```\n\nThe reasoning should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"reason\": \"<15-60 words>\",\n  \"score\": <1-5>,\n  \"status\": \"completed\"\n}\n\n\nEVALUATION STEPS\n================\nA. Read the CONVERSATION_HISTORY and RESPONSE carefully.\nB. Identify the user's query from the latest message (use conversation history for context if needed).\nC. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the user's query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nD. Match the response to the best score from the rubric.\nE. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nCONVERSATION_HISTORY: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"reason\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1,\n    \"status\": \"completed\"\n}\n\n\n**Example B**\nCONVERSATION_HISTORY: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"reason\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1,\n    \"status\": \"completed\"\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nCONVERSATION_HISTORY: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"reason\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2,\n  \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"reason\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2,\n  \"status\": \"completed\"\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"reason\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"reason\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3,\n    \"status\": \"completed\"\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"reason\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"reason\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4,\n    \"status\": \"completed\"\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"reason\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"reason\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}\n\n### Multi-turn Conversation Example\nWhen evaluating responses in a multi-turn conversation, consider the conversation context to understand the user's intent:\n\n**Example - Multi-turn Context**\nCONVERSATION_HISTORY: [{\"role\":\"user\",\"content\":\"I'm planning a vacation to Europe.\"},{\"role\":\"assistant\",\"content\":\"That sounds exciting! What time of year are you thinking of traveling?\"},{\"role\":\"user\",\"content\":\"Probably in July. What's the weather like then?\"}]\nRESPONSE: [{\"role\":\"assistant\",\"content\":\"July is summer in Europe with generally warm and pleasant weather. Most countries have temperatures between 20-25°C (68-77°F). It's a popular travel time, so expect crowds at major tourist attractions and higher accommodation prices.\"}]\n\nExpected Output:\n{\n    \"reason\": \"The response directly addresses the weather question while providing valuable context about crowds and pricing that's relevant to vacation planning established in the conversation.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}"
           }
         ],
         "model": "aoai-deployment",
@@ -41,64 +41,106 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "1baf9c45-f82c-4ff0-903f-e7ddfa162818",
-        "azureml-model-session": "d136-20251214213707",
+        "apim-request-id": "3ba92e6b-bf54-4557-85fa-da22d7b852b1",
+        "azureml-model-session": "d20260406121533-f0b01550",
         "Connection": "close",
-        "Content-Length": "826",
+        "Content-Length": "1332",
         "Content-Type": "application/json",
-        "Date": "Thu, 15 Jan 2026 20:27:32 GMT",
+        "Date": "Tue, 21 Apr 2026 18:20:58 GMT",
+        "skip-error-remapping": "true",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-deployment-name": "gpt-4o",
+        "x-ms-deployment-name": "gpt-4.1",
+        "x-ms-is-spilled-over": "false",
         "x-ms-rai-invoked": "true",
-        "x-ms-region": "Sweden Central",
-        "x-ratelimit-limit-requests": "150",
-        "x-ratelimit-limit-tokens": "150000",
-        "x-ratelimit-remaining-requests": "144",
-        "x-ratelimit-remaining-tokens": "132913",
-        "X-Request-ID": "832778ad-126f-4013-8ef5-2516e186fc6b"
+        "x-ms-region": "West US 3",
+        "x-ratelimit-abusepenalty-active": "False",
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "1000000",
+        "x-ratelimit-remaining-requests": "999",
+        "x-ratelimit-remaining-tokens": "998256",
+        "x-ratelimit-renewalperiod-requests": "60",
+        "x-ratelimit-renewalperiod-tokens": "60",
+        "x-ratelimit-reset-requests": "60",
+        "x-ratelimit-reset-tokens": "104",
+        "X-Request-ID": "48b5acd5-e007-4c0d-aea5-2b6d0ac9bbe6"
       },
       "ResponseBody": {
         "choices": [
           {
-            "content_filter_results": {},
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "protected_material_code": {
+                "detected": false,
+                "filtered": false
+              },
+              "protected_material_text": {
+                "detected": false,
+                "filtered": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            },
             "finish_reason": "stop",
             "index": 0,
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "{\n  \"explanation\": \"The response directly answers the user's query by providing the capital of Japan, which is Tokyo. It is accurate and fully addresses the question.\",\n  \"score\": 4\n}",
+              "content": "{\n  \"reason\": \"The response directly and accurately answers the user's question by stating that Tokyo is the capital of Japan. It is concise, complete, and fully relevant to the query without any omissions.\",\n  \"score\": 4,\n  \"status\": \"completed\"\n}",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1768508851,
+        "created": 1776795656,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
         "prompt_filter_results": [
           {
             "prompt_index": 0,
-            "content_filter_results": {}
+            "content_filter_results": {
+              "indirect_attack": {
+                "detected": false,
+                "filtered": false
+              },
+              "jailbreak": {
+                "detected": false,
+                "filtered": false
+              }
+            }
           }
         ],
-        "system_fingerprint": "fp_4a331a0222",
+        "service_tier": "default",
+        "system_fingerprint": "fp_7a7fd0eb44",
         "usage": {
-          "completion_tokens": 43,
+          "completion_tokens": 57,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
             "reasoning_tokens": 0,
             "rejected_prediction_tokens": 0
           },
-          "prompt_tokens": 1586,
+          "prompt_tokens": 1744,
           "prompt_tokens_details": {
             "audio_tokens": 0,
             "cached_tokens": 0
           },
-          "total_tokens": 1629
+          "total_tokens": 1801
         }
       }
     },
@@ -109,9 +151,9 @@
         "Accept": "application/json",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "8248",
+        "Content-Length": "8944",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.14.0",
+        "User-Agent": "azure-ai-evaluation/1.16.5",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
         "X-Stainless-Lang": "python",
@@ -128,7 +170,7 @@
           },
           {
             "role": "user",
-            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to the CONVERSATION_HISTORY using the Relevance definitions provided.\n\nINPUT\n=====\nCONVERSATION_HISTORY: What is the capital of France?`''\"</>{}{{]\nRESPONSE: Paris\n\nCONVERSATION_HISTORY is the full dialogue between the user and the agent up to the user's latest message. For single-turn interactions, this will be just the user's query.\nRESPONSE is the agent's reply to the user's latest message.\n\nTASK\n====\nOutput a JSON object with:\n    1) a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the user's queries in the CONVERSATION_HISTORY.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n\nThe explanation should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"explanation\": \"<15-60 words>\",\n  \"score\": <1-5>\n}\n\n\nEVALUATION STEPS\n================\nA. Read the CONVERSATION_HISTORY and RESPONSE carefully.\nB. Identify the user's query from the latest message (use conversation history for context if needed).\nC. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the user's query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nD. Match the response to the best score from the rubric.\nE. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nCONVERSATION_HISTORY: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"explanation\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1\n}\n\n\n**Example B**\nCONVERSATION_HISTORY: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"explanation\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nCONVERSATION_HISTORY: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"explanation\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2\n}\n\n**Example B**\nCONVERSATION_HISTORY: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"explanation\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"explanation\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"explanation\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"explanation\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"explanation\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5\n}\n\n### Multi-turn Conversation Example\nWhen evaluating responses in a multi-turn conversation, consider the conversation context to understand the user's intent:\n\n**Example - Multi-turn Context**\nCONVERSATION_HISTORY: [{\"role\":\"user\",\"content\":\"I'm planning a vacation to Europe.\"},{\"role\":\"assistant\",\"content\":\"That sounds exciting! What time of year are you thinking of traveling?\"},{\"role\":\"user\",\"content\":\"Probably in July. What's the weather like then?\"}]\nRESPONSE: [{\"role\":\"assistant\",\"content\":\"July is summer in Europe with generally warm and pleasant weather. Most countries have temperatures between 20-25°C (68-77°F). It's a popular travel time, so expect crowds at major tourist attractions and higher accommodation prices.\"}]\n\nExpected Output:\n{\n    \"explanation\": \"The response directly addresses the weather question while providing valuable context about crowds and pricing that's relevant to vacation planning established in the conversation.\",\n    \"score\": 5\n}"
+            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to the CONVERSATION_HISTORY using the Relevance definitions provided.\n\nINPUT\n=====\nCONVERSATION_HISTORY: What is the capital of France?`''\"</>{}{{]\nRESPONSE: Paris\n\nCONVERSATION_HISTORY is the full dialogue between the user and the agent up to the user's latest message. For single-turn interactions, this will be just the user's query.\nRESPONSE is the agent's reply to the user's latest message.\n\nTASK\n====\nOutput a JSON object with:\n    1) reasoning: a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the user's queries in the CONVERSATION_HISTORY.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n    3) status: \"completed\" if evaluation was performed, or \"skipped\" if evaluation could not be performed.\n\n**Status: Skipped**\nIf the CONVERSATION_HISTORY or RESPONSE is empty or not provided, return status \"skipped\" immediately without scoring:\n```json\n{\"reason\": \"<explain why evaluation was skipped>\", \"score\": null, \"status\": \"skipped\"}\n```\n\nThe reasoning should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"reason\": \"<15-60 words>\",\n  \"score\": <1-5>,\n  \"status\": \"completed\"\n}\n\n\nEVALUATION STEPS\n================\nA. Read the CONVERSATION_HISTORY and RESPONSE carefully.\nB. Identify the user's query from the latest message (use conversation history for context if needed).\nC. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the user's query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nD. Match the response to the best score from the rubric.\nE. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nCONVERSATION_HISTORY: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"reason\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1,\n    \"status\": \"completed\"\n}\n\n\n**Example B**\nCONVERSATION_HISTORY: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"reason\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1,\n    \"status\": \"completed\"\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nCONVERSATION_HISTORY: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"reason\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2,\n  \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"reason\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2,\n  \"status\": \"completed\"\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"reason\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"reason\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3,\n    \"status\": \"completed\"\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"reason\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"reason\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4,\n    \"status\": \"completed\"\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"reason\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"reason\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}\n\n### Multi-turn Conversation Example\nWhen evaluating responses in a multi-turn conversation, consider the conversation context to understand the user's intent:\n\n**Example - Multi-turn Context**\nCONVERSATION_HISTORY: [{\"role\":\"user\",\"content\":\"I'm planning a vacation to Europe.\"},{\"role\":\"assistant\",\"content\":\"That sounds exciting! What time of year are you thinking of traveling?\"},{\"role\":\"user\",\"content\":\"Probably in July. What's the weather like then?\"}]\nRESPONSE: [{\"role\":\"assistant\",\"content\":\"July is summer in Europe with generally warm and pleasant weather. Most countries have temperatures between 20-25°C (68-77°F). It's a popular travel time, so expect crowds at major tourist attractions and higher accommodation prices.\"}]\n\nExpected Output:\n{\n    \"reason\": \"The response directly addresses the weather question while providing valuable context about crowds and pricing that's relevant to vacation planning established in the conversation.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}"
           }
         ],
         "model": "aoai-deployment",
@@ -143,64 +185,122 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "7b96d3e5-4901-4638-96b0-c97f2a7c18ef",
-        "azureml-model-session": "d136-20251214213707",
+        "apim-request-id": "2c0fc3dc-a05c-4d67-9308-3bb6e7353867",
+        "azureml-model-session": "d20260406140031-10d8725c",
         "Connection": "close",
-        "Content-Length": "851",
+        "Content-Length": "1532",
         "Content-Type": "application/json",
-        "Date": "Thu, 15 Jan 2026 20:27:32 GMT",
+        "Date": "Tue, 21 Apr 2026 18:21:00 GMT",
+        "skip-error-remapping": "true",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-deployment-name": "gpt-4o",
+        "x-ms-deployment-name": "gpt-4.1",
+        "x-ms-is-spilled-over": "false",
         "x-ms-rai-invoked": "true",
-        "x-ms-region": "Sweden Central",
-        "x-ratelimit-limit-requests": "150",
-        "x-ratelimit-limit-tokens": "150000",
-        "x-ratelimit-remaining-requests": "143",
-        "x-ratelimit-remaining-tokens": "130973",
-        "X-Request-ID": "8a6fc08a-e8a0-4333-8fa4-cb88a4ec927b"
+        "x-ms-region": "West US 3",
+        "x-ratelimit-abusepenalty-active": "False",
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "1000000",
+        "x-ratelimit-remaining-requests": "999",
+        "x-ratelimit-remaining-tokens": "998254",
+        "x-ratelimit-renewalperiod-requests": "60",
+        "x-ratelimit-renewalperiod-tokens": "60",
+        "x-ratelimit-reset-requests": "60",
+        "x-ratelimit-reset-tokens": "104",
+        "X-Request-ID": "6ba612a1-6c2d-40ee-b75e-e0b0b4169813"
       },
       "ResponseBody": {
         "choices": [
           {
-            "content_filter_results": {},
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "protected_material_code": {
+                "detected": false,
+                "filtered": false
+              },
+              "protected_material_text": {
+                "detected": false,
+                "filtered": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            },
             "finish_reason": "stop",
             "index": 0,
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "{\n  \"explanation\": \"The response directly answers the user's query about the capital of France with the correct information, 'Paris'. It fully addresses the question without any omissions.\",\n  \"score\": 4\n}",
+              "content": "{\n  \"reason\": \"The response 'Paris' directly and accurately answers the user's question about the capital of France. It is concise, complete, and fully relevant to the query, with no omissions or extraneous information.\",\n  \"score\": 4,\n  \"status\": \"completed\"\n}",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1768508852,
+        "created": 1776795659,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
         "prompt_filter_results": [
           {
             "prompt_index": 0,
-            "content_filter_results": {}
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "indirect_attack": {
+                "detected": false,
+                "filtered": false
+              },
+              "jailbreak": {
+                "detected": false,
+                "filtered": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
           }
         ],
-        "system_fingerprint": "fp_4a331a0222",
+        "service_tier": "default",
+        "system_fingerprint": "fp_7a7fd0eb44",
         "usage": {
-          "completion_tokens": 45,
+          "completion_tokens": 61,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
             "reasoning_tokens": 0,
             "rejected_prediction_tokens": 0
           },
-          "prompt_tokens": 1588,
+          "prompt_tokens": 1746,
           "prompt_tokens_details": {
             "audio_tokens": 0,
-            "cached_tokens": 1536
+            "cached_tokens": 0
           },
-          "total_tokens": 1633
+          "total_tokens": 1807
         }
       }
     },
@@ -211,9 +311,9 @@
         "Accept": "application/json",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "8238",
+        "Content-Length": "8934",
         "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.14.0",
+        "User-Agent": "azure-ai-evaluation/1.16.5",
         "X-Stainless-Arch": "x64",
         "X-Stainless-Async": "async:asyncio",
         "X-Stainless-Lang": "python",
@@ -230,7 +330,7 @@
           },
           {
             "role": "user",
-            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to the CONVERSATION_HISTORY using the Relevance definitions provided.\n\nINPUT\n=====\nCONVERSATION_HISTORY: What is the capital of Hawaii?\nRESPONSE: Honolulu\n\nCONVERSATION_HISTORY is the full dialogue between the user and the agent up to the user's latest message. For single-turn interactions, this will be just the user's query.\nRESPONSE is the agent's reply to the user's latest message.\n\nTASK\n====\nOutput a JSON object with:\n    1) a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the user's queries in the CONVERSATION_HISTORY.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n\nThe explanation should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"explanation\": \"<15-60 words>\",\n  \"score\": <1-5>\n}\n\n\nEVALUATION STEPS\n================\nA. Read the CONVERSATION_HISTORY and RESPONSE carefully.\nB. Identify the user's query from the latest message (use conversation history for context if needed).\nC. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the user's query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nD. Match the response to the best score from the rubric.\nE. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nCONVERSATION_HISTORY: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"explanation\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1\n}\n\n\n**Example B**\nCONVERSATION_HISTORY: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"explanation\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nCONVERSATION_HISTORY: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"explanation\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2\n}\n\n**Example B**\nCONVERSATION_HISTORY: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"explanation\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"explanation\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"explanation\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"explanation\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"explanation\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"explanation\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5\n}\n\n### Multi-turn Conversation Example\nWhen evaluating responses in a multi-turn conversation, consider the conversation context to understand the user's intent:\n\n**Example - Multi-turn Context**\nCONVERSATION_HISTORY: [{\"role\":\"user\",\"content\":\"I'm planning a vacation to Europe.\"},{\"role\":\"assistant\",\"content\":\"That sounds exciting! What time of year are you thinking of traveling?\"},{\"role\":\"user\",\"content\":\"Probably in July. What's the weather like then?\"}]\nRESPONSE: [{\"role\":\"assistant\",\"content\":\"July is summer in Europe with generally warm and pleasant weather. Most countries have temperatures between 20-25°C (68-77°F). It's a popular travel time, so expect crowds at major tourist attractions and higher accommodation prices.\"}]\n\nExpected Output:\n{\n    \"explanation\": \"The response directly addresses the weather question while providing valuable context about crowds and pricing that's relevant to vacation planning established in the conversation.\",\n    \"score\": 5\n}"
+            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to the CONVERSATION_HISTORY using the Relevance definitions provided.\n\nINPUT\n=====\nCONVERSATION_HISTORY: What is the capital of Hawaii?\nRESPONSE: Honolulu\n\nCONVERSATION_HISTORY is the full dialogue between the user and the agent up to the user's latest message. For single-turn interactions, this will be just the user's query.\nRESPONSE is the agent's reply to the user's latest message.\n\nTASK\n====\nOutput a JSON object with:\n    1) reasoning: a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the user's queries in the CONVERSATION_HISTORY.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n    3) status: \"completed\" if evaluation was performed, or \"skipped\" if evaluation could not be performed.\n\n**Status: Skipped**\nIf the CONVERSATION_HISTORY or RESPONSE is empty or not provided, return status \"skipped\" immediately without scoring:\n```json\n{\"reason\": \"<explain why evaluation was skipped>\", \"score\": null, \"status\": \"skipped\"}\n```\n\nThe reasoning should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"reason\": \"<15-60 words>\",\n  \"score\": <1-5>,\n  \"status\": \"completed\"\n}\n\n\nEVALUATION STEPS\n================\nA. Read the CONVERSATION_HISTORY and RESPONSE carefully.\nB. Identify the user's query from the latest message (use conversation history for context if needed).\nC. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the user's query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nD. Match the response to the best score from the rubric.\nE. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nCONVERSATION_HISTORY: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"reason\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1,\n    \"status\": \"completed\"\n}\n\n\n**Example B**\nCONVERSATION_HISTORY: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"reason\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1,\n    \"status\": \"completed\"\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nCONVERSATION_HISTORY: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"reason\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2,\n  \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"reason\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2,\n  \"status\": \"completed\"\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"reason\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"reason\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3,\n    \"status\": \"completed\"\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"reason\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"reason\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4,\n    \"status\": \"completed\"\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"reason\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"reason\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}\n\n### Multi-turn Conversation Example\nWhen evaluating responses in a multi-turn conversation, consider the conversation context to understand the user's intent:\n\n**Example - Multi-turn Context**\nCONVERSATION_HISTORY: [{\"role\":\"user\",\"content\":\"I'm planning a vacation to Europe.\"},{\"role\":\"assistant\",\"content\":\"That sounds exciting! What time of year are you thinking of traveling?\"},{\"role\":\"user\",\"content\":\"Probably in July. What's the weather like then?\"}]\nRESPONSE: [{\"role\":\"assistant\",\"content\":\"July is summer in Europe with generally warm and pleasant weather. Most countries have temperatures between 20-25°C (68-77°F). It's a popular travel time, so expect crowds at major tourist attractions and higher accommodation prices.\"}]\n\nExpected Output:\n{\n    \"reason\": \"The response directly addresses the weather question while providing valuable context about crowds and pricing that's relevant to vacation planning established in the conversation.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}"
           }
         ],
         "model": "aoai-deployment",
@@ -245,64 +345,122 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "31776e75-62bf-4f7d-9421-3633b25bb12e",
-        "azureml-model-session": "d135-20251214213707",
+        "apim-request-id": "1cbbd99f-1a6a-48ee-9260-9a666dc850de",
+        "azureml-model-session": "d20260406112221-31558014",
         "Connection": "close",
-        "Content-Length": "854",
+        "Content-Length": "1535",
         "Content-Type": "application/json",
-        "Date": "Thu, 15 Jan 2026 20:27:33 GMT",
+        "Date": "Tue, 21 Apr 2026 18:21:03 GMT",
+        "skip-error-remapping": "true",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-deployment-name": "gpt-4o",
+        "x-ms-deployment-name": "gpt-4.1",
+        "x-ms-is-spilled-over": "false",
         "x-ms-rai-invoked": "true",
-        "x-ms-region": "Sweden Central",
-        "x-ratelimit-limit-requests": "150",
-        "x-ratelimit-limit-tokens": "150000",
-        "x-ratelimit-remaining-requests": "142",
-        "x-ratelimit-remaining-tokens": "129036",
-        "X-Request-ID": "7b01195b-c7fa-4b66-b79f-fb5d72014722"
+        "x-ms-region": "West US 3",
+        "x-ratelimit-abusepenalty-active": "False",
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "1000000",
+        "x-ratelimit-remaining-requests": "999",
+        "x-ratelimit-remaining-tokens": "998261",
+        "x-ratelimit-renewalperiod-requests": "60",
+        "x-ratelimit-renewalperiod-tokens": "60",
+        "x-ratelimit-reset-requests": "60",
+        "x-ratelimit-reset-tokens": "104",
+        "X-Request-ID": "658670e5-c213-4013-badd-23d6a2f1040c"
       },
       "ResponseBody": {
         "choices": [
           {
-            "content_filter_results": {},
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "protected_material_code": {
+                "detected": false,
+                "filtered": false
+              },
+              "protected_material_text": {
+                "detected": false,
+                "filtered": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            },
             "finish_reason": "stop",
             "index": 0,
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "{\n  \"explanation\": \"The response directly answers the user's query by providing the capital of Hawaii, which is Honolulu. It is concise and fully addresses the question without any omissions.\",\n  \"score\": 4\n}",
+              "content": "{\n  \"reason\": \"The response 'Honolulu' directly and accurately answers the user's question about the capital of Hawaii. It is concise, complete, and fully relevant to the query, with no omissions or extraneous information.\",\n  \"score\": 4,\n  \"status\": \"completed\"\n}",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1768508853,
+        "created": 1776795661,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
         "prompt_filter_results": [
           {
             "prompt_index": 0,
-            "content_filter_results": {}
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "indirect_attack": {
+                "detected": false,
+                "filtered": false
+              },
+              "jailbreak": {
+                "detected": false,
+                "filtered": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
           }
         ],
-        "system_fingerprint": "fp_4a331a0222",
+        "service_tier": "default",
+        "system_fingerprint": "fp_7a7fd0eb44",
         "usage": {
-          "completion_tokens": 46,
+          "completion_tokens": 62,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
             "reasoning_tokens": 0,
             "rejected_prediction_tokens": 0
           },
-          "prompt_tokens": 1581,
+          "prompt_tokens": 1739,
           "prompt_tokens_details": {
             "audio_tokens": 0,
-            "cached_tokens": 1536
+            "cached_tokens": 0
           },
-          "total_tokens": 1627
+          "total_tokens": 1801
         }
       }
     }
