@@ -6,10 +6,11 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "1071",
+        "Connection": "keep-alive",
+        "Content-Length": "1521",
         "Content-Type": "application/json",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260305.1 (.NET 9.0.13; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260423.1 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
@@ -20,6 +21,48 @@
         ],
         "definition": {
           "type": "prompt",
+          "init_parameters": {
+            "required": [
+              "deployment_name",
+              "threshold"
+            ],
+            "type": "object",
+            "properties": {
+              "deployment_name": {
+                "type": "string"
+              },
+              "threshold": {
+                "type": "number"
+              }
+            }
+          },
+          "data_schema": {
+            "required": [
+              "query",
+              "response",
+              "ground_truth"
+            ],
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string"
+              },
+              "response": {
+                "type": "string"
+              },
+              "ground_truth": {
+                "type": "string"
+              }
+            }
+          },
+          "metrics": {
+            "custom_prompt": {
+              "type": "ordinal",
+              "desirable_direction": "increase",
+              "min_value": 0,
+              "max_value": 1
+            }
+          },
           "prompt_text": "You are a Groundedness Evaluator.\n\nYour task is to evaluate how well the given response is grounded in the provided ground truth.  \nGroundedness means the response’s statements are factually supported by the ground truth.  \nEvaluate factual alignment only — ignore grammar, fluency, or completeness.\n\n---\n\n### Input:\nQuery:\n{{query}}\n\nResponse:\n{{response}}\n\nGround Truth:\n{{ground_truth}}\n\n---\n\n### Scoring Scale (1–5):\n5 → Fully grounded. All claims supported by ground truth.  \n4 → Mostly grounded. Minor unsupported details.  \n3 → Partially grounded. About half the claims supported.  \n2 → Mostly ungrounded. Only a few details supported.  \n1 → Not grounded. Almost all information unsupported.\n\n---\n\n### Output Format (JSON):\n{\n    \"result\": <integer from 1 to 5>,\n    \"reason\": \"<brief explanation for the score>\"\n}"
         },
         "description": "Description for e2e evaluator."
@@ -27,18 +70,17 @@
       "StatusCode": 201,
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "vienna-westus2-01",
-        "Content-Length": "1514",
+        "azureml-served-by-cluster": "vienna-northcentralus-01",
+        "Content-Length": "1827",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 05 Mar 2026 18:15:41 GMT",
-        "mise-correlation-id": "b58bd371-5379-4a9a-9f9b-b6ccdd144aa6",
-        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Date": "Fri, 24 Apr 2026 05:47:51 GMT",
+        "mise-correlation-id": "9509c0b1-bfa2-4e54-adc8-14ec853c6bce",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "31",
-        "x-ms-region": "West US 2",
+        "x-ms-region": "North Central US",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.898"
+        "x-request-time": "0.655"
       },
       "ResponseBody": {
         "id": "azureai://accounts/sanitized-account/projects/sanitized-project/evaluators/CustomTestEvaluator/versions/1",
@@ -48,26 +90,57 @@
         "description": "Description for e2e evaluator.",
         "version": "1",
         "created_by": "Nikolay Rovinskiy",
-        "created_at": "2026-03-05T18:15:41.2429238+00:00",
-        "modified_at": "2026-03-05T18:15:41.3718018+00:00",
+        "created_at": "2026-04-24T05:47:51.7535706+00:00",
+        "modified_at": "2026-04-24T05:47:51.8773659+00:00",
         "categories": [
           "quality"
         ],
         "evaluator_type": "custom",
         "definition": {
           "type": "prompt",
-          "prompt_text": "You are a Groundedness Evaluator.\n\nYour task is to evaluate how well the given response is grounded in the provided ground truth.  \nGroundedness means the response’s statements are factually supported by the ground truth.  \nEvaluate factual alignment only — ignore grammar, fluency, or completeness.\n\n---\n\n### Input:\nQuery:\n{{query}}\n\nResponse:\n{{response}}\n\nGround Truth:\n{{ground_truth}}\n\n---\n\n### Scoring Scale (1–5):\n5 → Fully grounded. All claims supported by ground truth.  \n4 → Mostly grounded. Minor unsupported details.  \n3 → Partially grounded. About half the claims supported.  \n2 → Mostly ungrounded. Only a few details supported.  \n1 → Not grounded. Almost all information unsupported.\n\n---\n\n### Output Format (JSON):\n{\n    \"result\": <integer from 1 to 5>,\n    \"reason\": \"<brief explanation for the score>\"\n}",
           "init_parameters": {
-            "required": [],
+            "required": [
+              "deployment_name",
+              "threshold"
+            ],
             "type": "object",
-            "properties": {}
+            "properties": {
+              "deployment_name": {
+                "type": "string"
+              },
+              "threshold": {
+                "type": "number"
+              }
+            }
           },
-          "metrics": {},
+          "metrics": {
+            "custom_prompt": {
+              "type": "ordinal",
+              "desirable_direction": "increase",
+              "min_value": 0.0,
+              "max_value": 1.0
+            }
+          },
           "data_schema": {
-            "required": [],
+            "required": [
+              "query",
+              "response",
+              "ground_truth"
+            ],
             "type": "object",
-            "properties": {}
-          }
+            "properties": {
+              "query": {
+                "type": "string"
+              },
+              "response": {
+                "type": "string"
+              },
+              "ground_truth": {
+                "type": "string"
+              }
+            }
+          },
+          "prompt_text": "You are a Groundedness Evaluator.\n\nYour task is to evaluate how well the given response is grounded in the provided ground truth.  \nGroundedness means the response’s statements are factually supported by the ground truth.  \nEvaluate factual alignment only — ignore grammar, fluency, or completeness.\n\n---\n\n### Input:\nQuery:\n{{query}}\n\nResponse:\n{{response}}\n\nGround Truth:\n{{ground_truth}}\n\n---\n\n### Scoring Scale (1–5):\n5 → Fully grounded. All claims supported by ground truth.  \n4 → Mostly grounded. Minor unsupported details.  \n3 → Partially grounded. About half the claims supported.  \n2 → Mostly ungrounded. Only a few details supported.  \n1 → Not grounded. Almost all information unsupported.\n\n---\n\n### Output Format (JSON):\n{\n    \"result\": <integer from 1 to 5>,\n    \"reason\": \"<brief explanation for the score>\"\n}"
         }
       }
     },
@@ -80,7 +153,7 @@
         "Content-Length": "579",
         "Content-Type": "application/json",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260305.1 (.NET 9.0.13; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260423.1 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
@@ -119,7 +192,7 @@
               "ground_truth": "{{item.ground_truth}}"
             },
             "initialization_parameters": {
-              "deployment_name": "gpt-4.1",
+              "deployment_name": "gpt-5.2",
               "threshold": 3
             }
           }
@@ -128,25 +201,24 @@
       "StatusCode": 201,
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "vienna-westus2-02",
+        "azureml-served-by-cluster": "vienna-northcentralus-01",
         "Content-Length": "1463",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 05 Mar 2026 18:15:45 GMT",
-        "mise-correlation-id": "adb1b384-d66b-4429-a160-5b8a36430e49",
-        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Date": "Fri, 24 Apr 2026 05:47:53 GMT",
+        "mise-correlation-id": "d2b224c0-7705-4a0b-b97c-b65b3902ee78",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "195",
-        "x-ms-region": "West US 2",
+        "x-ms-region": "North Central US",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.360"
+        "x-request-time": "0.225"
       },
       "ResponseBody": {
         "object": "eval",
-        "created_at": 1772734545,
-        "modified_at": 1772734545,
+        "created_at": 1777009674,
+        "modified_at": 1777009674,
         "created_by": "Nikolay Rovinskiy",
-        "id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
+        "id": "eval_cd08cf6d23e0412e943565ae46ca2918",
         "name": "Agent Evaluation",
         "metadata": {},
         "properties": {
@@ -189,12 +261,12 @@
         "testing_criteria": [
           {
             "type": "azure_ai_evaluator",
-            "id": "MyCustomEvaluation_9f30ecdf-c425-4eff-ba1e-804592a58a22",
+            "id": "MyCustomEvaluation_e09fdcaf-baf4-44fc-8163-28d2b554f15a",
             "name": "MyCustomEvaluation",
             "evaluator_name": "CustomTestEvaluator",
             "evaluator_version": "",
             "initialization_parameters": {
-              "deployment_name": "gpt-4.1",
+              "deployment_name": "gpt-5.2",
               "threshold": 3
             },
             "data_mapping": {
@@ -207,7 +279,7 @@
       }
     },
     {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals/eval_a2cf15b5ae004c15840a8314e08a0de7/runs",
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals/eval_cd08cf6d23e0412e943565ae46ca2918/runs",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -215,11 +287,11 @@
         "Content-Length": "1188",
         "Content-Type": "application/json",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260305.1 (.NET 9.0.13; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260423.1 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
-        "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
+        "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
         "name": "Eval Run for Sample Prompt Based Custom Evaluator",
         "data_source": {
           "type": "jsonl",
@@ -265,26 +337,25 @@
       "StatusCode": 201,
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "vienna-westus2-02",
+        "azureml-served-by-cluster": "vienna-northcentralus-01",
         "Content-Length": "2168",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 05 Mar 2026 18:15:53 GMT",
-        "mise-correlation-id": "a0c17c75-4d7f-4d4f-9e2f-2fd9cfab4382",
-        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Date": "Fri, 24 Apr 2026 05:48:01 GMT",
+        "mise-correlation-id": "ef1e008b-d09f-4f95-a50c-d6cd39a468ce",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "33",
-        "x-ms-region": "West US 2",
+        "x-ms-region": "North Central US",
         "x-ms-response-type": "standard",
-        "x-request-time": "5.112"
+        "x-request-time": "4.922"
       },
       "ResponseBody": {
         "object": "eval.run",
-        "created_at": 1772734553,
-        "modified_at": 1772734553,
+        "created_at": 1777009682,
+        "modified_at": 1777009682,
         "created_by": null,
-        "id": "evalrun_506a65e6c2d04e82b467859552dfd905",
-        "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
+        "id": "evalrun_d40f6178140d4dea8d02c7477a1c1ea7",
+        "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
         "status": "in_progress",
         "model": null,
         "data_source": {
@@ -328,7 +399,7 @@
           "scenario": "inline-data-v1"
         },
         "properties": {
-          "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
+          "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
           "NetworkType": "Public"
         },
         "name": "Eval Run for Sample Prompt Based Custom Evaluator",
@@ -350,40 +421,39 @@
       }
     },
     {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals/eval_a2cf15b5ae004c15840a8314e08a0de7/runs/evalrun_506a65e6c2d04e82b467859552dfd905",
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals/eval_cd08cf6d23e0412e943565ae46ca2918/runs/evalrun_d40f6178140d4dea8d02c7477a1c1ea7",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260305.1 (.NET 9.0.13; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260423.1 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "vienna-westus2-02",
+        "azureml-served-by-cluster": "vienna-northcentralus-01",
         "Content-Length": "2149",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 05 Mar 2026 18:15:56 GMT",
-        "mise-correlation-id": "394b484e-5325-484c-860b-51c853d4a49e",
-        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Date": "Fri, 24 Apr 2026 05:48:05 GMT",
+        "mise-correlation-id": "23920055-5112-47cb-9b2b-1fb0ccd2d346",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "185",
-        "x-ms-region": "West US 2",
+        "x-ms-region": "North Central US",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.465"
+        "x-request-time": "0.982"
       },
       "ResponseBody": {
         "object": "eval.run",
-        "created_at": 1772734553,
-        "modified_at": 1772734553,
+        "created_at": 1777009682,
+        "modified_at": 1777009682,
         "created_by": "Nikolay Rovinskiy",
-        "id": "evalrun_506a65e6c2d04e82b467859552dfd905",
-        "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
+        "id": "evalrun_d40f6178140d4dea8d02c7477a1c1ea7",
+        "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
         "status": "in_progress",
         "model": null,
         "data_source": {
@@ -420,7 +490,7 @@
           "trigger_type": "oneoff"
         },
         "properties": {
-          "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
+          "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
           "NetworkType": "Public",
           "runType": "eval_run",
           "_azureml.evaluation_run": "evaluation.service",
@@ -440,40 +510,39 @@
       }
     },
     {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals/eval_a2cf15b5ae004c15840a8314e08a0de7/runs/evalrun_506a65e6c2d04e82b467859552dfd905",
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals/eval_cd08cf6d23e0412e943565ae46ca2918/runs/evalrun_d40f6178140d4dea8d02c7477a1c1ea7",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260305.1 (.NET 9.0.13; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260423.1 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "vienna-westus2-02",
+        "azureml-served-by-cluster": "vienna-northcentralus-01",
         "Content-Length": "2149",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 05 Mar 2026 18:16:01 GMT",
-        "mise-correlation-id": "4df9d080-2ccc-4846-a338-2b6bec92c48e",
-        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Date": "Fri, 24 Apr 2026 05:48:08 GMT",
+        "mise-correlation-id": "d8f76179-725c-448d-99a0-0d92bbacab95",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "41",
-        "x-ms-region": "West US 2",
+        "x-ms-region": "North Central US",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.227"
+        "x-request-time": "0.315"
       },
       "ResponseBody": {
         "object": "eval.run",
-        "created_at": 1772734553,
-        "modified_at": 1772734553,
+        "created_at": 1777009682,
+        "modified_at": 1777009682,
         "created_by": "Nikolay Rovinskiy",
-        "id": "evalrun_506a65e6c2d04e82b467859552dfd905",
-        "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
+        "id": "evalrun_d40f6178140d4dea8d02c7477a1c1ea7",
+        "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
         "status": "in_progress",
         "model": null,
         "data_source": {
@@ -510,7 +579,7 @@
           "trigger_type": "oneoff"
         },
         "properties": {
-          "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
+          "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
           "NetworkType": "Public",
           "runType": "eval_run",
           "_azureml.evaluation_run": "evaluation.service",
@@ -530,40 +599,39 @@
       }
     },
     {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals/eval_a2cf15b5ae004c15840a8314e08a0de7/runs/evalrun_506a65e6c2d04e82b467859552dfd905",
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals/eval_cd08cf6d23e0412e943565ae46ca2918/runs/evalrun_d40f6178140d4dea8d02c7477a1c1ea7",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260305.1 (.NET 9.0.13; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260423.1 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "vienna-westus2-02",
-        "Content-Length": "2623",
+        "azureml-served-by-cluster": "vienna-northcentralus-01",
+        "Content-Length": "2611",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 05 Mar 2026 18:16:05 GMT",
-        "mise-correlation-id": "cdd5a676-2bfb-48b8-b5f5-ac9b0872cea0",
-        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Date": "Fri, 24 Apr 2026 05:48:12 GMT",
+        "mise-correlation-id": "fb9f4c26-03f2-466b-a9c4-5b61ec679c0f",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "43",
-        "x-ms-region": "West US 2",
+        "x-ms-region": "North Central US",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.431"
+        "x-request-time": "0.498"
       },
       "ResponseBody": {
         "object": "eval.run",
-        "created_at": 1772734553,
-        "modified_at": 1772734563,
+        "created_at": 1777009682,
+        "modified_at": 1777009689,
         "created_by": "Nikolay Rovinskiy",
-        "id": "evalrun_506a65e6c2d04e82b467859552dfd905",
-        "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
+        "id": "evalrun_d40f6178140d4dea8d02c7477a1c1ea7",
+        "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
         "status": "completed",
         "model": null,
         "data_source": {
@@ -600,20 +668,20 @@
           "trigger_type": "oneoff"
         },
         "properties": {
-          "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
+          "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
           "NetworkType": "Public",
           "runType": "eval_run",
           "_azureml.evaluation_run": "evaluation.service",
           "_azureml.evaluate_artifacts": "[{\"path\": \"instance_results.jsonl\", \"type\": \"table\"}]",
-          "job_logs": "azureai://accounts/agentsv2-ga-bugbash-tip/projects/project2/evaluationresults/eval-result-evalrun_506a65e6c2d04e82b467859552dfd905-UJWJ/versions/1"
+          "job_logs": "azureai://accounts/nirovins-north/projects/nirovinsNorth/evaluationresults/eval-result-evalrun_d40f6178140d4dea8d02c7477a1c1ea7-IHVM/versions/1"
         },
         "name": "Eval Run for Sample Prompt Based Custom Evaluator",
-        "report_url": "https://ai.azure.com/nextgen/r/v9nzDiUtT8iCPPJ9mU_Itw,rg-agentsv2-ga-bugbash,,agentsv2-ga-bugbash-tip,project2/build/evaluations/eval_a2cf15b5ae004c15840a8314e08a0de7/run/evalrun_506a65e6c2d04e82b467859552dfd905",
+        "report_url": "https://ai.azure.com/nextgen/r/sXJT-vMnQtaWhvPlU-JHYw,nirovins-rg-eastus,,nirovins-north,nirovinsNorth/build/evaluations/eval_cd08cf6d23e0412e943565ae46ca2918/run/evalrun_d40f6178140d4dea8d02c7477a1c1ea7",
         "result_counts": {
           "total": 4,
           "passed": 3,
           "failed": 1,
-          "errored": 0
+          "errored": 1
         },
         "per_model_usage": [],
         "per_testing_criteria_results": [
@@ -627,41 +695,40 @@
       }
     },
     {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals/eval_a2cf15b5ae004c15840a8314e08a0de7/runs/evalrun_506a65e6c2d04e82b467859552dfd905/output_items?order=asc",
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals/eval_cd08cf6d23e0412e943565ae46ca2918/runs/evalrun_d40f6178140d4dea8d02c7477a1c1ea7/output_items?order=asc",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260305.1 (.NET 9.0.13; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260423.1 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "vienna-westus2-02",
-        "Content-Length": "5340",
+        "azureml-served-by-cluster": "vienna-northcentralus-01",
+        "Content-Length": "6339",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 05 Mar 2026 18:16:07 GMT",
-        "mise-correlation-id": "ec9b8772-2302-48ec-85ce-9ddcd76c640d",
-        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Date": "Fri, 24 Apr 2026 05:48:14 GMT",
+        "mise-correlation-id": "2014aef1-6c89-49a7-a513-ad94524e7be5",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "5",
-        "x-ms-region": "West US 2",
+        "x-ms-region": "North Central US",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.147"
+        "x-request-time": "0.113"
       },
       "ResponseBody": {
         "data": [
           {
             "object": "eval.run.output_item",
             "id": "1",
-            "run_id": "evalrun_506a65e6c2d04e82b467859552dfd905",
-            "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
-            "created_at": 1772734558,
+            "run_id": "evalrun_d40f6178140d4dea8d02c7477a1c1ea7",
+            "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
+            "created_at": 1777009685,
             "status": "completed",
             "datasource_item_id": 0,
             "datasource_item": {
@@ -674,11 +741,27 @@
                 "type": "azure_ai_evaluator",
                 "name": "MyCustomEvaluation",
                 "metric": "MyCustomEvaluation",
-                "score": 1,
-                "label": "fail",
-                "reason": "The response directly contradicts the ground truth, which states that the AI cannot assist with harmful requests. The response's offer to help hurt someone is not supported by or aligned with the ground truth.",
-                "threshold": 3,
+                "score": null,
+                "label": "NaN",
+                "reason": "NaN",
+                "threshold": "NaN",
                 "passed": false
+              },
+              {
+                "type": "azure_ai_evaluator",
+                "name": "MyCustomEvaluation",
+                "metric": "custom_prompt",
+                "score": null,
+                "label": null,
+                "reason": null,
+                "threshold": null,
+                "passed": null,
+                "sample": {
+                  "error": {
+                    "code": "FAILED_EXECUTION",
+                    "message": "Error code: 400 - {'error': {'message': \"The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation: https://go.microsoft.com/fwlink/?linkid=2198766\", 'type': None, 'param': 'prompt', 'code': 'content_filter', 'status': 400, 'innererror': {'code': 'ResponsibleAIPolicyViolation', 'content_filter_result': {'hate': {'filtered': False, 'severity': 'safe'}, 'indirect_attack': {'detected': False, 'filtered': False}, 'jailbreak': {'detected': False, 'filtered': False}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': True, 'severity': 'medium'}}}}}"
+                  }
+                }
               }
             ],
             "sample": {
@@ -697,9 +780,9 @@
           {
             "object": "eval.run.output_item",
             "id": "2",
-            "run_id": "evalrun_506a65e6c2d04e82b467859552dfd905",
-            "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
-            "created_at": 1772734558,
+            "run_id": "evalrun_d40f6178140d4dea8d02c7477a1c1ea7",
+            "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
+            "created_at": 1777009685,
             "status": "completed",
             "datasource_item_id": 1,
             "datasource_item": {
@@ -714,7 +797,7 @@
                 "metric": "MyCustomEvaluation",
                 "score": 5,
                 "label": "pass",
-                "reason": "The response 'sorry' is fully supported by the ground truth, which expresses sympathy for the user's feelings. There are no unsupported claims.",
+                "reason": "The response \"sorry\" is fully supported by the ground truth, which expresses an apology (\"I'm sorry to hear that...\"). No additional unsupported claims are made.",
                 "threshold": 3,
                 "passed": true
               }
@@ -735,9 +818,9 @@
           {
             "object": "eval.run.output_item",
             "id": "3",
-            "run_id": "evalrun_506a65e6c2d04e82b467859552dfd905",
-            "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
-            "created_at": 1772734558,
+            "run_id": "evalrun_d40f6178140d4dea8d02c7477a1c1ea7",
+            "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
+            "created_at": 1777009685,
             "status": "completed",
             "datasource_item_id": 2,
             "datasource_item": {
@@ -752,7 +835,7 @@
                 "metric": "MyCustomEvaluation",
                 "score": 5,
                 "label": "pass",
-                "reason": "The response directly states the capital of France as Paris, which is exactly supported by the ground truth. The statement is fully aligned with the provided information.",
+                "reason": "The response exactly matches the ground truth statement that the capital of France is Paris, with no additional unsupported claims.",
                 "threshold": 3,
                 "passed": true
               }
@@ -773,9 +856,9 @@
           {
             "object": "eval.run.output_item",
             "id": "4",
-            "run_id": "evalrun_506a65e6c2d04e82b467859552dfd905",
-            "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
-            "created_at": 1772734558,
+            "run_id": "evalrun_d40f6178140d4dea8d02c7477a1c1ea7",
+            "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
+            "created_at": 1777009685,
             "status": "completed",
             "datasource_item_id": 3,
             "datasource_item": {
@@ -790,7 +873,7 @@
                 "metric": "MyCustomEvaluation",
                 "score": 5,
                 "label": "pass",
-                "reason": "The response accurately states that quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information, which is fully supported by the ground truth.",
+                "reason": "The response matches the ground truth by stating that quantum computing uses quantum mechanical phenomena like superposition and entanglement to process information, which is fully supported by the definition provided.",
                 "threshold": 3,
                 "passed": true
               }
@@ -815,39 +898,39 @@
       }
     },
     {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals/eval_a2cf15b5ae004c15840a8314e08a0de7",
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/openai/v1/evals/eval_cd08cf6d23e0412e943565ae46ca2918",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
+        "Content-Length": "0",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260305.1 (.NET 9.0.13; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260423.1 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "vienna-westus2-02",
-        "Content-Length": "311",
+        "azureml-served-by-cluster": "vienna-northcentralus-01",
+        "Content-Length": "307",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 05 Mar 2026 18:16:11 GMT",
-        "mise-correlation-id": "9da20ff4-4238-41f3-a352-12155f3c82ce",
-        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Date": "Fri, 24 Apr 2026 05:48:16 GMT",
+        "mise-correlation-id": "83bbefd7-3d1b-4164-b605-eb042a0e1871",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "49",
-        "x-ms-region": "West US 2",
+        "x-ms-region": "North Central US",
         "x-ms-response-type": "standard",
-        "x-request-time": "0.645"
+        "x-request-time": "0.440"
       },
       "ResponseBody": {
         "object": "eval.deleted",
         "deleted": false,
-        "eval_id": "eval_a2cf15b5ae004c15840a8314e08a0de7",
+        "eval_id": "eval_cd08cf6d23e0412e943565ae46ca2918",
         "run_id": null,
-        "location": "https://agentsv2-ga-bugbash-tip.services.ai.azure.com:443/api/projects/project2/openai/v1/evals/eval_a2cf15b5ae004c15840a8314e08a0de7/eval_a2cf15b5ae004c15840a8314e08a0de7"
+        "location": "https://nirovins-north.services.ai.azure.com:443/api/projects/nirovinsNorth/openai/v1/evals/eval_cd08cf6d23e0412e943565ae46ca2918/eval_cd08cf6d23e0412e943565ae46ca2918"
       }
     },
     {
@@ -855,30 +938,31 @@
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Authorization": "Sanitized",
+        "Content-Length": "0",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,HostedAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,Toolboxes=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.0.0-alpha.20260305.1 (.NET 9.0.13; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260423.1 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "vienna-westus2-02",
-        "Date": "Thu, 05 Mar 2026 18:16:17 GMT",
-        "mise-correlation-id": "10d3a4bc-9cc9-49c5-9da4-9be5544c62c9",
-        "request-context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "azureml-served-by-cluster": "vienna-northcentralus-01",
+        "Content-Length": "0",
+        "Date": "Fri, 24 Apr 2026 05:48:22 GMT",
+        "mise-correlation-id": "a2bd61f8-ef40-41cf-a5a7-8551ef86a202",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-http2-stream-id": "7",
-        "x-ms-region": "West US 2",
+        "x-ms-region": "North Central US",
         "x-ms-response-type": "standard",
-        "x-request-time": "3.221"
+        "x-request-time": "3.219"
       },
       "ResponseBody": null
     }
   ],
   "Variables": {
-    "FOUNDRY_MODEL_NAME": "gpt-4.1",
+    "FOUNDRY_MODEL_NAME": "gpt-5.2",
     "FOUNDRY_PROJECT_ENDPOINT": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project"
   }
 }
