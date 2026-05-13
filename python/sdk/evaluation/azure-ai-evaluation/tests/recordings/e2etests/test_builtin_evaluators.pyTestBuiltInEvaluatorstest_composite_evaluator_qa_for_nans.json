@@ -7,178 +7,6 @@
         "Accept": "application/json",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "8918",
-        "Content-Type": "application/json",
-        "User-Agent": "azure-ai-evaluation/1.16.7",
-        "X-Stainless-Arch": "x64",
-        "X-Stainless-Async": "async:asyncio",
-        "X-Stainless-Lang": "python",
-        "X-Stainless-OS": "Other:XXX",
-        "X-Stainless-Package-Version": "vX.X.X",
-        "X-Stainless-Runtime": "CPython",
-        "X-Stainless-Runtime-Version": "3.X.X"
-      },
-      "RequestBody": {
-        "messages": [
-          {
-            "role": "system",
-            "content": "You are a Relevance-Judge, an impartial evaluator that scores how well the RESPONSE addresses the user's queries in the CONVERSATION_HISTORY using the definitions provided."
-          },
-          {
-            "role": "user",
-            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to the CONVERSATION_HISTORY using the Relevance definitions provided.\n\nINPUT\n=====\nCONVERSATION_HISTORY: This's the color?\nRESPONSE: Black\n\nCONVERSATION_HISTORY is the full dialogue between the user and the agent up to the user's latest message. For single-turn interactions, this will be just the user's query.\nRESPONSE is the agent's reply to the user's latest message.\n\nTASK\n====\nOutput a JSON object with:\n    1) reasoning: a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the user's queries in the CONVERSATION_HISTORY.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n    3) status: \"completed\" if evaluation was performed, or \"skipped\" if evaluation could not be performed.\n\n**Status: Skipped**\nIf the CONVERSATION_HISTORY or RESPONSE is empty or not provided, return status \"skipped\" immediately without scoring:\n```json\n{\"reason\": \"<explain why evaluation was skipped>\", \"score\": null, \"status\": \"skipped\"}\n```\n\nThe reasoning should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"reason\": \"<15-60 words>\",\n  \"score\": <1-5>,\n  \"status\": \"completed\"\n}\n\n\nEVALUATION STEPS\n================\nA. Read the CONVERSATION_HISTORY and RESPONSE carefully.\nB. Identify the user's query from the latest message (use conversation history for context if needed).\nC. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the user's query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nD. Match the response to the best score from the rubric.\nE. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nCONVERSATION_HISTORY: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"reason\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1,\n    \"status\": \"completed\"\n}\n\n\n**Example B**\nCONVERSATION_HISTORY: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"reason\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1,\n    \"status\": \"completed\"\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nCONVERSATION_HISTORY: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"reason\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2,\n  \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"reason\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2,\n  \"status\": \"completed\"\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"reason\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"reason\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3,\n    \"status\": \"completed\"\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"reason\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"reason\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4,\n    \"status\": \"completed\"\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"reason\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"reason\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}\n\n### Multi-turn Conversation Example\nWhen evaluating responses in a multi-turn conversation, consider the conversation context to understand the user's intent:\n\n**Example - Multi-turn Context**\nCONVERSATION_HISTORY: [{\"role\":\"user\",\"content\":\"I'm planning a vacation to Europe.\"},{\"role\":\"assistant\",\"content\":\"That sounds exciting! What time of year are you thinking of traveling?\"},{\"role\":\"user\",\"content\":\"Probably in July. What's the weather like then?\"}]\nRESPONSE: [{\"role\":\"assistant\",\"content\":\"July is summer in Europe with generally warm and pleasant weather. Most countries have temperatures between 20-25°C (68-77°F). It's a popular travel time, so expect crowds at major tourist attractions and higher accommodation prices.\"}]\n\nExpected Output:\n{\n    \"reason\": \"The response directly addresses the weather question while providing valuable context about crowds and pricing that's relevant to vacation planning established in the conversation.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}"
-          }
-        ],
-        "model": "aoai-deployment",
-        "frequency_penalty": 0,
-        "max_tokens": 800,
-        "presence_penalty": 0,
-        "response_format": {
-          "type": "json_object"
-        },
-        "temperature": 0.0,
-        "top_p": 1.0
-      },
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "776e201f-6112-4ab4-a061-06f3254736e9",
-        "azureml-model-session": "d20260512085737-d34a12f9",
-        "Connection": "close",
-        "Content-Length": "1756",
-        "Content-Type": "application/json",
-        "Date": "Wed, 13 May 2026 02:34:21 GMT",
-        "skip-error-remapping": "true",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "x-accel-buffering": "no",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-deployment-name": "gpt-4.1",
-        "x-ms-is-spilled-over": "false",
-        "x-ms-rai-invoked": "true",
-        "x-ms-region": "West US 3",
-        "x-ratelimit-abusepenalty-active": "False",
-        "x-ratelimit-key": "gpt-4.1",
-        "x-ratelimit-limit-requests": "1000",
-        "x-ratelimit-limit-tokens": "1000000",
-        "x-ratelimit-remaining-requests": "997",
-        "x-ratelimit-remaining-tokens": "996053",
-        "x-ratelimit-renewalperiod-requests": "60",
-        "x-ratelimit-renewalperiod-tokens": "60",
-        "x-ratelimit-reset-requests": "0",
-        "x-ratelimit-reset-tokens": "0",
-        "X-Request-ID": "d16f1796-fe34-4dc1-864c-e8e8938e72fa"
-      },
-      "ResponseBody": {
-        "choices": [
-          {
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "protected_material_code": {
-                "detected": false,
-                "filtered": false
-              },
-              "protected_material_text": {
-                "detected": false,
-                "filtered": false
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            },
-            "finish_reason": "stop",
-            "index": 0,
-            "logprobs": null,
-            "message": {
-              "annotations": [],
-              "content": "{\n  \"reason\": \"The response 'Black' directly answers the user's question about the color. While brief, it is fully relevant and sufficient given the context and the nature of the query, which does not require elaboration.\",\n  \"score\": 4,\n  \"status\": \"completed\"\n}",
-              "refusal": null,
-              "role": "assistant"
-            }
-          }
-        ],
-        "created": 1778639659,
-        "id": "Sanitized",
-        "model": "aoai-deployment",
-        "object": "chat.completion",
-        "prompt_filter_results": [
-          {
-            "prompt_index": 0,
-            "content_filter_results": {
-              "hate": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "indirect_attack": {
-                "detected": false,
-                "filtered": false
-              },
-              "jailbreak": {
-                "detected": false,
-                "filtered": false
-              },
-              "self_harm": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "sexual": {
-                "filtered": false,
-                "severity": "safe"
-              },
-              "violence": {
-                "filtered": false,
-                "severity": "safe"
-              }
-            }
-          }
-        ],
-        "service_tier": "default",
-        "system_fingerprint": "fp_7a7fd0eb44",
-        "usage": {
-          "completion_tokens": 62,
-          "completion_tokens_details": {
-            "accepted_prediction_tokens": 0,
-            "audio_tokens": 0,
-            "reasoning_tokens": 0,
-            "rejected_prediction_tokens": 0
-          },
-          "latency_checkpoint": {
-            "engine_tbt_ms": 10,
-            "engine_ttft_ms": 71,
-            "engine_ttlt_ms": 696,
-            "pre_inference_ms": 89,
-            "service_tbt_ms": 10,
-            "service_ttft_ms": 918,
-            "service_ttlt_ms": 1543,
-            "total_duration_ms": 1458,
-            "user_visible_ttft_ms": 829
-          },
-          "prompt_tokens": 1737,
-          "prompt_tokens_details": {
-            "audio_tokens": 0,
-            "cached_tokens": 0
-          },
-          "total_tokens": 1799
-        }
-      }
-    },
-    {
-      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2023-07-01-preview",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "api-key": "Sanitized",
-        "Connection": "close",
         "Content-Length": "5069",
         "Content-Type": "application/json",
         "User-Agent": "azure-ai-evaluation/1.16.7",
@@ -213,12 +41,12 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "8c33217e-439d-4959-8fcb-6f5280f75233",
-        "azureml-model-session": "d20260512031911-6a382491",
+        "apim-request-id": "70efe67a-0adc-4ff0-8331-d30d2265f015",
+        "azureml-model-session": "d20260512090137-2d65606b",
         "Connection": "close",
-        "Content-Length": "1705",
+        "Content-Length": "1709",
         "Content-Type": "application/json",
-        "Date": "Wed, 13 May 2026 02:34:20 GMT",
+        "Date": "Wed, 13 May 2026 17:19:57 GMT",
         "skip-error-remapping": "true",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
@@ -232,12 +60,12 @@
         "x-ratelimit-limit-requests": "1000",
         "x-ratelimit-limit-tokens": "1000000",
         "x-ratelimit-remaining-requests": "996",
-        "x-ratelimit-remaining-tokens": "994464",
+        "x-ratelimit-remaining-tokens": "994981",
         "x-ratelimit-renewalperiod-requests": "60",
         "x-ratelimit-renewalperiod-tokens": "60",
         "x-ratelimit-reset-requests": "0",
         "x-ratelimit-reset-tokens": "0",
-        "X-Request-ID": "b2bcfc6c-95f8-4aa4-b400-82fdbbda8f92"
+        "X-Request-ID": "d59bc9cf-947d-46de-9a1e-febcf2285335"
       },
       "ResponseBody": {
         "choices": [
@@ -273,13 +101,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "{\n  \"reason\": \"The predicted answer 'Black' is not similar to the correct answer 'gray'. The information and content are not equivalent, as they refer to different colors.\",\n  \"score\": 1,\n  \"status\": \"completed\"\n}",
+              "content": "{\n  \"reason\": \"The predicted answer 'Black' is not similar to the correct answer 'gray'. Both refer to different colors, and there is no equivalence in information or content.\",\n  \"score\": 1,\n  \"status\": \"completed\"\n}",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1778639659,
+        "created": 1778692797,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -317,7 +145,7 @@
         "service_tier": "default",
         "system_fingerprint": "fp_7a7fd0eb44",
         "usage": {
-          "completion_tokens": 53,
+          "completion_tokens": 55,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
@@ -325,22 +153,22 @@
             "rejected_prediction_tokens": 0
           },
           "latency_checkpoint": {
-            "engine_tbt_ms": 6,
-            "engine_ttft_ms": 37,
-            "engine_ttlt_ms": 367,
-            "pre_inference_ms": 88,
-            "service_tbt_ms": 6,
-            "service_ttft_ms": 1299,
-            "service_ttlt_ms": 1626,
-            "total_duration_ms": 1543,
-            "user_visible_ttft_ms": 1211
+            "engine_tbt_ms": 11,
+            "engine_ttft_ms": 62,
+            "engine_ttlt_ms": 694,
+            "pre_inference_ms": 78,
+            "service_tbt_ms": 12,
+            "service_ttft_ms": 443,
+            "service_ttlt_ms": 1074,
+            "total_duration_ms": 1002,
+            "user_visible_ttft_ms": 365
           },
           "prompt_tokens": 950,
           "prompt_tokens_details": {
             "audio_tokens": 0,
             "cached_tokens": 0
           },
-          "total_tokens": 1003
+          "total_tokens": 1005
         }
       }
     },
@@ -351,7 +179,7 @@
         "Accept": "application/json",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "6804",
+        "Content-Length": "8915",
         "Content-Type": "application/json",
         "User-Agent": "azure-ai-evaluation/1.16.7",
         "X-Stainless-Arch": "x64",
@@ -366,11 +194,11 @@
         "messages": [
           {
             "role": "system",
-            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include CONTEXT, QUERY, and RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
+            "content": "You are a Relevance-Judge, an impartial evaluator that scores how well the RESPONSE addresses the user's queries in the CONVERSATION_HISTORY using the definitions provided."
           },
           {
             "role": "user",
-            "content": "# Definition\n**Groundedness** refers to how well an answer is anchored in the provided context, evaluating its relevance, accuracy, and completeness based exclusively on that context. It assesses the extent to which the answer directly and fully addresses the question without introducing unrelated or incorrect information.\n\n> Context is the source of truth for evaluating the response. If it's empty, rely on the tool results in the response and query.\n> Evaluate the groundedness of the response message, not the chat history.\n\n# Ratings\n## [Groundedness: 1] (Completely Unrelated Response)\n**Definition:** An answer that does not relate to the question or the context in any way.\n  - Does not relate to the question or context at all.\n  - Talks about the general topic but does not respond to the query.\n\n**Examples:**\n  **Context:** The company's annual meeting will be held next Thursday.\n  **Query:** When is the company's annual meeting?\n  **Response:** I enjoy hiking in the mountains during summer.\n\n  **Context:** The museum will exhibit modern art pieces from various local artists.\n  **Query:** What kind of art will be exhibited at the museum?\n  **Response:** Museums are important cultural institutions.\n\n## [Groundedness: 2] (Attempts to Respond but Contains Incorrect Information)\n**Definition:** An answer that attempts to respond to the question but includes incorrect information not supported by the context. It may misstate facts, misinterpret the context, or provide erroneous details. Even if some points are correct, the presence of inaccuracies makes the response unreliable.\n\n**Examples:**\n  **Context:** - The festival starts on June 5th and features international musicians.\n  **Query:** When does the festival start?\n  **Response:** The festival starts on July 5th and features local artists.\n\n  **Context:** bakery_menu.txt: - Croissant au Beurre — flaky, buttery croissant\n  **Query:** [{\"role\":\"user\",\"content\":\"Are there croissants?\"}]\n  **Response:** [{\"role\":\"assistant\",\"content\":\"Yes, Croissant au Beurre is on the menu, served with jam.\"}]\n\n## [Groundedness: 3] (Nothing to be Grounded)\nDefinition: An answer that does not provide any information that can be evaluated against the context. This includes responses that are asking for clarification, providing polite fillers, or follow-up questions.\n\n**Examples:**\n  **Context:**\n  **Query:** [{\"role\":\"user\",\"content\":\"How many eggs are needed for the recipe?\"}, {\"role\":\"tool\",\"content\":\"tool_result\": [{\"file_name\": \"recipe.txt\", \"content\": \"The recipe requires two eggs and one cup of milk.\"}]}, {\"role\":\"assistant\",\"content\":\"You need three eggs for the recipe.\"}, {\"role\":\"user\",\"content\":\"Thank you.\"}]\n  **Response:** [{\"role\":\"assistant\",\"content\":\"You're welcome, anything else I can help with?\"}]\n\n## [Groundedness: 4] (Partially Correct Response)\n**Definition:** An answer that provides a correct response to the question but is incomplete or lacks specific details mentioned in the context. It captures some of the necessary information but omits key elements needed for a full understanding.\n\n**Examples:**\n  **Context:** - store_details.txt: The bookstore offers a 15% discount to students and a 10% discount to senior citizens.\n  **Query:** [{\"role\":\"user\",\"content\":\"What discount does the bookstore offer to students, if any?\"}]\n  **Response:** [{\"role\":\"assistant\",\"content\":\"Yes, students get a discount at the bookstore.\"}]\n\n  **Context:** The company's headquarters are located in Berlin, Germany.\n  **Query:** Where are the company's headquarters?\n  **Response:** The company's headquarters are in Germany.\n\n## [Groundedness: 5] (Fully Correct and Complete Response)\n**Definition:** An answer that thoroughly and accurately responds to the question, including all relevant details from the context. It directly addresses the question with precise information, demonstrating complete understanding without adding extraneous information.\n\n**Examples:**\n  **Context:** Cairo is the capital of Japan.\n  **Query:** [{\"role\":\"user\",\"content\":\"What is the capital of Japan?\"}]\n  **Response:** [{\"role\":\"assistant\",\"content\":\"The capital of Japan is Cairo.\"}]\n\n  **Context:** The author released her latest novel, 'The Silent Echo', on September 1st.\n  **Query:** [{\"role\":\"user\",\"content\":\"When was 'The Silent Echo' released?\"}]\n  **Response:** [{\"role\":\"assistant\",\"content\":\"The 'Silent Echo' was released on September 1st.\"}]\n\n  **Context:** \n  **Query:** By what date must participants register to receive early bird pricing?\n  **Response:** [{\"role\":\"tool\",\"content\":\"tool_result\": [{\"file_name\": \"store_guidelines.txt\", \"content\": \"Participants registering before and including May 31st will be eligible for early bird pricing.\"}]}, {\"role\":\"assistant\",\"content\":\"Participants must register by May 31st to receive early bird pricing.\"}]\n\n\n# Data\nCONTEXT: gray\nQUERY: This's the color?\nRESPONSE: Black\n\n\n# Tasks\n## Please provide your assessment for the previous RESPONSE message in relation to the CONTEXT, QUERY and RESPONSE tools based on the Definitions above.\nYour output must be a valid JSON object with exactly these keys:\n  - reason: a string explaining your thought process and assessment. Start with \"Let's think step by step:\". When status is \"skipped\", explain why evaluation was skipped.\n  - score: an integer value between 1 and 5 based on the level definitions above. The score you give MUST be an integer score (i.e., 1, 2...) based on the levels of the definitions. Set to null when status is \"skipped\".\n  - status: a string indicating the evaluation status. Must be one of:\n      - \"completed\": evaluation was performed normally.\n      - \"skipped\": evaluation was not performed because the CONTEXT, QUERY, or RESPONSE is empty or not provided. When skipped, set score to null.\n\n# Output"
+            "content": "ROLE\n====\nYou are a Relevance Evaluator. Your task is to judge how relevant a RESPONSE is to the CONVERSATION_HISTORY using the Relevance definitions provided.\n\nINPUT\n=====\nCONVERSATION_HISTORY: This's the color?\nRESPONSE: Black\n\nCONVERSATION_HISTORY is the full dialogue between the user and the agent up to the user's latest message. For single-turn interactions, this will be just the user's query.\nRESPONSE is the agent's reply to the user's latest message.\n\nTASK\n====\nOutput a JSON object with:\n    1) reason: a concise explanation of 15-60 words justifying your score based on how well the response is relevant to the user's queries in the CONVERSATION_HISTORY.\n    2) an integer score from 1 (very poor) to 5 (excellent) using the rubric below.\n    3) status: \"completed\" if evaluation was performed, or \"skipped\" if evaluation could not be performed.\n\n**Status: Skipped**\nIf the CONVERSATION_HISTORY or RESPONSE is empty or not provided, return status \"skipped\" immediately without scoring:\n```json\n{\"reason\": \"<explain why evaluation was skipped>\", \"score\": null, \"status\": \"skipped\"}\n```\n\nThe reasoning should always precede the score and should clearly justify the score based on the rubric definitions.\nResponse format exactly as follows:\n\n{\n  \"reason\": \"<15-60 words>\",\n  \"score\": <1-5>,\n  \"status\": \"completed\"\n}\n\n\nEVALUATION STEPS\n================\nA. Read the CONVERSATION_HISTORY and RESPONSE carefully.\nB. Identify the user's query from the latest message (use conversation history for context if needed).\nC. Compare the RESPONSE against the rubric below:\n    - Does the response directly address the user's query?\n    - Is the information complete, partial, or off-topic?\n    - Is it vague, generic, or insightful?\nD. Match the response to the best score from the rubric.\nE. Provide a short explanation and the score using the required format.\n\nSCORING RUBRIC\n==============\n\n### Score 1 - Irrelevant Response\nDefinition: The response is unrelated to the question. It provides off-topic information and does not attempt to address the question posed.\n\n**Example A**\nCONVERSATION_HISTORY: What is the team preparing for?\nRESPONSE: I went grocery shopping yesterday evening.\n\nExpected Output:\n{\n    \"reason\": \"The response is entirely off-topic and doesn't address the question.\",\n    \"score\": 1,\n    \"status\": \"completed\"\n}\n\n\n**Example B**\nCONVERSATION_HISTORY: When will the company's new product line launch?\nRESPONSE: International travel can be very rewarding and educational.\n\nExpected Output:\n{\n    \"reason\": \"The response is completely irrelevant to the product launch question.\",\n    \"score\": 1,\n    \"status\": \"completed\"\n}\n\n\n### Score 2 – Related but Unhelpful / Superficial\nDefinition: The response is loosely or formally related to the query but fails to deliver any meaningful, specific, or useful information. This includes vague phrases, non-answers, or failure/error messages.\n\n**Example A**\nCONVERSATION_HISTORY: What is the event about?\nRESPONSE: It’s something important.\n\nExpected Output:\n{\n  \"reason\": \"The response vaguely refers to the query topic but lacks specific or informative content.\",\n  \"score\": 2,\n  \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What’s the weather in Paris?\nRESPONSE: I tried to find the forecast but the query failed.\n\nExpected Output:\n{\n  \"reason\": \"The response acknowledges the query but provides no usable weather information. It is related but unhelpful.\",\n  \"score\": 2,\n  \"status\": \"completed\"\n}\n\n### Score 3 - Partially Relevant / Incomplete\nDefinition: The response addresses the query and includes relevant information, but omits essential components or detail. The answer is on-topic but insufficient to fully satisfy the request.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex has a gym.\n\nExpected Output:\n{\n    \"reason\": \"The response mentions one amenity but does not provide a fuller list or clarify whether other standard features (like parking or security) are included. It partially addresses the query but lacks completeness.\",\n    \"score\": 3,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: It includes priority customer support.\n\nExpected Output:\n{\n    \"reason\": \"The response identifies one service but omits other likely components of a premium membership (e.g., exclusive content or discounts). The information is relevant but incomplete.\",\n    \"score\": 3,\n    \"status\": \"completed\"\n}\n\n\n\n### Score 4 - Fully Relevant / Sufficient Response\nDefinition: The response fully addresses the question with accurate and sufficient information, covering all essential aspects. Very minor omissions are acceptable as long as the core information is intact and the intent is clearly conveyed.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security.\n\nExpected Output:\n{\n    \"reason\": \"The response mentions multiple key amenities likely to be relevant to most users. While it may not list every feature, it clearly conveys the core offerings of the complex.\",\n    \"score\": 4,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases.\n\nExpected Output:\n{\n    \"reason\": \"The response outlines all major services expected from a premium membership. Even if a minor service is not mentioned, the core value is clearly and fully represented.\",\n    \"score\": 4,\n    \"status\": \"completed\"\n}\n\n\n### Score 5 - Comprehensive Response with Insights\nDefinition: The response not only fully and accurately answers the question, but also adds meaningful elaboration, interpretation, or context that enhances the user's understanding. This goes beyond just listing relevant details — it offers insight into why the information matters, how it's useful, or what impact it has.\n\n**Example A**\nCONVERSATION_HISTORY: What amenities does the new apartment complex provide?\nRESPONSE: The apartment complex provides a gym, swimming pool, and 24/7 security, designed to offer residents a comfortable and active lifestyle while ensuring their safety.\n\nExpected Output:\n{\n    \"reason\": \"The response fully lists key amenities and additionally explains how these features contribute to resident experience, enhancing the usefulness of the information.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}\n\n**Example B**\nCONVERSATION_HISTORY: What services does the premium membership include?\nRESPONSE: The premium membership includes priority customer support, exclusive content access, and early product releases — tailored for users who want quicker resolutions and first access to new features.\n\nExpected Output:\n{\n    \"reason\": \"The response covers all essential services and adds valuable insight about the target user and benefits, enriching the response beyond basic listing.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}\n\n### Multi-turn Conversation Example\nWhen evaluating responses in a multi-turn conversation, consider the conversation context to understand the user's intent:\n\n**Example - Multi-turn Context**\nCONVERSATION_HISTORY: [{\"role\":\"user\",\"content\":\"I'm planning a vacation to Europe.\"},{\"role\":\"assistant\",\"content\":\"That sounds exciting! What time of year are you thinking of traveling?\"},{\"role\":\"user\",\"content\":\"Probably in July. What's the weather like then?\"}]\nRESPONSE: [{\"role\":\"assistant\",\"content\":\"July is summer in Europe with generally warm and pleasant weather. Most countries have temperatures between 20-25°C (68-77°F). It's a popular travel time, so expect crowds at major tourist attractions and higher accommodation prices.\"}]\n\nExpected Output:\n{\n    \"reason\": \"The response directly addresses the weather question while providing valuable context about crowds and pricing that's relevant to vacation planning established in the conversation.\",\n    \"score\": 5,\n    \"status\": \"completed\"\n}"
           }
         ],
         "model": "aoai-deployment",
@@ -385,12 +213,12 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "f66a1545-3ecd-422b-9d7c-e47c962da260",
-        "azureml-model-session": "d20260512040939-5cf6952b",
+        "apim-request-id": "dd9ea512-4f3e-4857-b049-5ad44c13ac47",
+        "azureml-model-session": "d20260512094853-69f57caa",
         "Connection": "close",
-        "Content-Length": "2031",
+        "Content-Length": "1768",
         "Content-Type": "application/json",
-        "Date": "Wed, 13 May 2026 02:34:21 GMT",
+        "Date": "Wed, 13 May 2026 17:19:59 GMT",
         "skip-error-remapping": "true",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
@@ -403,13 +231,13 @@
         "x-ratelimit-key": "gpt-4.1",
         "x-ratelimit-limit-requests": "1000",
         "x-ratelimit-limit-tokens": "1000000",
-        "x-ratelimit-remaining-requests": "999",
-        "x-ratelimit-remaining-tokens": "998623",
+        "x-ratelimit-remaining-requests": "998",
+        "x-ratelimit-remaining-tokens": "997286",
         "x-ratelimit-renewalperiod-requests": "60",
         "x-ratelimit-renewalperiod-tokens": "60",
         "x-ratelimit-reset-requests": "0",
         "x-ratelimit-reset-tokens": "0",
-        "X-Request-ID": "bf1973c7-e915-4b8d-a0dd-a8c627686c16"
+        "X-Request-ID": "8b3e7338-6ade-4a33-9093-eb8759e170e0"
       },
       "ResponseBody": {
         "choices": [
@@ -445,13 +273,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "{\n  \"reason\": \"Let's think step by step: The context provided is 'gray', which clearly indicates the color in question. The query asks if 'this' is the color, referring to the context. The response given is 'Black', which is incorrect and not supported by the context. The response attempts to answer the question but provides inaccurate information, making it unreliable. According to the definitions, this fits Groundedness: 2, as it attempts to respond but contains incorrect information.\",\n  \"score\": 2,\n  \"status\": \"completed\"\n}",
+              "content": "{\n  \"reason\": \"The response 'Black' directly answers the user's question about the color. It is concise and fully relevant, though it does not provide any additional context or insight. The answer is sufficient for the query posed.\",\n  \"score\": 4,\n  \"status\": \"completed\"\n}",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1778639659,
+        "created": 1778692797,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -489,7 +317,7 @@
         "service_tier": "default",
         "system_fingerprint": "fp_7a7fd0eb44",
         "usage": {
-          "completion_tokens": 116,
+          "completion_tokens": 63,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
@@ -497,22 +325,194 @@
             "rejected_prediction_tokens": 0
           },
           "latency_checkpoint": {
-            "engine_tbt_ms": 11,
-            "engine_ttft_ms": 63,
-            "engine_ttlt_ms": 1389,
-            "pre_inference_ms": 81,
-            "service_tbt_ms": 12,
-            "service_ttft_ms": 915,
-            "service_ttlt_ms": 2243,
-            "total_duration_ms": 2168,
-            "user_visible_ttft_ms": 833
+            "engine_tbt_ms": 26,
+            "engine_ttft_ms": 141,
+            "engine_ttlt_ms": 1765,
+            "pre_inference_ms": 99,
+            "service_tbt_ms": 27,
+            "service_ttft_ms": 546,
+            "service_ttlt_ms": 2236,
+            "total_duration_ms": 2134,
+            "user_visible_ttft_ms": 447
           },
-          "prompt_tokens": 1377,
+          "prompt_tokens": 1737,
           "prompt_tokens_details": {
             "audio_tokens": 0,
-            "cached_tokens": 1152
+            "cached_tokens": 0
           },
-          "total_tokens": 1493
+          "total_tokens": 1800
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.openai.azure.com/openai/deployments/aoai-deployment/chat/completions?api-version=2023-07-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "api-key": "Sanitized",
+        "Connection": "close",
+        "Content-Length": "6777",
+        "Content-Type": "application/json",
+        "User-Agent": "azure-ai-evaluation/1.16.7",
+        "X-Stainless-Arch": "x64",
+        "X-Stainless-Async": "async:asyncio",
+        "X-Stainless-Lang": "python",
+        "X-Stainless-OS": "Other:XXX",
+        "X-Stainless-Package-Version": "vX.X.X",
+        "X-Stainless-Runtime": "CPython",
+        "X-Stainless-Runtime-Version": "3.X.X"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include a QUERY and a RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
+          },
+          {
+            "role": "user",
+            "content": "# Definition\n**Coherence** refers to the logical and orderly presentation of ideas in a response, allowing the reader to easily follow and understand the writer's train of thought. A coherent answer directly addresses the question with clear connections between sentences and paragraphs, using appropriate transitions and a logical sequence of ideas.\n\n# Ratings\n## [Coherence: 1] (Incoherent Response)\n**Definition:** The response lacks coherence entirely. It consists of disjointed words or phrases that do not form complete or meaningful sentences. There is no logical connection to the question, making the response incomprehensible.\n\n**Examples:**\n  **Query:** What are the benefits of renewable energy?\n  **Response:** Wind sun green jump apple silence over.\n\n  **Query:** Explain the process of photosynthesis.\n  **Response:** Plants light water flying blue music.\n\n## [Coherence: 2] (Poorly Coherent Response)\n**Definition:** The response shows minimal coherence with fragmented sentences and limited connection to the question. It contains some relevant keywords but lacks logical structure and clear relationships between ideas, making the overall message difficult to understand.\n\n**Examples:**\n  **Query:** How does vaccination work?\n  **Response:** Vaccines protect disease. Immune system fight. Health better.\n\n  **Query:** Describe how a bill becomes a law.\n  **Response:** Idea proposed. Congress discuss vote. President signs.\n\n## [Coherence: 3] (Partially Coherent Response)\n**Definition:** The response partially addresses the question with some relevant information but exhibits issues in the logical flow and organization of ideas. Connections between sentences may be unclear or abrupt, requiring the reader to infer the links. The response may lack smooth transitions and may present ideas out of order.\n\n**Examples:**\n  **Query:** What causes earthquakes?\n  **Response:** Earthquakes happen when tectonic plates move suddenly. Energy builds up then releases. Ground shakes and can cause damage.\n\n  **Query:** Explain the importance of the water cycle.\n  **Response:** The water cycle moves water around Earth. Evaporation, then precipitation occurs. It supports life by distributing water.\n\n## [Coherence: 4] (Coherent Response)\n**Definition:** The response is coherent and effectively addresses the question. Ideas are logically organized with clear connections between sentences and paragraphs. Appropriate transitions are used to guide the reader through the response, which flows smoothly and is easy to follow.\n\n**Examples:**\n  **Query:** What is the water cycle and how does it work?\n  **Response:** The water cycle is the continuous movement of water on Earth through processes like evaporation, condensation, and precipitation. Water evaporates from bodies of water, forms clouds through condensation, and returns to the surface as precipitation. This cycle is essential for distributing water resources globally.\n\n  **Query:** Describe the role of mitochondria in cellular function.\n  **Response:** Mitochondria are organelles that produce energy for the cell. They convert nutrients into ATP through cellular respiration. This energy powers various cellular activities, making mitochondria vital for cell survival.\n\n## [Coherence: 5] (Highly Coherent Response)\n**Definition:** The response is exceptionally coherent, demonstrating sophisticated organization and flow. Ideas are presented in a logical and seamless manner, with excellent use of transitional phrases and cohesive devices. The connections between concepts are clear and enhance the reader's understanding. The response thoroughly addresses the question with clarity and precision.\n\n**Examples:**\n  **Query:** Analyze the economic impacts of climate change on coastal cities.\n  **Response:** Climate change significantly affects the economies of coastal cities through rising sea levels, increased flooding, and more intense storms. These environmental changes can damage infrastructure, disrupt businesses, and lead to costly repairs. For instance, frequent flooding can hinder transportation and commerce, while the threat of severe weather may deter investment and tourism. Consequently, cities may face increased expenses for disaster preparedness and mitigation efforts, straining municipal budgets and impacting economic growth.\n\n  **Query:** Discuss the significance of the Monroe Doctrine in shaping U.S. foreign policy.\n  **Response:** The Monroe Doctrine was a pivotal policy declared in 1823 that asserted U.S. opposition to European colonization in the Americas. By stating that any intervention by external powers in the Western Hemisphere would be viewed as a hostile act, it established the U.S. as a protector of the region. This doctrine shaped U.S. foreign policy by promoting isolation from European conflicts while justifying American influence and expansion in the hemisphere. Its long-term significance lies in its enduring influence on international relations and its role in defining the U.S. position in global affairs.\n\n\n# Data\nQUERY: This's the color?\nRESPONSE: Black\n\n\n# Tasks\n## Please provide your assessment for the previous RESPONSE in relation to the QUERY based on the Definitions above.\nYour output must be a valid JSON object with exactly these keys:\n  - reason: a string explaining your thought process and assessment. Start with \"Let's think step by step:\". When status is \"skipped\", explain why evaluation was skipped.\n  - score: an integer value between 1 and 5 based on the level definitions above. The score you give MUST be an integer score (i.e., 1, 2...) based on the levels of the definitions. Set to null when status is \"skipped\".\n  - status: a string indicating the evaluation status. Must be one of:\n      - \"completed\": evaluation was performed normally.\n      - \"skipped\": evaluation was not performed because the QUERY or RESPONSE is empty or not provided. When skipped, set score to null.\n\n# Output"
+          }
+        ],
+        "model": "aoai-deployment",
+        "frequency_penalty": 0,
+        "max_tokens": 800,
+        "presence_penalty": 0,
+        "response_format": {
+          "type": "json_object"
+        },
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "0d507a10-327b-4d11-b880-f23542e6f5ea",
+        "azureml-model-session": "d20260512233858-81d08118",
+        "Connection": "close",
+        "Content-Length": "2112",
+        "Content-Type": "application/json",
+        "Date": "Wed, 13 May 2026 17:19:59 GMT",
+        "skip-error-remapping": "true",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-accel-buffering": "no",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-deployment-name": "gpt-4.1",
+        "x-ms-is-spilled-over": "false",
+        "x-ms-rai-invoked": "true",
+        "x-ms-region": "West US 3",
+        "x-ratelimit-abusepenalty-active": "False",
+        "x-ratelimit-key": "gpt-4.1",
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "1000000",
+        "x-ratelimit-remaining-requests": "998",
+        "x-ratelimit-remaining-tokens": "996336",
+        "x-ratelimit-renewalperiod-requests": "60",
+        "x-ratelimit-renewalperiod-tokens": "60",
+        "x-ratelimit-reset-requests": "0",
+        "x-ratelimit-reset-tokens": "0",
+        "X-Request-ID": "26deb93a-379f-4cdb-b12c-067188c93bcd"
+      },
+      "ResponseBody": {
+        "choices": [
+          {
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "protected_material_code": {
+                "detected": false,
+                "filtered": false
+              },
+              "protected_material_text": {
+                "detected": false,
+                "filtered": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            },
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "annotations": [],
+              "content": "{\n  \"reason\": \"Let's think step by step: The query 'This's the color?' is somewhat unclear but appears to be asking for the identification of a color. The response 'Black' is a single word that directly answers the implied question. While the response is extremely brief, it is logically connected to the query and is not incoherent or fragmented. However, it lacks any elaboration, transitions, or organization, but it does not exhibit disjointedness or partial coherence. Therefore, it is coherent in its simplicity, directly addressing the question in a logical manner.\",\n  \"score\": 4,\n  \"status\": \"completed\"\n}",
+              "refusal": null,
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1778692797,
+        "id": "Sanitized",
+        "model": "aoai-deployment",
+        "object": "chat.completion",
+        "prompt_filter_results": [
+          {
+            "prompt_index": 0,
+            "content_filter_results": {
+              "hate": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "indirect_attack": {
+                "detected": false,
+                "filtered": false
+              },
+              "jailbreak": {
+                "detected": false,
+                "filtered": false
+              },
+              "self_harm": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "sexual": {
+                "filtered": false,
+                "severity": "safe"
+              },
+              "violence": {
+                "filtered": false,
+                "severity": "safe"
+              }
+            }
+          }
+        ],
+        "service_tier": "default",
+        "system_fingerprint": "fp_7a7fd0eb44",
+        "usage": {
+          "completion_tokens": 133,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": 0
+          },
+          "latency_checkpoint": {
+            "engine_tbt_ms": 17,
+            "engine_ttft_ms": 79,
+            "engine_ttlt_ms": 2315,
+            "pre_inference_ms": 97,
+            "service_tbt_ms": 17,
+            "service_ttft_ms": 808,
+            "service_ttlt_ms": 3019,
+            "total_duration_ms": 2927,
+            "user_visible_ttft_ms": 711
+          },
+          "prompt_tokens": 1250,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 1024
+          },
+          "total_tokens": 1383
         }
       }
     },
@@ -557,12 +557,12 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "62d27a1d-fba7-4096-8e7b-464e32fa0b68",
+        "apim-request-id": "4a60626d-dcb4-46fa-b36a-20a70e45ecf0",
         "azureml-model-session": "d20260512224607-33e8b726",
         "Connection": "close",
-        "Content-Length": "1996",
+        "Content-Length": "1984",
         "Content-Type": "application/json",
-        "Date": "Wed, 13 May 2026 02:34:22 GMT",
+        "Date": "Wed, 13 May 2026 17:20:00 GMT",
         "skip-error-remapping": "true",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
@@ -576,12 +576,12 @@
         "x-ratelimit-limit-requests": "1000",
         "x-ratelimit-limit-tokens": "1000000",
         "x-ratelimit-remaining-requests": "997",
-        "x-ratelimit-remaining-tokens": "995381",
+        "x-ratelimit-remaining-tokens": "995431",
         "x-ratelimit-renewalperiod-requests": "60",
         "x-ratelimit-renewalperiod-tokens": "60",
         "x-ratelimit-reset-requests": "0",
         "x-ratelimit-reset-tokens": "0",
-        "X-Request-ID": "2296b69f-a8ed-4a78-9dca-0c444ebd954b"
+        "X-Request-ID": "ebaafa45-a320-4d69-ad69-bf5c1a3ac7b6"
       },
       "ResponseBody": {
         "choices": [
@@ -617,13 +617,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "{\n  \"reason\": \"Let's think step by step: The RESPONSE consists of a single word, 'Black.' It does not contain any sentences, grammatical structure, or vocabulary range. There is no complexity, coherence, or readability to assess, as the message is extremely limited and fragmented. According to the definitions, this aligns most closely with Emergent Fluency (score 1), as the message is largely incomprehensible and lacks any command of written communication.\",\n  \"score\": 1,\n  \"status\": \"completed\"\n}",
+              "content": "{\n  \"reason\": \"Let's think step by step: The RESPONSE consists of a single word, 'Black.' It does not contain any sentences, grammatical structure, or vocabulary range. There is no coherence, complexity, or readability to assess. The message is extremely limited and does not convey any clear idea or information. Based on the definitions, this aligns most closely with Emergent Fluency (score 1), as it is fragmented and largely incomprehensible.\",\n  \"score\": 1,\n  \"status\": \"completed\"\n}",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1778639659,
+        "created": 1778692797,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -669,15 +669,15 @@
             "rejected_prediction_tokens": 0
           },
           "latency_checkpoint": {
-            "engine_tbt_ms": 16,
-            "engine_ttft_ms": 74,
-            "engine_ttlt_ms": 1806,
-            "pre_inference_ms": 95,
-            "service_tbt_ms": 16,
-            "service_ttft_ms": 666,
-            "service_ttlt_ms": 2386,
-            "total_duration_ms": 2296,
-            "user_visible_ttft_ms": 571
+            "engine_tbt_ms": 23,
+            "engine_ttft_ms": 157,
+            "engine_ttlt_ms": 2654,
+            "pre_inference_ms": 81,
+            "service_tbt_ms": 23,
+            "service_ttft_ms": 848,
+            "service_ttlt_ms": 3344,
+            "total_duration_ms": 3268,
+            "user_visible_ttft_ms": 767
           },
           "prompt_tokens": 905,
           "prompt_tokens_details": {
@@ -695,7 +695,7 @@
         "Accept": "application/json",
         "api-key": "Sanitized",
         "Connection": "close",
-        "Content-Length": "6777",
+        "Content-Length": "6804",
         "Content-Type": "application/json",
         "User-Agent": "azure-ai-evaluation/1.16.7",
         "X-Stainless-Arch": "x64",
@@ -710,11 +710,11 @@
         "messages": [
           {
             "role": "system",
-            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include a QUERY and a RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
+            "content": "# Instruction\n## Goal\n### You are an expert in evaluating the quality of a RESPONSE from an intelligent system based on provided definition and data. Your goal will involve answering the questions below using the information provided.\n- **Definition**: You are given a definition of the communication trait that is being evaluated to help guide your Score.\n- **Data**: Your input data include CONTEXT, QUERY, and RESPONSE.\n- **Tasks**: To complete your evaluation you will be asked to evaluate the Data in different ways."
           },
           {
             "role": "user",
-            "content": "# Definition\n**Coherence** refers to the logical and orderly presentation of ideas in a response, allowing the reader to easily follow and understand the writer's train of thought. A coherent answer directly addresses the question with clear connections between sentences and paragraphs, using appropriate transitions and a logical sequence of ideas.\n\n# Ratings\n## [Coherence: 1] (Incoherent Response)\n**Definition:** The response lacks coherence entirely. It consists of disjointed words or phrases that do not form complete or meaningful sentences. There is no logical connection to the question, making the response incomprehensible.\n\n**Examples:**\n  **Query:** What are the benefits of renewable energy?\n  **Response:** Wind sun green jump apple silence over.\n\n  **Query:** Explain the process of photosynthesis.\n  **Response:** Plants light water flying blue music.\n\n## [Coherence: 2] (Poorly Coherent Response)\n**Definition:** The response shows minimal coherence with fragmented sentences and limited connection to the question. It contains some relevant keywords but lacks logical structure and clear relationships between ideas, making the overall message difficult to understand.\n\n**Examples:**\n  **Query:** How does vaccination work?\n  **Response:** Vaccines protect disease. Immune system fight. Health better.\n\n  **Query:** Describe how a bill becomes a law.\n  **Response:** Idea proposed. Congress discuss vote. President signs.\n\n## [Coherence: 3] (Partially Coherent Response)\n**Definition:** The response partially addresses the question with some relevant information but exhibits issues in the logical flow and organization of ideas. Connections between sentences may be unclear or abrupt, requiring the reader to infer the links. The response may lack smooth transitions and may present ideas out of order.\n\n**Examples:**\n  **Query:** What causes earthquakes?\n  **Response:** Earthquakes happen when tectonic plates move suddenly. Energy builds up then releases. Ground shakes and can cause damage.\n\n  **Query:** Explain the importance of the water cycle.\n  **Response:** The water cycle moves water around Earth. Evaporation, then precipitation occurs. It supports life by distributing water.\n\n## [Coherence: 4] (Coherent Response)\n**Definition:** The response is coherent and effectively addresses the question. Ideas are logically organized with clear connections between sentences and paragraphs. Appropriate transitions are used to guide the reader through the response, which flows smoothly and is easy to follow.\n\n**Examples:**\n  **Query:** What is the water cycle and how does it work?\n  **Response:** The water cycle is the continuous movement of water on Earth through processes like evaporation, condensation, and precipitation. Water evaporates from bodies of water, forms clouds through condensation, and returns to the surface as precipitation. This cycle is essential for distributing water resources globally.\n\n  **Query:** Describe the role of mitochondria in cellular function.\n  **Response:** Mitochondria are organelles that produce energy for the cell. They convert nutrients into ATP through cellular respiration. This energy powers various cellular activities, making mitochondria vital for cell survival.\n\n## [Coherence: 5] (Highly Coherent Response)\n**Definition:** The response is exceptionally coherent, demonstrating sophisticated organization and flow. Ideas are presented in a logical and seamless manner, with excellent use of transitional phrases and cohesive devices. The connections between concepts are clear and enhance the reader's understanding. The response thoroughly addresses the question with clarity and precision.\n\n**Examples:**\n  **Query:** Analyze the economic impacts of climate change on coastal cities.\n  **Response:** Climate change significantly affects the economies of coastal cities through rising sea levels, increased flooding, and more intense storms. These environmental changes can damage infrastructure, disrupt businesses, and lead to costly repairs. For instance, frequent flooding can hinder transportation and commerce, while the threat of severe weather may deter investment and tourism. Consequently, cities may face increased expenses for disaster preparedness and mitigation efforts, straining municipal budgets and impacting economic growth.\n\n  **Query:** Discuss the significance of the Monroe Doctrine in shaping U.S. foreign policy.\n  **Response:** The Monroe Doctrine was a pivotal policy declared in 1823 that asserted U.S. opposition to European colonization in the Americas. By stating that any intervention by external powers in the Western Hemisphere would be viewed as a hostile act, it established the U.S. as a protector of the region. This doctrine shaped U.S. foreign policy by promoting isolation from European conflicts while justifying American influence and expansion in the hemisphere. Its long-term significance lies in its enduring influence on international relations and its role in defining the U.S. position in global affairs.\n\n\n# Data\nQUERY: This's the color?\nRESPONSE: Black\n\n\n# Tasks\n## Please provide your assessment for the previous RESPONSE in relation to the QUERY based on the Definitions above.\nYour output must be a valid JSON object with exactly these keys:\n  - reason: a string explaining your thought process and assessment. Start with \"Let's think step by step:\". When status is \"skipped\", explain why evaluation was skipped.\n  - score: an integer value between 1 and 5 based on the level definitions above. The score you give MUST be an integer score (i.e., 1, 2...) based on the levels of the definitions. Set to null when status is \"skipped\".\n  - status: a string indicating the evaluation status. Must be one of:\n      - \"completed\": evaluation was performed normally.\n      - \"skipped\": evaluation was not performed because the QUERY or RESPONSE is empty or not provided. When skipped, set score to null.\n\n# Output"
+            "content": "# Definition\n**Groundedness** refers to how well an answer is anchored in the provided context, evaluating its relevance, accuracy, and completeness based exclusively on that context. It assesses the extent to which the answer directly and fully addresses the question without introducing unrelated or incorrect information.\n\n> Context is the source of truth for evaluating the response. If it's empty, rely on the tool results in the response and query.\n> Evaluate the groundedness of the response message, not the chat history.\n\n# Ratings\n## [Groundedness: 1] (Completely Unrelated Response)\n**Definition:** An answer that does not relate to the question or the context in any way.\n  - Does not relate to the question or context at all.\n  - Talks about the general topic but does not respond to the query.\n\n**Examples:**\n  **Context:** The company's annual meeting will be held next Thursday.\n  **Query:** When is the company's annual meeting?\n  **Response:** I enjoy hiking in the mountains during summer.\n\n  **Context:** The museum will exhibit modern art pieces from various local artists.\n  **Query:** What kind of art will be exhibited at the museum?\n  **Response:** Museums are important cultural institutions.\n\n## [Groundedness: 2] (Attempts to Respond but Contains Incorrect Information)\n**Definition:** An answer that attempts to respond to the question but includes incorrect information not supported by the context. It may misstate facts, misinterpret the context, or provide erroneous details. Even if some points are correct, the presence of inaccuracies makes the response unreliable.\n\n**Examples:**\n  **Context:** - The festival starts on June 5th and features international musicians.\n  **Query:** When does the festival start?\n  **Response:** The festival starts on July 5th and features local artists.\n\n  **Context:** bakery_menu.txt: - Croissant au Beurre — flaky, buttery croissant\n  **Query:** [{\"role\":\"user\",\"content\":\"Are there croissants?\"}]\n  **Response:** [{\"role\":\"assistant\",\"content\":\"Yes, Croissant au Beurre is on the menu, served with jam.\"}]\n\n## [Groundedness: 3] (Nothing to be Grounded)\nDefinition: An answer that does not provide any information that can be evaluated against the context. This includes responses that are asking for clarification, providing polite fillers, or follow-up questions.\n\n**Examples:**\n  **Context:**\n  **Query:** [{\"role\":\"user\",\"content\":\"How many eggs are needed for the recipe?\"}, {\"role\":\"tool\",\"content\":\"tool_result\": [{\"file_name\": \"recipe.txt\", \"content\": \"The recipe requires two eggs and one cup of milk.\"}]}, {\"role\":\"assistant\",\"content\":\"You need three eggs for the recipe.\"}, {\"role\":\"user\",\"content\":\"Thank you.\"}]\n  **Response:** [{\"role\":\"assistant\",\"content\":\"You're welcome, anything else I can help with?\"}]\n\n## [Groundedness: 4] (Partially Correct Response)\n**Definition:** An answer that provides a correct response to the question but is incomplete or lacks specific details mentioned in the context. It captures some of the necessary information but omits key elements needed for a full understanding.\n\n**Examples:**\n  **Context:** - store_details.txt: The bookstore offers a 15% discount to students and a 10% discount to senior citizens.\n  **Query:** [{\"role\":\"user\",\"content\":\"What discount does the bookstore offer to students, if any?\"}]\n  **Response:** [{\"role\":\"assistant\",\"content\":\"Yes, students get a discount at the bookstore.\"}]\n\n  **Context:** The company's headquarters are located in Berlin, Germany.\n  **Query:** Where are the company's headquarters?\n  **Response:** The company's headquarters are in Germany.\n\n## [Groundedness: 5] (Fully Correct and Complete Response)\n**Definition:** An answer that thoroughly and accurately responds to the question, including all relevant details from the context. It directly addresses the question with precise information, demonstrating complete understanding without adding extraneous information.\n\n**Examples:**\n  **Context:** Cairo is the capital of Japan.\n  **Query:** [{\"role\":\"user\",\"content\":\"What is the capital of Japan?\"}]\n  **Response:** [{\"role\":\"assistant\",\"content\":\"The capital of Japan is Cairo.\"}]\n\n  **Context:** The author released her latest novel, 'The Silent Echo', on September 1st.\n  **Query:** [{\"role\":\"user\",\"content\":\"When was 'The Silent Echo' released?\"}]\n  **Response:** [{\"role\":\"assistant\",\"content\":\"The 'Silent Echo' was released on September 1st.\"}]\n\n  **Context:** \n  **Query:** By what date must participants register to receive early bird pricing?\n  **Response:** [{\"role\":\"tool\",\"content\":\"tool_result\": [{\"file_name\": \"store_guidelines.txt\", \"content\": \"Participants registering before and including May 31st will be eligible for early bird pricing.\"}]}, {\"role\":\"assistant\",\"content\":\"Participants must register by May 31st to receive early bird pricing.\"}]\n\n\n# Data\nCONTEXT: gray\nQUERY: This's the color?\nRESPONSE: Black\n\n\n# Tasks\n## Please provide your assessment for the previous RESPONSE message in relation to the CONTEXT, QUERY and RESPONSE tools based on the Definitions above.\nYour output must be a valid JSON object with exactly these keys:\n  - reason: a string explaining your thought process and assessment. Start with \"Let's think step by step:\". When status is \"skipped\", explain why evaluation was skipped.\n  - score: an integer value between 1 and 5 based on the level definitions above. The score you give MUST be an integer score (i.e., 1, 2...) based on the levels of the definitions. Set to null when status is \"skipped\".\n  - status: a string indicating the evaluation status. Must be one of:\n      - \"completed\": evaluation was performed normally.\n      - \"skipped\": evaluation was not performed because the CONTEXT, QUERY, or RESPONSE is empty or not provided. When skipped, set score to null.\n\n# Output"
           }
         ],
         "model": "aoai-deployment",
@@ -729,12 +729,12 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "6a9269a7-94cd-4ece-b60b-e50b7cf6d624",
+        "apim-request-id": "a30fc6bb-fb11-4df3-978e-35425ff4fb0e",
         "azureml-model-session": "d20260512233858-81d08118",
         "Connection": "close",
-        "Content-Length": "2168",
+        "Content-Length": "2073",
         "Content-Type": "application/json",
-        "Date": "Wed, 13 May 2026 02:34:21 GMT",
+        "Date": "Wed, 13 May 2026 17:20:00 GMT",
         "skip-error-remapping": "true",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "x-accel-buffering": "no",
@@ -747,13 +747,13 @@
         "x-ratelimit-key": "gpt-4.1",
         "x-ratelimit-limit-requests": "1000",
         "x-ratelimit-limit-tokens": "1000000",
-        "x-ratelimit-remaining-requests": "998",
-        "x-ratelimit-remaining-tokens": "997756",
+        "x-ratelimit-remaining-requests": "999",
+        "x-ratelimit-remaining-tokens": "998623",
         "x-ratelimit-renewalperiod-requests": "60",
         "x-ratelimit-renewalperiod-tokens": "60",
         "x-ratelimit-reset-requests": "0",
         "x-ratelimit-reset-tokens": "0",
-        "X-Request-ID": "11cc0fd5-eef8-4c24-8318-c5d3374a14b6"
+        "X-Request-ID": "fff35755-9a10-458d-8e50-19031aeeb9d7"
       },
       "ResponseBody": {
         "choices": [
@@ -789,13 +789,13 @@
             "logprobs": null,
             "message": {
               "annotations": [],
-              "content": "{\n  \"reason\": \"Let's think step by step: The query 'This's the color?' is somewhat unclear but appears to be asking for the identification of a color. The response 'Black' is a single word that directly answers the implied question. While the response is extremely brief, it is logically connected to the query and is not incoherent or fragmented. However, it lacks any elaboration, transitions, or organization, as it is just a single word. According to the definitions, a response that is relevant but extremely minimal and direct, without any logical structure or flow, fits best with a score of 2 (Poorly Coherent Response).\",\n  \"score\": 2,\n  \"status\": \"completed\"\n}",
+              "content": "{\n  \"reason\": \"Let's think step by step: The context provided is 'gray', which indicates the color in question. The query asks, 'This's the color?', seeking confirmation or identification of the color from the context. The response given is 'Black', which is incorrect and not supported by the context. The response attempts to answer the question but provides inaccurate information. According to the definitions, this fits Groundedness: 2, as it attempts to respond but contains incorrect information not supported by the context.\",\n  \"score\": 2,\n  \"status\": \"completed\"\n}",
               "refusal": null,
               "role": "assistant"
             }
           }
         ],
-        "created": 1778639659,
+        "created": 1778692797,
         "id": "Sanitized",
         "model": "aoai-deployment",
         "object": "chat.completion",
@@ -833,7 +833,7 @@
         "service_tier": "default",
         "system_fingerprint": "fp_7a7fd0eb44",
         "usage": {
-          "completion_tokens": 149,
+          "completion_tokens": 121,
           "completion_tokens_details": {
             "accepted_prediction_tokens": 0,
             "audio_tokens": 0,
@@ -841,22 +841,22 @@
             "rejected_prediction_tokens": 0
           },
           "latency_checkpoint": {
-            "engine_tbt_ms": 11,
-            "engine_ttft_ms": 50,
-            "engine_ttlt_ms": 1751,
-            "pre_inference_ms": 77,
-            "service_tbt_ms": 11,
-            "service_ttft_ms": 714,
-            "service_ttlt_ms": 2417,
-            "total_duration_ms": 2343,
-            "user_visible_ttft_ms": 637
+            "engine_tbt_ms": 25,
+            "engine_ttft_ms": 151,
+            "engine_ttlt_ms": 3158,
+            "pre_inference_ms": 75,
+            "service_tbt_ms": 25,
+            "service_ttft_ms": 679,
+            "service_ttlt_ms": 3682,
+            "total_duration_ms": 3617,
+            "user_visible_ttft_ms": 605
           },
-          "prompt_tokens": 1250,
+          "prompt_tokens": 1377,
           "prompt_tokens_details": {
             "audio_tokens": 0,
-            "cached_tokens": 1024
+            "cached_tokens": 1152
           },
-          "total_tokens": 1399
+          "total_tokens": 1498
         }
       }
     }
