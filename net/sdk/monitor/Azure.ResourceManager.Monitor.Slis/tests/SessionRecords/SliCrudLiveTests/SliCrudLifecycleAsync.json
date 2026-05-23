@@ -1,0 +1,593 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621?api-version=2022-12-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "traceparent": "00-02d4f207403db9e3b88d1f7122ba03bf-d3905211f68c91c8-00",
+        "User-Agent": "azsdk-net-ResourceManager/1.14.0 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "602",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sat, 23 May 2026 08:56:25 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "2cb5b895-ace6-4f22-bbee-953a830ad4dd",
+        "x-ms-ratelimit-remaining-subscription-global-reads": "16499",
+        "x-ms-ratelimit-remaining-subscription-reads": "1099",
+        "x-ms-request-id": "2cb5b895-ace6-4f22-bbee-953a830ad4dd",
+        "x-ms-routing-request-id": "WESTUS2:20260523T085625Z:2cb5b895-ace6-4f22-bbee-953a830ad4dd",
+        "X-MSEdge-Ref": "Ref A: 1A09FB75CBCE4488B62C1F5A230CB66F Ref B: CO6AA3150219009 Ref C: 2026-05-23T08:56:25Z"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621",
+        "authorizationSource": "RoleBased",
+        "managedByTenants": [],
+        "tags": {
+          "Az.Sec.AnonymousBlobEnforcement::OptIn": "all_regions",
+          "Az.Sec.DisableLocalAuth.SqlManagedInstance::OptIn": "all_regions",
+          "Az.Sec.DisableLocalAuth.SqlServer.V2::OptIn": "all_regions"
+        },
+        "subscriptionId": "6820e35f-0fe6-4af3-aad2-27414fa82621",
+        "tenantId": "00000000-0000-0000-0000-000000000000",
+        "displayName": "GenevaMetrics_Test_MdmTestStamps",
+        "state": "Enabled",
+        "subscriptionPolicies": {
+          "locationPlacementId": "Internal_2014-09-01",
+          "quotaId": "Internal_2014-09-01",
+          "spendingLimit": "Off"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/providers/Microsoft.Management/serviceGroups/arm-sdk-tests-sg/providers/Microsoft.Monitor/slis/netsli7276?api-version=2025-03-01-preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "1658",
+        "Content-Type": "application/json",
+        "traceparent": "00-077caac8bfe77da6e0fd1a62c8b9ab9c-ef06821ea91eec7d-00",
+        "User-Agent": "azsdk-net-ResourceManager/1.14.0 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "properties": {
+          "description": "Live test SLI - measures latency of test API",
+          "category": "Latency",
+          "evaluationType": "WindowBased",
+          "destinationAmwAccounts": [
+            {
+              "resourceId": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/microsoft.monitor/accounts/amw-arm-sdk-tests-rg",
+              "identity": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-arm-sdk-tests-rg"
+            }
+          ],
+          "baselineProperties": {
+            "baseline": {
+              "value": 99,
+              "evaluationPeriodDays": 30,
+              "evaluationCalculationType": "CalendarDays"
+            }
+          },
+          "enableAlert": true,
+          "sliProperties": {
+            "signals": {
+              "signalSources": [
+                {
+                  "signalSourceId": "A",
+                  "sourceAmwAccountManagedIdentity": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-arm-sdk-tests-rg",
+                  "sourceAmwAccountResourceId": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/microsoft.monitor/accounts/amw-arm-sdk-tests-rg",
+                  "metricNamespace": "customdefault",
+                  "metricName": "container_cpu_usage_seconds_total",
+                  "filters": [
+                    {
+                      "dimensionName": "container",
+                      "operator": "ne",
+                      "value": "POD"
+                    }
+                  ],
+                  "spatialAggregation": {
+                    "type": "Sum",
+                    "dimensions": [
+                      "instance"
+                    ]
+                  },
+                  "temporalAggregation": {
+                    "type": "Rate",
+                    "windowSizeMinutes": 1
+                  }
+                }
+              ],
+              "signalFormula": "A"
+            },
+            "windowUptimeCriteria": {
+              "target": 95,
+              "comparator": "gte"
+            }
+          }
+        },
+        "identity": {
+          "type": "UserAssigned",
+          "userAssignedIdentities": {
+            "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-arm-sdk-tests-rg": {}
+          }
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "no-cache",
+        "Content-Length": "2632",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sat, 23 May 2026 08:56:27 GMT",
+        "ETag": "\"3d028037-0000-0a00-0000-6a116bbb0000\"",
+        "Expires": "-1",
+        "mise-correlation-id": "d8b267a8-a342-4926-9e69-a74ce355ce4a",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-correlation-request-id": "92a32f9a-1fba-4a05-b84e-69539186ff98",
+        "x-ms-operation-identifier": "",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-tenant-writes": "799",
+        "x-ms-request-id": "dc947ec6-b620-4936-9ac5-3fe3b595ea40",
+        "x-ms-routing-request-id": "WESTUS2:20260523T085627Z:92a32f9a-1fba-4a05-b84e-69539186ff98",
+        "X-MSEdge-Ref": "Ref A: E714660AEE0D48EC8E641E6A39A91BF1 Ref B: CO6AA3150219009 Ref C: 2026-05-23T08:56:25Z"
+      },
+      "ResponseBody": {
+        "id": "/providers/Microsoft.Management/serviceGroups/arm-sdk-tests-sg/providers/Microsoft.Monitor/slis/netsli7276",
+        "name": "netsli7276",
+        "type": "microsoft.monitor/slis",
+        "systemData": {
+          "createdBy": "Sanitized",
+          "createdByType": "User",
+          "createdAt": "2026-05-23T08:56:25.5540281Z",
+          "lastModifiedBy": "Sanitized",
+          "lastModifiedByType": "User",
+          "lastModifiedAt": "2026-05-23T08:56:25.5540281Z"
+        },
+        "identity": {
+          "type": "UserAssigned",
+          "userAssignedIdentities": {
+            "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-arm-sdk-tests-rg": {
+              "clientId": "00000000-0000-0000-0000-000000000000",
+              "principalId": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        "properties": {
+          "description": "Live test SLI - measures latency of test API",
+          "category": "Latency",
+          "evaluationType": "WindowBased",
+          "provisioningState": "Succeeded",
+          "executionState": {
+            "message": null,
+            "state": "Pending"
+          },
+          "destinationAmwAccounts": [
+            {
+              "resourceId": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/microsoft.monitor/accounts/amw-arm-sdk-tests-rg",
+              "identity": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-arm-sdk-tests-rg"
+            }
+          ],
+          "destinationMetrics": [
+            {
+              "metricName": "netsli7276:Value",
+              "metricNamespace": "arm-sdk-tests-sg"
+            },
+            {
+              "metricName": "netsli7276:Uptime",
+              "metricNamespace": "arm-sdk-tests-sg"
+            },
+            {
+              "metricName": "netsli7276:Downtime",
+              "metricNamespace": "arm-sdk-tests-sg"
+            }
+          ],
+          "baselineProperties": {
+            "baseline": {
+              "value": 99.0,
+              "evaluationCalculationType": "CalendarDays",
+              "evaluationPeriodDays": 30
+            }
+          },
+          "streamingRuleId": "72f988bf-86f1-41af-91ab-2d7cd011db47_global_0a6082e5-ecb0-46b3-9270-0450b86b70f1",
+          "streamingRuleLastUpdatedTimestamp": "2026-05-23T08:56:27.0733440Z",
+          "enableAlert": true,
+          "sliProperties": {
+            "signals": {
+              "signalFormula": "A",
+              "signalSources": [
+                {
+                  "signalSourceId": "A",
+                  "sourceAmwAccountManagedIdentity": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-arm-sdk-tests-rg",
+                  "sourceAmwAccountResourceId": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/microsoft.monitor/accounts/amw-arm-sdk-tests-rg",
+                  "metricNamespace": "customdefault",
+                  "metricName": "container_cpu_usage_seconds_total",
+                  "filters": [
+                    {
+                      "dimensionName": "container",
+                      "operator": "ne",
+                      "value": "POD"
+                    }
+                  ],
+                  "spatialAggregation": {
+                    "type": "Sum",
+                    "dimensions": [
+                      "instance"
+                    ]
+                  },
+                  "temporalAggregation": {
+                    "type": "Rate",
+                    "windowSizeMinutes": 1
+                  }
+                }
+              ]
+            },
+            "windowUptimeCriteria": {
+              "target": 95.0,
+              "comparator": "gte"
+            }
+          }
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/providers/Microsoft.Management/serviceGroups/arm-sdk-tests-sg/providers/Microsoft.Monitor/slis/netsli7276?api-version=2025-03-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "traceparent": "00-0d69208aa165a4de7e07515c9499b5b8-6cd7cf6aa80b244c-00",
+        "User-Agent": "azsdk-net-ResourceManager/1.14.0 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "2627",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sat, 23 May 2026 08:56:27 GMT",
+        "ETag": "\"3d028037-0000-0a00-0000-6a116bbb0000\"",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-correlation-request-id": "ac985a0d-57c4-4d44-af34-806b39403957",
+        "x-ms-operation-identifier": "",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-tenant-reads": "2199",
+        "x-ms-request-id": "226c2c2e-e3f2-432e-90c8-5742064f12de",
+        "x-ms-routing-request-id": "WESTUS2:20260523T085627Z:ac985a0d-57c4-4d44-af34-806b39403957",
+        "X-MSEdge-Ref": "Ref A: C8BC836998204164BEBDCC9AF1FFD071 Ref B: CO6AA3150219009 Ref C: 2026-05-23T08:56:27Z"
+      },
+      "ResponseBody": {
+        "id": "/providers/Microsoft.Management/serviceGroups/arm-sdk-tests-sg/providers/Microsoft.Monitor/slis/netsli7276",
+        "name": "netsli7276",
+        "type": "microsoft.monitor/slis",
+        "systemData": {
+          "createdBy": "Sanitized",
+          "createdByType": "User",
+          "createdAt": "2026-05-23T08:56:25.5540281Z",
+          "lastModifiedBy": "Sanitized",
+          "lastModifiedByType": "User",
+          "lastModifiedAt": "2026-05-23T08:56:25.5540281Z"
+        },
+        "identity": {
+          "type": "UserAssigned",
+          "userAssignedIdentities": {
+            "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-arm-sdk-tests-rg": {
+              "clientId": "00000000-0000-0000-0000-000000000000",
+              "principalId": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        "properties": {
+          "description": "Live test SLI - measures latency of test API",
+          "category": "Latency",
+          "evaluationType": "WindowBased",
+          "provisioningState": "Succeeded",
+          "executionState": {
+            "message": null,
+            "state": "Pending"
+          },
+          "destinationAmwAccounts": [
+            {
+              "resourceId": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/microsoft.monitor/accounts/amw-arm-sdk-tests-rg",
+              "identity": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-arm-sdk-tests-rg"
+            }
+          ],
+          "destinationMetrics": [
+            {
+              "metricName": "netsli7276:Value",
+              "metricNamespace": "arm-sdk-tests-sg"
+            },
+            {
+              "metricName": "netsli7276:Uptime",
+              "metricNamespace": "arm-sdk-tests-sg"
+            },
+            {
+              "metricName": "netsli7276:Downtime",
+              "metricNamespace": "arm-sdk-tests-sg"
+            }
+          ],
+          "baselineProperties": {
+            "baseline": {
+              "value": 99,
+              "evaluationCalculationType": "CalendarDays",
+              "evaluationPeriodDays": 30
+            }
+          },
+          "streamingRuleId": "72f988bf-86f1-41af-91ab-2d7cd011db47_global_0a6082e5-ecb0-46b3-9270-0450b86b70f1",
+          "streamingRuleLastUpdatedTimestamp": "2026-05-23T08:56:27.073344Z",
+          "enableAlert": true,
+          "sliProperties": {
+            "signals": {
+              "signalFormula": "A",
+              "signalSources": [
+                {
+                  "signalSourceId": "A",
+                  "sourceAmwAccountManagedIdentity": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-arm-sdk-tests-rg",
+                  "sourceAmwAccountResourceId": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/microsoft.monitor/accounts/amw-arm-sdk-tests-rg",
+                  "metricNamespace": "customdefault",
+                  "metricName": "container_cpu_usage_seconds_total",
+                  "filters": [
+                    {
+                      "dimensionName": "container",
+                      "operator": "ne",
+                      "value": "POD"
+                    }
+                  ],
+                  "spatialAggregation": {
+                    "type": "Sum",
+                    "dimensions": [
+                      "instance"
+                    ]
+                  },
+                  "temporalAggregation": {
+                    "type": "Rate",
+                    "windowSizeMinutes": 1
+                  }
+                }
+              ]
+            },
+            "windowUptimeCriteria": {
+              "target": 95,
+              "comparator": "gte"
+            }
+          }
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/providers/Microsoft.Management/serviceGroups/arm-sdk-tests-sg/providers/Microsoft.Monitor/slis/netsli7276?api-version=2025-03-01-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Authorization": "Sanitized",
+        "traceparent": "00-7e15bc80087a880782fd15687f83d076-50d7adccc08a3f2d-00",
+        "User-Agent": "azsdk-net-ResourceManager/1.14.0 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 500,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "180",
+        "Content-Type": "application/json",
+        "Date": "Sat, 23 May 2026 08:56:34 GMT",
+        "ETag": "\"3d02353b-0000-0a00-0000-6a116bc20000\"",
+        "Expires": "-1",
+        "mise-correlation-id": "7d871138-2219-4e1c-a4b5-fd6053786af7",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-correlation-request-id": "b6f734df-ec6d-4654-8d42-65b99c184a0c",
+        "x-ms-failure-cause": "service",
+        "x-ms-operation-identifier": "",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-tenant-deletes": "800",
+        "x-ms-request-id": "cef7c619-614b-43bd-a51a-c3f23ba46791",
+        "x-ms-routing-request-id": "WESTUS2:20260523T085634Z:b6f734df-ec6d-4654-8d42-65b99c184a0c",
+        "X-MSEdge-Ref": "Ref A: 17DE50A7CD364862A8FD9C776C63C625 Ref B: CO6AA3150219009 Ref C: 2026-05-23T08:56:27Z"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "UnspecifiedError",
+          "message": "An unspecified error occurred.  (RequestId: 6385170d2d2d712c1bd1367cf60c3fe6, CorrelationId: b6f734df-ec6d-4654-8d42-65b99c184a0c)"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/providers/Microsoft.Management/serviceGroups/arm-sdk-tests-sg/providers/Microsoft.Monitor/slis/netsli7276?api-version=2025-03-01-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Authorization": "Sanitized",
+        "traceparent": "00-7e15bc80087a880782fd15687f83d076-50d7adccc08a3f2d-00",
+        "User-Agent": "azsdk-net-ResourceManager/1.14.0 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 500,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "180",
+        "Content-Type": "application/json",
+        "Date": "Sat, 23 May 2026 08:56:42 GMT",
+        "ETag": "\"3d02723f-0000-0a00-0000-6a116bca0000\"",
+        "Expires": "-1",
+        "mise-correlation-id": "fa629a18-e536-4787-9f04-f381b4da63f7",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-correlation-request-id": "0e58475f-e903-4ed9-831f-0860a2e0cca9",
+        "x-ms-failure-cause": "service",
+        "x-ms-operation-identifier": "",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-tenant-deletes": "799",
+        "x-ms-request-id": "289619d6-105f-4eb2-ae4d-ff3ff35b00aa",
+        "x-ms-routing-request-id": "WESTUS2:20260523T085643Z:0e58475f-e903-4ed9-831f-0860a2e0cca9",
+        "X-MSEdge-Ref": "Ref A: DCA89082F410428A901BB25CC58A12EF Ref B: CO6AA3150219009 Ref C: 2026-05-23T08:56:35Z"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "UnspecifiedError",
+          "message": "An unspecified error occurred.  (RequestId: 6385170d2d2d712c1bd1367cf60c3fe6, CorrelationId: 0e58475f-e903-4ed9-831f-0860a2e0cca9)"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/providers/Microsoft.Management/serviceGroups/arm-sdk-tests-sg/providers/Microsoft.Monitor/slis/netsli7276?api-version=2025-03-01-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Authorization": "Sanitized",
+        "traceparent": "00-7e15bc80087a880782fd15687f83d076-50d7adccc08a3f2d-00",
+        "User-Agent": "azsdk-net-ResourceManager/1.14.0 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 500,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "180",
+        "Content-Type": "application/json",
+        "Date": "Sat, 23 May 2026 08:56:51 GMT",
+        "ETag": "\"3d025444-0000-0a00-0000-6a116bd40000\"",
+        "Expires": "-1",
+        "mise-correlation-id": "b4dcd0b8-ba52-4159-bca9-db4d5403b3b5",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-correlation-request-id": "576b681a-2a62-43a3-bd40-7b1a3ddc4836",
+        "x-ms-failure-cause": "service",
+        "x-ms-operation-identifier": "",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-tenant-deletes": "800",
+        "x-ms-request-id": "59f6a6fd-8c3f-4829-97c7-a1ae8249c61c",
+        "x-ms-routing-request-id": "WESTUS2:20260523T085652Z:576b681a-2a62-43a3-bd40-7b1a3ddc4836",
+        "X-MSEdge-Ref": "Ref A: 0ADB8BE9D8FE42CFA8B64661EC100A00 Ref B: CO6AA3150219009 Ref C: 2026-05-23T08:56:44Z"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "UnspecifiedError",
+          "message": "An unspecified error occurred.  (RequestId: 6385170d2d2d712c1bd1367cf60c3fe6, CorrelationId: 576b681a-2a62-43a3-bd40-7b1a3ddc4836)"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/providers/Microsoft.Management/serviceGroups/arm-sdk-tests-sg/providers/Microsoft.Monitor/slis/netsli7276?api-version=2025-03-01-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Authorization": "Sanitized",
+        "traceparent": "00-7e15bc80087a880782fd15687f83d076-50d7adccc08a3f2d-00",
+        "User-Agent": "azsdk-net-ResourceManager/1.14.0 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Sat, 23 May 2026 08:56:56 GMT",
+        "Expires": "-1",
+        "mise-correlation-id": "2da31cec-73e7-45e6-bebd-a61060586bf5",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-correlation-request-id": "94f8750a-b69d-470f-a04b-6138e6d5d78a",
+        "x-ms-operation-identifier": "",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-tenant-deletes": "799",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "WESTUS2:20260523T085656Z:94f8750a-b69d-470f-a04b-6138e6d5d78a",
+        "X-MSEdge-Ref": "Ref A: 86048579E2934ABFBCB90026441382B1 Ref B: CO6AA3150219009 Ref C: 2026-05-23T08:56:55Z"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://management.azure.com/providers/Microsoft.Management/serviceGroups/arm-sdk-tests-sg/providers/Microsoft.Monitor/slis/netsli7276?api-version=2025-03-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "traceparent": "00-1634decf676582c1b39b48927c8279d4-c25ebefc6123db0c-00",
+        "User-Agent": "azsdk-net-ResourceManager/1.14.0 (.NET Framework 4.8.9325.0; Microsoft Windows 10.0.26200 )",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "180",
+        "Content-Type": "application/json",
+        "Date": "Sat, 23 May 2026 08:56:56 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-correlation-request-id": "24318e7c-8025-4205-a75b-e8a1ef45a1be",
+        "x-ms-failure-cause": "gateway",
+        "x-ms-operation-identifier": "",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-tenant-reads": "2199",
+        "x-ms-request-id": "af8423f7-1f97-46ef-b4ae-04f91e99a138",
+        "x-ms-routing-request-id": "WESTUS2:20260523T085656Z:24318e7c-8025-4205-a75b-e8a1ef45a1be",
+        "X-MSEdge-Ref": "Ref A: A0092FA6D3484707959B121D0E107A23 Ref B: CO6AA3150219009 Ref C: 2026-05-23T08:56:56Z"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "ResourceNotFound",
+          "message": "The resource 'Microsoft.Management/serviceGroups/arm-sdk-tests-sg/providers/Microsoft.Monitor/slis/netsli7276' could not be found."
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "AMW_RESOURCE_ID": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/microsoft.monitor/accounts/amw-arm-sdk-tests-rg",
+    "MANAGED_IDENTITY_RESOURCE_ID": "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/arm-sdk-tests-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-arm-sdk-tests-rg",
+    "RandomSeed": "537034697",
+    "RESOURCE_MANAGER_URL": null,
+    "SERVICE_GROUP_NAME": "arm-sdk-tests-sg",
+    "SOURCE_AMW_RESOURCE_ID": null,
+    "SOURCE_MANAGED_IDENTITY_RESOURCE_ID": null,
+    "SUBSCRIPTION_ID": "6820e35f-0fe6-4af3-aad2-27414fa82621"
+  }
+}
