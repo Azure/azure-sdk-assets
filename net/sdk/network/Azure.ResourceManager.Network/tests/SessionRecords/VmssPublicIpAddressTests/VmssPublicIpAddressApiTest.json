@@ -97,7 +97,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet1749/providers/Microsoft.Resources/deployments/vmss3911?api-version=2022-09-01",
+      "RequestUri": "https://management.azure.com/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet1749/providers/Microsoft.Resources/deployments/vmss3911?api-version=2025-04-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -204,35 +204,34 @@
             "resources": [
               {
                 "type": "Microsoft.Storage/storageAccounts",
-                "name": "[parameters('newStorageAccountName')]",
                 "apiVersion": "2015-06-15",
                 "location": "[parameters('storageLocation')]",
                 "properties": {
                   "accountType": "[variables('storageAccountType')]"
-                }
+                },
+                "name": "[parameters('newStorageAccountName')]"
               },
               {
                 "type": "Microsoft.Storage/storageAccounts",
-                "name": "[variables('newStorageAccountName2')]",
                 "apiVersion": "2015-06-15",
                 "location": "[parameters('storageLocation')]",
                 "properties": {
                   "accountType": "[variables('storageAccountType')]"
-                }
+                },
+                "name": "[variables('newStorageAccountName2')]"
               },
               {
                 "apiVersion": "2015-06-15",
                 "type": "Microsoft.Network/publicIPAddresses",
-                "name": "[variables('pipName')]",
                 "location": "[variables('location')]",
                 "properties": {
                   "publicIPAllocationMethod": "Dynamic"
-                }
+                },
+                "name": "[variables('pipName')]"
               },
               {
                 "apiVersion": "2015-06-15",
                 "type": "Microsoft.Network/virtualNetworks",
-                "name": "[variables('vnetName')]",
                 "location": "[variables('location')]",
                 "properties": {
                   "addressSpace": {
@@ -242,17 +241,17 @@
                   },
                   "subnets": [
                     {
-                      "name": "subnet1",
                       "properties": {
                         "addressPrefix": "10.0.0.0/24"
-                      }
+                      },
+                      "name": "subnet1"
                     }
                   ]
-                }
+                },
+                "name": "[variables('vnetName')]"
               },
               {
                 "apiVersion": "2015-06-15",
-                "name": "[variables('lbName')]",
                 "type": "Microsoft.Network/loadBalancers",
                 "location": "[variables('location')]",
                 "dependsOn": [
@@ -261,12 +260,12 @@
                 "properties": {
                   "frontendIPConfigurations": [
                     {
-                      "name": "ip1",
                       "properties": {
                         "publicIPAddress": {
                           "id": "[variables('pipID')]"
                         }
-                      }
+                      },
+                      "name": "ip1"
                     }
                   ],
                   "backendAddressPools": [
@@ -276,7 +275,6 @@
                   ],
                   "loadbalancingRules": [
                     {
-                      "name": "lbrule1",
                       "properties": {
                         "frontendIPConfiguration": {
                           "id": "[variables('frontendIPConfigID')]"
@@ -287,12 +285,12 @@
                         "protocol": "tcp",
                         "frontendPort": 80,
                         "backendPort": 82
-                      }
+                      },
+                      "name": "lbrule1"
                     }
                   ],
                   "inboundNatPools": [
                     {
-                      "name": "natPool1",
                       "properties": {
                         "frontendIPConfiguration": {
                           "id": "[variables('frontendIPConfigID')]"
@@ -301,20 +299,20 @@
                         "frontendPortRangeStart": 3389,
                         "frontendPortRangeEnd": 4500,
                         "backendPort": 3389
-                      }
+                      },
+                      "name": "natPool1"
                     }
                   ]
-                }
+                },
+                "name": "[variables('lbName')]"
               },
               {
                 "apiVersion": "2015-06-15",
                 "location": "[variables('location')]",
                 "type": "Microsoft.Network/networkSecurityGroups",
-                "name": "[variables('nsgName')]",
                 "properties": {
                   "securityRules": [
                     {
-                      "name": "ssh",
                       "properties": {
                         "access": "Allow",
                         "description": "Allow SSH",
@@ -325,10 +323,10 @@
                         "protocol": "Tcp",
                         "sourceAddressPrefix": "*",
                         "sourcePortRange": "*"
-                      }
+                      },
+                      "name": "ssh"
                     },
                     {
-                      "name": "swarm-listen-port",
                       "properties": {
                         "access": "Allow",
                         "description": "Allow 'swarm join' ingress to manager node",
@@ -339,10 +337,10 @@
                         "protocol": "Tcp",
                         "sourceAddressPrefix": "10.0.0.0/24",
                         "sourcePortRange": "*"
-                      }
+                      },
+                      "name": "swarm-listen-port"
                     },
                     {
-                      "name": "vxlan",
                       "properties": {
                         "access": "Allow",
                         "description": "Allow VXLan connection between nodes",
@@ -353,10 +351,10 @@
                         "protocol": "Udp",
                         "sourceAddressPrefix": "10.0.0.0/24",
                         "sourcePortRange": "*"
-                      }
+                      },
+                      "name": "vxlan"
                     },
                     {
-                      "name": "gossip",
                       "properties": {
                         "access": "Allow",
                         "description": "Serf communication to gossip between nodes",
@@ -367,10 +365,10 @@
                         "protocol": "*",
                         "sourceAddressPrefix": "10.0.0.0/24",
                         "sourcePortRange": "*"
-                      }
+                      },
+                      "name": "gossip"
                     },
                     {
-                      "name": "diagnostics",
                       "properties": {
                         "access": "Allow",
                         "description": "Allow communication for the diagnostics server",
@@ -381,10 +379,10 @@
                         "protocol": "Tcp",
                         "sourceAddressPrefix": "10.0.0.0/24",
                         "sourcePortRange": "*"
-                      }
+                      },
+                      "name": "diagnostics"
                     },
                     {
-                      "name": "ucp",
                       "properties": {
                         "access": "Allow",
                         "description": "Allow UCP",
@@ -395,10 +393,10 @@
                         "protocol": "Tcp",
                         "sourceAddressPrefix": "*",
                         "sourcePortRange": "*"
-                      }
+                      },
+                      "name": "ucp"
                     },
                     {
-                      "name": "dtr",
                       "properties": {
                         "access": "Allow",
                         "description": "Allow DTR",
@@ -409,15 +407,16 @@
                         "protocol": "Tcp",
                         "sourceAddressPrefix": "*",
                         "sourcePortRange": "*"
-                      }
+                      },
+                      "name": "dtr"
                     }
                   ]
-                }
+                },
+                "name": "[variables('nsgName')]"
               },
               {
                 "type": "Microsoft.Compute/virtualMachineScaleSets",
                 "apiVersion": "2017-03-30",
-                "name": "[parameters('vmSSName')]",
                 "location": "[variables('location')]",
                 "tags": {
                   "vmsstag1": "Myriad"
@@ -430,9 +429,9 @@
                   "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]"
                 ],
                 "sku": {
-                  "name": "Standard_A2",
                   "tier": "Standard",
-                  "capacity": "[parameters('instanceCount')]"
+                  "capacity": "[parameters('instanceCount')]",
+                  "name": "Standard_A2"
                 },
                 "Properties": {
                   "upgradePolicy": {
@@ -445,9 +444,9 @@
                           "[concat('https://', parameters('newStorageAccountName'), '.blob.core.windows.net', '/vmss1')]",
                           "[concat('https://', variables('newStorageAccountName2'), '.blob.core.windows.net', '/vmss2')]"
                         ],
-                        "name": "vmssosdisk",
                         "caching": "ReadOnly",
-                        "createOption": "FromImage"
+                        "createOption": "FromImage",
+                        "name": "vmssosdisk"
                       },
                       "imageReference": {
                         "publisher": "[parameters('imagePublisher')]",
@@ -464,7 +463,6 @@
                     "networkProfile": {
                       "networkInterfaceConfigurations": [
                         {
-                          "name": "nic1",
                           "properties": {
                             "primary": "true",
                             "dnsSettings": {
@@ -474,19 +472,18 @@
                             },
                             "ipConfigurations": [
                               {
-                                "name": "ip1",
                                 "properties": {
                                   "subnet": {
                                     "id": "[concat('/subscriptions/', subscription().subscriptionId,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/virtualNetworks/', variables('vnetName'), '/subnets/subnet1')]"
                                   },
                                   "publicipaddressconfiguration": {
-                                    "name": "pub1",
                                     "properties": {
                                       "idleTimeoutInMinutes": 10,
                                       "dnsSettings": {
                                         "domainNameLabel": "[parameters('newDomainName')]"
                                       }
-                                    }
+                                    },
+                                    "name": "pub1"
                                   },
                                   "loadBalancerInboundNatPools": [
                                     {
@@ -498,18 +495,21 @@
                                       "id": "[concat('/subscriptions/', subscription().subscriptionId,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/loadBalancers/', variables('lbName'), '/backendAddressPools/addressPool1')]"
                                     }
                                   ]
-                                }
+                                },
+                                "name": "ip1"
                               }
                             ],
                             "networkSecurityGroup": {
                               "id": "[concat('/subscriptions/', subscription().subscriptionId,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]"
                             }
-                          }
+                          },
+                          "name": "nic1"
                         }
                       ]
                     }
                   }
-                }
+                },
+                "name": "[parameters('vmSSName')]"
               }
             ]
           },
@@ -1385,7 +1385,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet1749/providers/Microsoft.Resources/deployments/vmss3911?api-version=2022-09-01",
+      "RequestUri": "https://management.azure.com/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourceGroups/azsmnet1749/providers/Microsoft.Resources/deployments/vmss3911?api-version=2025-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Authorization": "Sanitized",
