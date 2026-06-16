@@ -4,35 +4,18 @@ name: TypeSpec Go Regenerate Tests
 # and mirrors them into this repo's `typespec-go` baseline branch, then opens a
 # tracking issue with a pre-filled "compare" link so a maintainer can open the
 # code-diff PR with a single click.
-#
-# This workflow lives in azure-sdk-assets (rather than in typespec-azure) because
-# it needs WRITE access to this repo to push regen branches and open issues/PRs.
-# Running here means the default GITHUB_TOKEN already has that access, so no
-# cross-repo PAT is required. The emitter itself is pulled in by checking out
-# Azure/typespec-azure (a public repo, readable with the default token).
-#
-# It is the counterpart of azure-sdk-for-python's typespec-python-regenerate.yml.
-#
-# NOTE ON BRANCHES: GitHub only fires `schedule` and `workflow_dispatch` from a
-# repository's DEFAULT branch, so this file must live on `main`. The generated
-# baseline itself lives on the `typespec-go` branch (BASELINE_BRANCH); this
-# workflow checks that branch out, copies the freshly generated tests onto a
-# `regen/typespec-go-*` branch based on it, and targets it with the compare PR.
 
 on:
-  # Daily regeneration against typespec-azure@main.
-  schedule:
-    - cron: "0 22 * * *"
   # Manual trigger, optionally against a specific typespec-azure PR for a code-diff review.
   workflow_dispatch:
     inputs:
       typespec_azure_ref:
-        description: "Either 'main' or an Azure/typespec-azure pull request URL (e.g. https://github.com/Azure/typespec-azure/pull/1234). The PR's head repo + SHA will be checked out and regenerated."
+        description: "'main', another Azure/typespec-azure branch name, or an Azure/typespec-azure pull request URL (e.g. https://github.com/Azure/typespec-azure/pull/1234). The corresponding ref is checked out and regenerated; the regen branch name is derived from it."
         required: false
         default: "main"
   # Allow Azure/typespec-azure to trigger a regeneration after emitter changes
   # merge. The sender posts {"event_type":"typespec-go-regenerate","client_payload":
-  # {"typespec_azure_ref":"<main|PR URL>"}} to this repo's dispatches endpoint.
+  # {"typespec_azure_ref":"<main|branch name|PR URL>"}} to this repo's dispatches endpoint.
   repository_dispatch:
     types: [typespec-go-regenerate]
 
@@ -59,8 +42,8 @@ env:
   GO_VERSION: "1.26.1"
   # Label applied to the tracking issue in this repo.
   ISSUE_LABEL: typespec-go
-  # Default assignees for automatic (schedule / repository_dispatch) runs. Manual
-  # runs assign the dispatch actor instead. Adjust as ownership changes.
+  # Default assignees for automatic (repository_dispatch) runs. Manual runs
+  # assign the dispatch actor instead. Adjust as ownership changes.
   REGEN_ASSIGNEES: tadelesh,JiaqiZhang-Dev,jhendrixMSFT
 
 jobs:
@@ -81,6 +64,7 @@ jobs:
           DISPLAY_REF="main"
           REF_URL="${{ github.server_url }}/${TYPESPEC_AZURE_REPO}/tree/main"
           PR_NUMBER=""
+          REGEN_SLUG="main"
 
           # Accept an Azure/typespec-azure PR URL and resolve it to head repo + SHA.
           if [[ "$INPUT" =~ ^https://github\.com/([^/]+)/([^/]+)/pull/([0-9]+)/?$ ]]; then
@@ -101,8 +85,26 @@ jobs:
             REF="${HEAD_SHA}"
             DISPLAY_REF="PR #${PR_NUMBER} @ ${HEAD_SHA:0:7}"
             REF_URL="${INPUT}"
-          elif [ "$INPUT" != "main" ]; then
-            echo "::error::typespec_azure_ref must be 'main' or an ${TYPESPEC_AZURE_REPO} pull request URL (got: ${INPUT})."
+            # Branch name keyed on the PR number so re-runs reuse the same branch.
+            REGEN_SLUG="pr-${PR_NUMBER}"
+          else
+            # Treat the input as a branch name on TYPESPEC_AZURE_REPO (default 'main').
+            if ! gh api "repos/${TYPESPEC_AZURE_REPO}/branches/${INPUT}" >/dev/null 2>&1; then
+              echo "::error::'${INPUT}' is neither an ${TYPESPEC_AZURE_REPO} pull request URL nor an existing branch."
+              exit 1
+            fi
+            REF="${INPUT}"
+            DISPLAY_REF="${INPUT}"
+            REF_URL="${{ github.server_url }}/${TYPESPEC_AZURE_REPO}/tree/${INPUT}"
+            # Slugify the branch name so re-runs of the same branch reuse one regen
+            # branch (idempotent) and never collide across different branches.
+            REGEN_SLUG=$(echo "${INPUT}" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g; s#^-+##; s#-+$##')
+          fi
+
+          REGEN_BRANCH="regen/typespec-go-${REGEN_SLUG}"
+          # Defensive: the regen branch must never be the baseline branch itself.
+          if [ "$REGEN_BRANCH" = "${BASELINE_BRANCH}" ]; then
+            echo "::error::computed regen branch '${REGEN_BRANCH}' collides with baseline branch '${BASELINE_BRANCH}'."
             exit 1
           fi
 
@@ -112,8 +114,9 @@ jobs:
             echo "display_ref=$DISPLAY_REF"
             echo "ref_url=$REF_URL"
             echo "pr_number=$PR_NUMBER"
+            echo "regen_branch=$REGEN_BRANCH"
           } >> "$GITHUB_OUTPUT"
-          echo "::notice::Regenerating from ${REPO}@${DISPLAY_REF}"
+          echo "::notice::Regenerating from ${REPO}@${DISPLAY_REF} into branch ${REGEN_BRANCH}"
 
       - name: Checkout typespec-azure
         uses: actions/checkout@v4
@@ -202,14 +205,24 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           PR_NUMBER="${{ steps.tsa-info.outputs.pr_number }}"
+          SOURCE_BRANCH="${{ steps.tsa-info.outputs.regen_branch }}"
+          DISPLAY_REF="${{ steps.tsa-info.outputs.display_ref }}"
           if [ -n "$PR_NUMBER" ]; then
             SOURCE_LABEL="${TYPESPEC_AZURE_REPO} PR #${PR_NUMBER}"
-            SOURCE_BRANCH="regen/typespec-go-pr-${PR_NUMBER}"
           else
-            SOURCE_LABEL="${TYPESPEC_AZURE_REPO}@main"
-            SOURCE_BRANCH="regen/typespec-go-main"
+            SOURCE_LABEL="${TYPESPEC_AZURE_REPO}@${DISPLAY_REF}"
           fi
 
+          # Defensive: never check out / commit / push onto the baseline branch.
+          # We always operate on a dedicated regen/* branch derived from the source.
+          if [ "$SOURCE_BRANCH" = "${BASELINE_BRANCH}" ]; then
+            echo "::error::refusing to use baseline branch '${BASELINE_BRANCH}' as the regen branch."
+            exit 1
+          fi
+
+          # Reset the (possibly pre-existing) regen branch to the freshly checked
+          # out baseline tip, so a re-run for the same source force-updates one
+          # branch instead of creating duplicates.
           git checkout -B "$SOURCE_BRANCH"
           git add -A
 
@@ -335,12 +348,7 @@ jobs:
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          PR_NUMBER="${{ steps.tsa-info.outputs.pr_number }}"
-          if [ -n "$PR_NUMBER" ]; then
-            CURRENT_BRANCH="regen/typespec-go-pr-${PR_NUMBER}"
-          else
-            CURRENT_BRANCH="regen/typespec-go-main"
-          fi
+          CURRENT_BRANCH="${{ steps.tsa-info.outputs.regen_branch }}"
 
           # Prune any regen/typespec-go-* branch whose PR (to the baseline branch)
           # is no longer open but did exist at some point (merged or closed).
