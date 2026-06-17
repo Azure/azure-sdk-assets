@@ -13,11 +13,6 @@ on:
         description: "'main', another Azure/typespec-azure branch name, or a pull request (number or URL, e.g. 1234 or https://github.com/Azure/typespec-azure/pull/1234). The corresponding ref is checked out and regenerated; the regen branch name is derived from it."
         required: false
         default: "main"
-  # Allow Azure/typespec-azure to trigger a regeneration after emitter changes
-  # merge. The sender posts {"event_type":"typespec-go-regenerate","client_payload":
-  # {"typespec_azure_ref":"<main|branch name|PR URL>"}} to this repo's dispatches endpoint.
-  repository_dispatch:
-    types: [typespec-go-regenerate]
 
 permissions:
   contents: write
@@ -30,7 +25,7 @@ permissions:
 # because the derived regen branch name isn't known until a step runs; re-runs
 # for the same source share the group and the newest cancels the in-flight one.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.client_payload.typespec_azure_ref || github.event.inputs.typespec_azure_ref || 'main' }}
+  group: ${{ github.workflow }}-${{ github.event.inputs.typespec_azure_ref || 'main' }}
   cancel-in-progress: true
 
 env:
@@ -45,8 +40,8 @@ env:
   GO_VERSION: "1.26.1"
   # Label applied to the tracking issue in this repo.
   ISSUE_LABEL: typespec-go
-  # Default assignees for automatic (repository_dispatch) runs. Manual runs
-  # assign the dispatch actor instead. Adjust as ownership changes.
+  # Default assignees, used as a fallback when the dispatch actor is unavailable.
+  # Manual runs assign the actor who triggered them. Adjust as ownership changes.
   REGEN_ASSIGNEES: tadelesh,JiaqiZhang-Dev,jhendrixMSFT
 
 jobs:
@@ -58,8 +53,8 @@ jobs:
         id: tsa-info
         run: |
           set -euo pipefail
-          # Input precedence: repository_dispatch payload > workflow_dispatch input > 'main'.
-          INPUT="${{ github.event.client_payload.typespec_azure_ref || github.event.inputs.typespec_azure_ref || 'main' }}"
+          # Input precedence: workflow_dispatch input > 'main'.
+          INPUT="${{ github.event.inputs.typespec_azure_ref || 'main' }}"
           SERVER="${{ github.server_url }}"
           PR_NUMBER=""
           BRANCH=""
@@ -247,10 +242,9 @@ jobs:
           RUN_URL="${SERVER}/${REPO}/actions/runs/${{ github.run_id }}"
           TS_REF_URL="${{ steps.tsa-info.outputs.ref_url }}"
 
-          # Assignees: the dispatch actor for manual runs, the default otherwise.
-          EVENT_NAME="${{ github.event_name }}"
+          # Assignees: the actor who triggered the run, falling back to the defaults.
           ACTOR="${{ github.actor }}"
-          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ -n "$ACTOR" ]; then
+          if [ -n "$ACTOR" ]; then
             ASSIGNEES="$ACTOR"
             CC_LINE="cc @${ACTOR}"
           else
