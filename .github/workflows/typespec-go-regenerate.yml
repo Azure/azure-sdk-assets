@@ -1,0 +1,419 @@
+name: TypeSpec Go Regenerate Tests
+
+# Regenerates the typespec-go test fixtures from the Azure/typespec-azure emitter
+# and mirrors them into this repo's `typespec-go` baseline branch, then opens a
+# tracking issue with a pre-filled "compare" link so a maintainer can open the
+# code-diff PR with a single click.
+
+on:
+  # Manual trigger, optionally against a specific typespec-azure PR for a code-diff review.
+  workflow_dispatch:
+    inputs:
+      typespec_azure_ref:
+        description: "'main', another Azure/typespec-azure branch name, or a pull request (number or URL, e.g. 1234 or https://github.com/Azure/typespec-azure/pull/1234). The corresponding ref is checked out and regenerated; the regen branch name is derived from it."
+        required: false
+        default: "main"
+  # Allow Azure/typespec-azure to trigger a regeneration after emitter changes
+  # merge. The sender posts {"event_type":"typespec-go-regenerate","client_payload":
+  # {"typespec_azure_ref":"<main|branch name|PR URL>"}} to this repo's dispatches endpoint.
+  repository_dispatch:
+    types: [typespec-go-regenerate]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+# Serialize only runs that target the SAME source (and therefore the same
+# regen/* branch), so regenerations for different PRs/branches run in parallel
+# instead of cancelling each other. The group is keyed on the raw trigger input
+# because the derived regen branch name isn't known until a step runs; re-runs
+# for the same source share the group and the newest cancels the in-flight one.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.client_payload.typespec_azure_ref || github.event.inputs.typespec_azure_ref || 'main' }}
+  cancel-in-progress: true
+
+env:
+  # The emitter repo to regenerate from.
+  TYPESPEC_AZURE_REPO: Azure/typespec-azure
+  # This repo's baseline branch holding the generated tests. Keep in sync with
+  # BASELINE_BRANCH in typespec-azure's packages/typespec-go/.scripts/sync-baseline.js.
+  BASELINE_BRANCH: typespec-go
+  # Toolchain versions, mirroring typespec-azure's setup actions.
+  NODE_VERSION: "24.x"
+  PNPM_VERSION: "10.30.2"
+  GO_VERSION: "1.26.1"
+  # Label applied to the tracking issue in this repo.
+  ISSUE_LABEL: typespec-go
+  # Default assignees for automatic (repository_dispatch) runs. Manual runs
+  # assign the dispatch actor instead. Adjust as ownership changes.
+  REGEN_ASSIGNEES: tadelesh,JiaqiZhang-Dev,jhendrixMSFT
+
+jobs:
+  regenerate:
+    name: "Regenerate typespec-go tests"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve typespec-azure ref
+        id: tsa-info
+        run: |
+          set -euo pipefail
+          # Input precedence: repository_dispatch payload > workflow_dispatch input > 'main'.
+          INPUT="${{ github.event.client_payload.typespec_azure_ref || github.event.inputs.typespec_azure_ref || 'main' }}"
+          SERVER="${{ github.server_url }}"
+          PR_NUMBER=""
+          BRANCH=""
+
+          # A PR can be given as a full Azure/typespec-azure PR URL or a bare number.
+          # The actual checkout is done later with `gh pr checkout`, which handles
+          # forks transparently, so we don't need to resolve the head repo/SHA here.
+          if [[ "$INPUT" =~ ^https://github\.com/([^/]+)/([^/]+)/pull/([0-9]+)/?$ ]]; then
+            if [ "${BASH_REMATCH[1]}/${BASH_REMATCH[2]}" != "${TYPESPEC_AZURE_REPO}" ]; then
+              echo "::error::Only pull request URLs from ${TYPESPEC_AZURE_REPO} are accepted (got ${BASH_REMATCH[1]}/${BASH_REMATCH[2]})."
+              exit 1
+            fi
+            PR_NUMBER="${BASH_REMATCH[3]}"
+          elif [[ "$INPUT" =~ ^[0-9]+$ ]]; then
+            PR_NUMBER="$INPUT"
+          else
+            BRANCH="$INPUT"
+          fi
+
+          if [ -n "$PR_NUMBER" ]; then
+            DISPLAY_REF="PR #${PR_NUMBER}"
+            REF_URL="${SERVER}/${TYPESPEC_AZURE_REPO}/pull/${PR_NUMBER}"
+            REGEN_SLUG="pr-${PR_NUMBER}"
+          else
+            DISPLAY_REF="${BRANCH}"
+            REF_URL="${SERVER}/${TYPESPEC_AZURE_REPO}/tree/${BRANCH}"
+            # Slugify the branch name so re-runs of the same branch reuse one regen
+            # branch (idempotent) and never collide across different branches.
+            REGEN_SLUG=$(echo "${BRANCH}" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g; s#^-+##; s#-+$##')
+          fi
+
+          REGEN_BRANCH="regen/typespec-go-${REGEN_SLUG}"
+          # Defensive: the regen branch must never be the baseline branch itself.
+          if [ "$REGEN_BRANCH" = "${BASELINE_BRANCH}" ]; then
+            echo "::error::computed regen branch '${REGEN_BRANCH}' collides with baseline branch '${BASELINE_BRANCH}'."
+            exit 1
+          fi
+
+          {
+            echo "pr_number=$PR_NUMBER"
+            echo "branch=$BRANCH"
+            echo "display_ref=$DISPLAY_REF"
+            echo "ref_url=$REF_URL"
+            echo "regen_branch=$REGEN_BRANCH"
+          } >> "$GITHUB_OUTPUT"
+          echo "::notice::Regenerating from ${TYPESPEC_AZURE_REPO} ${DISPLAY_REF} into branch ${REGEN_BRANCH}"
+
+      - name: Checkout typespec-azure
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.TYPESPEC_AZURE_REPO }}
+          fetch-depth: 0
+          path: _typespec
+
+      - name: Check out target ref (PR or branch)
+        working-directory: _typespec
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PR_NUMBER="${{ steps.tsa-info.outputs.pr_number }}"
+          if [ -n "$PR_NUMBER" ]; then
+            # gh resolves and fetches the PR head, including from forks.
+            gh pr checkout "$PR_NUMBER" --repo "${TYPESPEC_AZURE_REPO}"
+          else
+            git checkout "${{ steps.tsa-info.outputs.branch }}"
+          fi
+          git submodule update --init --recursive
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+
+      - name: Install dependencies
+        working-directory: _typespec
+        run: pnpm install
+
+      - name: Build emitter
+        working-directory: _typespec
+        run: pnpm turbo run --filter "@azure-tools/typespec-go..." build
+
+      - name: Build spector and specs
+        working-directory: _typespec
+        run: |
+          pnpm turbo run --filter "@typespec/spector..." build
+          pnpm --filter "@typespec/http-specs" exec tsc -p ./tsconfig.build.json
+          pnpm --filter "@azure-tools/azure-http-specs" exec tsc -p ./tsconfig.build.json
+
+      - name: Regenerate tests
+        working-directory: _typespec/packages/typespec-go
+        run: pnpm run regenerate
+        env:
+          # The script's anonymous baseline sync is for local diffing; this
+          # workflow does the authenticated mirror + push itself below.
+          TYPESPEC_GO_SKIP_BASELINE: "1"
+
+      - name: Resolve mirror directories
+        id: mirror
+        run: |
+          set -euo pipefail
+          # Single source of truth for which test dirs are mirrored.
+          DIRS=$(node --input-type=module -e "import {BASELINE_MIRROR_DIRS} from './_typespec/packages/typespec-go/.scripts/sync-baseline.js'; process.stdout.write(BASELINE_MIRROR_DIRS.join(' '))")
+          echo "dirs=$DIRS" >> "$GITHUB_OUTPUT"
+          echo "::notice::Mirroring dirs: $DIRS"
+
+      - name: Checkout baseline branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BASELINE_BRANCH }}
+          fetch-depth: 1
+          path: _assets
+
+      - name: Copy regenerated tests into baseline checkout
+        run: |
+          set -euo pipefail
+          SOURCE_PKG="_typespec/packages/typespec-go"
+          for d in ${{ steps.mirror.outputs.dirs }}; do
+            rm -rf "_assets/$d"
+            if [ -d "$SOURCE_PKG/$d" ]; then
+              mkdir -p "_assets/$(dirname "$d")"
+              cp -r "$SOURCE_PKG/$d" "_assets/$d"
+            fi
+          done
+
+      - name: Commit, push, and open tracking issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          cd _assets
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          PR_NUMBER="${{ steps.tsa-info.outputs.pr_number }}"
+          SOURCE_BRANCH="${{ steps.tsa-info.outputs.regen_branch }}"
+          DISPLAY_REF="${{ steps.tsa-info.outputs.display_ref }}"
+          if [ -n "$PR_NUMBER" ]; then
+            SOURCE_LABEL="${TYPESPEC_AZURE_REPO} PR #${PR_NUMBER}"
+          else
+            SOURCE_LABEL="${TYPESPEC_AZURE_REPO}@${DISPLAY_REF}"
+          fi
+
+          # Defensive: never check out / commit / push onto the baseline branch.
+          # We always operate on a dedicated regen/* branch derived from the source.
+          if [ "$SOURCE_BRANCH" = "${BASELINE_BRANCH}" ]; then
+            echo "::error::refusing to use baseline branch '${BASELINE_BRANCH}' as the regen branch."
+            exit 1
+          fi
+
+          # Reset the (possibly pre-existing) regen branch to the freshly checked
+          # out baseline tip, so a re-run for the same source force-updates one
+          # branch instead of creating duplicates.
+          git checkout -B "$SOURCE_BRANCH"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No changes vs ${BASELINE_BRANCH}; nothing to push."
+            exit 0
+          fi
+
+          COMMIT_MSG="[typespec-go] Regenerate tests from ${SOURCE_LABEL}"
+          git commit -m "$COMMIT_MSG"
+          # The regen branch is owned solely by this (serialized) workflow.
+          git push origin "$SOURCE_BRANCH" --force
+
+          # Ensure the tracking label exists (best effort).
+          gh label create "$ISSUE_LABEL" --repo "$REPO" \
+            --description "typespec-go generated-test regenerations" --color "0e8a16" 2>/dev/null \
+            || true
+
+          SERVER="${{ github.server_url }}"
+          RUN_URL="${SERVER}/${REPO}/actions/runs/${{ github.run_id }}"
+          TS_REF_URL="${{ steps.tsa-info.outputs.ref_url }}"
+
+          # Assignees: the dispatch actor for manual runs, the default otherwise.
+          EVENT_NAME="${{ github.event_name }}"
+          ACTOR="${{ github.actor }}"
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ -n "$ACTOR" ]; then
+            ASSIGNEES="$ACTOR"
+            CC_LINE="cc @${ACTOR}"
+          else
+            ASSIGNEES="$REGEN_ASSIGNEES"
+            CC_LINE="cc @${REGEN_ASSIGNEES//,/ @}"
+          fi
+
+          TITLE="$COMMIT_MSG"
+
+          # Reuse an existing open tracking issue matched by exact title.
+          ISSUES_JSON=$(gh issue list --repo "$REPO" --state open --label "$ISSUE_LABEL" \
+            --limit 100 --json number,title)
+          EXISTING_ISSUE=$(jq -r --arg title "$TITLE" \
+            'first(.[] | select(.title == $title) | .number) // ""' <<< "$ISSUES_JSON")
+
+          if [ -n "$EXISTING_ISSUE" ]; then
+            ISSUE_NUMBER="$EXISTING_ISSUE"
+            echo "Reusing existing tracking issue #$ISSUE_NUMBER"
+          else
+            echo "Creating new tracking issue"
+            ISSUE_URL=$(gh issue create --repo "$REPO" --title "$TITLE" \
+              --body "Tracking issue for typespec-go regeneration. Details will be filled in shortly." \
+              --label "$ISSUE_LABEL")
+            ISSUE_NUMBER="${ISSUE_URL##*/}"
+            echo "Created issue #$ISSUE_NUMBER ($ISSUE_URL)"
+          fi
+
+          # If an open PR already exists from the source branch, point at it.
+          EXISTING_PR_JSON=$(gh pr list --repo "$REPO" --state open \
+            --head "$SOURCE_BRANCH" --base "$BASELINE_BRANCH" --json number,url --limit 1)
+          EXISTING_PR_URL=$(echo "$EXISTING_PR_JSON" | jq -r '.[0].url // empty')
+          EXISTING_PR_NUMBER=$(echo "$EXISTING_PR_JSON" | jq -r '.[0].number // empty')
+
+          if [ -n "$EXISTING_PR_URL" ]; then
+            ISSUE_BODY="A pull request already exists for this regeneration.
+
+          👉 [View pull request #${EXISTING_PR_NUMBER}](${EXISTING_PR_URL})
+
+          The branch \`${SOURCE_BRANCH}\` was just updated with the latest regenerated tests; the existing PR will reflect those changes automatically.
+
+          Details:
+          - Source: [${SOURCE_LABEL}](${TS_REF_URL})
+          - Branch: [\`${SOURCE_BRANCH}\`](${SERVER}/${REPO}/tree/${SOURCE_BRANCH})
+          - Latest workflow run: ${RUN_URL}
+
+          > Note: the PR targets the \`${BASELINE_BRANCH}\` branch, so merging it will **not** auto-close this issue. Please close this issue manually after the PR is merged.
+
+          ${CC_LINE}"
+          else
+            ISSUE_LINK="${SERVER}/${REPO}/issues/${ISSUE_NUMBER}"
+            PR_TITLE="$TITLE"
+            NOTE_PREFIX=""
+            DRAFT_PARAM=""
+            if [ -n "$PR_NUMBER" ]; then
+              PR_TITLE="$TITLE (DO NOT MERGE)"
+              NOTE_PREFIX=$'NOTE: This PR exists only to display the code diff. Please do not merge it.\n\n'
+              DRAFT_PARAM="&draft=1"
+            fi
+            PR_TITLE_ENC=$(jq -rn --arg t "$PR_TITLE" '$t|@uri')
+            PR_BODY_RAW="${NOTE_PREFIX}Fixes ${ISSUE_LINK}
+
+          Source: ${TS_REF_URL}
+
+          Automated regeneration of typespec-go generated tests from ${SOURCE_LABEL}.
+
+          - Workflow run: ${RUN_URL}
+
+          This PR was auto-generated. Re-run the workflow to update it after new commits land."
+            PR_BODY_ENC=$(jq -rn --arg b "$PR_BODY_RAW" '$b|@uri')
+            COMPARE_URL="${SERVER}/${REPO}/compare/${BASELINE_BRANCH}...${SOURCE_BRANCH}?quick_pull=1${DRAFT_PARAM}&title=${PR_TITLE_ENC}&body=${PR_BODY_ENC}"
+
+            ISSUE_BODY="GitHub Actions cannot open the pull request directly, so this issue tracks the regeneration instead.
+
+          **Click the link below to open a pre-filled PR:**
+
+          👉 [Create pull request from \`${SOURCE_BRANCH}\`](${COMPARE_URL})
+
+          Details:
+          - Source: [${SOURCE_LABEL}](${TS_REF_URL})
+          - Branch: [\`${SOURCE_BRANCH}\`](${SERVER}/${REPO}/tree/${SOURCE_BRANCH})
+          - Latest workflow run: ${RUN_URL}
+
+          > Note: the PR targets the \`${BASELINE_BRANCH}\` branch, so merging it will **not** auto-close this issue. Please close this issue manually after the PR is merged.
+
+          ${CC_LINE}"
+          fi
+
+          gh issue edit "$ISSUE_NUMBER" --repo "$REPO" --body "$ISSUE_BODY" --add-label "$ISSUE_LABEL"
+          gh issue edit "$ISSUE_NUMBER" --repo "$REPO" --add-assignee "$ASSIGNEES" \
+            || echo "::warning::Could not assign issue #${ISSUE_NUMBER} to ${ASSIGNEES}"
+          echo "::notice::Tracking issue #${ISSUE_NUMBER} updated with PR compare link"
+
+      - name: Clean up stale regen branches
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          CURRENT_BRANCH="${{ steps.tsa-info.outputs.regen_branch }}"
+
+          # Prune any regen/typespec-go-* branch whose PR (to the baseline branch)
+          # is no longer open but did exist at some point (merged or closed).
+          # Use the authenticated API (not git ls-remote) so this works without a
+          # workspace checkout and regardless of repo visibility.
+          BRANCHES=$(gh api --paginate "repos/${REPO}/git/matching-refs/heads/regen/typespec-go-" \
+            --jq '.[].ref | sub("^refs/heads/"; "")' || true)
+          for b in $BRANCHES; do
+            if [ "$b" = "$CURRENT_BRANCH" ]; then
+              continue
+            fi
+            OPEN_COUNT=$(gh pr list --repo "$REPO" --state open --head "$b" --base "$BASELINE_BRANCH" \
+              --json number --jq 'length')
+            ALL_COUNT=$(gh pr list --repo "$REPO" --state all --head "$b" --base "$BASELINE_BRANCH" \
+              --json number --jq 'length')
+            if [ "$OPEN_COUNT" = "0" ] && [ "$ALL_COUNT" != "0" ]; then
+              echo "Deleting stale branch $b (PR merged/closed, none open)"
+              gh api -X DELETE "repos/${REPO}/git/refs/heads/${b}" \
+                || echo "::warning::Failed to delete branch $b"
+            fi
+          done
+
+  notify-on-failure:
+    name: "Notify on failure"
+    needs: regenerate
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send failure notification
+        uses: actions/github-script@v7
+        env:
+          REGEN_ASSIGNEES: ${{ env.REGEN_ASSIGNEES }}
+        with:
+          script: |
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const cc = process.env.REGEN_ASSIGNEES.split(",").map((a) => `@${a.trim()}`).join(" ");
+            const title = '[typespec-go] Regeneration workflow failed';
+            const body = `The typespec-go test regeneration workflow failed.\n\n` +
+                         `- **Run:** ${runUrl}\n` +
+                         `- **Trigger:** ${context.eventName}\n\n` +
+                         `cc ${cc}`;
+
+            const existing = await github.rest.search.issuesAndPullRequests({
+              q: `repo:${context.repo.owner}/${context.repo.repo} is:issue is:open in:title "${title}"`,
+            });
+            const match = existing.data.items.find(
+              (i) => i.title === title && !i.pull_request,
+            );
+
+            if (match) {
+              core.info(`Commenting on existing issue #${match.number}`);
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: match.number,
+                body,
+              });
+            } else {
+              core.info('Creating new failure-notification issue');
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+              });
+            }
