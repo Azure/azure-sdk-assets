@@ -302,15 +302,8 @@ jobs:
           else
             ISSUE_LINK="${SERVER}/${REPO}/issues/${ISSUE_NUMBER}"
             PR_TITLE="$TITLE"
-            NOTE_PREFIX=""
-            DRAFT_PARAM=""
-            if [ -n "$PR_NUMBER" ]; then
-              PR_TITLE="$TITLE (DO NOT MERGE)"
-              NOTE_PREFIX=$'NOTE: This PR exists only to display the code diff. Please do not merge it.\n\n'
-              DRAFT_PARAM="&draft=1"
-            fi
             PR_TITLE_ENC=$(jq -rn --arg t "$PR_TITLE" '$t|@uri')
-            PR_BODY_RAW="${NOTE_PREFIX}Fixes ${ISSUE_LINK}
+            PR_BODY_RAW="Fixes ${ISSUE_LINK}
 
           Source: ${TS_REF_URL}
 
@@ -320,7 +313,7 @@ jobs:
 
           This PR was auto-generated. Re-run the workflow to update it after new commits land."
             PR_BODY_ENC=$(jq -rn --arg b "$PR_BODY_RAW" '$b|@uri')
-            COMPARE_URL="${SERVER}/${REPO}/compare/${BASELINE_BRANCH}...${SOURCE_BRANCH}?quick_pull=1${DRAFT_PARAM}&title=${PR_TITLE_ENC}&body=${PR_BODY_ENC}"
+            COMPARE_URL="${SERVER}/${REPO}/compare/${BASELINE_BRANCH}...${SOURCE_BRANCH}?quick_pull=1&title=${PR_TITLE_ENC}&body=${PR_BODY_ENC}"
 
             ISSUE_BODY="GitHub Actions cannot open the pull request directly, so this issue tracks the regeneration instead.
 
