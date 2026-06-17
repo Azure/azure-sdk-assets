@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       typespec_azure_ref:
-        description: "'main', another Azure/typespec-azure branch name, or an Azure/typespec-azure pull request URL (e.g. https://github.com/Azure/typespec-azure/pull/1234). The corresponding ref is checked out and regenerated; the regen branch name is derived from it."
+        description: "'main', another Azure/typespec-azure branch name, or a pull request (number or URL, e.g. 1234 or https://github.com/Azure/typespec-azure/pull/1234). The corresponding ref is checked out and regenerated; the regen branch name is derived from it."
         required: false
         default: "main"
   # Allow Azure/typespec-azure to trigger a regeneration after emitter changes
@@ -51,54 +51,41 @@ jobs:
     name: "Regenerate typespec-go tests"
     runs-on: ubuntu-latest
     steps:
-      - name: Resolve typespec-azure repo/ref
+      - name: Resolve typespec-azure ref
         id: tsa-info
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           # Input precedence: repository_dispatch payload > workflow_dispatch input > 'main'.
           INPUT="${{ github.event.client_payload.typespec_azure_ref || github.event.inputs.typespec_azure_ref || 'main' }}"
-          REPO="${TYPESPEC_AZURE_REPO}"
-          REF="main"
-          DISPLAY_REF="main"
-          REF_URL="${{ github.server_url }}/${TYPESPEC_AZURE_REPO}/tree/main"
+          SERVER="${{ github.server_url }}"
           PR_NUMBER=""
-          REGEN_SLUG="main"
+          BRANCH=""
 
-          # Accept an Azure/typespec-azure PR URL and resolve it to head repo + SHA.
+          # A PR can be given as a full Azure/typespec-azure PR URL or a bare number.
+          # The actual checkout is done later with `gh pr checkout`, which handles
+          # forks transparently, so we don't need to resolve the head repo/SHA here.
           if [[ "$INPUT" =~ ^https://github\.com/([^/]+)/([^/]+)/pull/([0-9]+)/?$ ]]; then
-            PR_OWNER="${BASH_REMATCH[1]}"
-            PR_REPO_NAME="${BASH_REMATCH[2]}"
-            PR_NUMBER="${BASH_REMATCH[3]}"
-            if [ "$PR_OWNER/$PR_REPO_NAME" != "${TYPESPEC_AZURE_REPO}" ]; then
-              echo "::error::Only pull request URLs from ${TYPESPEC_AZURE_REPO} are accepted (got ${PR_OWNER}/${PR_REPO_NAME})."
+            if [ "${BASH_REMATCH[1]}/${BASH_REMATCH[2]}" != "${TYPESPEC_AZURE_REPO}" ]; then
+              echo "::error::Only pull request URLs from ${TYPESPEC_AZURE_REPO} are accepted (got ${BASH_REMATCH[1]}/${BASH_REMATCH[2]})."
               exit 1
             fi
-            echo "Resolving PR #${PR_NUMBER} from ${PR_OWNER}/${PR_REPO_NAME}..."
-            PR_JSON=$(gh pr view "$PR_NUMBER" --repo "${PR_OWNER}/${PR_REPO_NAME}" \
-              --json headRefOid,headRepositoryOwner,headRepository)
-            HEAD_SHA=$(echo "$PR_JSON" | jq -r '.headRefOid')
-            HEAD_OWNER=$(echo "$PR_JSON" | jq -r '.headRepositoryOwner.login')
-            HEAD_REPO_NAME=$(echo "$PR_JSON" | jq -r '.headRepository.name')
-            REPO="${HEAD_OWNER}/${HEAD_REPO_NAME}"
-            REF="${HEAD_SHA}"
-            DISPLAY_REF="PR #${PR_NUMBER} @ ${HEAD_SHA:0:7}"
-            REF_URL="${INPUT}"
-            # Branch name keyed on the PR number so re-runs reuse the same branch.
+            PR_NUMBER="${BASH_REMATCH[3]}"
+          elif [[ "$INPUT" =~ ^[0-9]+$ ]]; then
+            PR_NUMBER="$INPUT"
+          else
+            BRANCH="$INPUT"
+          fi
+
+          if [ -n "$PR_NUMBER" ]; then
+            DISPLAY_REF="PR #${PR_NUMBER}"
+            REF_URL="${SERVER}/${TYPESPEC_AZURE_REPO}/pull/${PR_NUMBER}"
             REGEN_SLUG="pr-${PR_NUMBER}"
           else
-            # Treat the input as a branch name on TYPESPEC_AZURE_REPO (default 'main').
-            if ! gh api "repos/${TYPESPEC_AZURE_REPO}/branches/${INPUT}" >/dev/null 2>&1; then
-              echo "::error::'${INPUT}' is neither an ${TYPESPEC_AZURE_REPO} pull request URL nor an existing branch."
-              exit 1
-            fi
-            REF="${INPUT}"
-            DISPLAY_REF="${INPUT}"
-            REF_URL="${{ github.server_url }}/${TYPESPEC_AZURE_REPO}/tree/${INPUT}"
+            DISPLAY_REF="${BRANCH}"
+            REF_URL="${SERVER}/${TYPESPEC_AZURE_REPO}/tree/${BRANCH}"
             # Slugify the branch name so re-runs of the same branch reuse one regen
             # branch (idempotent) and never collide across different branches.
-            REGEN_SLUG=$(echo "${INPUT}" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g; s#^-+##; s#-+$##')
+            REGEN_SLUG=$(echo "${BRANCH}" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g; s#^-+##; s#-+$##')
           fi
 
           REGEN_BRANCH="regen/typespec-go-${REGEN_SLUG}"
@@ -109,23 +96,35 @@ jobs:
           fi
 
           {
-            echo "repo=$REPO"
-            echo "ref=$REF"
+            echo "pr_number=$PR_NUMBER"
+            echo "branch=$BRANCH"
             echo "display_ref=$DISPLAY_REF"
             echo "ref_url=$REF_URL"
-            echo "pr_number=$PR_NUMBER"
             echo "regen_branch=$REGEN_BRANCH"
           } >> "$GITHUB_OUTPUT"
-          echo "::notice::Regenerating from ${REPO}@${DISPLAY_REF} into branch ${REGEN_BRANCH}"
+          echo "::notice::Regenerating from ${TYPESPEC_AZURE_REPO} ${DISPLAY_REF} into branch ${REGEN_BRANCH}"
 
       - name: Checkout typespec-azure
         uses: actions/checkout@v4
         with:
-          repository: ${{ steps.tsa-info.outputs.repo }}
-          ref: ${{ steps.tsa-info.outputs.ref }}
-          submodules: recursive
+          repository: ${{ env.TYPESPEC_AZURE_REPO }}
           fetch-depth: 0
           path: _typespec
+
+      - name: Check out target ref (PR or branch)
+        working-directory: _typespec
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PR_NUMBER="${{ steps.tsa-info.outputs.pr_number }}"
+          if [ -n "$PR_NUMBER" ]; then
+            # gh resolves and fetches the PR head, including from forks.
+            gh pr checkout "$PR_NUMBER" --repo "${TYPESPEC_AZURE_REPO}"
+          else
+            git checkout "${{ steps.tsa-info.outputs.branch }}"
+          fi
+          git submodule update --init --recursive
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
