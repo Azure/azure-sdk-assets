@@ -24,10 +24,13 @@ permissions:
   issues: write
   pull-requests: write
 
-# The regen branches are owned solely by this workflow, so serialize runs to
-# avoid two runs force-pushing the same branch concurrently.
+# Serialize only runs that target the SAME source (and therefore the same
+# regen/* branch), so regenerations for different PRs/branches run in parallel
+# instead of cancelling each other. The group is keyed on the raw trigger input
+# because the derived regen branch name isn't known until a step runs; re-runs
+# for the same source share the group and the newest cancels the in-flight one.
 concurrency:
-  group: ${{ github.workflow }}
+  group: ${{ github.workflow }}-${{ github.event.client_payload.typespec_azure_ref || github.event.inputs.typespec_azure_ref || 'main' }}
   cancel-in-progress: true
 
 env:
