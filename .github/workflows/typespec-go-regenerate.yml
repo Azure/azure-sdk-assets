@@ -351,9 +351,10 @@ jobs:
 
           # Prune any regen/typespec-go-* branch whose PR (to the baseline branch)
           # is no longer open but did exist at some point (merged or closed).
-          BRANCHES=$(git ls-remote --heads "https://github.com/${REPO}.git" \
-            | sed 's#.*refs/heads/##' \
-            | grep '^regen/typespec-go-' || true)
+          # Use the authenticated API (not git ls-remote) so this works without a
+          # workspace checkout and regardless of repo visibility.
+          BRANCHES=$(gh api --paginate "repos/${REPO}/git/matching-refs/heads/regen/typespec-go-" \
+            --jq '.[].ref | sub("^refs/heads/"; "")' || true)
           for b in $BRANCHES; do
             if [ "$b" = "$CURRENT_BRANCH" ]; then
               continue
