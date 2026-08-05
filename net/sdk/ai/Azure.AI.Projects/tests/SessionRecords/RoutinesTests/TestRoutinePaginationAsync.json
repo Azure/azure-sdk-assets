@@ -7,7 +7,7 @@
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview,Insights=V1Preview,DataGenerationJobs=V1Preview,Models=V1Preview,AgentsOptimization=V2Preview,Routines=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260615.1 (.NET 10.0.9; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/3.0.0-alpha.20260805.1 (.NET 10.0.10; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
@@ -16,9 +16,9 @@
         "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
         "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "hyena-westus2-02",
+        "azureml-served-by-cluster": "hyena-westus2-01",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 15 Jun 2026 21:55:38 GMT",
+        "Date": "Wed, 05 Aug 2026 21:40:21 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
@@ -26,12 +26,13 @@
         "X-Content-Type-Options": "nosniff",
         "x-ms-region": "West Central US",
         "x-ms-response-type": "standard",
-        "X-Request-ID": "78d334a3d0818fc92afab4e2772d3146"
+        "X-Request-ID": "fa8fa707797c5afc21ed40a91199a9a0"
       },
       "ResponseBody": {
         "object": "agent",
         "id": "cs-routines-hosted-agent-1",
         "name": "cs-routines-hosted-agent-1",
+        "state": "enabled",
         "versions": {
           "latest": {
             "metadata": {
@@ -58,6 +59,7 @@
                 }
               ]
             },
+            "draft": false,
             "status": "active",
             "instance_identity": {
               "principal_id": "540467f3-113e-4f7c-bb64-1686f5827daa",
@@ -87,6 +89,9 @@
           "protocols": [
             "responses"
           ],
+          "protocol_configuration": {
+            "responses": {}
+          },
           "authorization_schemes": [
             {
               "type": "Entra",
@@ -116,10 +121,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "296",
+        "Content-Length": "409",
         "Content-Type": "application/json",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview,Insights=V1Preview,DataGenerationJobs=V1Preview,Models=V1Preview,AgentsOptimization=V2Preview,Routines=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260615.1 (.NET 10.0.9; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/3.0.0-alpha.20260805.1 (.NET 10.0.10; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
@@ -128,10 +133,12 @@
         "triggers": {
           "manual": {
             "type": "custom",
-            "provider": "sample-provider",
-            "event_name": "sample-event",
+            "provider": "teams",
             "parameters": {
-              "source": "sample_routines_crud"
+              "connection_id": "teams-conn",
+              "thread_type": "channel",
+              "group_id": "3e7de2db-d98b-4274-8b3b-9663188b8ea0",
+              "channel_id": "19%3AQE4t39RstJEzyuYwauJRpKbIqEtXgHv0ziKOQ0XujIs1%40thread.tacv2"
             }
           }
         },
@@ -144,9 +151,9 @@
       "ResponseHeaders": {
         "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "hyena-westus2-01",
+        "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 15 Jun 2026 21:55:40 GMT",
+        "Date": "Wed, 05 Aug 2026 21:40:23 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
@@ -162,12 +169,12 @@
         "triggers": {
           "manual": {
             "type": "custom",
-            "provider": "sample-provider",
-            "event_name": "sample-event",
+            "provider": "teams",
             "parameters": {
-              "source": {
-                "ValueKind": []
-              }
+              "connection_id": "teams-conn",
+              "thread_type": "channel",
+              "group_id": "3e7de2db-d98b-4274-8b3b-9663188b8ea0",
+              "channel_id": "19%3AQE4t39RstJEzyuYwauJRpKbIqEtXgHv0ziKOQ0XujIs1%40thread.tacv2"
             }
           }
         },
@@ -175,8 +182,11 @@
           "type": "invoke_agent_responses_api",
           "agent_name": "cs-routines-hosted-agent-1"
         },
-        "created_at": 1781560540,
-        "updated_at": 1781560540
+        "authorization": {
+          "identity": "agent"
+        },
+        "created_at": 1785966024,
+        "updated_at": 1785966024
       }
     },
     {
@@ -185,10 +195,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "296",
+        "Content-Length": "409",
         "Content-Type": "application/json",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview,Insights=V1Preview,DataGenerationJobs=V1Preview,Models=V1Preview,AgentsOptimization=V2Preview,Routines=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260615.1 (.NET 10.0.9; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/3.0.0-alpha.20260805.1 (.NET 10.0.10; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
@@ -197,10 +207,12 @@
         "triggers": {
           "manual": {
             "type": "custom",
-            "provider": "sample-provider",
-            "event_name": "sample-event",
+            "provider": "teams",
             "parameters": {
-              "source": "sample_routines_crud"
+              "connection_id": "teams-conn",
+              "thread_type": "channel",
+              "group_id": "3e7de2db-d98b-4274-8b3b-9663188b8ea0",
+              "channel_id": "19%3AQE4t39RstJEzyuYwauJRpKbIqEtXgHv0ziKOQ0XujIs1%40thread.tacv2"
             }
           }
         },
@@ -213,9 +225,9 @@
       "ResponseHeaders": {
         "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "hyena-westus2-01",
+        "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 15 Jun 2026 21:55:42 GMT",
+        "Date": "Wed, 05 Aug 2026 21:40:26 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
@@ -231,12 +243,12 @@
         "triggers": {
           "manual": {
             "type": "custom",
-            "provider": "sample-provider",
-            "event_name": "sample-event",
+            "provider": "teams",
             "parameters": {
-              "source": {
-                "ValueKind": []
-              }
+              "connection_id": "teams-conn",
+              "thread_type": "channel",
+              "group_id": "3e7de2db-d98b-4274-8b3b-9663188b8ea0",
+              "channel_id": "19%3AQE4t39RstJEzyuYwauJRpKbIqEtXgHv0ziKOQ0XujIs1%40thread.tacv2"
             }
           }
         },
@@ -244,8 +256,11 @@
           "type": "invoke_agent_responses_api",
           "agent_name": "cs-routines-hosted-agent-1"
         },
-        "created_at": 1781560542,
-        "updated_at": 1781560542
+        "authorization": {
+          "identity": "agent"
+        },
+        "created_at": 1785966026,
+        "updated_at": 1785966026
       }
     },
     {
@@ -254,10 +269,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "296",
+        "Content-Length": "409",
         "Content-Type": "application/json",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview,Insights=V1Preview,DataGenerationJobs=V1Preview,Models=V1Preview,AgentsOptimization=V2Preview,Routines=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260615.1 (.NET 10.0.9; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/3.0.0-alpha.20260805.1 (.NET 10.0.10; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
@@ -266,10 +281,12 @@
         "triggers": {
           "manual": {
             "type": "custom",
-            "provider": "sample-provider",
-            "event_name": "sample-event",
+            "provider": "teams",
             "parameters": {
-              "source": "sample_routines_crud"
+              "connection_id": "teams-conn",
+              "thread_type": "channel",
+              "group_id": "3e7de2db-d98b-4274-8b3b-9663188b8ea0",
+              "channel_id": "19%3AQE4t39RstJEzyuYwauJRpKbIqEtXgHv0ziKOQ0XujIs1%40thread.tacv2"
             }
           }
         },
@@ -282,9 +299,9 @@
       "ResponseHeaders": {
         "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "hyena-westus2-01",
+        "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 15 Jun 2026 21:55:44 GMT",
+        "Date": "Wed, 05 Aug 2026 21:40:28 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
@@ -300,12 +317,12 @@
         "triggers": {
           "manual": {
             "type": "custom",
-            "provider": "sample-provider",
-            "event_name": "sample-event",
+            "provider": "teams",
             "parameters": {
-              "source": {
-                "ValueKind": []
-              }
+              "connection_id": "teams-conn",
+              "thread_type": "channel",
+              "group_id": "3e7de2db-d98b-4274-8b3b-9663188b8ea0",
+              "channel_id": "19%3AQE4t39RstJEzyuYwauJRpKbIqEtXgHv0ziKOQ0XujIs1%40thread.tacv2"
             }
           }
         },
@@ -313,8 +330,11 @@
           "type": "invoke_agent_responses_api",
           "agent_name": "cs-routines-hosted-agent-1"
         },
-        "created_at": 1781560544,
-        "updated_at": 1781560544
+        "authorization": {
+          "identity": "agent"
+        },
+        "created_at": 1785966028,
+        "updated_at": 1785966028
       }
     },
     {
@@ -323,10 +343,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "296",
+        "Content-Length": "409",
         "Content-Type": "application/json",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview,Insights=V1Preview,DataGenerationJobs=V1Preview,Models=V1Preview,AgentsOptimization=V2Preview,Routines=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260615.1 (.NET 10.0.9; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/3.0.0-alpha.20260805.1 (.NET 10.0.10; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": {
@@ -335,10 +355,12 @@
         "triggers": {
           "manual": {
             "type": "custom",
-            "provider": "sample-provider",
-            "event_name": "sample-event",
+            "provider": "teams",
             "parameters": {
-              "source": "sample_routines_crud"
+              "connection_id": "teams-conn",
+              "thread_type": "channel",
+              "group_id": "3e7de2db-d98b-4274-8b3b-9663188b8ea0",
+              "channel_id": "19%3AQE4t39RstJEzyuYwauJRpKbIqEtXgHv0ziKOQ0XujIs1%40thread.tacv2"
             }
           }
         },
@@ -351,9 +373,9 @@
       "ResponseHeaders": {
         "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "hyena-westus2-01",
+        "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 15 Jun 2026 21:55:45 GMT",
+        "Date": "Wed, 05 Aug 2026 21:40:30 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
@@ -369,12 +391,12 @@
         "triggers": {
           "manual": {
             "type": "custom",
-            "provider": "sample-provider",
-            "event_name": "sample-event",
+            "provider": "teams",
             "parameters": {
-              "source": {
-                "ValueKind": []
-              }
+              "connection_id": "teams-conn",
+              "thread_type": "channel",
+              "group_id": "3e7de2db-d98b-4274-8b3b-9663188b8ea0",
+              "channel_id": "19%3AQE4t39RstJEzyuYwauJRpKbIqEtXgHv0ziKOQ0XujIs1%40thread.tacv2"
             }
           }
         },
@@ -382,8 +404,11 @@
           "type": "invoke_agent_responses_api",
           "agent_name": "cs-routines-hosted-agent-1"
         },
-        "created_at": 1781560546,
-        "updated_at": 1781560546
+        "authorization": {
+          "identity": "agent"
+        },
+        "created_at": 1785966031,
+        "updated_at": 1785966031
       }
     },
     {
@@ -393,7 +418,7 @@
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview,Insights=V1Preview,DataGenerationJobs=V1Preview,Models=V1Preview,AgentsOptimization=V2Preview,Routines=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260615.1 (.NET 10.0.9; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/3.0.0-alpha.20260805.1 (.NET 10.0.10; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
@@ -401,9 +426,597 @@
       "ResponseHeaders": {
         "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "hyena-westus2-01",
+        "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 15 Jun 2026 21:55:47 GMT",
+        "Date": "Wed, 05 Aug 2026 21:40:31 GMT",
+        "request-context": "appId=",
+        "Server": "istio-envoy",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "name": "reminder-mycodeagentremindertool-1784579046570",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1784579106,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool"
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1784579048,
+            "updated_at": 1784579056
+          },
+          {
+            "name": "reminder-mycodeagentremindertool-1784579371407",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1784579431,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool"
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1784579372,
+            "updated_at": 1784579381
+          },
+          {
+            "name": "reminder-mycodeagentremindertool-1784579443606",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1440 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1784665844,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool"
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1784579445,
+            "updated_at": 1785356508
+          }
+        ],
+        "first_id": "reminder-mycodeagentremindertool-1784579046570",
+        "last_id": "[{\"token\":\"+RID:~wUlYAMyDak+HYQwAAAAAAA==#RT:1#TRC:3#RTD:crShfXl5XJcoSxJ6v6z6BTMxMzcuMTguMzFVMzE7NDE7NTYvNDI6OjQ0NiwxMTsxMQA=#ISV:2#IEO:65599#QCF:8#FPC:AgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg/EBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ==\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}]",
+        "has_more": true
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/routines?limit=3&after=%5B%7B%22token%22%3A%22%2BRID%3A~wUlYAMyDak%2BHYQwAAAAAAA%3D%3D%23RT%3A1%23TRC%3A3%23RTD%3AcrShfXl5XJcoSxJ6v6z6BTMxMzcuMTguMzFVMzE7NDE7NTYvNDI6OjQ0NiwxMTsxMQA%3D%23ISV%3A2%23IEO%3A65599%23QCF%3A8%23FPC%3AAgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg%2FEBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ%3D%3D%22%2C%22range%22%3A%7B%22min%22%3A%22%22%2C%22max%22%3A%22FF%22%7D%7D%5D&order=asc&api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview,Insights=V1Preview,DataGenerationJobs=V1Preview,Models=V1Preview,AgentsOptimization=V2Preview,Routines=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/3.0.0-alpha.20260805.1 (.NET 10.0.10; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-02",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Aug 2026 21:40:33 GMT",
+        "request-context": "appId=",
+        "Server": "istio-envoy",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "name": "reminder-mycodeagentremindertool-1784583136931",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1784583197,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool"
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1784583138,
+            "updated_at": 1784583147
+          },
+          {
+            "name": "reminder-mycodeagentremindertool-1784583524723",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1784583585,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool"
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1784583526,
+            "updated_at": 1784583534
+          },
+          {
+            "name": "reminder-mycodeagentremindertool-1784584145337",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1784584206,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool"
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1784584146,
+            "updated_at": 1784584791
+          }
+        ],
+        "first_id": "reminder-mycodeagentremindertool-1784583136931",
+        "last_id": "[{\"token\":\"+RID:~wUlYAMyDak9DaQwAAAAAAA==#RT:2#TRC:6#RTD:crShfXl5XJcoSxJ6v6z6BTMxMzcuMTguMzFVMzI7NTo7MTcvOTo4NTc1LDExOzExAA==#ISV:2#IEO:65599#QCF:8#FPC:AgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg/EBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ==\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}]",
+        "has_more": true
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/routines?limit=3&after=%5B%7B%22token%22%3A%22%2BRID%3A~wUlYAMyDak9DaQwAAAAAAA%3D%3D%23RT%3A2%23TRC%3A6%23RTD%3AcrShfXl5XJcoSxJ6v6z6BTMxMzcuMTguMzFVMzI7NTo7MTcvOTo4NTc1LDExOzExAA%3D%3D%23ISV%3A2%23IEO%3A65599%23QCF%3A8%23FPC%3AAgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg%2FEBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ%3D%3D%22%2C%22range%22%3A%7B%22min%22%3A%22%22%2C%22max%22%3A%22FF%22%7D%7D%5D&order=asc&api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview,Insights=V1Preview,DataGenerationJobs=V1Preview,Models=V1Preview,AgentsOptimization=V2Preview,Routines=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/3.0.0-alpha.20260805.1 (.NET 10.0.10; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-02",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Aug 2026 21:40:34 GMT",
+        "request-context": "appId=",
+        "Server": "istio-envoy",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "name": "reminder-mycodeagentremindertool-1784584974173",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1784585034,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool"
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1784584975,
+            "updated_at": 1784584984
+          },
+          {
+            "name": "reminder-mycodeagentremindertool-1784587057986",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1784587118,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool"
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1784587059,
+            "updated_at": 1784587068
+          },
+          {
+            "name": "reminder-mycodeagentremindertool-1784588987538",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1784589048,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool"
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1784588989,
+            "updated_at": 1784588997
+          }
+        ],
+        "first_id": "reminder-mycodeagentremindertool-1784584974173",
+        "last_id": "[{\"token\":\"+RID:~wUlYAMyDak9xcQwAAAAAAA==#RT:3#TRC:9#RTD:crShfXl5XJcoSxJ6v6z6BTMxMzcuMTguMzFVMzQ7MTo7NTovMTcyMzY5OCwxMTsxMQA=#ISV:2#IEO:65599#QCF:8#FPC:AgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg/EBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ==\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}]",
+        "has_more": true
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/routines?limit=3&after=%5B%7B%22token%22%3A%22%2BRID%3A~wUlYAMyDak9xcQwAAAAAAA%3D%3D%23RT%3A3%23TRC%3A9%23RTD%3AcrShfXl5XJcoSxJ6v6z6BTMxMzcuMTguMzFVMzQ7MTo7NTovMTcyMzY5OCwxMTsxMQA%3D%23ISV%3A2%23IEO%3A65599%23QCF%3A8%23FPC%3AAgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg%2FEBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ%3D%3D%22%2C%22range%22%3A%7B%22min%22%3A%22%22%2C%22max%22%3A%22FF%22%7D%7D%5D&order=asc&api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview,Insights=V1Preview,DataGenerationJobs=V1Preview,Models=V1Preview,AgentsOptimization=V2Preview,Routines=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/3.0.0-alpha.20260805.1 (.NET 10.0.10; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-02",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Aug 2026 21:40:36 GMT",
+        "request-context": "appId=",
+        "Server": "istio-envoy",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "name": "reminder-mycodeagentremindertool-1784590056219",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1784590116,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool"
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1784590057,
+            "updated_at": 1784590125
+          },
+          {
+            "name": "reminder-mycodeagentremindertool-1784590129099",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1440 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1784676529,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool"
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1784590130,
+            "updated_at": 1785356509
+          },
+          {
+            "name": "reminder-mycodeagentremindertool-1784590213418",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1784590273,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool"
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1784590214,
+            "updated_at": 1784590281
+          }
+        ],
+        "first_id": "reminder-mycodeagentremindertool-1784590056219",
+        "last_id": "[{\"token\":\"+RID:~wUlYAMyDak-vcwwAAAAAAA==#RT:4#TRC:12#RTD:crShfXl5XJcoSxJ6v6z6BTMxMzcuMTguMzFVMzQ7NDE7MjUvNDc2OTM5OCwxMTsxMQA=#ISV:2#IEO:65599#QCF:8#FPC:AgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg/EBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ==\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}]",
+        "has_more": true
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/routines?limit=3&after=%5B%7B%22token%22%3A%22%2BRID%3A~wUlYAMyDak-vcwwAAAAAAA%3D%3D%23RT%3A4%23TRC%3A12%23RTD%3AcrShfXl5XJcoSxJ6v6z6BTMxMzcuMTguMzFVMzQ7NDE7MjUvNDc2OTM5OCwxMTsxMQA%3D%23ISV%3A2%23IEO%3A65599%23QCF%3A8%23FPC%3AAgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg%2FEBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ%3D%3D%22%2C%22range%22%3A%7B%22min%22%3A%22%22%2C%22max%22%3A%22FF%22%7D%7D%5D&order=asc&api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview,Insights=V1Preview,DataGenerationJobs=V1Preview,Models=V1Preview,AgentsOptimization=V2Preview,Routines=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/3.0.0-alpha.20260805.1 (.NET 10.0.10; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-02",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Aug 2026 21:40:37 GMT",
+        "request-context": "appId=",
+        "Server": "istio-envoy",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "name": "reminder-mycodeagentremindertool-1785284844600",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1785284905,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool",
+              "input": "Remind the user to go to lunch."
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1785284846,
+            "updated_at": 1785284853
+          },
+          {
+            "name": "reminder-mycodeagentremindertool-1785285435394",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1785285495,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool",
+              "input": "Remind the user to go to lunch."
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1785285436,
+            "updated_at": 1785285445
+          },
+          {
+            "name": "reminder-mycodeagentremindertool-1785343925232",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1785343986,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool",
+              "input": "Remind the user to go to lunch."
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1785343928,
+            "updated_at": 1785343935
+          }
+        ],
+        "first_id": "reminder-mycodeagentremindertool-1785284844600",
+        "last_id": "[{\"token\":\"+RID:~wUlYAMyDak9boBEAAAAAAA==#RT:5#TRC:15#RTD:crShfXl5XJcoSxJ6v6z6BTMxMzcuMTguMzpVMjc7NjM7MTkvMjMzOjYxNiwxMTsxMQA=#ISV:2#IEO:65599#QCF:8#FPC:AgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg/EBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ==\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}]",
+        "has_more": true
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/routines?limit=3&after=%5B%7B%22token%22%3A%22%2BRID%3A~wUlYAMyDak9boBEAAAAAAA%3D%3D%23RT%3A5%23TRC%3A15%23RTD%3AcrShfXl5XJcoSxJ6v6z6BTMxMzcuMTguMzpVMjc7NjM7MTkvMjMzOjYxNiwxMTsxMQA%3D%23ISV%3A2%23IEO%3A65599%23QCF%3A8%23FPC%3AAgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg%2FEBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ%3D%3D%22%2C%22range%22%3A%7B%22min%22%3A%22%22%2C%22max%22%3A%22FF%22%7D%7D%5D&order=asc&api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview,Insights=V1Preview,DataGenerationJobs=V1Preview,Models=V1Preview,AgentsOptimization=V2Preview,Routines=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/3.0.0-alpha.20260805.1 (.NET 10.0.10; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-02",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Aug 2026 21:40:38 GMT",
+        "request-context": "appId=",
+        "Server": "istio-envoy",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-region": "West Central US",
+        "x-ms-response-type": "standard"
+      },
+      "ResponseBody": {
+        "data": [
+          {
+            "name": "reminder-mycodeagentremindertool-1785356216081",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1785356277,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool",
+              "input": "Remind the user to go to lunch."
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1785356218,
+            "updated_at": 1785356225
+          },
+          {
+            "name": "reminder-mycodeagentremindertool-1785356834903",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1785356895,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool",
+              "input": "Remind the user to go to lunch."
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1785356836,
+            "updated_at": 1785356844
+          },
+          {
+            "name": "reminder-mycodeagentremindertool-1785790399948",
+            "description": "Reminder for agent 'myCodeAgentReminderTool' scheduled 1 minute(s) from now.",
+            "enabled": true,
+            "triggers": {
+              "timer": {
+                "type": "timer",
+                "at": 1785790460,
+                "time_zone": "UTC"
+              }
+            },
+            "action": {
+              "type": "invoke_agent_responses_api",
+              "agent_name": "myCodeAgentReminderTool",
+              "input": "Remind the user to go to lunch."
+            },
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1785790401,
+            "updated_at": 1785790401
+          }
+        ],
+        "first_id": "reminder-mycodeagentremindertool-1785356216081",
+        "last_id": "[{\"token\":\"+RID:~wUlYAMyDak-40RQAAAAAAA==#RT:6#TRC:18#RTD:crShfXl5XJcoSxJ6v6z6BTMxMzcuMTkuMTRVMzE7NjQ7MzIvMzM4MzEzLDExOzExAA==#ISV:2#IEO:65599#QCF:8#FPC:AgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg/EBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ==\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}]",
+        "has_more": true
+      }
+    },
+    {
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/routines?limit=3&after=%5B%7B%22token%22%3A%22%2BRID%3A~wUlYAMyDak-40RQAAAAAAA%3D%3D%23RT%3A6%23TRC%3A18%23RTD%3AcrShfXl5XJcoSxJ6v6z6BTMxMzcuMTkuMTRVMzE7NjQ7MzIvMzM4MzEzLDExOzExAA%3D%3D%23ISV%3A2%23IEO%3A65599%23QCF%3A8%23FPC%3AAgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg%2FEBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ%3D%3D%22%2C%22range%22%3A%7B%22min%22%3A%22%22%2C%22max%22%3A%22FF%22%7D%7D%5D&order=asc&api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview,Insights=V1Preview,DataGenerationJobs=V1Preview,Models=V1Preview,AgentsOptimization=V2Preview,Routines=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview",
+        "User-Agent": "Azure.AI.Projects.Agents/3.0.0-alpha.20260805.1 (.NET 10.0.10; Microsoft Windows 10.0.26200)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
+        "apim-request-id": "00000000-0000-0000-0000-000000000000",
+        "azureml-served-by-cluster": "hyena-westus2-02",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Aug 2026 21:40:39 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
@@ -421,12 +1034,12 @@
             "triggers": {
               "manual": {
                 "type": "custom",
-                "provider": "sample-provider",
-                "event_name": "sample-event",
+                "provider": "teams",
                 "parameters": {
-                  "source": {
-                    "ValueKind": []
-                  }
+                  "connection_id": "teams-conn",
+                  "thread_type": "channel",
+                  "group_id": "3e7de2db-d98b-4274-8b3b-9663188b8ea0",
+                  "channel_id": "19%3AQE4t39RstJEzyuYwauJRpKbIqEtXgHv0ziKOQ0XujIs1%40thread.tacv2"
                 }
               }
             },
@@ -434,8 +1047,11 @@
               "type": "invoke_agent_responses_api",
               "agent_name": "cs-routines-hosted-agent-1"
             },
-            "created_at": 1781560540,
-            "updated_at": 1781560540
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1785966024,
+            "updated_at": 1785966024
           },
           {
             "name": "cs-routines-1",
@@ -444,12 +1060,12 @@
             "triggers": {
               "manual": {
                 "type": "custom",
-                "provider": "sample-provider",
-                "event_name": "sample-event",
+                "provider": "teams",
                 "parameters": {
-                  "source": {
-                    "ValueKind": []
-                  }
+                  "connection_id": "teams-conn",
+                  "thread_type": "channel",
+                  "group_id": "3e7de2db-d98b-4274-8b3b-9663188b8ea0",
+                  "channel_id": "19%3AQE4t39RstJEzyuYwauJRpKbIqEtXgHv0ziKOQ0XujIs1%40thread.tacv2"
                 }
               }
             },
@@ -457,8 +1073,11 @@
               "type": "invoke_agent_responses_api",
               "agent_name": "cs-routines-hosted-agent-1"
             },
-            "created_at": 1781560542,
-            "updated_at": 1781560542
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1785966026,
+            "updated_at": 1785966026
           },
           {
             "name": "cs-routines-2",
@@ -467,12 +1086,12 @@
             "triggers": {
               "manual": {
                 "type": "custom",
-                "provider": "sample-provider",
-                "event_name": "sample-event",
+                "provider": "teams",
                 "parameters": {
-                  "source": {
-                    "ValueKind": []
-                  }
+                  "connection_id": "teams-conn",
+                  "thread_type": "channel",
+                  "group_id": "3e7de2db-d98b-4274-8b3b-9663188b8ea0",
+                  "channel_id": "19%3AQE4t39RstJEzyuYwauJRpKbIqEtXgHv0ziKOQ0XujIs1%40thread.tacv2"
                 }
               }
             },
@@ -480,23 +1099,26 @@
               "type": "invoke_agent_responses_api",
               "agent_name": "cs-routines-hosted-agent-1"
             },
-            "created_at": 1781560544,
-            "updated_at": 1781560544
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1785966028,
+            "updated_at": 1785966028
           }
         ],
         "first_id": "cs-routines-0",
-        "last_id": "[{\"token\":\"+RID:~wUlYAMyDak82zgAAAAAAAA==#RT:1#TRC:3#RTD:crShfXl5XJcoSxJ6v6z6BTMxMzcuMTcuMjZVMzI7NjY7NTUvNzY6ODU2NSwxMTsxMQA=#ISV:2#IEO:65599#QCF:8#FPC:AgECAwICAKq3AwQAMQ7gAA==\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}]",
+        "last_id": "[{\"token\":\"+RID:~wUlYAMyDak82zgAAAAAAAA==#RT:7#TRC:21#RTD:crShfXl5XJcoSxJ6v6z6BTMxMzcuMTkuMTZVMzI7NTE7MzkvNzI3OTY2OSwxMTsxMQA=#ISV:2#IEO:65599#QCF:8#FPC:AgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg/EBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ==\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}]",
         "has_more": true
       }
     },
     {
-      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/routines?limit=3&after=%5B%7B%22token%22%3A%22%2BRID%3A~wUlYAMyDak82zgAAAAAAAA%3D%3D%23RT%3A1%23TRC%3A3%23RTD%3AcrShfXl5XJcoSxJ6v6z6BTMxMzcuMTcuMjZVMzI7NjY7NTUvNzY6ODU2NSwxMTsxMQA%3D%23ISV%3A2%23IEO%3A65599%23QCF%3A8%23FPC%3AAgECAwICAKq3AwQAMQ7gAA%3D%3D%22%2C%22range%22%3A%7B%22min%22%3A%22%22%2C%22max%22%3A%22FF%22%7D%7D%5D&order=asc&api-version=v1",
+      "RequestUri": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project/routines?limit=3&after=%5B%7B%22token%22%3A%22%2BRID%3A~wUlYAMyDak82zgAAAAAAAA%3D%3D%23RT%3A7%23TRC%3A21%23RTD%3AcrShfXl5XJcoSxJ6v6z6BTMxMzcuMTkuMTZVMzI7NTE7MzkvNzI3OTY2OSwxMTsxMQA%3D%23ISV%3A2%23IEO%3A65599%23QCF%3A8%23FPC%3AAgECUwICAKq3AwQAMQ7gADEYAJSgcYBngCSGdoADgX6Bh4MRg%2FEBQARvgEQEANO1CIFGBgBboCiWE4FTAgD4kQ%3D%3D%22%2C%22range%22%3A%7B%22min%22%3A%22%22%2C%22max%22%3A%22FF%22%7D%7D%5D&order=asc&api-version=v1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Foundry-Features": "MemoryStores=V1Preview,ContainerAgents=V1Preview,WorkflowAgents=V1Preview,Evaluations=V1Preview,Schedules=V1Preview,RedTeams=V1Preview,AgentEndpoints=V1Preview,Skills=V1Preview,Insights=V1Preview,DataGenerationJobs=V1Preview,Models=V1Preview,AgentsOptimization=V2Preview,Routines=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview",
-        "User-Agent": "Azure.AI.Projects.Agents/2.1.0-alpha.20260615.1 (.NET 10.0.9; Microsoft Windows 10.0.26200)",
+        "User-Agent": "Azure.AI.Projects.Agents/3.0.0-alpha.20260805.1 (.NET 10.0.10; Microsoft Windows 10.0.26200)",
         "x-ms-client-request-id": "Sanitized"
       },
       "RequestBody": null,
@@ -504,9 +1126,9 @@
       "ResponseHeaders": {
         "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
         "apim-request-id": "00000000-0000-0000-0000-000000000000",
-        "azureml-served-by-cluster": "hyena-westus2-01",
+        "azureml-served-by-cluster": "hyena-westus2-02",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 15 Jun 2026 21:55:48 GMT",
+        "Date": "Wed, 05 Aug 2026 21:40:40 GMT",
         "request-context": "appId=",
         "Server": "istio-envoy",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
@@ -524,12 +1146,12 @@
             "triggers": {
               "manual": {
                 "type": "custom",
-                "provider": "sample-provider",
-                "event_name": "sample-event",
+                "provider": "teams",
                 "parameters": {
-                  "source": {
-                    "ValueKind": []
-                  }
+                  "connection_id": "teams-conn",
+                  "thread_type": "channel",
+                  "group_id": "3e7de2db-d98b-4274-8b3b-9663188b8ea0",
+                  "channel_id": "19%3AQE4t39RstJEzyuYwauJRpKbIqEtXgHv0ziKOQ0XujIs1%40thread.tacv2"
                 }
               }
             },
@@ -537,8 +1159,11 @@
               "type": "invoke_agent_responses_api",
               "agent_name": "cs-routines-hosted-agent-1"
             },
-            "created_at": 1781560546,
-            "updated_at": 1781560546
+            "authorization": {
+              "identity": "agent"
+            },
+            "created_at": 1785966031,
+            "updated_at": 1785966031
           }
         ],
         "first_id": "cs-routines-3",
@@ -547,6 +1172,9 @@
     }
   ],
   "Variables": {
-    "FOUNDRY_PROJECT_ENDPOINT": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project"
+    "FOUNDRY_PROJECT_ENDPOINT": "https://sanitized-host.services.ai.azure.com/api/projects/sanitized-project",
+    "TEAMS_CHANNEL_ID": "19%3AQE4t39RstJEzyuYwauJRpKbIqEtXgHv0ziKOQ0XujIs1%40thread.tacv2",
+    "TEAMS_CONNECTION_NAME": "teams-conn",
+    "TEAMS_GROUP_ID": "3e7de2db-d98b-4274-8b3b-9663188b8ea0"
   }
 }
