@@ -1,0 +1,337 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/knowledgebases?api-version=2026-08-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json;odata.metadata=minimal",
+        "Authorization": "Sanitized",
+        "Content-Length": "400",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Aug 2026 18:59:31 GMT",
+        "User-Agent": "azsdk-java-azure-search-documents/12.1.0-beta.2 (21.0.8; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "name": "knowledge-base-65512fd01a9a29f7c44539c264",
+        "knowledgeSources": [
+          {
+            "name": "shared-knowledge-knowledgebase-source"
+          }
+        ],
+        "models": [
+          {
+            "azureOpenAIParameters": {
+              "resourceUri": "https://REDACTED.services.ai.azure.com",
+              "deploymentId": "gpt-5.4",
+              "authIdentity": {
+                "userAssignedIdentity": "REDACTED",
+                "@odata.type": "#Microsoft.Azure.Search.DataUserAssignedIdentity"
+              },
+              "modelName": "gpt-5.4"
+            },
+            "kind": "azureOpenAI"
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
+        "Date": "Thu, 20 Aug 2026 18:59:33 GMT",
+        "elapsed-time": "33",
+        "ETag": "\"0x8DEFEED2C67F4E6\"",
+        "Location": "https://REDACTED.com",
+        "OData-Version": "4.0",
+        "Preference-Applied": "odata.include-annotations=\"*\"",
+        "request-id": "6529061a-6ac4-41b8-bdc2-1b529e2fa899",
+        "Strict-Transport-Security": [
+          "max-age=2592000",
+          "max-age=15724800; includeSubDomains"
+        ],
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://sdk-test-searchservice2.search.windows.net/$metadata#knowledgebases/$entity",
+        "@odata.etag": "\"0x8DEFEED2C67F4E6\"",
+        "name": "knowledge-base-65512fd01a9a29f7c44539c264",
+        "description": null,
+        "retrievalInstructions": null,
+        "answerInstructions": null,
+        "outputMode": null,
+        "knowledgeSources": [
+          {
+            "name": "shared-knowledge-knowledgebase-source",
+            "enableImageServing": null,
+            "enableFreshness": null
+          }
+        ],
+        "models": [
+          {
+            "kind": "azureOpenAI",
+            "azureOpenAIParameters": {
+              "resourceUri": "https://REDACTED.services.ai.azure.com",
+              "deploymentId": "gpt-5.4",
+              "apiKey": null,
+              "modelName": "gpt-5.4",
+              "authIdentity": {
+                "@odata.type": "#Microsoft.Azure.Search.DataUserAssignedIdentity",
+                "userAssignedIdentity": "REDACTED",
+                "federatedIdentityClientId": null
+              }
+            }
+          }
+        ],
+        "encryptionKey": null,
+        "tags": null,
+        "retrievalReasoningEffort": null,
+        "corsOptions": null,
+        "retrieveDefaults": null
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/knowledgebases('knowledge-base-65512fd01a9a29f7c44539c264')/retrieve?api-version=2026-08-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json;odata.metadata=minimal",
+        "Authorization": "Sanitized",
+        "Content-Length": "460",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Aug 2026 18:59:33 GMT",
+        "User-Agent": "azsdk-java-azure-search-documents/12.1.0-beta.2 (21.0.8; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "intents": [
+          {
+            "search": "Find a budget hotel with parking.",
+            "type": "semantic"
+          }
+        ],
+        "includeActivity": true,
+        "knowledgeSourceParams": [
+          {
+            "knowledgeSourceName": "shared-knowledge-knowledgebase-source",
+            "alwaysQuerySource": true,
+            "kind": "searchIndex",
+            "filterAddOn": "ParkingIncluded eq true",
+            "queryHintOverrides": {
+              "boosts": [
+                {
+                  "boostInstructions": "Prefer the hotel category requested by the user.",
+                  "field": "Category",
+                  "boost": 2.0,
+                  "kind": "fieldValue",
+                  "fieldValues": [
+                    "Budget"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata.metadata=minimal; odata.streaming=true; charset=utf-8",
+        "Date": "Thu, 20 Aug 2026 18:59:37 GMT",
+        "elapsed-time": "2231",
+        "OData-Version": "4.0",
+        "Preference-Applied": "odata.include-annotations=\"*\"",
+        "request-id": "d24fe5f0-3490-438f-bd1d-2e8fe64afcaf",
+        "Strict-Transport-Security": [
+          "max-age=2592000",
+          "max-age=15724800; includeSubDomains"
+        ],
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://sdk-test-searchservice2.search.windows.net/$metadata#Microsoft.WindowsAzure.Search.Core.Models.V2026_08_01_Preview.Agents.AgentRetrievalResponse",
+        "response": [
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "[{\"ref_id\":0,\"title\":\"Roach Motel\",\"terms\":\"Budget\",\"content\":\"Cheapest hotel in town. Infact, a motel.\"},{\"ref_id\":1,\"title\":\"EconoStay\",\"terms\":\"Budget\",\"content\":\"Very popular hotel in town\"},{\"ref_id\":2,\"title\":\"Comfy Place\",\"terms\":\"Budget\",\"content\":\"Another good hotel\"},{\"ref_id\":3,\"title\":\"Express Rooms\",\"terms\":\"Budget\",\"content\":\"Pretty good hotel\"}]"
+              }
+            ]
+          }
+        ],
+        "activity": [
+          {
+            "type": "modelQueryPlanning",
+            "id": 0,
+            "startedAt": "2026-08-20T18:59:35.9544964Z",
+            "completedAt": "2026-08-20T18:59:37.846398Z",
+            "inputTokens": 1197,
+            "outputTokens": 47,
+            "elapsedMs": 1891,
+            "model": {
+              "modelName": "gpt-5.4",
+              "deploymentId": "gpt-5.4"
+            }
+          },
+          {
+            "type": "searchIndex",
+            "id": 1,
+            "startedAt": "2026-08-20T18:59:37.8466151Z",
+            "completedAt": "2026-08-20T18:59:38.1575195Z",
+            "knowledgeSourceName": "shared-knowledge-knowledgebase-source",
+            "queryTime": "2026-08-20T18:59:37.9044055Z",
+            "count": 4,
+            "elapsedMs": 0,
+            "searchIndexArguments": {
+              "search": "Category:(Budget)^2 OR (budget hotel parking)",
+              "filter": "ParkingIncluded eq true",
+              "semanticConfigurationName": "semantic-config",
+              "queryType": "full",
+              "sourceDataFields": [
+                {
+                  "name": "HotelName"
+                },
+                {
+                  "name": "Description"
+                },
+                {
+                  "name": "Category"
+                },
+                {
+                  "name": "HotelId"
+                }
+              ],
+              "searchFields": []
+            },
+            "queryHintProcessing": {
+              "generatedBoost": "Category:(Budget)^2"
+            }
+          },
+          {
+            "type": "searchIndex",
+            "id": 2,
+            "startedAt": "2026-08-20T18:59:37.9742748Z",
+            "completedAt": "2026-08-20T18:59:38.1575217Z",
+            "knowledgeSourceName": "shared-knowledge-knowledgebase-source",
+            "queryTime": "2026-08-20T18:59:37.9989807Z",
+            "count": 4,
+            "elapsedMs": 0,
+            "searchIndexArguments": {
+              "search": "Category:(Budget)^2 OR (budget hotel with parking)",
+              "filter": "ParkingIncluded eq true",
+              "semanticConfigurationName": "semantic-config",
+              "queryType": "full",
+              "sourceDataFields": [
+                {
+                  "name": "HotelName"
+                },
+                {
+                  "name": "Description"
+                },
+                {
+                  "name": "Category"
+                },
+                {
+                  "name": "HotelId"
+                }
+              ],
+              "searchFields": []
+            },
+            "queryHintProcessing": {
+              "generatedBoost": "Category:(Budget)^2"
+            }
+          },
+          {
+            "type": "searchIndex",
+            "id": 3,
+            "startedAt": "2026-08-20T18:59:38.0686536Z",
+            "completedAt": "2026-08-20T18:59:38.1575222Z",
+            "knowledgeSourceName": "shared-knowledge-knowledgebase-source",
+            "queryTime": "2026-08-20T18:59:38.0884383Z",
+            "count": 4,
+            "elapsedMs": 0,
+            "searchIndexArguments": {
+              "search": "Category:(Budget)^2 OR (parking available budget hotel)",
+              "filter": "ParkingIncluded eq true",
+              "semanticConfigurationName": "semantic-config",
+              "queryType": "full",
+              "sourceDataFields": [
+                {
+                  "name": "HotelName"
+                },
+                {
+                  "name": "Description"
+                },
+                {
+                  "name": "Category"
+                },
+                {
+                  "name": "HotelId"
+                }
+              ],
+              "searchFields": []
+            },
+            "queryHintProcessing": {
+              "generatedBoost": "Category:(Budget)^2"
+            }
+          },
+          {
+            "type": "agenticReasoning",
+            "id": 4,
+            "startedAt": "2026-08-20T18:59:38.1579775Z",
+            "completedAt": "2026-08-20T18:59:38.1579775Z",
+            "reasoningTokens": 125,
+            "retrievalReasoningEffort": {
+              "kind": "low"
+            },
+            "logicalReasoningEffort": {
+              "kind": "low"
+            }
+          }
+        ],
+        "references": [
+          {
+            "type": "searchIndex",
+            "id": "0",
+            "activitySource": 2,
+            "rerankerScore": 1.3300071,
+            "docKey": "2",
+            "title": "Roach Motel",
+            "citationUrl": "https://sdk-test-searchservice2.search.windows.net/indexes/shared-knowledge-knowledgebase-index/docs/2?$select=HotelName%2CDescription%2CCategory%2CHotelId&api-version=2026-08-01-preview",
+            "sourceData": null
+          },
+          {
+            "type": "searchIndex",
+            "id": "1",
+            "activitySource": 2,
+            "rerankerScore": 1.2548928,
+            "docKey": "3",
+            "title": "EconoStay",
+            "citationUrl": "https://sdk-test-searchservice2.search.windows.net/indexes/shared-knowledge-knowledgebase-index/docs/3?$select=HotelName%2CDescription%2CCategory%2CHotelId&api-version=2026-08-01-preview",
+            "sourceData": null
+          },
+          {
+            "type": "searchIndex",
+            "id": "2",
+            "activitySource": 2,
+            "rerankerScore": 1.1826006,
+            "docKey": "5",
+            "title": "Comfy Place",
+            "citationUrl": "https://sdk-test-searchservice2.search.windows.net/indexes/shared-knowledge-knowledgebase-index/docs/5?$select=HotelName%2CDescription%2CCategory%2CHotelId&api-version=2026-08-01-preview",
+            "sourceData": null
+          },
+          {
+            "type": "searchIndex",
+            "id": "3",
+            "activitySource": 2,
+            "rerankerScore": 1.1780448,
+            "docKey": "4",
+            "title": "Express Rooms",
+            "citationUrl": "https://sdk-test-searchservice2.search.windows.net/indexes/shared-knowledge-knowledgebase-index/docs/4?$select=HotelName%2CDescription%2CCategory%2CHotelId&api-version=2026-08-01-preview",
+            "sourceData": null
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {
+    "0": "knowledge-base-65512fd01a9a29f7c44539c264"
+  }
+}
