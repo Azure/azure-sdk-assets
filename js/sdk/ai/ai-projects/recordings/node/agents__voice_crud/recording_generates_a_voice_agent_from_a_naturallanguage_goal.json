@@ -1,0 +1,337 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.azure.com/api/projects/test-project/agents:generate?api-version=v1",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "Content-Length": "185",
+        "Content-Type": "application/json",
+        "foundry-features": "VoiceAgents=V1Preview",
+        "User-Agent": "sanitized-user-agent",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "kind": "voice",
+        "name": "voiceAgentGenerated",
+        "model_type": "managed",
+        "use_case": "Travel information",
+        "goal": "Help callers find information about public transport. Do not make bookings."
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
+        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "f0fcbb82-23b6-43d4-ad9b-317bc758b500",
+        "azureml-served-by-cluster": "hyena-westus2-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 17 Sep 2026 23:13:49 GMT",
+        "request-context": "appId=",
+        "Server": "istio-envoy",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "35",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "090c72d8f82862910853a67074f00ed5"
+      },
+      "ResponseBody": {
+        "object": "agent",
+        "id": "voiceAgentGenerated",
+        "name": "voiceAgentGenerated",
+        "state": "enabled",
+        "versions": {
+          "latest": {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "voiceAgentGenerated:1",
+            "name": "voiceAgentGenerated",
+            "version": "1",
+            "description": "",
+            "created_at": 1789686830,
+            "definition": {
+              "kind": "voice",
+              "model_type": "managed",
+              "instructions": "### Personality\n\nYou are Ava, a helpful public transport information assistant. Help callers find routes, schedules, fares, service updates, station access, and accessibility information. You provide information only; you do not make, change, or cancel bookings.\n\nYou are speaking with a female voice. Use female grammatical forms for self-referential language, including adjectives, verbs, participles, and pronouns so that your spoken output is grammatically consistent with your voice.\n\n### Environment\n\nYou are on a live phone call with no screen. The caller cannot see maps or timetables. Use available transport information as your source of truth. You do not know a caller's name, location, destination, date, or time until she or he tells you.\n\n### Tone\n\nBe calm, clear, and practical. Use one or two short sentences per reply, then let the caller speak. Use no markdown or emoji. Speak numbers as words. Ask one question at a time. Read back routes, stops, dates, times, names, and fares before relying on them. If interrupted, stop and listen.\n\n### Goal\n\n1. Learn the caller's journey or transport question.\n2. Confirm the key places, date, and time.\n3. Give verified, relevant transport information.\n4. Recap the next step and check whether the caller needs anything else.\n\n### Guardrails\n\n- Stay in scope: public transport information only; never make bookings or take payment.\n- State only information you can verify. Never invent routes, times, fares, disruptions, availability, or confirmations.\n- Ask for a repeat or spelling when a name, address, stop, route, date, time, or number is unclear; do not guess.\n- Do not give safety, legal, medical, or professional advice. For an immediate safety emergency, tell the caller to contact local emergency services.\n- Hand off to a human when asked, when the request is out of scope, or when you are stuck.",
+              "greeting": {
+                "type": "template",
+                "text": "Hello, I can help with public transport routes, schedules, fares, and service updates. Where would you like to travel?"
+              },
+              "audio": {
+                "input": {
+                  "format": {
+                    "type": "audio/pcm",
+                    "rate": 24000
+                  },
+                  "turn_detection": {
+                    "type": "azure_semantic_vad",
+                    "auto_truncate": false,
+                    "profile": "normal",
+                    "remove_filler_words": false,
+                    "create_response": true,
+                    "interrupt_response": true
+                  },
+                  "transcription": {
+                    "language": "en-US",
+                    "model": "azure-speech"
+                  }
+                },
+                "output": {
+                  "format": {
+                    "type": "audio/pcm",
+                    "rate": 24000
+                  },
+                  "voice": "en-US-Ava:DragonHDLatestNeural",
+                  "voice_type": "azure-standard"
+                }
+              },
+              "output_modalities": [
+                "audio"
+              ],
+              "model": "gpt-5.2-2.1"
+            },
+            "draft": false,
+            "status": "active",
+            "instance_identity": {
+              "principal_id": "3a0bb0ab-103f-41fc-b0de-7f3de3bf1048",
+              "client_id": "3a0bb0ab-103f-41fc-b0de-7f3de3bf1048"
+            },
+            "blueprint": {
+              "principal_id": "3fc136e4-b604-4d11-9ce5-28f7a04de249",
+              "client_id": "68dab184-e4fc-47ec-a0bf-8cde7cd16c95"
+            },
+            "blueprint_reference": {
+              "type": "ManagedAgentIdentityBlueprint",
+              "blueprint_id": "voiceAgentGenerated-d1fde"
+            },
+            "agent_guid": "d1fde6ac-7849-4553-9153-a3bb7c7d8787"
+          }
+        },
+        "agent_endpoint": {
+          "version_selector": {
+            "version_selection_rules": [
+              {
+                "type": "FixedRatio",
+                "agent_version": "@latest",
+                "traffic_percentage": 100
+              }
+            ]
+          },
+          "protocols": [
+            "responses"
+          ],
+          "protocol_configuration": {
+            "responses": {}
+          },
+          "authorization_schemes": [
+            {
+              "type": "Entra"
+            }
+          ]
+        },
+        "instance_identity": {
+          "principal_id": "3a0bb0ab-103f-41fc-b0de-7f3de3bf1048",
+          "client_id": "3a0bb0ab-103f-41fc-b0de-7f3de3bf1048"
+        },
+        "blueprint": {
+          "principal_id": "3fc136e4-b604-4d11-9ce5-28f7a04de249",
+          "client_id": "68dab184-e4fc-47ec-a0bf-8cde7cd16c95"
+        },
+        "blueprint_reference": {
+          "type": "ManagedAgentIdentityBlueprint",
+          "blueprint_id": "voiceAgentGenerated-d1fde"
+        },
+        "configuration_state": "enabled"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/api/projects/test-project/agents/voiceAgentGenerated?api-version=v1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "User-Agent": "sanitized-user-agent",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
+        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "6d4791d9-562a-4f4e-9ff7-97aeccb9d274",
+        "azureml-served-by-cluster": "hyena-westus2-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 17 Sep 2026 23:13:53 GMT",
+        "request-context": "appId=",
+        "Server": "istio-envoy",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "43",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "26da2bdc2b1adb155e7ae0cf598b47b1"
+      },
+      "ResponseBody": {
+        "object": "agent",
+        "id": "voiceAgentGenerated",
+        "name": "voiceAgentGenerated",
+        "state": "enabled",
+        "versions": {
+          "latest": {
+            "metadata": {},
+            "object": "agent.version",
+            "id": "voiceAgentGenerated:1",
+            "name": "voiceAgentGenerated",
+            "version": "1",
+            "description": "",
+            "created_at": 1789686830,
+            "definition": {
+              "kind": "voice",
+              "model_type": "managed",
+              "instructions": "### Personality\n\nYou are Ava, a helpful public transport information assistant. Help callers find routes, schedules, fares, service updates, station access, and accessibility information. You provide information only; you do not make, change, or cancel bookings.\n\nYou are speaking with a female voice. Use female grammatical forms for self-referential language, including adjectives, verbs, participles, and pronouns so that your spoken output is grammatically consistent with your voice.\n\n### Environment\n\nYou are on a live phone call with no screen. The caller cannot see maps or timetables. Use available transport information as your source of truth. You do not know a caller's name, location, destination, date, or time until she or he tells you.\n\n### Tone\n\nBe calm, clear, and practical. Use one or two short sentences per reply, then let the caller speak. Use no markdown or emoji. Speak numbers as words. Ask one question at a time. Read back routes, stops, dates, times, names, and fares before relying on them. If interrupted, stop and listen.\n\n### Goal\n\n1. Learn the caller's journey or transport question.\n2. Confirm the key places, date, and time.\n3. Give verified, relevant transport information.\n4. Recap the next step and check whether the caller needs anything else.\n\n### Guardrails\n\n- Stay in scope: public transport information only; never make bookings or take payment.\n- State only information you can verify. Never invent routes, times, fares, disruptions, availability, or confirmations.\n- Ask for a repeat or spelling when a name, address, stop, route, date, time, or number is unclear; do not guess.\n- Do not give safety, legal, medical, or professional advice. For an immediate safety emergency, tell the caller to contact local emergency services.\n- Hand off to a human when asked, when the request is out of scope, or when you are stuck.",
+              "greeting": {
+                "type": "template",
+                "text": "Hello, I can help with public transport routes, schedules, fares, and service updates. Where would you like to travel?"
+              },
+              "audio": {
+                "input": {
+                  "format": {
+                    "type": "audio/pcm",
+                    "rate": 24000
+                  },
+                  "turn_detection": {
+                    "type": "azure_semantic_vad",
+                    "auto_truncate": false,
+                    "profile": "normal",
+                    "remove_filler_words": false,
+                    "create_response": true,
+                    "interrupt_response": true
+                  },
+                  "transcription": {
+                    "language": "en-US",
+                    "model": "azure-speech"
+                  }
+                },
+                "output": {
+                  "format": {
+                    "type": "audio/pcm",
+                    "rate": 24000
+                  },
+                  "voice": "en-US-Ava:DragonHDLatestNeural",
+                  "voice_type": "azure-standard"
+                }
+              },
+              "output_modalities": [
+                "audio"
+              ],
+              "model": "gpt-5.2-2.1"
+            },
+            "draft": false,
+            "status": "active",
+            "instance_identity": {
+              "principal_id": "3a0bb0ab-103f-41fc-b0de-7f3de3bf1048",
+              "client_id": "3a0bb0ab-103f-41fc-b0de-7f3de3bf1048"
+            },
+            "blueprint": {
+              "principal_id": "3fc136e4-b604-4d11-9ce5-28f7a04de249",
+              "client_id": "68dab184-e4fc-47ec-a0bf-8cde7cd16c95"
+            },
+            "blueprint_reference": {
+              "type": "ManagedAgentIdentityBlueprint",
+              "blueprint_id": "voiceAgentGenerated-d1fde"
+            },
+            "agent_guid": "d1fde6ac-7849-4553-9153-a3bb7c7d8787"
+          }
+        },
+        "agent_endpoint": {
+          "version_selector": {
+            "version_selection_rules": [
+              {
+                "type": "FixedRatio",
+                "agent_version": "@latest",
+                "traffic_percentage": 100
+              }
+            ]
+          },
+          "protocols": [
+            "responses"
+          ],
+          "protocol_configuration": {
+            "responses": {}
+          },
+          "authorization_schemes": [
+            {
+              "type": "Entra"
+            }
+          ],
+          "publish_approval_status": "not_published"
+        },
+        "instance_identity": {
+          "principal_id": "3a0bb0ab-103f-41fc-b0de-7f3de3bf1048",
+          "client_id": "3a0bb0ab-103f-41fc-b0de-7f3de3bf1048",
+          "status": "active"
+        },
+        "blueprint": {
+          "principal_id": "3fc136e4-b604-4d11-9ce5-28f7a04de249",
+          "client_id": "68dab184-e4fc-47ec-a0bf-8cde7cd16c95",
+          "status": "active"
+        },
+        "blueprint_reference": {
+          "type": "ManagedAgentIdentityBlueprint",
+          "blueprint_id": "voiceAgentGenerated-d1fde"
+        },
+        "configuration_state": "enabled"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/api/projects/test-project/agents/voiceAgentGenerated?api-version=v1",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "User-Agent": "sanitized-user-agent",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "Operation-Location,Location,Apim-Request-Id,x-agent-session-id,x-agent-invocation-id",
+        "api-supported-versions": "1.0,2025-05-15-preview,2025-11-15-preview",
+        "apim-request-id": "eb762ded-87d4-49ad-97a6-44f9587d79d0",
+        "azureml-served-by-cluster": "hyena-westus2-02",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 17 Sep 2026 23:13:54 GMT",
+        "request-context": "appId=",
+        "Server": "istio-envoy",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-http2-stream-id": "37",
+        "x-ms-region": "West US 2",
+        "x-ms-response-type": "standard",
+        "X-Request-ID": "867f2d2a77704814422f1d6af8e5dcc3"
+      },
+      "ResponseBody": {
+        "object": "agent.deleted",
+        "name": "voiceAgentGenerated",
+        "deleted": true
+      }
+    }
+  ],
+  "Variables": {}
+}
