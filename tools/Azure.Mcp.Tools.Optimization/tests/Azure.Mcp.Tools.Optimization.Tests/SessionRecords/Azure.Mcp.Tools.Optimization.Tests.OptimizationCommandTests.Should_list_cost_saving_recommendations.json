@@ -16,17 +16,17 @@
         "Cache-Control": "no-cache",
         "Content-Length": "8518",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 08 Oct 2026 23:26:51 GMT",
+        "Date": "Fri, 09 Oct 2026 00:22:10 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "846dcd14-cc9e-4b9e-81c5-0cf01998b708",
+        "x-ms-correlation-request-id": "fc3159ea-8018-4154-94bb-6af897e59366",
         "x-ms-ratelimit-remaining-tenant-reads": "2199",
         "x-ms-request-id": "Sanitized",
-        "x-ms-routing-request-id": "SOUTHCENTRALUS:20261008T232651Z:846dcd14-cc9e-4b9e-81c5-0cf01998b708",
-        "X-MSEdge-Ref": "Ref A: D2A560D0C7D1469F9A72CD5592F37955 Ref B: SN4AA2022401029 Ref C: 2026-10-08T23:26:51Z"
+        "x-ms-routing-request-id": "SOUTHCENTRALUS:20261009T002211Z:fc3159ea-8018-4154-94bb-6af897e59366",
+        "X-MSEdge-Ref": "Ref A: 51DD9459903A4D99BEF23FD096C1EE5E Ref B: SN4AA2022303011 Ref C: 2026-10-09T00:22:10Z"
       },
       "ResponseBody": {
         "value": [
@@ -418,7 +418,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "553",
+        "Content-Length": "2085",
         "Content-Type": "application/json",
         "User-Agent": "azmcp/1.0.0.0 azmcp-stdio/1.0.0.0 (.NETCoreApp,Version=v10.0; Microsoft Windows 10.0.26300)",
         "x-ms-client-request-id": "Sanitized",
@@ -428,29 +428,29 @@
         "subscriptions": [
           "00000000-0000-0000-0000-000000000000"
         ],
-        "query": "advisorresources\r\n| where type =~ 'microsoft.advisor/recommendations'\r\n| where properties.category == 'Cost'\r\n| where properties.impactedField contains 'Microsoft.Compute/disks'\r\n| where properties.recommendationStatus == 'New'\r\n| extend recommendationTypeId = tostring(properties.recommendationTypeId)\r\n| where recommendationTypeId == '48eda464-1485-4dcf-a674-d0905df5054a'\r\n| summarize unattachedDiskCount = count(), subscriptionIds = make_set(tolower(subscriptionId))"
+        "query": "advisorresources\r\n| where type =~ 'microsoft.advisor/recommendations'\r\n| where properties.category == 'Cost'\r\n| where properties.impactedField contains 'Microsoft.Compute/disks'\r\n| where properties.recommendationStatus == 'New'\r\n| where isempty(properties.tracked) or properties.tracked == false\r\n| extend recommendationTypeId = tostring(properties.recommendationTypeId)\r\n| where recommendationTypeId == '48eda464-1485-4dcf-a674-d0905df5054a'\r\n| project id, stableId = name, subscriptionId, resourceGroup\r\n| join kind=leftouter (\r\n    advisorresources\r\n    | where type =~ 'microsoft.advisor/suppressions'\r\n    | extend tokens = split(id, '/')\r\n    | extend stableId = iff(array_length(tokens) > 3, tokens[array_length(tokens) - 3], '')\r\n    | extend expirationTimeStamp = todatetime(iff(strcmp(tostring(properties.ttl), '-1') == 0, '9999-12-31', properties.expirationTimeStamp))\r\n    | where expirationTimeStamp > now()\r\n    | project suppressionId = tostring(properties.suppressionId), stableId, expirationTimeStamp\r\n) on stableId\r\n| join kind=leftouter (\r\n    advisorresources\r\n    | where type =~ 'microsoft.advisor/configurations'\r\n    | where isempty(resourceGroup)\r\n    | project subscriptionId, excludeRecomm = properties.exclude, lowCpuThreshold = properties.lowCpuThreshold\r\n) on subscriptionId\r\n| where isempty(excludeRecomm) or tobool(excludeRecomm) == false\r\n| join kind=leftouter (\r\n    advisorresources\r\n    | where type =~ 'microsoft.advisor/configurations'\r\n    | where isnotempty(resourceGroup)\r\n    | project subscriptionId, resourceGroup, excludeProperty = properties.exclude\r\n) on subscriptionId, resourceGroup\r\n| where isempty(excludeProperty) or tobool(excludeProperty) == false\r\n| summarize expirationTimeStamp = max(expirationTimeStamp) by id, subscriptionId\r\n| where isnull(expirationTimeStamp) or isempty(expirationTimeStamp)\r\n| summarize unattachedDiskCount = count(), subscriptionIds = make_set(tolower(subscriptionId))"
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "122",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 08 Oct 2026 23:26:51 GMT",
+        "Date": "Fri, 09 Oct 2026 00:22:11 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "aae9bb97-3686-44d6-8e5d-6499919a53e9",
+        "x-ms-correlation-request-id": "5ec2657f-4ecd-43ef-b7fd-179f3af352b2",
         "x-ms-operation-identifier": "",
         "x-ms-ratelimit-remaining-tenant-reads": "2199",
-        "x-ms-ratelimit-remaining-tenant-resource-requests": "14",
+        "x-ms-ratelimit-remaining-tenant-resource-requests": "13",
         "x-ms-request-id": "Sanitized",
-        "x-ms-resource-graph-request-duration": "0:00:00:00.3574189",
-        "x-ms-routing-request-id": "SOUTHCENTRALUS:20261008T232652Z:aae9bb97-3686-44d6-8e5d-6499919a53e9",
-        "x-ms-user-quota-remaining": "14",
+        "x-ms-resource-graph-request-duration": "0:00:00:00.4972040",
+        "x-ms-routing-request-id": "SOUTHCENTRALUS:20261009T002211Z:5ec2657f-4ecd-43ef-b7fd-179f3af352b2",
+        "x-ms-user-quota-remaining": "13",
         "x-ms-user-quota-resets-after": "00:00:05",
-        "X-MSEdge-Ref": "Ref A: 46F0EF6A4E5344A4B1A91967C6362287 Ref B: SN4AA2022401045 Ref C: 2026-10-08T23:26:51Z"
+        "X-MSEdge-Ref": "Ref A: 755A3C8873B947AFBEC15229AB12E4DE Ref B: SN4AA2022303033 Ref C: 2026-10-09T00:22:11Z"
       },
       "ResponseBody": {
         "totalRecords": 1,
@@ -471,7 +471,7 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "8572",
+        "Content-Length": "8587",
         "Content-Type": "application/json",
         "User-Agent": "azmcp/1.0.0.0 azmcp-stdio/1.0.0.0 (.NETCoreApp,Version=v10.0; Microsoft Windows 10.0.26300)",
         "x-ms-client-request-id": "Sanitized",
@@ -481,29 +481,29 @@
         "subscriptions": [
           "00000000-0000-0000-0000-000000000000"
         ],
-        "query": "advisorresources\r\n| where type =~ 'microsoft.advisor/recommendations'\r\n| where isempty(properties.tracked) or properties.tracked == false\r\n// Unattached disks are summarized by UnattachedDiskSummaryQuery.\r\n| where tostring(properties.recommendationTypeId) != '48eda464-1485-4dcf-a674-d0905df5054a'\r\n| extend termMatch = iff((isnotnull(properties.extendedProperties) and isnotempty(properties.extendedProperties.term) and properties.extendedProperties.term == 'P3Y'), true, false)\r\n| extend lookbackPeriodMatch = iff((isnotnull(properties.extendedProperties) and isnotempty(properties.extendedProperties.lookbackPeriod) and properties.extendedProperties.lookbackPeriod == '30'), true, (properties.recommendationTypeId == '84b1a508-fc21-49da-979e-96894f1665df' and isempty(properties.extendedProperties.lookbackPeriod)))\r\n| extend riFilterCondition = iff((termMatch == true and lookbackPeriodMatch == true), true, (isnull(properties.extendedProperties) or (not(bag_has_key(properties.extendedProperties, 'term')) and not(bag_has_key(properties.extendedProperties, 'lookbackPeriod')))))\r\n| where iff(properties.recommendationTypeId in ('0169a2e1-c7bf-4c37-90b8-0714811c82d3', '06ad499a-0952-48d3-b061-ec81c9cabb8b', '0d524e8d-4cfd-4db5-9f91-8b4bb5235a8e', '0eb54047-acd9-4f26-8ffb-8cec713782d6', '10aedd06-621e-4b4f-a45c-5256573e0191', '148cdd60-97e8-426b-a7b9-141b7cb4bc2f', '171f87ad-4ead-42fc-8f32-a3b18d451837', '1b8c5187-32a6-4a2f-8ca1-b0b7d6ce9e86', '32755df6-aa2f-48d7-9ab7-92b8a80352ea', '3327646a-c325-417f-a3e3-36ae7119da69', '3f6c5689-6a05-4896-a6e0-c6f8a22a44c2', '407b6ad6-8e0b-40e7-9384-643520cae0ed', '5b8ddf04-be28-44ec-ab2c-a63a34d1de13', '680a5388-28aa-44e8-88af-32e3598dc869', '6dcd6657-7a07-404a-b462-db76946f6a97', '84b1a508-fc21-49da-979e-96894f1665df', '885cd4f5-dfa0-4d68-bbfd-00f89fc2b69c', '8ee30d6b-2c73-452a-b4ad-e4386cd6f7d0', 'a205074f-8049-48b3-903f-556f5e530ae3', 'a8fd63ce-4600-43eb-af33-a6d5481f5930', 'db621e98-4a20-4942-b174-c455dc71dbae', 'f0382960-6906-4b0d-add3-ed12690bff31', '89515250-1243-43d1-b4e7-f9437cedffd8'), riFilterCondition, true)\r\n| project id, stableId = name, subscriptionId, resourceGroup, properties, tenantId\r\n| join kind=leftouter (\r\n    advisorresources\r\n    | where type =~ 'microsoft.advisor/suppressions'\r\n    | extend tokens = split(id, '/')\r\n    | extend stableId = iff(array_length(tokens) > 3, tokens[array_length(tokens) - 3], '')\r\n    | extend expirationTimeStamp = todatetime(iff(strcmp(tostring(properties.ttl), '-1') == 0, '9999-12-31', properties.expirationTimeStamp))\r\n    | where expirationTimeStamp > now()\r\n    | project suppressionId = tostring(properties.suppressionId), stableId, expirationTimeStamp\r\n) on stableId\r\n| project id, stableId, subscriptionId, resourceGroup, properties, expirationTimeStamp, suppressionId, tenantId\r\n| join kind=leftouter (\r\n    advisorresources\r\n    | where type =~ 'microsoft.advisor/configurations'\r\n    | where isempty(resourceGroup)\r\n    | project subscriptionId, excludeRecomm = properties.exclude, lowCpuThreshold = properties.lowCpuThreshold\r\n) on subscriptionId\r\n| extend isActive1 = iff(isempty(excludeRecomm), true, tobool(excludeRecomm) == false)\r\n| extend isActive2 = iff(\r\n    properties.recommendationTypeId in ('e10b1381-5f0a-47ff-8c7b-37bd13d7c974', '94aea435-ef39-493f-a547-8408092c22a7'),\r\n    iff(\r\n        isnotempty(lowCpuThreshold) and isnotnull(properties.extendedProperties) and isnotempty(properties.extendedProperties.MaxCpuP95),\r\n        todouble(properties.extendedProperties.MaxCpuP95) < todouble(lowCpuThreshold),\r\n        iff(isnull(properties.extendedProperties) or isempty(properties.extendedProperties.MaxCpuP95) or todouble(properties.extendedProperties.MaxCpuP95) < 100, true, false)\r\n    ),\r\n    true\r\n)\r\n| where isActive1 and isActive2\r\n| join kind=leftouter (\r\n    advisorresources\r\n    | where type =~ 'microsoft.advisor/configurations'\r\n    | where isnotempty(resourceGroup)\r\n    | project subscriptionId, resourceGroup, excludeProperty = properties.exclude\r\n) on subscriptionId, resourceGroup\r\n| extend isActive3 = iff(isempty(excludeProperty), true, tobool(excludeProperty) == false)\r\n| where isActive3\r\n| summarize expirationTimeStamp = max(expirationTimeStamp), suppressionIds = make_list(suppressionId)\r\n    by id, stableId, subscriptionId, resourceGroup, tostring(properties), tenantId\r\n| extend properties = parse_json(properties)\r\n| extend\r\n    recommendationTypeId = tostring(properties.recommendationTypeId),\r\n    resourceType = tostring(properties.impactedField),\r\n    category = tostring(properties.category),\r\n    impact = tolower(tostring(properties.impact)),\r\n    resourceId = tolower(substring(id, 0, strlen(id) - 81)),\r\n    description = tostring(properties.shortDescription.solution),\r\n    lastUpdate = tostring(properties.lastUpdated),\r\n    isRecommendationActive = isnull(expirationTimeStamp) or isempty(expirationTimeStamp),\r\n    extendedProperties = properties.extendedProperties\r\n| extend\r\n    recommendationSubcategory = tostring(extendedProperties.recommendationSubCategory),\r\n    extMonthly = toreal(extendedProperties.savingsAmount),\r\n    extAnnual = toreal(extendedProperties.annualSavingsAmount),\r\n    extCurrency = tostring(extendedProperties.savingsCurrency),\r\n    retailDaily = toreal(properties.savings.retail.dailyPotentialSavings)\r\n| extend useRetail = isnull(extMonthly) and isnull(extAnnual) and isnotnull(retailDaily)\r\n| extend\r\n    savingsAmount = iff(useRetail, retailDaily * 365.0 / 12.0, extMonthly),\r\n    annualSavingsAmount = iff(useRetail, retailDaily * 365.0, extAnnual),\r\n    savingsCurrency = iff(useRetail, tostring(properties.savings.providerCurrency), extCurrency),\r\n    impactedField = tolower(tostring(properties.impactedField)),\r\n    impactedValue = tolower(tostring(properties.impactedValue)),\r\n    recommendationMessage = tostring(properties.shortDescription.solution),\r\n    recommendationMessageDetailed = tostring(properties.extendedProperties.recommendationMessage),\r\n    recommendationTypeSubCategory = tostring(properties.extendedProperties.recommendationType),\r\n    solution = tostring(properties.shortDescription.solution),\r\n    PotentialMonthlyCarbonSavings = todouble(coalesce(extendedProperties.PotentialMonthlyCarbonSavings, extendedProperties.potentialMonthlyCarbonSavings)),\r\n    descriptionOfChanges = tostring(extendedProperties.descriptionOfChanges),\r\n    recommendationCostImplication = tostring(extendedProperties.recommendationCostImplication)\r\n| where isRecommendationActive\r\n| where category == 'Cost'\r\n| extend\r\n    savingsCurrencyForRanking = coalesce(savingsCurrency, 'USD'),\r\n    annualSavingsAmountForRanking = coalesce(annualSavingsAmount, 0.0),\r\n    savingsAmountForRanking = coalesce(savingsAmount, 0.0)\r\n| extend impact_score = case(\r\n    impact == 'high', 10,\r\n    impact == 'medium', 5,\r\n    impact == 'low', 0,\r\n    0\r\n)\r\n| join kind=leftouter (\r\n    datatable(savingsCurrencyForRanking: string, conversionRate: real) [\r\n        'AUD', 0.650801,\r\n        'BRL', 0.183611,\r\n        'CAD', 0.725468,\r\n        'CHF', 1.232450,\r\n        'CNY', 0.139186,\r\n        'DKK', 0.155726,\r\n        'EUR', 1.162200,\r\n        'GBP', 1.342975,\r\n        'INR', 0.011395,\r\n        'JPY', 0.006761,\r\n        'KRW', 0.000718,\r\n        'NOK', 0.097595,\r\n        'NZD', 0.592695,\r\n        'RUB', 0.012500,\r\n        'SEK', 0.103939,\r\n        'TWD', 0.033800,\r\n        'USD', 1.000000\r\n    ]\r\n) on savingsCurrencyForRanking\r\n| extend conversionRate = coalesce(conversionRate, 0.0)\r\n| extend\r\n    annualSavingsAmountForRanking = annualSavingsAmountForRanking * conversionRate,\r\n    savingsAmountForRanking = savingsAmountForRanking * conversionRate\r\n| order by impact_score desc, annualSavingsAmountForRanking desc\r\n| project\r\n    id = tolower(id),\r\n    name = stableId,\r\n    tenantId,\r\n    resourceGroup,\r\n    subscriptionId,\r\n    recommendationTypeId,\r\n    savingsCurrency,\r\n    annualSavingsAmount = round(annualSavingsAmount),\r\n    savingsAmount = round(savingsAmount),\r\n    monthlyCarbonSavings = round(PotentialMonthlyCarbonSavings, 2),\r\n    recommendationMessage,\r\n    recommendationMessageDetailed,\r\n    recommendationTypeSubCategory,\r\n    solution,\r\n    impactedField,\r\n    impactedValue,\r\n    resourceId\n| limit 100"
+        "query": "advisorresources\r\n| where type =~ 'microsoft.advisor/recommendations'\r\n| where isempty(properties.tracked) or properties.tracked == false\r\n// Unattached disks are summarized by UnattachedDiskSummaryQuery.\r\n| where tostring(properties.recommendationTypeId) != '48eda464-1485-4dcf-a674-d0905df5054a'\r\n| extend termMatch = iff((isnotnull(properties.extendedProperties) and isnotempty(properties.extendedProperties.term) and properties.extendedProperties.term == 'P3Y'), true, false)\r\n| extend lookbackPeriodMatch = iff((isnotnull(properties.extendedProperties) and isnotempty(properties.extendedProperties.lookbackPeriod) and properties.extendedProperties.lookbackPeriod == '30'), true, (properties.recommendationTypeId == '84b1a508-fc21-49da-979e-96894f1665df' and isempty(properties.extendedProperties.lookbackPeriod)))\r\n| extend riFilterCondition = iff((termMatch == true and lookbackPeriodMatch == true), true, (isnull(properties.extendedProperties) or (not(bag_has_key(properties.extendedProperties, 'term')) and not(bag_has_key(properties.extendedProperties, 'lookbackPeriod')))))\r\n| where iff(properties.recommendationTypeId in ('0169a2e1-c7bf-4c37-90b8-0714811c82d3', '06ad499a-0952-48d3-b061-ec81c9cabb8b', '0d524e8d-4cfd-4db5-9f91-8b4bb5235a8e', '0eb54047-acd9-4f26-8ffb-8cec713782d6', '10aedd06-621e-4b4f-a45c-5256573e0191', '148cdd60-97e8-426b-a7b9-141b7cb4bc2f', '171f87ad-4ead-42fc-8f32-a3b18d451837', '1b8c5187-32a6-4a2f-8ca1-b0b7d6ce9e86', '32755df6-aa2f-48d7-9ab7-92b8a80352ea', '3327646a-c325-417f-a3e3-36ae7119da69', '3f6c5689-6a05-4896-a6e0-c6f8a22a44c2', '407b6ad6-8e0b-40e7-9384-643520cae0ed', '5b8ddf04-be28-44ec-ab2c-a63a34d1de13', '680a5388-28aa-44e8-88af-32e3598dc869', '6dcd6657-7a07-404a-b462-db76946f6a97', '84b1a508-fc21-49da-979e-96894f1665df', '885cd4f5-dfa0-4d68-bbfd-00f89fc2b69c', '8ee30d6b-2c73-452a-b4ad-e4386cd6f7d0', 'a205074f-8049-48b3-903f-556f5e530ae3', 'a8fd63ce-4600-43eb-af33-a6d5481f5930', 'db621e98-4a20-4942-b174-c455dc71dbae', 'f0382960-6906-4b0d-add3-ed12690bff31', '89515250-1243-43d1-b4e7-f9437cedffd8'), riFilterCondition, true)\r\n| project id, stableId = name, subscriptionId, resourceGroup, properties, tenantId\r\n| join kind=leftouter (\r\n    advisorresources\r\n    | where type =~ 'microsoft.advisor/suppressions'\r\n    | extend tokens = split(id, '/')\r\n    | extend stableId = iff(array_length(tokens) > 3, tokens[array_length(tokens) - 3], '')\r\n    | extend expirationTimeStamp = todatetime(iff(strcmp(tostring(properties.ttl), '-1') == 0, '9999-12-31', properties.expirationTimeStamp))\r\n    | where expirationTimeStamp > now()\r\n    | project suppressionId = tostring(properties.suppressionId), stableId, expirationTimeStamp\r\n) on stableId\r\n| project id, stableId, subscriptionId, resourceGroup, properties, expirationTimeStamp, suppressionId, tenantId\r\n| join kind=leftouter (\r\n    advisorresources\r\n    | where type =~ 'microsoft.advisor/configurations'\r\n    | where isempty(resourceGroup)\r\n    | project subscriptionId, excludeRecomm = properties.exclude, lowCpuThreshold = properties.lowCpuThreshold\r\n) on subscriptionId\r\n| extend isActive1 = iff(isempty(excludeRecomm), true, tobool(excludeRecomm) == false)\r\n| extend isActive2 = iff(\r\n    properties.recommendationTypeId in ('e10b1381-5f0a-47ff-8c7b-37bd13d7c974', '94aea435-ef39-493f-a547-8408092c22a7'),\r\n    iff(\r\n        isnotempty(lowCpuThreshold) and isnotnull(properties.extendedProperties) and isnotempty(properties.extendedProperties.MaxCpuP95),\r\n        todouble(properties.extendedProperties.MaxCpuP95) < todouble(lowCpuThreshold),\r\n        iff(isnull(properties.extendedProperties) or isempty(properties.extendedProperties.MaxCpuP95) or todouble(properties.extendedProperties.MaxCpuP95) < 100, true, false)\r\n    ),\r\n    true\r\n)\r\n| where isActive1 and isActive2\r\n| join kind=leftouter (\r\n    advisorresources\r\n    | where type =~ 'microsoft.advisor/configurations'\r\n    | where isnotempty(resourceGroup)\r\n    | project subscriptionId, resourceGroup, excludeProperty = properties.exclude\r\n) on subscriptionId, resourceGroup\r\n| extend isActive3 = iff(isempty(excludeProperty), true, tobool(excludeProperty) == false)\r\n| where isActive3\r\n| summarize expirationTimeStamp = max(expirationTimeStamp), suppressionIds = make_list(suppressionId)\r\n    by id, stableId, subscriptionId, resourceGroup, tostring(properties), tenantId\r\n| extend properties = parse_json(properties)\r\n| extend\r\n    recommendationTypeId = tostring(properties.recommendationTypeId),\r\n    resourceType = tostring(properties.impactedField),\r\n    category = tostring(properties.category),\r\n    impact = tolower(tostring(properties.impact)),\r\n    resourceId = tolower(substring(id, 0, strlen(id) - 81)),\r\n    description = tostring(properties.shortDescription.solution),\r\n    lastUpdate = tostring(properties.lastUpdated),\r\n    isRecommendationActive = isnull(expirationTimeStamp) or isempty(expirationTimeStamp),\r\n    extendedProperties = properties.extendedProperties\r\n| extend\r\n    recommendationSubcategory = tostring(extendedProperties.recommendationSubCategory),\r\n    extMonthly = toreal(extendedProperties.savingsAmount),\r\n    extAnnual = toreal(extendedProperties.annualSavingsAmount),\r\n    extCurrency = tostring(extendedProperties.savingsCurrency),\r\n    retailDaily = toreal(properties.savings.retail.dailyPotentialSavings)\r\n| extend useRetail = isnull(extMonthly) and isnull(extAnnual) and isnotnull(retailDaily)\r\n| extend\r\n    savingsAmount = iff(useRetail, retailDaily * 365.0 / 12.0, extMonthly),\r\n    annualSavingsAmount = iff(useRetail, retailDaily * 365.0, extAnnual),\r\n    savingsCurrency = iff(useRetail, tostring(properties.savings.providerCurrency), extCurrency),\r\n    impactedField = tolower(tostring(properties.impactedField)),\r\n    impactedValue = tolower(tostring(properties.impactedValue)),\r\n    recommendationMessage = tostring(properties.shortDescription.solution),\r\n    recommendationMessageDetailed = tostring(properties.extendedProperties.recommendationMessage),\r\n    recommendationTypeSubCategory = tostring(properties.extendedProperties.recommendationType),\r\n    solution = tostring(properties.shortDescription.solution),\r\n    PotentialMonthlyCarbonSavings = todouble(coalesce(extendedProperties.PotentialMonthlyCarbonSavings, extendedProperties.potentialMonthlyCarbonSavings)),\r\n    descriptionOfChanges = tostring(extendedProperties.descriptionOfChanges),\r\n    recommendationCostImplication = tostring(extendedProperties.recommendationCostImplication)\r\n| where isRecommendationActive\r\n| where category == 'Cost'\r\n| extend\r\n    savingsCurrencyForRanking = coalesce(savingsCurrency, 'USD'),\r\n    annualSavingsAmountForRanking = coalesce(annualSavingsAmount, 0.0),\r\n    savingsAmountForRanking = coalesce(savingsAmount, 0.0)\r\n| extend impact_score = case(\r\n    impact == 'high', 10,\r\n    impact == 'medium', 5,\r\n    impact == 'low', 0,\r\n    0\r\n)\r\n| join kind=leftouter (\r\n    datatable(savingsCurrencyForRanking: string, conversionRate: real) [\r\n        'AUD', 0.650801,\r\n        'BRL', 0.183611,\r\n        'CAD', 0.725468,\r\n        'CHF', 1.232450,\r\n        'CNY', 0.139186,\r\n        'DKK', 0.155726,\r\n        'EUR', 1.162200,\r\n        'GBP', 1.342975,\r\n        'INR', 0.011395,\r\n        'JPY', 0.006761,\r\n        'KRW', 0.000718,\r\n        'NOK', 0.097595,\r\n        'NZD', 0.592695,\r\n        'RUB', 0.012500,\r\n        'SEK', 0.103939,\r\n        'TWD', 0.033800,\r\n        'USD', 1.000000\r\n    ]\r\n) on savingsCurrencyForRanking\r\n| extend conversionRate = coalesce(conversionRate, 0.0)\r\n| extend\r\n    annualSavingsAmountForRanking = annualSavingsAmountForRanking * conversionRate,\r\n    savingsAmountForRanking = savingsAmountForRanking * conversionRate\r\n| order by impact_score desc, annualSavingsAmountForRanking desc\r\n| project\r\n    id = tolower(id),\r\n    name = stableId,\r\n    tenantId,\r\n    resourceGroup,\r\n    subscriptionId,\r\n    recommendationTypeId,\r\n    savingsCurrency,\r\n    annualSavingsAmount = round(annualSavingsAmount),\r\n    savingsAmount = round(savingsAmount),\r\n    monthlyCarbonSavings = round(PotentialMonthlyCarbonSavings, 2),\r\n    recommendationMessage,\r\n    recommendationMessageDetailed,\r\n    recommendationTypeSubCategory,\r\n    solution,\r\n    impactedField,\r\n    impactedValue,\r\n    impact,\r\n    resourceId\n| limit 100"
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "35083",
+        "Content-Length": "35646",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 08 Oct 2026 23:26:52 GMT",
+        "Date": "Fri, 09 Oct 2026 00:22:11 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Cache": "CONFIG_NOCACHE",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "13d32303-c0ff-43a1-9147-ea15548a0263",
+        "x-ms-correlation-request-id": "f5fa3a8a-dcce-4957-86ac-6fc93e859630",
         "x-ms-operation-identifier": "",
-        "x-ms-ratelimit-remaining-tenant-reads": "2199",
-        "x-ms-ratelimit-remaining-tenant-resource-requests": "13",
+        "x-ms-ratelimit-remaining-tenant-reads": "2198",
+        "x-ms-ratelimit-remaining-tenant-resource-requests": "14",
         "x-ms-request-id": "Sanitized",
-        "x-ms-resource-graph-request-duration": "0:00:00:00.7107190",
-        "x-ms-routing-request-id": "SOUTHCENTRALUS:20261008T232652Z:13d32303-c0ff-43a1-9147-ea15548a0263",
-        "x-ms-user-quota-remaining": "13",
+        "x-ms-resource-graph-request-duration": "0:00:00:00.6412012",
+        "x-ms-routing-request-id": "SOUTHCENTRALUS:20261009T002211Z:f5fa3a8a-dcce-4957-86ac-6fc93e859630",
+        "x-ms-user-quota-remaining": "14",
         "x-ms-user-quota-resets-after": "00:00:05",
-        "X-MSEdge-Ref": "Ref A: 4C9A29C7AF7B48C4BD8D849D46BBB6E1 Ref B: SN4AA2022401029 Ref C: 2026-10-08T23:26:51Z"
+        "X-MSEdge-Ref": "Ref A: 871C80A3F34C40DCBDD16E1B503133B5 Ref B: SN4AA2022303011 Ref C: 2026-10-09T00:22:11Z"
       },
       "ResponseBody": {
         "totalRecords": 32,
@@ -526,6 +526,7 @@
             "solution": "Right-size or shutdown underutilized virtual machines",
             "impactedField": "microsoft.compute/virtualmachines",
             "impactedValue": "contoso-demo-vm-001",
+            "impact": "high",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/contoso-demo/providers/microsoft.compute/virtualmachines/contoso-demo-vm-001/providers/microsoft.advisor"
           },
           {
@@ -545,6 +546,7 @@
             "solution": "Right-size or shutdown underutilized virtual machine scale sets",
             "impactedField": "microsoft.compute/virtualmachinescalesets",
             "impactedValue": "contoso-demo-vmss-010",
+            "impact": "high",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/contoso-demo/providers/microsoft.compute/virtualmachinescalesets/contoso-demo-vmss-010/providers/microsoft.advisor"
           },
           {
@@ -564,6 +566,7 @@
             "solution": "Change Data Explorer clusters to a more cost effective and better performing SKU",
             "impactedField": "microsoft.kusto/clusters",
             "impactedValue": "cloudfittest",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfit/providers/microsoft.kusto/clusters/cloudfittest/providers/microsoft.advisor"
           },
           {
@@ -583,6 +586,7 @@
             "solution": "Change Data Explorer clusters to a more cost effective and better performing SKU",
             "impactedField": "microsoft.kusto/clusters",
             "impactedValue": "coreutilrdr-app-test",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/coreutilappreader/providers/microsoft.kusto/clusters/coreutilrdr-app-test/providers/microsoft.advisor"
           },
           {
@@ -602,6 +606,7 @@
             "solution": "Consider stopping unused Data Explorer resources",
             "impactedField": "microsoft.kusto/clusters",
             "impactedValue": "coreutilrdr-app-test",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/coreutilappreader/providers/microsoft.kusto/clusters/coreutilrdr-app-test/providers/microsoft.advisor"
           },
           {
@@ -621,6 +626,7 @@
             "solution": "Consider stopping unused Data Explorer resources",
             "impactedField": "microsoft.kusto/clusters",
             "impactedValue": "cfrh-test-cus",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resourcehealthsignaltestcus/providers/microsoft.kusto/clusters/cfrh-test-cus/providers/microsoft.advisor"
           },
           {
@@ -640,6 +646,7 @@
             "solution": "Consider stopping unused Data Explorer resources",
             "impactedField": "microsoft.kusto/clusters",
             "impactedValue": "coreutilization-test",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/coreutilappreader/providers/microsoft.kusto/clusters/coreutilization-test/providers/microsoft.advisor"
           },
           {
@@ -659,6 +666,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxextracttestweu",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiontestweu/providers/microsoft.web/serverfarms/shoeboxextracttestweu/providers/microsoft.advisor"
           },
           {
@@ -678,6 +686,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxextracttestkrs",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiontestkrs/providers/microsoft.web/serverfarms/shoeboxextracttestkrs/providers/microsoft.advisor"
           },
           {
@@ -697,6 +706,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxextracttestauc",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiontestauc/providers/microsoft.web/serverfarms/shoeboxextracttestauc/providers/microsoft.advisor"
           },
           {
@@ -716,6 +726,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "priceexsetup-asp-dev-eus2",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/exportapisetupdeveus2/providers/microsoft.web/serverfarms/priceexsetup-asp-dev-eus2/providers/microsoft.advisor"
           },
           {
@@ -735,6 +746,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxwlplannertestcus",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiontestcus/providers/microsoft.web/serverfarms/shoeboxwlplannertestcus/providers/microsoft.advisor"
           },
           {
@@ -754,6 +766,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxlaunchtestcus",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiontestcus/providers/microsoft.web/serverfarms/shoeboxlaunchtestcus/providers/microsoft.advisor"
           },
           {
@@ -773,6 +786,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxextracttestcus",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiontestcus/providers/microsoft.web/serverfarms/shoeboxextracttestcus/providers/microsoft.advisor"
           },
           {
@@ -792,6 +806,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxstatusupdatetestcus",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiontestcus/providers/microsoft.web/serverfarms/shoeboxstatusupdatetestcus/providers/microsoft.advisor"
           },
           {
@@ -811,26 +826,8 @@
             "solution": "Consider using multiple endpoints under one single Front Door Standard/Premium profile",
             "impactedField": "microsoft.cdn/profiles",
             "impactedValue": "00000000-0000-0000-0000-000000000000",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.advisor"
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiondevcus/providers/microsoft.web/serverfarms/shoeboxwlplannerdevcus/providers/microsoft.advisor/recommendations/8991d6988cad64d730928eabbec4974fe0f9a226409cf77578bb7016501bcdb0",
-            "name": "Sanitized",
-            "tenantId": "00000000-0000-0000-0000-000000000000",
-            "resourceGroup": "Sanitized",
-            "subscriptionId": "00000000-0000-0000-0000-000000000000",
-            "recommendationTypeId": "cc9d34f5-f9b8-4d4f-9de7-98b45c698a49",
-            "savingsCurrency": "",
-            "annualSavingsAmount": 0.0,
-            "savingsAmount": 0.0,
-            "monthlyCarbonSavings": 0.0,
-            "recommendationMessage": "Right-size underutilized App Service plans",
-            "recommendationMessageDetailed": "",
-            "recommendationTypeSubCategory": "",
-            "solution": "Right-size underutilized App Service plans",
-            "impactedField": "microsoft.web/sites",
-            "impactedValue": "shoeboxwlplannerdevcus",
-            "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiondevcus/providers/microsoft.web/serverfarms/shoeboxwlplannerdevcus/providers/microsoft.advisor"
           },
           {
             "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiondevcus/providers/microsoft.web/serverfarms/shoeboxstatusupdatedevcus/providers/microsoft.advisor/recommendations/eab2829b9e98a7d82a7151b299b5ae4b544985d6c5ffea6dbb140b362b915e9f",
@@ -849,7 +846,28 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxstatusupdatedevcus",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiondevcus/providers/microsoft.web/serverfarms/shoeboxstatusupdatedevcus/providers/microsoft.advisor"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiondevcus/providers/microsoft.web/serverfarms/shoeboxwlplannerdevcus/providers/microsoft.advisor/recommendations/8991d6988cad64d730928eabbec4974fe0f9a226409cf77578bb7016501bcdb0",
+            "name": "Sanitized",
+            "tenantId": "00000000-0000-0000-0000-000000000000",
+            "resourceGroup": "Sanitized",
+            "subscriptionId": "00000000-0000-0000-0000-000000000000",
+            "recommendationTypeId": "cc9d34f5-f9b8-4d4f-9de7-98b45c698a49",
+            "savingsCurrency": "",
+            "annualSavingsAmount": 0.0,
+            "savingsAmount": 0.0,
+            "monthlyCarbonSavings": 0.0,
+            "recommendationMessage": "Right-size underutilized App Service plans",
+            "recommendationMessageDetailed": "",
+            "recommendationTypeSubCategory": "",
+            "solution": "Right-size underutilized App Service plans",
+            "impactedField": "microsoft.web/sites",
+            "impactedValue": "shoeboxwlplannerdevcus",
+            "impact": "medium",
+            "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiondevcus/providers/microsoft.web/serverfarms/shoeboxwlplannerdevcus/providers/microsoft.advisor"
           },
           {
             "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiondevcus/providers/microsoft.web/serverfarms/shoeboxlaunchdevcus/providers/microsoft.advisor/recommendations/2397d6d872ce224c5ebdc7f4304134c0ad067cec6afb81aa942752f6ff968365",
@@ -868,6 +886,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxlaunchdevcus",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiondevcus/providers/microsoft.web/serverfarms/shoeboxlaunchdevcus/providers/microsoft.advisor"
           },
           {
@@ -887,6 +906,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxextractdevcus",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiondevcus/providers/microsoft.web/serverfarms/shoeboxextractdevcus/providers/microsoft.advisor"
           },
           {
@@ -906,6 +926,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxextractdevweu",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiondevweu/providers/microsoft.web/serverfarms/shoeboxextractdevweu/providers/microsoft.advisor"
           },
           {
@@ -925,6 +946,7 @@
             "solution": "(Preview) Review Azure managed disk snapshots older than 30 days",
             "impactedField": "microsoft.compute/snapshots",
             "impactedValue": "pupat_snapshot",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfit-test/providers/microsoft.compute/snapshots/pupat_snapshot/providers/microsoft.advisor"
           },
           {
@@ -944,6 +966,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "cloudfit1pmcp-plan-test-eus2",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfit1pmcptesteus2/providers/microsoft.web/serverfarms/cloudfit1pmcp-plan-test-eus2/providers/microsoft.advisor"
           },
           {
@@ -963,6 +986,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxextractdevkce",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiondevkce/providers/microsoft.web/serverfarms/shoeboxextractdevkce/providers/microsoft.advisor"
           },
           {
@@ -982,6 +1006,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxstatusupdatetestwus2",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiontestwus2/providers/microsoft.web/serverfarms/shoeboxstatusupdatetestwus2/providers/microsoft.advisor"
           },
           {
@@ -1001,6 +1026,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxwlplannertestwus2",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiontestwus2/providers/microsoft.web/serverfarms/shoeboxwlplannertestwus2/providers/microsoft.advisor"
           },
           {
@@ -1020,6 +1046,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxlaunchtestwus2",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiontestwus2/providers/microsoft.web/serverfarms/shoeboxlaunchtestwus2/providers/microsoft.advisor"
           },
           {
@@ -1039,6 +1066,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxextracttestwus2",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiontestwus2/providers/microsoft.web/serverfarms/shoeboxextracttestwus2/providers/microsoft.advisor"
           },
           {
@@ -1058,6 +1086,7 @@
             "solution": "Right-size underutilized App Service plans",
             "impactedField": "microsoft.web/sites",
             "impactedValue": "shoeboxextracttestkce",
+            "impact": "medium",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitdataextractiontestkce/providers/microsoft.web/serverfarms/shoeboxextracttestkce/providers/microsoft.advisor"
           },
           {
@@ -1077,6 +1106,7 @@
             "solution": "(Preview) Review Private Endpoints that are not connected to any resource",
             "impactedField": "microsoft.network/privateendpoints",
             "impactedValue": "pe-deboyertest-blob-transfer",
+            "impact": "low",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/ritesh-playground/providers/microsoft.network/privateendpoints/pe-deboyertest-blob-transfer/providers/microsoft.advisor"
           },
           {
@@ -1096,6 +1126,7 @@
             "solution": "Disable health probes when there's only one origin in an origin group",
             "impactedField": "microsoft.network/frontdoors",
             "impactedValue": "remotemcppocafdtestscus",
+            "impact": "low",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/remotemcppoctestscus/providers/microsoft.cdn/profiles/remotemcppocafdtestscus/providers/microsoft.advisor"
           },
           {
@@ -1115,6 +1146,7 @@
             "solution": "Consider configuring the cost effective Basic logs plan on selected tables",
             "impactedField": "microsoft.operationalinsights/workspaces",
             "impactedValue": "cfrealizedsavingstest-loganalytics",
+            "impact": "low",
             "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/cloudfitrealizedsavingsstoragetesteus2/providers/microsoft.operationalinsights/workspaces/cfrealizedsavingstest-loganalytics/providers/microsoft.advisor"
           }
         ],
